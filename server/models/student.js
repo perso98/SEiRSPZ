@@ -1,0 +1,97 @@
+module.exports=(sequelize,DataTypes)=>
+{
+const student=sequelize.define("student",
+{
+    login:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    haslo:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    imie:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    nazwisko:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    indeks:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    studia:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    kierunek:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    specjalnosc:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    rok_studiow:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    rodzaj_studiow:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    telefon:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+    email:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty:true
+        }
+    },
+}, {
+    charset: 'utf8',
+    collate: 'utf8_general_ci',
+  })
+
+
+
+return student
+}
