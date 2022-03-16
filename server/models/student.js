@@ -18,73 +18,43 @@ const student=sequelize.define("student",
     },
     imie:{
         type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
     nazwisko:{
         type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
     indeks:{
         type:DataTypes.INTEGER,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
     studia:{
         type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
     kierunek:{
         type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
     specjalnosc:{
         type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
     rok_studiow:{
         type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
     rodzaj_studiow:{
         type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
     telefon:{
         type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
     email:{
         type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            notEmpty:true
-        }
+        allowNull:true,
     },
 }, {
     charset: 'utf8',
