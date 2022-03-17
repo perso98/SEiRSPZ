@@ -26,24 +26,24 @@ function Register() {
   return (
     <div className='center'>
       <div className='homeClass'> <h3>Rejestracja</h3>
-      <h4>{registerStatus}</h4>
+        <h4>{registerStatus}</h4>
         <div className='form-group'>
-      <label>Login :</label>
-      <input type="text" name="registerLogin" placeholder="Podaj login" onChange={(e=>{setLogin(e.target.value)})}>
+          <label>Login :</label>
+          <input type="text" name="registerLogin" placeholder="Podaj login" onChange={(e=>{setLogin(e.target.value)})}>
 
-      </input>
-      </div>
-      <div className='form-group'>
-      <label>Hasło :</label>
-      <input type="password" name="registerPassword"  placeholder="Podaj hasło" onChange={(e=>{setPassword(e.target.value)})}>
+          </input>
+        </div>
+        <div className='form-group'>
+          <label>Hasło :</label>
+          <input type="password" name="registerPassword"  placeholder="Podaj hasło" onChange={(e=>{setPassword(e.target.value)})}>
 
-      </input>
-      <label>Powtórz hasło :</label>
-      <input type="password" name="registerPassword2"  placeholder="Powtórz hasło" onChange={(e=>{setPassword2(e.target.value)})}>
+          </input>
+          <label>Powtórz hasło :</label>
+          <input type="password" name="registerPassword2"  placeholder="Powtórz hasło" onChange={(e=>{setPassword2(e.target.value)})}>
 
-      </input>
-      </div>
-      <button type="submit" class="btn btn-primary" onClick={createAccount}>Zarejestruj</button>
+          </input>
+        </div>
+        <button type="submit" class="btn btn-primary" onClick={createAccount}>Zarejestruj</button>
       </div>
     </div>
   )

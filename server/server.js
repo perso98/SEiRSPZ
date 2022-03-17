@@ -59,3 +59,42 @@ app.post('/api/loginToAccount', async(req,res)=>
     
     
 })
+
+
+app.post('/api/createForm', async(req,res)=>
+{
+    try{
+        await db.sequelize.transaction(async function (t) {
+            const {imie, nazwisko, indeks, studia, kierunek, rok_studiow, rodzaj_studiow, telefon, email}=req.body
+
+            const id = 1
+            
+            student.update({
+                imie: imie,
+                nazwisko: nazwisko,
+                indeks : indeks,
+                studia : studia,
+                kierunek : kierunek,
+                rok_studiow : rok_studiow,
+                rodzaj_studiow : rodzaj_studiow,
+                telefon : telefon,
+                eEmail : email,
+            },
+            {
+                where : {id: id},
+            },
+            {
+                transaction :t,
+            }
+            )    
+        console.log("Wysłano")
+        res.send({ message: 'pomyślnie wysłano ;)' });
+        })
+    }
+    catch{
+        console.log("Błąd")
+        res.send({ message: 'Błąd ;)' });
+    }
+
+    
+})

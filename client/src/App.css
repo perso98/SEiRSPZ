@@ -11,11 +11,11 @@
     justify-content: center;
   }
   .homeClass {
-text-align: center;
+  text-align: center;
   margin-top: 5%;
   border: 1px solid black;
-  width: 400px;
-  height: 500px;
+  /* width: 400px; */
+  /* height: 500px; */
   padding: 3%;
   background-color: white;
 

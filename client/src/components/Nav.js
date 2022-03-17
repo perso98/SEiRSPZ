@@ -14,6 +14,7 @@ function Nav() {
        <Link to='/' className="nav-item nav-link fonter">Strona główna</Link>
        <Link to='/login' className="nav-item nav-link fonter">Logowanie</Link>
        <Link to='/register' className="nav-item nav-link fonter">Rejestracja</Link>
+       <Link to='/form' className="nav-item nav-link fonter">Form</Link>
    </div>
   </div>
 </nav>
