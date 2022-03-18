@@ -1,7 +1,30 @@
-import React from "react";
+import React,{useState,useEffect} from 'react'
 import {Link} from 'react-router-dom'
+import  Axios  from 'axios';
+import {useNavigate } from 'react-router-dom'
+
 
 function Nav() {
+  const navigate = useNavigate()
+  Axios.defaults.withCredentials=true
+  const [logged,setLogged]=useState('')
+
+  const logout = ()=>
+  {
+    Axios.post("http://localhost:5000/api/logoutFromAccount").then((res)=>{
+    })}
+
+  useEffect(()=>
+{
+  Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
+    
+    setLogged(res.data.logged)
+    
+  }
+  )
+  
+})
+
     
     return(
         
@@ -12,9 +35,11 @@ function Nav() {
   <div class="collapse navbar-collapse" id="navbarNav">
    <div className="navbar-nav mx-auto">
        <Link to='/' className="nav-item nav-link fonter">Strona główna</Link>
-       <Link to='/login' className="nav-item nav-link fonter">Logowanie</Link>
+       {logged==false && <Link to='/login' className="nav-item nav-link fonter">Logowanie</Link>}
+       
        <Link to='/register' className="nav-item nav-link fonter">Rejestracja</Link>
        <Link to='/form' className="nav-item nav-link fonter">Form</Link>
+       {logged==true && <button type="submit" class="btn btn-primary" onClick={logout}>Wyloguj</button>}
    </div>
   </div>
 </nav>

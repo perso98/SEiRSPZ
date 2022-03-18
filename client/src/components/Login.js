@@ -1,12 +1,14 @@
 import  Axios  from 'axios';
 import React, {useEffect,useState} from 'react'
+import {useNavigate } from 'react-router-dom'
 
 
 function Login() {
+  const navigate = useNavigate();
   const [loginLogin,getLogin]=useState("");
   const [loginPassword,getPassword]=useState("");
   const [loginStatus, setLoginStatus] = useState("");
-
+  Axios.defaults.withCredentials=true
   const loginToAccount = ()=>
   {
     Axios.post("http://localhost:5000/api/loginToAccount",
@@ -19,6 +21,18 @@ function Login() {
       }
     })
   }
+
+  useEffect(()=>
+  {
+    Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
+      if(res.data.logged== true)
+      {
+       //navigate("/account");
+      }
+      
+    }
+    )
+  })
   return (
     <div className='center'>
     <div className='homeClass'> <h3>Logowanie</h3>

@@ -56,6 +56,10 @@ const student=sequelize.define("student",
         type:DataTypes.STRING,
         allowNull:true,
     },
+    rola:{
+        type:DataTypes.STRING,
+        defaultValue: "student",
+    },
 }, {
     charset: 'utf8',
     collate: 'utf8_general_ci',
