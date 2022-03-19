@@ -15,16 +15,15 @@ function Logged() {
             if(res.data.logged==true)
             {
                 setRola(res.data.user.rola)
+               
             }
         })
     })
     
   
     
-  return (
-
-   
-    <BrowserRouter basename='/account' >  
+  return (   
+    <BrowserRouter basename='/profil' >  
   <Routes>
     {rola=='student' &&  <Route path='/' element={<Student/>}/>}
     {rola=='dyrektor' && <Route path='/' element={<Dyrektor/>}/>}

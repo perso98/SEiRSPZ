@@ -16,18 +16,19 @@ function Login() {
       loginLogin : loginLogin,
       loginPassword : loginPassword,
     }).then((res) => {
-      if (res.data.message) {
+      if (res.data.message) 
         setLoginStatus(res.data.message);
-      }
+        if (res.data.message=='Pomyślne zalogowanie ;)')
+          navigate("/profil")
     })
   }
 
   useEffect(()=>
   {
     Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
-      if(res.data.logged== true)
-      {
-       //navigate("/account");
+      if(res.data.logged== true){
+        setLoginStatus(res.data.user) 
+       
       }
       
     }

@@ -92,10 +92,12 @@ app.post('/api/loginToAccount', async (req, res) => {
             login: loginLogin
         }
     })
-    if (checkLogin == null)
+    if (checkLogin == null){
+    req.session.logged = false
         res.send({
             message: 'Błędny login ;('
         });
+    }
     else if (checkLogin) {
         if (await bcrypt.compare(loginPassword, checkLogin.haslo)){
             req.session.user = checkLogin
@@ -103,17 +105,29 @@ app.post('/api/loginToAccount', async (req, res) => {
             res.send({
                 message: 'Pomyślne zalogowanie ;)'
             });
+            
+          
         }
-        else
+        else {
             res.send({
                 message: 'Hasło nie jest poprawne ;('
             });
+            req.session.logged = false
+        }
+    }
+       
 
-    } else res.send({
-        message: 'Nieoczekiwany błąd spróbuj później ;('
-    });
 
+})
 
+app.post('/api/logoutFromAccount',(req,res)=>{
+    req.session.destroy()
+    res.clearCookie("key");
+    res.end()
+})
+
+app.get('/api/logoutFromAccount',(req,res)=>{
+    req.session.logged=false
 })
 
 app.post('/api/createForm', async (req, res) => {
