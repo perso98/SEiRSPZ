@@ -45,6 +45,7 @@ useEffect(()=>{
        
        {logged==false &&<Link to='/register' className="nav-item nav-link fonter">Rejestracja</Link>}
        <Link to='/form' className="nav-item nav-link fonter">Form</Link>
+       <Link to='/ListaStudentow' className="nav-item nav-link fonter">Lista Studentow</Link>
        {logged==true && <Link to='/profil/' className="nav-item nav-link fonter">Profil</Link>}
        {logged==true && <button type="submit" class="btn btn-primary" onClick={logout}>Wyloguj</button>}
    </div>

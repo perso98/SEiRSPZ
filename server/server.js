@@ -130,44 +130,54 @@ app.get('/api/logoutFromAccount',(req,res)=>{
     req.session.logged=false
 })
 
+
+app.get('/api/getStudents', async (req, res)=>{
+    const listStudent = await student.findAll()
+
+    res.send(listStudent)
+})
 app.post('/api/createForm', async (req, res) => {
     try {
-        await db.sequelize.transaction(async function (t) {
+        //await db.sequelize.transaction(async function (t) {
             const {
+                login,
+                haslo,
                 imie,
                 nazwisko,
                 indeks,
                 studia,
                 kierunek,
+                specjalnosc,
                 rok_studiow,
                 rodzaj_studiow,
                 telefon,
-                email
+                email,
+                rola
             } = req.body
 
-            const id = 1
-
-            student.update({
+            student.create({
+                login: login,
+                haslo: await bcrypt.hash(haslo, 10),
                 imie: imie,
                 nazwisko: nazwisko,
                 indeks: indeks,
                 studia: studia,
                 kierunek: kierunek,
+                specjalnosc: specjalnosc,
                 rok_studiow: rok_studiow,
                 rodzaj_studiow: rodzaj_studiow,
                 telefon: telefon,
-                eEmail: email,
-            }, {
-                where: {
-                    id: id
-                },
-            }, {
-                transaction: t,
-            })
+                email: email,
+                rola: rola
+            }
+            // , {
+            //     transaction: t,
+            // }
+            )
             console.log("Wysłano")
             res.send({
                 message: 'pomyślnie wysłano ;)'
-            });
+            //});
         })
     } catch {
         console.log("Błąd")
