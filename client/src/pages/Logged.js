@@ -18,16 +18,18 @@ function Logged() {
                
             }
         })
-    })
+    },[])
     
   
     
   return (   
-    <BrowserRouter basename='/profil' >  
+    <BrowserRouter>  
   <Routes>
-    {rola=='student' &&  <Route path='/' element={<Student/>}/>}
-    {rola=='dyrektor' && <Route path='/' element={<Dyrektor/>}/>}
-    {rola=='opiekun' && <Route path='/' element={<Opiekun/>}/>}
+  <Route path="/profil">
+    {rola=='student' &&  <Route index  element={<Student/>}/>}
+    {rola=='dyrektor' && <Route index  element={<Dyrektor/>}/>}
+    {rola=='opiekun' && <Route index  element={<Opiekun/>}/>}
+    </Route>
   </Routes>
   </BrowserRouter>
 

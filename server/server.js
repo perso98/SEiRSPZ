@@ -82,6 +82,7 @@ app.get("/api/loginToAccount",(req,res)=>{
 })
 
 app.post('/api/loginToAccount', async (req, res) => {
+    
     const {
         loginLogin,
         loginPassword
@@ -115,12 +116,10 @@ app.post('/api/loginToAccount', async (req, res) => {
             req.session.logged = false
         }
     }
-       
-
 
 })
 
-app.post('/api/logoutFromAccount',(req,res)=>{
+app.post('/api/logoutFromAccount',(req,res)=>{  
     req.session.destroy()
     res.clearCookie("key");
     res.end()

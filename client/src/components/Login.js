@@ -22,18 +22,6 @@ function Login() {
           navigate("/profil")
     })
   }
-
-  useEffect(()=>
-  {
-    Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
-      if(res.data.logged== true){
-        setLoginStatus(res.data.user) 
-       
-      }
-      
-    }
-    )
-  })
   return (
     <div className='center'>
     <div className='homeClass'> <h3>Logowanie</h3>
