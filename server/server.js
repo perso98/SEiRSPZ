@@ -125,8 +125,8 @@ app.post('/api/logoutFromAccount',(req,res)=>{
     res.end()
 })
 
-app.get('/api/logoutFromAccount',(req,res)=>{
-    req.session.logged=false
+app.get('/api/logoutFromAccount', (req,res)=>{
+     req.session.logged=false
 })
 
 
