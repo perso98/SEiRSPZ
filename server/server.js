@@ -125,10 +125,6 @@ app.post('/api/logoutFromAccount',(req,res)=>{
     res.end()
 })
 
-app.get('/api/logoutFromAccount', (req,res)=>{
-     req.session.logged=false
-})
-
 
 app.get('/api/getStudents', async (req, res)=>{
     const listStudent = await student.findAll()

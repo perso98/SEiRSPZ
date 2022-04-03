@@ -10,11 +10,10 @@ function Nav() {
   const navigate = useNavigate()
   Axios.defaults.withCredentials=true
   const [logged,setLogged]=useState('')
-  useEffect(()=>
+  useEffect( ()=>
 {
    Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
     setLogged(res.data.logged)  
-    console.log(res.data.logged)
   }
   )
 })
@@ -22,43 +21,58 @@ const logout = ()=>{
   Axios.post("http://localhost:5000/api/logoutFromAccount")
 navigate('/')}
 
-useEffect(()=>{
-  
-   Axios.get("http://localhost:5000/api/logoutFromAccount").then( (res)=>{
-    
-     setLogged(res.data.logged)   
-     console.log(res.data.logged)
-  }
-  )
-})
-      
 
 
-   
-
-
-
-  return (
-
-  
+  const Navbar = () => {
+    return(
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
          <div className="navbar-nav mx-auto">
-           {!logged &&   <Link to='/' className="nav-item nav-link fonter">Strona główna</Link>}
-           {!logged &&  <Link to='/login' className="nav-item nav-link fonter">Logowanie</Link>}
-           {!logged &&  <Link to='/register' className="nav-item nav-link fonter">Rejestracja</Link>}
-           {!logged &&   <Link to='/form' className="nav-item nav-link fonter">Form</Link>}
-           {!logged &&  <Link to='/ListaStudentow' className="nav-item nav-link fonter">Lista Studentow</Link>}
-           {logged &&  <Link to='/profil/' className="nav-item nav-link fonter">Profil</Link>}
-           {logged && <button type="submit" class="btn btn-primary" onClick={logout}>Wyloguj</button>}
+             <Link to='/' className="nav-item nav-link fonter">Strona główna</Link>
+             <Link to='/login' className="nav-item nav-link fonter">Logowanie</Link>
+             <Link to='/register' className="nav-item nav-link fonter">Rejestracja</Link>
+             <Link to='/form' className="nav-item nav-link fonter">Form</Link>
+             <Link to='/ListaStudentow' className="nav-item nav-link fonter">Lista Studentow</Link>
       
          </div>
         </div>
       </nav>
-          
+          )
+    }
+  
+      const NavLogged = () => {
+    
+       
+        return (
+        
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+         <div className="navbar-nav mx-auto">
+         <Link to='/profil/' className="nav-item nav-link fonter">Profil</Link>
+          <button type="submit" class="btn btn-primary" onClick={logout}>Wyloguj</button>
+      
+         </div>
+        </div>
+      </nav>)
+      }
+
+
+
+
+
+  return (
+  
+    <>
+                  
+      {logged ? <NavLogged/> : <Navbar/>}
+                  
+    </>
     
   )
     
