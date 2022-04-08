@@ -28,20 +28,26 @@ function Nav() {
     },
     toolbar:{
       display:'flex',
-      justifyContent:'space-between'
+      justifyContent:'space-around'
     },
     login:{
       display:'flex',
       alignItems:'center',
       marginRight:theme.spacing(3),  
       fontSize:'20px',
+      [theme.breakpoints.down("md")]:{
+        fontSize:'16px'
+      }
       
     },
     register:{
       display:'flex',
       alignItems:'center',
       marginRight:theme.spacing(2),
-      fontSize:'20px',      
+      fontSize:'20px',
+      [theme.breakpoints.down("md")]:{
+        fontSize:'16px'
+      }      
     },
     menu:{
       display:'flex',
