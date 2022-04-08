@@ -2,12 +2,63 @@ import {React,useState,useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import  Axios  from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { makeStyles } from '@mui/styles'
+import { AppBar, Toolbar, Typography } from '@mui/material'
+import logo from '../img/ans.png'
+import Person from '@mui/icons-material/Person';
+import Person2 from '@mui/icons-material/PersonAddAlt1';
 
 
 
 
 function Nav() {
+  const useStyles = makeStyles(theme => ({
+    logoBig:{
+      display:'block',
+      [theme.breakpoints.down("md")]:{
+        display:'none'
+      }
+    },
+
+    logoLit:{
+      display:'none',
+      [theme.breakpoints.down("md")]:{
+        display:'block'
+      }
+    },
+    toolbar:{
+      display:'flex',
+      justifyContent:'space-between'
+    },
+    login:{
+      display:'flex',
+      alignItems:'center',
+      marginRight:theme.spacing(3),  
+      fontSize:'20px',
+      
+    },
+    register:{
+      display:'flex',
+      alignItems:'center',
+      marginRight:theme.spacing(2),
+      fontSize:'20px',      
+    },
+    menu:{
+      display:'flex',
+      
+      
+    },
+    links:{
+      textDecoration: 'none', 
+      color:'white',
+      "&:hover": {
+        color:'yellow',
+        textDecoration: 'none', 
+      },
+    },
+  }));
   const navigate = useNavigate()
+  const classes = useStyles()
   Axios.defaults.withCredentials=true
   const [logged,setLogged]=useState('')
   useEffect( ()=>
@@ -23,58 +74,32 @@ navigate('/')}
 
 
 
-  const Navbar = () => {
-    return(
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-         <div className="navbar-nav mx-auto">
-             <Link to='/' className="nav-item nav-link fonter">Strona główna</Link>
-             <Link to='/login' className="nav-item nav-link fonter">Logowanie</Link>
-             <Link to='/register' className="nav-item nav-link fonter">Rejestracja</Link>
-             <Link to='/form' className="nav-item nav-link fonter">Form</Link>
-             <Link to='/ListaStudentow' className="nav-item nav-link fonter">Lista Studentow</Link>
-      
-         </div>
-        </div>
-      </nav>
-          )
-    }
-  
-      const NavLogged = () => {
-    
-       
-        return (
-        
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-         <div className="navbar-nav mx-auto">
-         <Link to='/profil/' className="nav-item nav-link fonter">Profil</Link>
-          <button type="submit" class="btn btn-primary" onClick={logout}>Wyloguj</button>
-      
-         </div>
-        </div>
-      </nav>)
-      }
-
-
-
-
 
   return (
-  
-    <>
-                  
-      {logged ? <NavLogged/> : <Navbar/>}
-                  
-    </>
-    
+    <AppBar>
+      <Toolbar className={classes.toolbar}>
+      <Typography variant='h5' className={classes.logoBig} >
+      <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
+      </Typography>
+      <Typography variant='h5' className={classes.logoLit}>
+      <Link to='/' className={classes.links} >ANS</Link>
+      </Typography>
+      <div className={classes.menu}>
+      <Link to ='login' className={classes.links} ><div className={classes.login}>
+          
+          <Person style={{marginRight:'0.4rem'}}/>Logowanie
+        </div></Link>
+        <Link to ='register' className={classes.links} ><div className={classes.register}>
+        
+          <Person2 style={{marginRight:'0.5rem'}}/>Rejestracja
+        </div></Link>
+
+      </div>
+      
+      
+      </Toolbar>
+    </AppBar>
   )
-    
 }
-export default Nav;
+
+export default Nav
