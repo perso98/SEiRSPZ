@@ -29,8 +29,6 @@ function Register() {
         setalertSeverity(false)
         else setalertSeverity(true)  
         setOpen(true);
-        console.log(res.data.message)
-        console.log(alertSeverity)
       }
     })
   }
@@ -49,7 +47,7 @@ function Register() {
 
     <>
 
-    {alertSeverity ?  <Alert severity='error'
+    {alertSeverity ?  <Alert severity='error' variant='filled'
        action={
          <IconButton
            aria-label="close"
@@ -66,7 +64,7 @@ function Register() {
      >
        {registerStatus}
      </Alert> :
-      <Alert severity='success'
+      <Alert severity='success' variant='filled'
       action={
         <IconButton
           aria-label="close"
@@ -81,6 +79,7 @@ function Register() {
       }
       sx={{ mb: 2 }}
     >
+      
       {registerStatus}
     </Alert>}
 

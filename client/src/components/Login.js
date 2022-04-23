@@ -47,7 +47,7 @@ function Login() {
 { loginStatus!='' &&
    <Box sx={{ width: '100%' }}>
    <Collapse in={open}>
-     <Alert severity="error"
+     <Alert severity="error" variant='filled'
        action={
          <IconButton
            aria-label="close"
