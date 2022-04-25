@@ -25,7 +25,7 @@ function Register() {
     }).then((res) => {
       if (res.data.message) {
         setRegisterStatus(res.data.message);
-        if(res.data.message=='Konto zostało pomyślnie utworzone ;)')
+        if(res.data.message=='Konto zostało pomyślnie utworzone')
         setalertSeverity(false)
         else setalertSeverity(true)  
         setOpen(true);

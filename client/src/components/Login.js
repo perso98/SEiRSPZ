@@ -29,7 +29,7 @@ function Login() {
     }).then((res) => {
       if (res.data.message) 
         setLoginStatus(res.data.message);
-        if (res.data.message=='Pomyślne zalogowanie ;)')
+        if (res.data.message=='Pomyślne zalogowanie')
           navigate("/profil")
           else {
             setOpen(true);
@@ -47,7 +47,7 @@ function Login() {
 { loginStatus!='' &&
    <Box sx={{ width: '100%' }}>
    <Collapse in={open}>
-     <Alert severity="error" variant='filled'
+     <Alert severity="error" variant='filled' 
        action={
          <IconButton
            aria-label="close"
@@ -69,12 +69,14 @@ function Login() {
 
 
   <TextField
+  required
     name="loginLogin"
     label="Login:"
     onChange={(e=>{getLogin(e.target.value)})}
     margin='normal'
   />
     <TextField
+    required
     name="loginPassword"
     label="Hasło:"
     onChange={(e=>{getPassword(e.target.value)})}
