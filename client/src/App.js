@@ -20,11 +20,15 @@ import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles(theme => ({
   content:{
-    paddingTop: theme.spacing(8),
+    paddingTop: theme.spacing(0),
     height: "90vh",
   },
   margingora:{
     paddingTop: theme.spacing(2)
+  },
+
+  marginHome:{
+    paddingTop: theme.spacing(10)
   }
 }));
 
@@ -40,7 +44,7 @@ function App() {
           
           <Routes>
             <Route path="/">
-              <Route index element={<div className={classes.margingora}><Home/></div>}/>
+              <Route index element={<div className={classes.marginHome}><Home/></div>}/>
               <Route path='login' element={<div className={classes.margingora}><Login/></div>}/>
               <Route path='register' element={<div className={classes.margingora}><Register/></div>}/>
               <Route path='profil' element={<Logged/>}/>

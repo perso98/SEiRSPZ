@@ -59,16 +59,16 @@ app.post('/api/createAccount', async (req, res) => {
                 haslo: hashedPassword,
             })
             res.send({
-                message: 'Konto zostało pomyślnie utworzone ;)'
+                message: 'Konto zostało pomyślnie utworzone'
             });
         } else
             res.send({
-                message: 'Hasła się nie zgadzają ;('
+                message: 'Hasła się nie zgadzają'
             });
 
     } else
         res.send({
-            message: 'Niestety taki login jest już zajęty ;('
+            message: 'Niestety taki login jest już zajęty'
         });
 })
 
@@ -96,7 +96,7 @@ app.post('/api/loginToAccount', async (req, res) => {
     if (checkLogin == null){
     req.session.logged = false
         res.send({
-            message: 'Błędny login ;('
+            message: 'Błędny login'
         });
     }
     else if (checkLogin) {
@@ -104,14 +104,14 @@ app.post('/api/loginToAccount', async (req, res) => {
             req.session.user = checkLogin
             req.session.logged = true
             res.send({
-                message: 'Pomyślne zalogowanie ;)'
+                message: 'Pomyślne zalogowanie'
             });
             
           
         }
         else {
             res.send({
-                message: 'Hasło nie jest poprawne ;('
+                message: 'Hasło nie jest poprawne'
             });
             req.session.logged = false
         }
