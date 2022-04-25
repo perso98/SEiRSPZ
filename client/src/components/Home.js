@@ -4,7 +4,7 @@ import { Grid, TextField } from '@mui/material'
 function Home() {
   return (
     <Grid>
-       
+       Home
      
   </Grid> 
   )
