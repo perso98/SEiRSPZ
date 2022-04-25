@@ -8,6 +8,7 @@ import Home from '../components/Home';
 import ListaStudentow from '../components/ListaStudentow';
 import Form from '../components/Form';
 import Dzienniczek from '../components/Dzienniczek';
+import Footer from '../components/Footer';
 
 export default function Student() {
   return (
@@ -16,17 +17,18 @@ export default function Student() {
           <Sidebar/>
         </Grid>
         <Grid item xs>
-          <Rightbar/>
             <Routes>
               <Route path="/">
                 <Route index element={<Dzienniczek/>}/>
                 <Route path='Form' element={<Form/>}/>
-                <Route path='ListaStudentow' element={<ListaStudentow/>}/>
-                <Route path='/' element={<Dzienniczek/>}/>
+                <Route path='Dzienniczek' element={<Dzienniczek/>}/>
+                {/* <Route path='ListaStudentow' element={<ListaStudentow/>}/> */}
               </Route>
             </Routes>
         </Grid>
-        
+        <Grid item xs={12}>
+          <Footer/>
+        </Grid>
     </Grid>
   )
 }

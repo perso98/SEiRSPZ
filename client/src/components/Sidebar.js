@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         paddingTop: theme.spacing(2),
         position: "sticky",
         top: 0,
-        height: "90vh",
+        height: "100vh",
         // width: "20vh",
         // maxWidth: " 15vh",
         color: "white",
@@ -69,16 +69,20 @@ function Sidebar() {
       <Link to ='Form' className={classes.links} >
         <div className={classes.item}>
             <AssignmentIcon className={classes.icon}/>
-            <Typography className={classes.text} >Form</Typography>
+            <Typography className={classes.text} >Formularz</Typography>
         </div>
       </Link>
       <div className={classes.item}>
         <QuestionMarkIcon className={classes.icon} />
-        <Typography className={classes.text} >Need Help</Typography>
+        <Typography className={classes.text} >Pomoc</Typography>
       </div>
       <div className={classes.item}>
-        <Homeicon className={classes.icon} />
-        <Typography className={classes.text} >Homepage</Typography>
+      <Link to ='Home' className={classes.links} >
+        <div className={classes.item}>
+          <Homeicon className={classes.icon} />
+          <Typography className={classes.text} >Strona główna</Typography>
+        </div>
+      </Link>
       </div>
   </div>
   )
