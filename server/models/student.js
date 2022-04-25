@@ -65,7 +65,13 @@ const student=sequelize.define("student",
     collate: 'utf8_general_ci',
   })
 
-
+  student.associate = models => {
+    student.belongsTo(models.opiekuni, {
+        foreignKey: {
+            allowNull: true
+        }
+    });
+  }
 
 return student
 }

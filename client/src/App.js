@@ -1,41 +1,58 @@
-import React,{useState,useEffect} from 'react'
-import Nav from './components/Nav'
+import React,{useState,useEffect} from 'react';
+import Nav from './components/Nav';
 import './App.css';
-import { BrowserRouter, Route,Routes } from 'react-router-dom'
-import Home from './components/Home'
-import ListaStudentow from './components/ListaStudentow'
-import Register from './components/Register'
-import Form from './components/ListaStudentow'
-import Login from './components/Login'
-import Logged from './pages/Logged'
+import { BrowserRouter, Route,Routes } from 'react-router-dom';
+import Home from './components/Home';
+import ListaStudentow from './components/ListaStudentow';
+import Register from './components/Register';
+import Form from './components/Form';
+import Login from './components/Login';
+import Dzienniczek from './components/Dzienniczek';
+import Logged from './pages/Logged';
+import { Container, Grid } from '@mui/material';
+import Sidebar from './components/Sidebar';
+import Rightbar from './components/Rightbar';
+import Footer from './components/Footer';
+
+import { makeStyles } from '@mui/styles'
 
 
 
+const useStyles = makeStyles(theme => ({
+  content:{
+    paddingTop: theme.spacing(8),
+    height: "90vh",
+  },
+  margingora:{
+    paddingTop: theme.spacing(2)
+  }
+}));
 
 function App() {
-
-
+  const classes = useStyles();
   return (
   <div className='App'>
 
     <BrowserRouter >
       <Nav/>
-      <Routes>
-        <Route path="/">
-      <Route index element={<Home/>}/>
-      <Route path='login' element={<Login/>}/>
-      <Route path='register' element={<Register/>}/>
-      <Route path='Form' element={<Form/>}/>
-      <Route path='ListaStudentow' element={<ListaStudentow/>}/>
-      <Route path='profil' element={<Logged/>}/>
-      </Route>
-
-      </Routes>
-     
-      
-      </BrowserRouter>
-      </div>
-      
+       <Grid container>
+        <Grid item xs className={classes.content}>
+          
+          <Routes>
+            <Route path="/">
+              <Route index element={<div className={classes.margingora}><Home/></div>}/>
+              <Route path='login' element={<div className={classes.margingora}><Login/></div>}/>
+              <Route path='register' element={<div className={classes.margingora}><Register/></div>}/>
+              <Route path='profil' element={<Logged/>}/>
+            </Route>
+          </Routes>
+        </Grid>
+        <Grid item xs={12}>
+          <Footer/>
+        </Grid>
+      </Grid>
+    </BrowserRouter>
+  </div>
   )
 }
 

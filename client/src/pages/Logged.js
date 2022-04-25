@@ -4,6 +4,17 @@ import Opiekun from '../roles/Opiekun'
 import Dyrektor from '../roles/Dyrektor'
 import Axios from 'axios'
 import { BrowserRouter, Route,Routes } from 'react-router-dom'
+import Sidebar from '../components/Sidebar';
+import Rightbar from '../components/Rightbar';
+import Footer from '../components/Footer';
+import { Container, Grid } from '@mui/material';
+
+import Home from '../components/Home';
+import ListaStudentow from '../components/ListaStudentow';
+import Register from '../components/Register';
+import Form from '../components/Form';
+import Login from '../components/Login';
+import Dzienniczek from '../components/Dzienniczek';
 
 
 function Logged() {
@@ -19,15 +30,12 @@ function Logged() {
             }
         })
     })
-    
-  
-    
+
   return (   
-   
-<>
-    {rola=='student' &&  <Student/>}
-    {rola=='dyrektor' && <Dyrektor/>}
-    {rola=='opiekun' && <Opiekun/>}
+  <>
+          {rola=='student' &&  <Student/>}
+          {rola=='dyrektor' && <Dyrektor/>}
+          {rola=='opiekun' && <Opiekun/>}
   </>
 
   

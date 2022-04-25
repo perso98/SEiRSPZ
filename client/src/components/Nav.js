@@ -51,8 +51,6 @@ function Nav() {
     },
     menu:{
       display:'flex',
-      
-      
     },
     links:{
       textDecoration: 'none', 
@@ -79,30 +77,27 @@ const logout = ()=>{
 navigate('/')}
 
 
-
-
   return (
-    <AppBar>
+    <AppBar position="fixed">
       <Toolbar className={classes.toolbar}>
-      <Typography variant='h5' className={classes.logoBig} >
-      <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
-      </Typography>
-      <Typography variant='h5' className={classes.logoLit}>
-      <Link to='/' className={classes.links} >ANS</Link>
-      </Typography>
-      <div className={classes.menu}>
-      <Link to ='login' className={classes.links} ><div className={classes.login}>
-          
-          <Person style={{marginRight:'0.4rem'}}/>Logowanie
-        </div></Link>
-        <Link to ='register' className={classes.links} ><div className={classes.register}>
-        
-          <Person2 style={{marginRight:'0.5rem'}}/>Rejestracja
-        </div></Link>
-
-      </div>
-      
-      
+        <Typography variant='h5' className={classes.logoBig} >
+          <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
+        </Typography>
+        <Typography variant='h5' className={classes.logoLit}>
+          <Link to='/' className={classes.links} >ANS</Link>
+        </Typography>
+        <div className={classes.menu}>
+          <Link to ='login' className={classes.links} >
+            <div className={classes.login}>
+              <Person style={{marginRight:'0.4rem'}}/>Logowanie
+            </div>
+          </Link>
+          <Link to ='register' className={classes.links} >
+            <div className={classes.register}>
+              <Person2 style={{marginRight:'0.5rem'}}/>Rejestracja
+            </div>
+          </Link>
+        </div>
       </Toolbar>
     </AppBar>
   )
