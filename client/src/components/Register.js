@@ -3,8 +3,19 @@ import Axios from "axios"
 import logo from '../img/ans.png'
 import { Button, Grid, TextField,Box,Collapse,Alert,IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-
+import { makeStyles } from '@mui/styles'
 function Register() {
+  const useStyles = makeStyles(theme => ({
+    registerForm : {
+        marginTop:'10%',
+        padding:'20px',
+        [theme.breakpoints.down("md")]:{
+          marginTop:'20%',
+        }    
+
+    },
+}))
+  const classes = useStyles()
   const [registerLogin,setLogin]=useState("");
   const [registerPassword,setPassword]=useState("");
   const [registerPassword2,setPassword2]=useState("");
@@ -35,7 +46,7 @@ function Register() {
 
 
   return (
-    <Grid container  sm={12} justifyContent={'space-between'} style={{padding:20,marginTop:'7%'}} >
+    <Grid container  sm={12} justifyContent={'space-between'} className={classes.registerForm} >
 
     <div />
     <div style={{display:'flex', flexDirection:'column', minWidth:'250px'}}>
@@ -90,6 +101,7 @@ function Register() {
  </Box>}
 
       <TextField
+      required
         name="registerLogin"
         label="Login:"
         onChange={(e=>{setLogin(e.target.value)})}
@@ -97,6 +109,7 @@ function Register() {
         
       />
         <TextField
+        required
         name="registerPassword"
         label="Hasło:"
         onChange={(e=>{setPassword(e.target.value)})}
@@ -104,6 +117,7 @@ function Register() {
         type="password"
       />
        <TextField
+       required
         name="registerPassword2"
         label="Powtórz hasło:"
         onChange={(e=>{setPassword2(e.target.value)})}

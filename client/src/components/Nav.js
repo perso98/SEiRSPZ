@@ -52,6 +52,7 @@ function Nav() {
       
     },
     register:{
+      
       display:'flex',
       alignItems:'center',
       marginRight:theme.spacing(2),
@@ -135,9 +136,9 @@ const Navbar = () => {
       <Link to='/' className={classes.links} >ANS</Link>
       </Typography>
       <div className={classes.menu}>
-      <Link to ='/profil/' className={classes.links} ><div className={classes.login}>
+      <Link to ='/profil/konto' className={classes.links} ><div className={classes.login}>
           
-          <ProfilImg style={{marginRight:'0.2rem'}}/>Profil
+          <ProfilImg style={{marginRight:'0.2rem'}}/>Konto
         </div></Link>
 
         <Link to='/' onClick={logout} className={classes.links}> <div className={classes.register}>

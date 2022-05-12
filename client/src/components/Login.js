@@ -4,16 +4,29 @@ import React, {useEffect,useState} from 'react'
 import {useNavigate } from 'react-router-dom'
 import logo from '../img/ans.png'
 import CloseIcon from '@mui/icons-material/Close';
+import { makeStyles } from '@mui/styles'
 
 
 
 
 function Login() {
+  const useStyles = makeStyles(theme => ({
+      loginForm : {
+          marginTop:'10%',
+          padding:'20px',
+          [theme.breakpoints.down("md")]:{
+            marginTop:'20%',
+          }    
+
+      },
+  }))
+
+
   const navigate = useNavigate();
   const [loginLogin,getLogin]=useState("");
   const [loginPassword,getPassword]=useState("");
   const [loginStatus, setLoginStatus] = useState("");
-
+  const classes = useStyles()
   const [open, setOpen] = useState(false);
 
 
@@ -38,7 +51,7 @@ function Login() {
   }
   
   return (
-   <Grid container  sm={12} justifyContent={'space-between'} style={{padding:20,marginTop:'7%'}} >
+   <Grid container  sm={12} justifyContent={'space-between'} className={classes.loginForm} >
 
 <div />
 <div style={{display:'flex', flexDirection:'column', minWidth:'250px'}}>
