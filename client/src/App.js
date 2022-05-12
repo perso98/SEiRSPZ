@@ -15,7 +15,6 @@ import Rightbar from './components/Rightbar';
 import Footer from './components/Footer';
 import { makeStyles } from '@mui/styles'
 import Profil from './components/Konto';
-import Konto from './components/Konto';
 
 
 
@@ -48,9 +47,7 @@ function App() {
               <Route index element={<div className={classes.marginHome}><Home/></div>}/>
               <Route path='login' element={<div className={classes.margingora}><Login/></div>}/>
               <Route path='register' element={<div className={classes.margingora}><Register/></div>}/>
-              <Route path='profil/*' element={<Logged/>}>
-                <Route path='konto' element={<Konto/>}></Route>
-                </Route>
+              <Route path='profil/*' element={<Logged/>}/>
             </Route>
           </Routes>
         </Grid>

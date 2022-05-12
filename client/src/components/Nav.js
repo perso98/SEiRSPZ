@@ -30,7 +30,7 @@ function Nav() {
     },
     toolbar:{
       display:'flex',
-      justifyContent:'space-evenly',
+      justifyContent:'space-around',
       [theme.breakpoints.down("md")]:{
         justifyContent:'space-between',
       },

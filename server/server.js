@@ -131,6 +131,17 @@ app.get('/api/getStudents', async (req, res)=>{
 
     res.send(listStudent)
 })
+app.post('/api/changePasswordToAccount', async (req,res)=>{
+    const {changePassword,changePassword2} = req.body
+    if(changePassword==changePassword2){
+    const hashedPassword = await bcrypt.hash(changePassword, 10);
+    await student.update({haslo: hashedPassword},
+    {where:{login:req.session.user.login}})
+    res.send({message:'Pomyślnie zmieniono hasło do konta'})
+}
+else res.send({message:'Hasła się nie zgadzają'})
+})
+
 app.post('/api/createForm', async (req, res) => {
     try {
         //await db.sequelize.transaction(async function (t) {
