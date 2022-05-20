@@ -56,9 +56,29 @@ const student=sequelize.define("student",
         type:DataTypes.STRING,
         allowNull:true,
     },
-    rola:{
-        type:DataTypes.STRING,
-        defaultValue: "student",
+    isStudent:{
+        type:DataTypes.INTEGER,
+        defaultValue: 1,
+    },
+    isOpiekunZakl:{
+        type:DataTypes.INTEGER,
+        defaultValue: 0,
+    },
+    isOpiekun:{
+        type:DataTypes.INTEGER,
+        defaultValue: 0,
+    },
+    isDyrektor:{
+        type:DataTypes.INTEGER,
+        defaultValue: 0,
+    },
+    isDziekanat:{
+        type:DataTypes.INTEGER,
+        defaultValue: 0,
+    },
+    isAdmin:{
+        type:DataTypes.INTEGER,
+        defaultValue: 0,
     },
 }, {
     charset: 'utf8',

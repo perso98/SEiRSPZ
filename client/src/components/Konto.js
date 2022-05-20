@@ -39,8 +39,8 @@ function Konto() {
        changePassword2 : changePassword2,
        
      }).then((res) => {
-      if (res.data.message) 
-        setChangePasswordStatus(res.data.message);{
+      if (res.data.message){
+        setChangePasswordStatus(res.data.message)
         if(res.data.message == 'Pomyślnie zmieniono hasło do konta')
         setalertSeverity(false)
         else setalertSeverity(true)   

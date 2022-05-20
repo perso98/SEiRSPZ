@@ -1,4 +1,5 @@
-import {React} from 'react'
+import React,{useState,useEffect} from 'react'
+import Axios from 'axios'
 import {Link} from 'react-router-dom'
 
 import { makeStyles } from '@mui/styles'
@@ -57,15 +58,29 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Sidebar() {
+  const [student,setStudent]=useState()
+  const [admin,setAdmin]=useState()
+  Axios.defaults.withCredentials=true
+  useEffect(()=>{
+      Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>
+      {
+          if(res.data.logged==true)
+          {
+              setStudent(res.data.user.isStudent)
+              setAdmin(res.data.user.isAdmin)
+             
+          }
+      })
+  })
   const classes = useStyles();
   return (
   <div className={classes.container}>
-      <Link to ='Dzienniczek' className={classes.links} >
-        <div className={classes.item}>
-            <DateRangeIcon className={classes.icon}/>
-            <Typography className={classes.text} >Dzienniczek</Typography>
-        </div>
-      </Link>
+      { student==1 && <Link to ='Dzienniczek' className={classes.links} >
+       <div className={classes.item}>
+         <DateRangeIcon className={classes.icon}/>
+         <Typography className={classes.text} >Dzienniczek</Typography> 
+            </div>
+           </Link> }
       <Link to ='Form' className={classes.links} >
         <div className={classes.item}>
             <AssignmentIcon className={classes.icon}/>
@@ -83,6 +98,14 @@ function Sidebar() {
           <Typography className={classes.text} >Strona główna</Typography>
         </div>
       </Link>
+      </div>
+      <div className={classes.item}>
+      { admin==1 && <Link to ='Uprawnienia' className={classes.links} >
+        <div className={classes.item}>
+          <Homeicon className={classes.icon} />
+          <Typography className={classes.text} >Uprawnienia</Typography>
+        </div>
+      </Link>}
       </div>
   </div>
   )
