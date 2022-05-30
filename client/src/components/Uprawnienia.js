@@ -1,16 +1,7 @@
 import axios from 'axios'
+import DataTable from 'react-data-table-component';
 import React, { useState, useEffect } from 'react'
 export default function Uprawnienia() {
-
-
- const $ = require('jquery')
- $.DataTable = require('datatables.net')
-
-  $(document).ready(function () {
-      $('#accounts').DataTable();
-  });
-
-
 
 
   const [students,setStudents]=useState([])
@@ -24,39 +15,69 @@ export default function Uprawnienia() {
     })
   },[])
 
+  const columns = [
+    {
+      id: 1,
+      name: "Login",
+      selector: (row) => row.login,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 2,
+      name: "Student",
+      selector: (row) => row.isStudent,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 3,
+      name: "Opiekun Zakładowy",
+      selector: (row) => row.isOpiekunZakl,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 4,
+      name: "Opiekun Uczelniany",
+      selector: (row) => row.isOpiekun,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 5,
+      name: "Dziekanat",
+      selector: (row) => row.isDziekanat,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 6,
+      name: "Dyrektor",
+      selector: (row) => row.isDyrektor,
+      sortable: true,
+      reorder: true
+    },
+    {
+    id: 7,
+    name: "Admin",
+    selector: (row) => row.isAdmin,
+    sortable: true,
+    reorder: true
+  },
+  ]
+
+
+  
 
   return (
- <div>
-    <table id="accounts" class="display">
-    <thead>
-        <tr>
-            <th>Login</th>
-            <th>Student</th>
-            <th>Opiekun Zakładowy</th>
-            <th>Opiekun Uczelniany</th>
-            <th>Dziekanat</th>
-            <th>Dyrektor</th>
-            <th>Admin</th>
-        </tr>
-    </thead>
-    <tbody>
-      
-    {students.map((val)=> {
-      return (
-
-        <tr>
-            <td>{val.login}</td>
-            <td>{val.isStudent}</td>
-            <td>{val.isOpiekunZakl}</td>
-            <td>{val.isOpiekun}</td>
-            <td>{val.isDziekanat}</td>
-            <td>{val.isDyrektor}</td>
-            <td>{val.isAdmin}</td>
-        </tr>
-      )
-    })}
-        </tbody>
-        </table>
-        </div>
+<div className="App">
+        <DataTable
+          title="Konta"
+          columns={columns}
+          data={students}
+          pagination
+        />
+    </div>
   )
 }
