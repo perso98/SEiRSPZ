@@ -1,4 +1,5 @@
 import axios, * as others from "axios";
+import CloseIcon from '@mui/icons-material/Close';
 import {
   makeStyles,
   Table,
@@ -13,7 +14,13 @@ import {
 import Button from "@mui/material/Button";
 import React, { useState, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment } from "@mui/material";
+import { InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import IconButton from '@mui/material/IconButton';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddNewAcc from "./AddNewAcc";
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
@@ -30,15 +37,23 @@ const useStyles = makeStyles((theme) => ({
     background: "#08448c",
   },
   searchInp: {
-    width: "40%",
+    width: "60%",
   },
   toolbar: {
     marginTop: "2%",
+    display:'flex',
+    width:'70%',
+    justifyContent:'space-between',
   },
   NoData: {
     display: "flex",
     justifyContent: "space-between",
     fontWeight: "600",
+  },
+
+  DialogTitleClass:{
+display:'flex',
+justifyContent:'space-between'
   },
 }));
 export default function Uprawnienia() {
@@ -46,6 +61,7 @@ export default function Uprawnienia() {
 
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [open,setOpen]=useState(false)
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get("http://localhost:5000/api/getStudents").then((res) => {
@@ -63,10 +79,11 @@ export default function Uprawnienia() {
     { id: "login", label: "Login" },
     { id: "isStudent", label: "Student" },
     { id: "isAdmin", label: "Admin" },
-    { id: "isOpiekunZakl", label: "Opiekun Zakł." },
-    { id: "isOpiekun", label: "Opiekun Ucz." },
+    { id: "isOpiekunZakl", label: "Opiekun Z." },
+    { id: "isOpiekun", label: "Opiekun U." },
     { id: "isDyrektor", label: "Dyrektor" },
     { id: "isDziekanat", label: "Dziekanat" },
+    {id:'Actions',label:'Akcje'}
   ];
 
   const handleChangePage = (event, newPage) => {
@@ -103,33 +120,54 @@ export default function Uprawnienia() {
   };
   
   const giveButton = (action,id) => { 
-    return ( <Button
-      style={{width:'70px'}}
-      variant="contained"
-      color="success"
-      onClick={() => {
-        updateRole(action, 1, id);
-      }}
-    >
-      Nadaj
-    </Button>)
+    return ( 
+     
+    
+      <IconButton  onClick={() => {
+        updateRole(action, 0, id);
+      }}>
+      <CheckCircleOutlineIcon style={{color:'green'}}/></IconButton>
+    )
   }
+  
   const takeButton = (action,id) =>
   {
-    return ( <Button
-      style={{width:'70px'}}
-      variant="contained"
-      color="error"
-      onClick={() => {
-        updateRole(action, 0, id);
-      }}
-    >
-      Odbierz
-    </Button>)
+    return (  <IconButton  onClick={() => {
+      updateRole(action, 1, id);
+    }}>
+    <HighlightOffIcon style={{color:'red'}}/></IconButton>
+    )
   }
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [editStudent,setEditStudent]=useState(null)
+  const handleOpen = (student) => {
+    setEditStudent(student)
+    setOpen(true);
+  };
 
   return (
     <>
+    {editStudent &&
+    <Dialog open={open} onClose={handleClose}>
+        <DialogTitle className={classes.DialogTitleClass}>Edycja {editStudent.login} 
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+        >
+          <CloseIcon />
+        </IconButton></DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+          {editStudent.isStudent}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+
+        </DialogActions>
+      </Dialog>
+      }
       <Toolbar className={classes.toolbar}>
         <TextField
           className={classes.searchInp}
@@ -146,6 +184,7 @@ export default function Uprawnienia() {
             setSearchLogin(e.target.value);
           }}
         />
+        <AddNewAcc/>
       </Toolbar>
 
       <Table className={classes.table}>
@@ -167,23 +206,32 @@ export default function Uprawnienia() {
           {recordsAfter().map((val) => (
             <TableRow key={val.id}>
               <TableCell>{val.login}</TableCell>
-              <TableCell>
-                {val.isStudent == 1 ? takeButton('isStudent',val.id): giveButton('isStudent',val.id)}
+              <TableCell style={{textAlign:'center'}}>
+                {val.isStudent == 0 ? takeButton('isStudent',val.id): giveButton('isStudent',val.id)}
+              </TableCell>
+              <TableCell style={{textAlign:'center'}}>
+                {val.isAdmin == 0 ? takeButton('isAdmin',val.id): giveButton('isAdmin',val.id)}
+              </TableCell >
+              <TableCell style={{textAlign:'center'}}>
+                {val.isOpiekunZakl == 0 ? takeButton('isOpiekunZakl',val.id): giveButton('isOpiekunZakl',val.id)}
+              </TableCell>
+              <TableCell style={{textAlign:'center'}}>
+                {val.isOpiekun == 0 ? takeButton('isOpiekun',val.id): giveButton('isOpiekun',val.id)}
+              </TableCell>
+              <TableCell style={{textAlign:'center'}}>
+                {val.isDyrektor == 0 ? takeButton('isDyrektor',val.id): giveButton('isDyrektor',val.id)}
+              </TableCell>
+              <TableCell style={{textAlign:'center'}}>
+                {val.isDziekanat == 0 ? takeButton('isDziekanat',val.id): giveButton('isDziekanat',val.id)}
               </TableCell>
               <TableCell>
-                {val.isAdmin == 1 ? takeButton('isAdmin',val.id): giveButton('isAdmin',val.id)}
-              </TableCell>
-              <TableCell>
-                {val.isOpiekunZakl == 1 ? takeButton('isOpiekunZakl',val.id): giveButton('isOpiekunZakl',val.id)}
-              </TableCell>
-              <TableCell>
-                {val.isOpiekun == 1 ? takeButton('isOpiekun',val.id): giveButton('isOpiekun',val.id)}
-              </TableCell>
-              <TableCell>
-                {val.isDyrektor == 1 ? takeButton('isDyrektor',val.id): giveButton('isDyrektor',val.id)}
-              </TableCell>
-              <TableCell>
-                {val.isDziekanat == 1 ? takeButton('isDziekanat',val.id): giveButton('isDziekanat',val.id)}
+               
+              <IconButton onClick={()=>{handleOpen(val)}}>
+              <EditIcon style={{color:'#FF8C00'}}/>
+              </IconButton>
+              <IconButton>
+              <DeleteIcon style={{color:'#A52A2A'}}/>
+              </IconButton>
               </TableCell>
             </TableRow>
           ))}

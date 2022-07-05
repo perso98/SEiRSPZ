@@ -187,3 +187,40 @@ app.put("/api/changeRole", async (req, res) => {
   updatedStudent = await student.update({ [action]: type }, { where: { id: id } });
   res.send(updatedStudent);
 });
+
+
+//Utworzenie konta w admin panelu
+app.post('/api/createAccount2',async  (req,res)=>{
+        const {login,password,admin,student2,opiekunZ,opiekunU,dyrektor,dziekanat}=req.body
+        try {
+        const checkLogin = await student.findOne({
+          where: {
+            login: login,
+          },
+        });
+        if (checkLogin == null) {
+            const hashed = await bcrypt.hash(password, 10);
+            student.create({
+              login:login,
+              haslo:hashed,
+              isStudent:student2,
+              isDyrektor:dyrektor,
+              isDziekanat:dziekanat,
+              isOpiekunZakl:opiekunZ,
+              isOpiekun:opiekunU,
+              isAdmin:admin,
+            })
+            res.send({
+              message: "Konto zostało pomyślnie utworzone",
+            });
+          }
+          else {
+            res.send({message:'Login jest już zajęty'})
+          }
+        }
+        catch (err){
+          res.send({message:err.message})
+        }
+
+
+})
