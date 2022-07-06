@@ -57,6 +57,8 @@ justifyContent:'space-between'
   },
 }));
 export default function Uprawnienia() {
+
+
   const classes = useStyles();
 
   const [students, setStudents] = useState([]);
@@ -85,6 +87,17 @@ export default function Uprawnienia() {
     { id: "isDziekanat", label: "Dziekanat" },
     {id:'Actions',label:'Akcje'}
   ];
+
+  const deleteUser=(id)=>{
+    console.log(id)
+    axios.delete(`http://localhost:5000/api/deleteUser/${id}`).then((res)=>{
+
+      setStudents(students.filter((val)=>{
+        return val.id!=id
+      }))
+    })
+
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -119,6 +132,8 @@ export default function Uprawnienia() {
       )});
   };
   
+
+
   const giveButton = (action,id) => { 
     return ( 
      
@@ -230,7 +245,7 @@ export default function Uprawnienia() {
               <EditIcon style={{color:'#FF8C00'}}/>
               </IconButton>
               <IconButton>
-              <DeleteIcon style={{color:'#A52A2A'}}/>
+              <DeleteIcon style={{color:'#A52A2A'}} onClick={() => {deleteUser(val.id)}}/>
               </IconButton>
               </TableCell>
             </TableRow>

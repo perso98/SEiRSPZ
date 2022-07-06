@@ -200,7 +200,7 @@ app.post('/api/createAccount2',async  (req,res)=>{
         });
         if (checkLogin == null) {
             const hashed = await bcrypt.hash(password, 10);
-            student.create({
+            const created = await student.create({
               login:login,
               haslo:hashed,
               isStudent:student2,
@@ -211,7 +211,7 @@ app.post('/api/createAccount2',async  (req,res)=>{
               isAdmin:admin,
             })
             res.send({
-              message: "Konto zostało pomyślnie utworzone",
+              message: "Konto zostało pomyślnie utworzone",id:created.dataValues.id
             });
           }
           else {
@@ -221,6 +221,21 @@ app.post('/api/createAccount2',async  (req,res)=>{
         catch (err){
           res.send({message:err.message})
         }
+})
+
+app.delete('/api/deleteUser/:id', async (req,res)=>{
+  const id= req.params.id
+  try {
+  await student.destroy({where:{
+    id:id,
+  }})
+  res.send({message:'Usunięto'})
+}
+  catch (err){
+    res.send({message:err.message})
+  }
+
 
 
 })
+

@@ -11,6 +11,9 @@ import IconButton from "@mui/material/IconButton";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CloseIcon from "@mui/icons-material/Close";
 import Axios from "axios";
+import Uprawnienia from "./Uprawnienia";
+
+
 
 function AddNewAcc() {
   const [open, setOpen] = useState(false);
@@ -41,7 +44,7 @@ function AddNewAcc() {
       opiekunZ: opiekunZ,
       opiekunU: opiekunU,
     }).then((res) => {
-      console.log(res.data.message);
+        window.location.reload(false)
       setOpen(false);
     });
   };
@@ -61,7 +64,7 @@ function AddNewAcc() {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText style={{marginTop:'2%'}}>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <TextField
                 id="login"
