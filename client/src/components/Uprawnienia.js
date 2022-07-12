@@ -27,6 +27,7 @@ import IconButton from "@mui/material/IconButton";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddAdminDialog from "./AddAdminDialog";
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
@@ -92,8 +93,9 @@ export default function Uprawnienia() {
     { id: "Actions", label: "Akcje" },
   ];
 
-  const deleteUser = (id) => {
-    console.log(id);
+  const deleteUser = (id,login) => {
+    const acceptDelete=window.confirm(`Czy pewno chcesz usunąć ${login}?`)
+    if(acceptDelete)
     axios.delete(`http://localhost:5000/api/deleteUser/${id}`).then((res) => {
       setStudents(
         students.filter((val) => {
@@ -102,7 +104,7 @@ export default function Uprawnienia() {
       );
     });
   };
-  const [open2, setOpen2] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
   const [admin, setAdmin] = useState(0);
   const [opiekunZ, setOpiekunZ] = useState(0);
   const [opiekunU, setOpiekunU] = useState(0);
@@ -112,11 +114,11 @@ export default function Uprawnienia() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleClose2 = () => {
-    setOpen2(false);
+  const handleAddClose = () => {
+    setAddOpen(false);
   };
-  const handleOpen2 = () => {
-    setOpen2(true);
+  const handleAddOpen = () => {
+    setAddOpen(true);
   };
 
   const createAcc = () => {
@@ -130,7 +132,7 @@ export default function Uprawnienia() {
       opiekunZ: opiekunZ,
       opiekunU: opiekunU,
     }).then((res) => {
-      if(res.data.message=="Konto zostało pomyślnie utworzone")
+      if(res.data.message=="Konto zostało pomyślnie utworzone"){
         setStudents([...students,
           {
           login: login,
@@ -141,7 +143,11 @@ export default function Uprawnienia() {
           isAdmin: admin,
           isOpiekunZakl: opiekunZ,
           isOpiekun: opiekunU,}])
+        
+        }
+        alert(res.data.message)
         })
+       
     
   };
 
@@ -270,256 +276,10 @@ export default function Uprawnienia() {
             setSearchLogin(e.target.value);
           }}
         />
-        <Button variant="contained" onClick={handleOpen2}>
+        <Button variant="contained" onClick={handleAddOpen}>
           Dodaj użytkownika
         </Button>
-        <Dialog open={open2} onClose={handleClose2} fullWidth="60%">
-          <DialogTitle
-            style={{ display: "flex", justifyContent: "space-between" }}
-          >
-            Dodawanie nowego użytkownika
-            <IconButton aria-label="close" onClick={handleClose2}>
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText style={{ marginTop: "2%" }}>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <TextField
-                  id="login"
-                  label="Login:"
-                  onChange={(e) => {
-                    setLogin(e.target.value);
-                  }}
-                  style={{ marginBottom: "5%" }}
-                />
 
-                <TextField
-                  id="haslo"
-                  label="Hasło:"
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                />
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div
-                    style={{
-                      marginTop: "5%",
-                      display: "flex",
-                      flexDirection: "column",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div style={{ color: "black" }}>Opiekun Z.</div>
-                    <div>
-                      {opiekunZ == 1 ? (
-                        <IconButton
-                          style={{ color: "green" }}
-                          onClick={() => {
-                            setOpiekunZ(0);
-                          }}
-                        >
-                          <CheckCircleOutlineIcon />
-                        </IconButton>
-                      ) : (
-                        <IconButton
-                          style={{ color: "red" }}
-                          onClick={() => {
-                            setOpiekunZ(1);
-                          }}
-                        >
-                          <HighlightOffIcon />
-                        </IconButton>
-                      )}
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      marginTop: "5%",
-                      display: "flex",
-                      flexDirection: "column",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div style={{ color: "black" }}>Student</div>
-                    <div>
-                      {student2 == 1 ? (
-                        <IconButton
-                          style={{ color: "green" }}
-                          onClick={() => {
-                            setStudent(0);
-                          }}
-                        >
-                          <CheckCircleOutlineIcon />
-                        </IconButton>
-                      ) : (
-                        <IconButton
-                          style={{ color: "red" }}
-                          onClick={() => {
-                            setStudent(1);
-                          }}
-                        >
-                          <HighlightOffIcon />
-                        </IconButton>
-                      )}
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      marginTop: "5%",
-                      display: "flex",
-                      flexDirection: "column",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div style={{ color: "red" }}>!!Admin!!</div>
-                    <div>
-                      {admin == 1 ? (
-                        <IconButton
-                          style={{ color: "green" }}
-                          onClick={() => {
-                            setAdmin(0);
-                          }}
-                        >
-                          <CheckCircleOutlineIcon />
-                        </IconButton>
-                      ) : (
-                        <IconButton
-                          style={{ color: "red" }}
-                          onClick={() => {
-                            setAdmin(1);
-                          }}
-                        >
-                          <HighlightOffIcon />
-                        </IconButton>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div
-                    style={{
-                      marginTop: "5%",
-                      display: "flex",
-                      flexDirection: "column",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div style={{ color: "black" }}>Opiekun U.</div>
-                    <div>
-                      {opiekunU == 1 ? (
-                        <IconButton
-                          style={{ color: "green" }}
-                          onClick={() => {
-                            setOpiekunU(0);
-                          }}
-                        >
-                          <CheckCircleOutlineIcon />
-                        </IconButton>
-                      ) : (
-                        <IconButton
-                          style={{ color: "red" }}
-                          onClick={() => {
-                            setOpiekunU(1);
-                          }}
-                        >
-                          <HighlightOffIcon />
-                        </IconButton>
-                      )}
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      marginTop: "5%",
-                      display: "flex",
-                      flexDirection: "column",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div style={{ color: "black" }}>Dyrektor</div>
-                    <div>
-                      {dyrektor == 1 ? (
-                        <IconButton
-                          style={{ color: "green" }}
-                          onClick={() => {
-                            setDyrektor(0);
-                          }}
-                        >
-                          <CheckCircleOutlineIcon />
-                        </IconButton>
-                      ) : (
-                        <IconButton
-                          style={{ color: "red" }}
-                          onClick={() => {
-                            setDyrektor(1);
-                          }}
-                        >
-                          <HighlightOffIcon />
-                        </IconButton>
-                      )}
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      marginTop: "5%",
-                      display: "flex",
-                      flexDirection: "column",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div style={{ color: "black" }}>Dziekanat</div>
-                    <div>
-                      {dziekanat == 1 ? (
-                        <IconButton
-                          style={{ color: "green" }}
-                          onClick={() => {
-                            setDziekanat(0);
-                          }}
-                        >
-                          <CheckCircleOutlineIcon />
-                        </IconButton>
-                      ) : (
-                        <IconButton
-                          style={{ color: "red" }}
-                          onClick={() => {
-                            setDziekanat(1);
-                          }}
-                        >
-                          <HighlightOffIcon />
-                        </IconButton>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <Button
-                  variant="contained"
-                  style={{ marginTop: "4%" }}
-                  onClick={createAcc}
-                >
-                  Dodaj
-                </Button>
-              </div>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions></DialogActions>
-        </Dialog>
       </Toolbar>
 
       <Table className={classes.table}>
@@ -583,7 +343,7 @@ export default function Uprawnienia() {
                   <DeleteIcon
                     style={{ color: "#A52A2A" }}
                     onClick={() => {
-                      deleteUser(val.id);
+                      deleteUser(val.id,val.login);
                     }}
                   />
                 </IconButton>
@@ -601,6 +361,11 @@ export default function Uprawnienia() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Table>
+
+      <AddAdminDialog addOpen={addOpen} handleAddClose={handleAddClose} setLogin={setLogin} 
+      setPassword={setPassword} createAcc={createAcc} setAdmin={setAdmin} setOpiekunU={setOpiekunU} 
+      setOpiekunZ={setOpiekunZ} setStudent={setStudent} setDyrektor={setDyrektor} setDziekanat={setDziekanat}
+      opiekunZ={opiekunZ} student2={student2} admin={admin} opiekunU={opiekunU} dyrektor={dyrektor} dziekanat={dziekanat}/>
     </>
   );
 }
