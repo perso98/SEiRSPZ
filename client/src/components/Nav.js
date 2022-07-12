@@ -130,10 +130,10 @@ const Navbar = () => {
       <AppBar position="static">
       <Toolbar className={classes.toolbar}>
       <Typography variant='h5' className={classes.logoBig} >
-      <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
+      <Link to='/' className={classes.links} > Akademia Nauk Stosowanych</Link>
       </Typography>
       <Typography variant='h5' className={classes.logoLit}>
-      <Link to='/' className={classes.links} >ANS</Link>
+      <Link to='/' className={classes.links} > ANS</Link>
       </Typography>
       <div className={classes.menu}>
       <Link to ='/profil/konto' className={classes.links} ><div className={classes.login}>
