@@ -39,21 +39,20 @@ function App() {
 
     <BrowserRouter >
       <Nav/>
-       <Grid container>
-        <Grid item xs className={classes.content}>
-          
-          <Routes>
-            <Route path="/">
-              <Route index element={<div className={classes.marginHome}><Home/></div>}/>
-              <Route path='login' element={<div className={classes.margingora}><Login/></div>}/>
-              <Route path='register' element={<div className={classes.margingora}><Register/></div>}/>
-              <Route path='profil/*' element={<Logged/>}/>
-              <Route path='*' element={<NoPage/>}/>
-            </Route>
-          </Routes>
-        </Grid>
+        <Grid container>
+          <Grid item xs className={classes.content}>
+            <Routes>
+              <Route path="/">
+                <Route index element={<div className={classes.marginHome}><Home/></div>}/>
+                <Route path='login' element={<div className={classes.margingora}><Login/></div>}/>
+                <Route path='register' element={<div className={classes.margingora}><Register/></div>}/>
+                <Route path='profil/*' element={<Logged/>}/>
+                <Route path='*' element={<NoPage/>}/>
+              </Route>
+            </Routes>
+          </Grid>
         
-      </Grid>
+        </Grid>
     </BrowserRouter>
   </div>
   )

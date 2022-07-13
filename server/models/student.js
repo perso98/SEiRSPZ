@@ -56,6 +56,10 @@ const student=sequelize.define("student",
         type:DataTypes.STRING,
         allowNull:true,
     },
+    id_dziennik:{
+        type:DataTypes.INTEGER,
+        allowNull:true,
+    },
     isStudent:{
         type:DataTypes.INTEGER,
         defaultValue: 1,
@@ -92,6 +96,14 @@ const student=sequelize.define("student",
         }
     });
   }
+
+  student.associate = models => {
+    student.hasMany(models.dziennik, {
+        onDelete:"cascade"
+    });
+  }
+
+
 
 return student
 }

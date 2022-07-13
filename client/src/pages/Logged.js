@@ -18,9 +18,9 @@ function Logged() {
 
   return (   
     <Grid container>
-    <Grid item >
+    {/* <Grid item >
       <Sidebar/>
-    </Grid>
+    </Grid> */}
     <Grid item xs>
         <Routes>
           <Route path="/">

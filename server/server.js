@@ -5,7 +5,7 @@ const db = require("./models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
-const { student } = require("./models");
+const { student, dziennik } = require("./models");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 
@@ -43,21 +43,65 @@ app.listen(5000, () => {
 
 app.post("/api/createAccount", async (req, res) => {
   const { registerLogin, registerPassword, registerPassword2 } = req.body;
+  var id_student = 0
   const loginChecker = await student.findOne({
     where: {
       login: registerLogin,
     },
   });
+  
   if (loginChecker == null) {
     if (registerPassword == registerPassword2) {
       const hashedPassword = await bcrypt.hash(registerPassword, 10);
-      student.create({
-        login: registerLogin,
-        haslo: hashedPassword,
-      });
-      res.send({
-        message: "Konto zostało pomyślnie utworzone",
-      });
+      // try {
+      //   await db.sequelize.transaction(async function (t) {
+          await student.create({
+            login: registerLogin,
+            haslo: hashedPassword,
+          }
+          // ,{
+          //   transaction: t,
+          // }
+          )
+          .then(async () => {
+            const id_student_get = await student.findOne({
+              attributes: ['id'],
+              where:{
+                login: registerLogin,
+              }
+            })
+            console.log("-----------------------")
+            console.log(id_student_get.toJSON().id)
+            id_student = id_student_get.toJSON().id
+          })
+          .then(async () => {
+            console.log(id_student)
+            var itemArray=[];
+            for(i=1; i<=70; i++){
+              encja1={
+                id_student: id_student,
+                dzien: "" + i,
+                data: null,
+                ilosc_godzin: null,
+                opis: null,
+                efekt_uczenia: null,
+                zatwierdzenie: null,
+              }
+              itemArray.push(encja1);
+            }
+            return await dziennik.bulkCreate(itemArray)
+          })
+        
+        res.send({
+          message: "Konto zostało pomyślnie utworzone",
+        });
+      // }
+      // )}
+      // catch{
+      //   res.send({
+      //     message: "Błąd ",
+      //   });
+      // }
     } else
       res.send({
         message: "Hasła się nie zgadzają",

@@ -3,14 +3,18 @@ import {Link} from 'react-router-dom'
 import  Axios  from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { makeStyles } from '@mui/styles'
-import { AppBar, Toolbar, Typography, Button } from '@mui/material'
+import { AppBar, Toolbar, Typography, Button , Container} from '@mui/material'
 import logo from '../img/ans.png'
 import Person from '@mui/icons-material/Person';
 import Person2 from '@mui/icons-material/PersonAddAlt1';
 import ProfilImg from '@mui/icons-material/AccountCircleOutlined';
 import LogoutImg from '@mui/icons-material/LogoutOutlined';
-
-
+import DehazeIcon from '@mui/icons-material/Dehaze';
+import Homeicon from '@mui/icons-material/Home';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import Sidebar from '../components/Sidebar';
 
 
 function Nav() {
@@ -18,14 +22,15 @@ function Nav() {
     logoBig:{
       display:'block',
       [theme.breakpoints.down("md")]:{
-        display:'none'
+        display:'none',
       }
     },
 
     logoLit:{
       display:'none',
       [theme.breakpoints.down("md")]:{
-        display:'block'
+        display:'block',
+        
       }
     },
     toolbar:{
@@ -65,9 +70,11 @@ function Nav() {
         marginRight:theme.spacing(1),
       }  
     },
+
     menu:{
       display:'flex',
     },
+
     links:{
       textDecoration: 'none', 
       color:'white',
@@ -75,91 +82,113 @@ function Nav() {
         color:'yellow',
         textDecoration: 'none', 
       },
+      [theme.breakpoints.down("md")]:{
+        marginLeft:theme.spacing(5),
+        
+      }
     },
+
+    sidebarBtn:{
+      textDecoration: 'none', 
+      color:'white',
+      "&:hover": {
+        color:'yellow',
+        textDecoration: 'none', 
+      },
+    },
+
     buttonLogout:{
       color:'white',
       fontSize:'20px',
-
     },
+
+
+
   }));
+
   const navigate = useNavigate()
   const classes = useStyles()
   Axios.defaults.withCredentials=true
   const [logged,setLogged]=useState('')
-  useEffect( ()=>
-{
-   Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
-    setLogged(res.data.logged)  
+  useEffect( ()=> {
+    Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
+      setLogged(res.data.logged)  
+    })
+  })
+
+  const logout = ()=>{ 
+    Axios.post("http://localhost:5000/api/logoutFromAccount")
+    navigate('/')
   }
-  )
-})
-const logout = ()=>{ 
-  Axios.post("http://localhost:5000/api/logoutFromAccount")
-navigate('/')}
 
-const Navbar = () => { 
-  return (
-    <AppBar position="fixed">
-    <Toolbar className={classes.toolbar}>
-    <Typography variant='h5' className={classes.logoBig} >
-    <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
-    </Typography>
-    <Typography variant='h5' className={classes.logoLit}>
-    <Link to='/' className={classes.links} >ANS</Link>
-    </Typography>
-    <div className={classes.menu}>
-    <Link to ='login' className={classes.links} >
-      <div className={classes.login}>
-        <Person style={{marginRight:'0.2rem'}}/>Logowanie
-      </div></Link>
-      <Link to ='register' className={classes.links} >
-        <div className={classes.register}>
-        <Person2 style={{marginRight:'0.3rem'}}/>Rejestracja
-      </div></Link>
+  const [student,setStudent]=useState()
+  const [admin,setAdmin]=useState()
+  Axios.defaults.withCredentials=true
+  useEffect(()=>{
+    Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
+      if(res.data.logged==true)
+      {
+        setStudent(res.data.user.isStudent)
+        setAdmin(res.data.user.isAdmin)
+      }
+    })
+  })
 
-    </div>
-    
-    
-    </Toolbar>
-  </AppBar>
-  )}
-
-  const NavLogged = () => { 
+  const Navbar = () => { 
     return (
-
-      <AppBar position="static">
-      <Toolbar className={classes.toolbar}>
-      <Typography variant='h5' className={classes.logoBig} >
-      <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
-      </Typography>
-      <Typography variant='h5' className={classes.logoLit}>
-      <Link to='/' className={classes.links} >ANS</Link>
-      </Typography>
-      <div className={classes.menu}>
-      <Link to ='/profil/konto' className={classes.links} ><div className={classes.login}>
-          
-          <ProfilImg style={{marginRight:'0.2rem'}}/>Konto
-        </div></Link>
-
-        <Link to='/' onClick={logout} className={classes.links}> <div className={classes.register}>
-        <LogoutImg style={{marginRight:'0.2rem'}}/>
-          Wyloguj
-        </div></Link>
-      </div>
-      
-      
-      </Toolbar>
-    </AppBar>
-
+      <AppBar position="fixed">
+        <Toolbar className={classes.toolbar}>
+          <Typography variant='h5' className={classes.logoBig} >
+            <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
+          </Typography>
+          <Typography variant='h5' className={classes.logoLit}>
+            <Link to='/' className={classes.links} >ANS</Link>
+          </Typography>
+          <div className={classes.menu}>
+            <Link to ='login' className={classes.links} >
+              <div className={classes.login}>
+                <Person style={{marginRight:'0.2rem'}}/>Logowanie
+              </div></Link>
+            <Link to ='register' className={classes.links} >
+              <div className={classes.register}>
+                <Person2 style={{marginRight:'0.3rem'}}/>Rejestracja
+              </div></Link>
+          </div>
+        </Toolbar>
+      </AppBar>
     )
   }
 
+  const NavLogged = () => { 
+    return (
+      <AppBar position="static">
+        <Toolbar className={classes.toolbar}>
+          <Sidebar/>
+          <Typography variant='h5' className={classes.logoBig} >
+            <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
+          </Typography>
+          <Typography variant='h5' className={classes.logoLit}>
+            <Link to='/' className={classes.links} >ANS</Link>
+          </Typography>
+          <div className={classes.menu}>
+            <Link to ='/profil/konto' className={classes.links} >
+              <div className={classes.login}>
+                <ProfilImg style={{marginRight:'0.2rem'}}/>Konto
+              </div></Link>
+            <Link to='/' onClick={logout} className={classes.links}> 
+              <div className={classes.register}>
+                <LogoutImg style={{marginRight:'0.2rem'}}/>
+                Wyloguj
+              </div></Link>
+          </div>
+        </Toolbar>
+      </AppBar>
+    )
+  }
 
   return (
-     <>
-                  
-      {logged ?       <NavLogged/> :<Navbar/> }
-                  
+     <>         
+      {logged ?       <NavLogged/> :<Navbar/> }        
     </>
   )
 }
