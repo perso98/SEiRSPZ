@@ -1,5 +1,4 @@
 import axios, * as others from "axios";
-import CloseIcon from '@mui/icons-material/Close';
 import {
   makeStyles,
   Table,
@@ -14,13 +13,16 @@ import {
 import Button from "@mui/material/Button";
 import React, { useState, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import IconButton from '@mui/material/IconButton';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddNewAcc from "./AddNewAcc";
+import {
+  InputAdornment
+} from "@mui/material";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import IconButton from "@mui/material/IconButton";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddAdminDialog from "./AddAdminDialog";
+import EditAdminDialog from "./EditAdminDialog";
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
@@ -41,29 +43,22 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     marginTop: "2%",
-    display:'flex',
-    width:'70%',
-    justifyContent:'space-between',
+    display: "flex",
+    width: "70%",
+    justifyContent: "space-between",
   },
   NoData: {
     display: "flex",
     justifyContent: "space-between",
     fontWeight: "600",
   },
-
-  DialogTitleClass:{
-display:'flex',
-justifyContent:'space-between'
-  },
 }));
 export default function Uprawnienia() {
-
-
   const classes = useStyles();
-
+  const [changeLogin, setChangeLogin] = useState();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [open,setOpen]=useState(false)
+  const [editOpen, setEditOpen] = useState(false);
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get("http://localhost:5000/api/getStudents").then((res) => {
@@ -85,19 +80,68 @@ export default function Uprawnienia() {
     { id: "isOpiekun", label: "Opiekun U." },
     { id: "isDyrektor", label: "Dyrektor" },
     { id: "isDziekanat", label: "Dziekanat" },
-    {id:'Actions',label:'Akcje'}
+    { id: "Actions", label: "Akcje" },
   ];
 
-  const deleteUser=(id)=>{
-    console.log(id)
-    axios.delete(`http://localhost:5000/api/deleteUser/${id}`).then((res)=>{
+  const deleteUser = (id, login) => {
+    const acceptDelete = window.confirm(`Czy pewno chcesz usunąć ${login}?`);
+    if (acceptDelete)
+      axios.delete(`http://localhost:5000/api/deleteUser/${id}`).then((res) => {
+        setStudents(
+          students.filter((val) => {
+            return val.id != id;
+          })
+        );
+      });
+  };
+  const [addOpen, setAddOpen] = useState(false);
+  const [admin, setAdmin] = useState(0);
+  const [opiekunZ, setOpiekunZ] = useState(0);
+  const [opiekunU, setOpiekunU] = useState(0);
+  const [dyrektor, setDyrektor] = useState(0);
+  const [dziekanat, setDziekanat] = useState(0);
+  const [student2, setStudent] = useState(0);
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
 
-      setStudents(students.filter((val)=>{
-        return val.id!=id
-      }))
-    })
+  const handleAddClose = () => {
+    setAddOpen(false);
+  };
+  const handleAddOpen = () => {
+    setAddOpen(true);
+  };
 
-  }
+  const createAcc = () => {
+    axios
+      .post("http://localhost:5000/api/createAccount2", {
+        login: login,
+        password: password,
+        student2: student2,
+        dyrektor: dyrektor,
+        dziekanat: dziekanat,
+        admin: admin,
+        opiekunZ: opiekunZ,
+        opiekunU: opiekunU,
+      })
+      .then((res) => {
+        if (res.data.message == "Konto zostało pomyślnie utworzone") {
+          setStudents([
+            ...students,
+            {
+              login: login,
+              password: password,
+              isStudent: student2,
+              idDyrektor: dyrektor,
+              isDziekanat: dziekanat,
+              isAdmin: admin,
+              isOpiekunZakl: opiekunZ,
+              isOpiekun: opiekunU,
+            },
+          ]);
+        }
+        alert(res.data.message);
+      });
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -124,65 +168,65 @@ export default function Uprawnienia() {
         action: action,
         type: type,
         id: id,
-      }).then((res)=>{
+      })
+      .then((res) => {
         setStudents(
-        students.map((val) => {
-          return val.id == id ? { ...val, [action]: type } : val;
-        })
-      )});
+          students.map((val) => {
+            return val.id == id ? { ...val, [action]: type } : val;
+          })
+        );
+      });
   };
-  
 
-
-  const giveButton = (action,id) => { 
-    return ( 
-     
-    
-      <IconButton  onClick={() => {
-        updateRole(action, 0, id);
-      }}>
-      <CheckCircleOutlineIcon style={{color:'green'}}/></IconButton>
-    )
-  }
-  
-  const takeButton = (action,id) =>
-  {
-    return (  <IconButton  onClick={() => {
-      updateRole(action, 1, id);
-    }}>
-    <HighlightOffIcon style={{color:'red'}}/></IconButton>
-    )
-  }
-  const handleClose = () => {
-    setOpen(false);
+  const giveButton = (action, id) => {
+    return (
+      <IconButton
+        onClick={() => {
+          updateRole(action, 0, id);
+        }}
+      >
+        <CheckCircleOutlineIcon style={{ color: "green" }} />
+      </IconButton>
+    );
   };
-  const [editStudent,setEditStudent]=useState(null)
+
+  const takeButton = (action, id) => {
+    return (
+      <IconButton
+        onClick={() => {
+          updateRole(action, 1, id);
+        }}
+      >
+        <HighlightOffIcon style={{ color: "red" }} />
+      </IconButton>
+    );
+  };
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+  const [editStudent, setEditStudent] = useState(null);
   const handleOpen = (student) => {
-    setEditStudent(student)
-    setOpen(true);
+    setEditStudent(student);
+    setEditOpen(true);
+  };
+
+  const changeUserInfo = (id) => {
+    axios
+      .put("http://localhost:5000/api/changeUserInfo", {
+        id: id,
+        changeLogin: changeLogin,
+      })
+      .then((res) => {
+        setStudents(
+          students.map((val) => {
+            return val.id == id ? { ...val, login: changeLogin } : val;
+          })
+        );
+      });
   };
 
   return (
     <>
-    {editStudent &&
-    <Dialog open={open} onClose={handleClose}>
-        <DialogTitle className={classes.DialogTitleClass}>Edycja {editStudent.login} 
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-        >
-          <CloseIcon />
-        </IconButton></DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-          {editStudent.isStudent}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-
-        </DialogActions>
-      </Dialog>
-      }
       <Toolbar className={classes.toolbar}>
         <TextField
           className={classes.searchInp}
@@ -197,9 +241,12 @@ export default function Uprawnienia() {
           }}
           onChange={(e) => {
             setSearchLogin(e.target.value);
+            setPage(0);
           }}
         />
-        <AddNewAcc/>
+        <Button variant="contained" onClick={handleAddOpen}>
+          Dodaj użytkownika
+        </Button>
       </Toolbar>
 
       <Table className={classes.table}>
@@ -217,36 +264,56 @@ export default function Uprawnienia() {
           {recordsAfterFiltering.length == 0 && loading == false && (
             <TableRow className={classes.NoData}>Brak danych...</TableRow>
           )}
-        
+
           {recordsAfter().map((val) => (
             <TableRow key={val.id}>
               <TableCell>{val.login}</TableCell>
-              <TableCell style={{textAlign:'center'}}>
-                {val.isStudent == 0 ? takeButton('isStudent',val.id): giveButton('isStudent',val.id)}
+              <TableCell style={{ textAlign: "center" }}>
+                {val.isStudent == 0
+                  ? takeButton("isStudent", val.id)
+                  : giveButton("isStudent", val.id)}
               </TableCell>
-              <TableCell style={{textAlign:'center'}}>
-                {val.isAdmin == 0 ? takeButton('isAdmin',val.id): giveButton('isAdmin',val.id)}
-              </TableCell >
-              <TableCell style={{textAlign:'center'}}>
-                {val.isOpiekunZakl == 0 ? takeButton('isOpiekunZakl',val.id): giveButton('isOpiekunZakl',val.id)}
+              <TableCell style={{ textAlign: "center" }}>
+                {val.isAdmin == 0
+                  ? takeButton("isAdmin", val.id)
+                  : giveButton("isAdmin", val.id)}
               </TableCell>
-              <TableCell style={{textAlign:'center'}}>
-                {val.isOpiekun == 0 ? takeButton('isOpiekun',val.id): giveButton('isOpiekun',val.id)}
+              <TableCell style={{ textAlign: "center" }}>
+                {val.isOpiekunZakl == 0
+                  ? takeButton("isOpiekunZakl", val.id)
+                  : giveButton("isOpiekunZakl", val.id)}
               </TableCell>
-              <TableCell style={{textAlign:'center'}}>
-                {val.isDyrektor == 0 ? takeButton('isDyrektor',val.id): giveButton('isDyrektor',val.id)}
+              <TableCell style={{ textAlign: "center" }}>
+                {val.isOpiekun == 0
+                  ? takeButton("isOpiekun", val.id)
+                  : giveButton("isOpiekun", val.id)}
               </TableCell>
-              <TableCell style={{textAlign:'center'}}>
-                {val.isDziekanat == 0 ? takeButton('isDziekanat',val.id): giveButton('isDziekanat',val.id)}
+              <TableCell style={{ textAlign: "center" }}>
+                {val.isDyrektor == 0
+                  ? takeButton("isDyrektor", val.id)
+                  : giveButton("isDyrektor", val.id)}
+              </TableCell>
+              <TableCell style={{ textAlign: "center" }}>
+                {val.isDziekanat == 0
+                  ? takeButton("isDziekanat", val.id)
+                  : giveButton("isDziekanat", val.id)}
               </TableCell>
               <TableCell>
-               
-              <IconButton onClick={()=>{handleOpen(val)}}>
-              <EditIcon style={{color:'#FF8C00'}}/>
-              </IconButton>
-              <IconButton>
-              <DeleteIcon style={{color:'#A52A2A'}} onClick={() => {deleteUser(val.id)}}/>
-              </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleOpen(val);
+                  }}
+                >
+                  <EditIcon style={{ color: "#FF8C00" }} />
+                </IconButton>
+                <IconButton>
+                  <DeleteIcon
+                    style={{ color: "#A52A2A" }}
+                    onClick={() => {
+                      deleteUser(val.id, val.login);
+                    }}
+                  />
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}
@@ -261,6 +328,33 @@ export default function Uprawnienia() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Table>
+
+      <AddAdminDialog
+        addOpen={addOpen}
+        handleAddClose={handleAddClose}
+        setLogin={setLogin}
+        setPassword={setPassword}
+        createAcc={createAcc}
+        setAdmin={setAdmin}
+        setOpiekunU={setOpiekunU}
+        setOpiekunZ={setOpiekunZ}
+        setStudent={setStudent}
+        setDyrektor={setDyrektor}
+        setDziekanat={setDziekanat}
+        opiekunZ={opiekunZ}
+        student2={student2}
+        admin={admin}
+        opiekunU={opiekunU}
+        dyrektor={dyrektor}
+        dziekanat={dziekanat}
+      />
+      <EditAdminDialog
+        editOpen={editOpen}
+        handleEditClose={handleEditClose}
+        editStudent={editStudent}
+        changeUserInfo={changeUserInfo}
+        setChangeLogin={setChangeLogin}
+      />
     </>
   );
 }

@@ -244,7 +244,7 @@ app.post('/api/createAccount2',async  (req,res)=>{
         });
         if (checkLogin == null) {
             const hashed = await bcrypt.hash(password, 10);
-            const created = await student.create({
+         await student.create({
               login:login,
               haslo:hashed,
               isStudent:student2,
@@ -255,7 +255,7 @@ app.post('/api/createAccount2',async  (req,res)=>{
               isAdmin:admin,
             })
             res.send({
-              message: "Konto zostało pomyślnie utworzone",id:created.dataValues.id
+              message: "Konto zostało pomyślnie utworzone"
             });
           }
           else {
@@ -266,7 +266,28 @@ app.post('/api/createAccount2',async  (req,res)=>{
           res.send({message:err.message})
         }
 })
+//Zmiana informacji o użytkowniku w panelu admina(ediirButton)
+app.put('/api/changeUserInfo',async (req,res)=>{
 
+  const {id,changeLogin}=req.body
+
+  try {
+  await student.update({
+    login:changeLogin,
+  },
+  {
+  where:{
+    id:id
+
+  }})
+  res.send({message:'Zmiana przeszła pomyślnie...'})
+}
+catch(err){
+  res.send({message:err.message})
+}
+
+})
+//Usuwanie w panelu admina użytkowników
 app.delete('/api/deleteUser/:id', async (req,res)=>{
   const id= req.params.id
   try {
