@@ -31,9 +31,6 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "600",
       color: "white",
     },
-    // '& tbody tr:hover':{
-    //   backgroundColor:'gray',
-    // },
   },
   tableHead: {
     background: "#08448c",
@@ -71,6 +68,7 @@ export default function Uprawnienia() {
   const [page, setPage] = useState(0);
   const [pageRows, setpageRows] = useState(pages[page]);
   const [searchLogin, setSearchLogin] = useState("");
+
 
   const HeadCells = [
     { id: "login", label: "Login" },
@@ -111,34 +109,51 @@ export default function Uprawnienia() {
     setAddOpen(true);
   };
 
+  const [userObject,setUserObject] = useState({
+    login:'',
+    password:'',
+    admin:0,
+    opiekunU:0,
+    opiekunZ:0,
+    student:0,
+    dziekanat:0,
+    dyrektor:0,
+  })
+  const onChange=(e)=>{
+    const {value,id}=e.target
+    setUserObject({...userObject,[id]:value})
+  }
+  const onClick=(e,number)=>
+  {
+    const {id}=e.currentTarget
+    setUserObject({...userObject,[id]:number})
+  }
   const createAcc = () => {
     axios
       .post("http://localhost:5000/api/createAccount2", {
-        login: login,
-        password: password,
-        student2: student2,
-        dyrektor: dyrektor,
-        dziekanat: dziekanat,
-        admin: admin,
-        opiekunZ: opiekunZ,
-        opiekunU: opiekunU,
+      userObject:userObject
       })
       .then((res) => {
         if (res.data.message == "Konto zostało pomyślnie utworzone") {
           setStudents([
             ...students,
             {
-              login: login,
-              password: password,
-              isStudent: student2,
-              idDyrektor: dyrektor,
-              isDziekanat: dziekanat,
-              isAdmin: admin,
-              isOpiekunZakl: opiekunZ,
-              isOpiekun: opiekunU,
+              login: userObject.login,
+              password: userObject.password,
+              isOpiekunZakl:userObject.opiekunZ,
+              isAdmin:userObject.admin,
+              isDyrektor:userObject.dyrektor,
+              isOpiekun:userObject.opiekunU,
+              isDziekanat:userObject.dziekanat,
+              isDyrektor:userObject.dyrektor
             },
           ]);
+          setUserObject({...userObject,
+            login:'',
+            password:'',
+          })
         }
+ 
         alert(res.data.message);
       });
   };
@@ -332,21 +347,10 @@ export default function Uprawnienia() {
       <AddAdminDialog
         addOpen={addOpen}
         handleAddClose={handleAddClose}
-        setLogin={setLogin}
-        setPassword={setPassword}
+        onChange={onChange}
+        userObject={userObject}
         createAcc={createAcc}
-        setAdmin={setAdmin}
-        setOpiekunU={setOpiekunU}
-        setOpiekunZ={setOpiekunZ}
-        setStudent={setStudent}
-        setDyrektor={setDyrektor}
-        setDziekanat={setDziekanat}
-        opiekunZ={opiekunZ}
-        student2={student2}
-        admin={admin}
-        opiekunU={opiekunU}
-        dyrektor={dyrektor}
-        dziekanat={dziekanat}
+        onClick={onClick}
       />
       <EditAdminDialog
         editOpen={editOpen}

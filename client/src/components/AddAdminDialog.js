@@ -18,22 +18,21 @@ import CloseIcon from "@mui/icons-material/Close";
 function AddAdminDialog({
   addOpen,
   handleAddClose,
-  setLogin,
-  setPassword,
   createAcc,
-  setAdmin,
-  setOpiekunU,
-  setOpiekunZ,
-  setStudent,
-  setDyrektor,
-  setDziekanat,
-  opiekunZ,
-  student2,
-  admin,
-  opiekunU,
-  dziekanat,
-  dyrektor,
+  onChange,
+  userObject,
+  onClick,
 }) {
+  const {
+    login,
+    password,
+    admin,
+    opiekunU,
+    opiekunZ,
+    student,
+    dziekanat,
+    dyrektor,
+  } = userObject;
   return (
     <Dialog open={addOpen} onClose={handleAddClose} fullWidth="60%">
       <DialogTitle style={{ display: "flex", justifyContent: "space-between" }}>
@@ -47,19 +46,17 @@ function AddAdminDialog({
           <div style={{ display: "flex", flexDirection: "column" }}>
             <TextField
               id="login"
+              value={login}
               label="Login:"
-              onChange={(e) => {
-                setLogin(e.target.value);
-              }}
+              onChange={(e) => onChange(e)}
               style={{ marginBottom: "5%" }}
             />
 
             <TextField
-              id="haslo"
+              id="password"
+              value={password}
               label="Hasło:"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
+              onChange={(e) => onChange(e)}
             />
             <div
               style={{
@@ -80,19 +77,17 @@ function AddAdminDialog({
                 <div>
                   {opiekunZ == 1 ? (
                     <IconButton
+                      id='opiekunZ'
                       style={{ color: "green" }}
-                      onClick={() => {
-                        setOpiekunZ(0);
-                      }}
+                      onClick={e=>onClick(e,0)}
                     >
                       <CheckCircleOutlineIcon />
                     </IconButton>
                   ) : (
                     <IconButton
+                      id='opiekunZ'
                       style={{ color: "red" }}
-                      onClick={() => {
-                        setOpiekunZ(1);
-                      }}
+                      onClick={e=>onClick(e,1)}
                     >
                       <HighlightOffIcon />
                     </IconButton>
@@ -110,20 +105,22 @@ function AddAdminDialog({
               >
                 <div style={{ color: "black" }}>Student</div>
                 <div>
-                  {student2 == 1 ? (
+                  {student == 1 ? (
                     <IconButton
+                      id='student'
                       style={{ color: "green" }}
-                      onClick={() => {
-                        setStudent(0);
+                      onClick={e => {
+                        onClick(e,0);
                       }}
                     >
                       <CheckCircleOutlineIcon />
                     </IconButton>
                   ) : (
                     <IconButton
+                      id='student'
                       style={{ color: "red" }}
-                      onClick={() => {
-                        setStudent(1);
+                      onClick={e => {
+                        onClick(e,1);
                       }}
                     >
                       <HighlightOffIcon />
@@ -143,18 +140,20 @@ function AddAdminDialog({
                 <div>
                   {admin == 1 ? (
                     <IconButton
+                      id='admin'
                       style={{ color: "green" }}
-                      onClick={() => {
-                        setAdmin(0);
+                      onClick={e => {
+                        onClick(e,0);
                       }}
                     >
                       <CheckCircleOutlineIcon />
                     </IconButton>
                   ) : (
                     <IconButton
+                      id='admin'
                       style={{ color: "red" }}
-                      onClick={() => {
-                        setAdmin(1);
+                      onClick={e => {
+                        onClick(e,1);
                       }}
                     >
                       <HighlightOffIcon />
@@ -183,18 +182,20 @@ function AddAdminDialog({
                 <div>
                   {opiekunU == 1 ? (
                     <IconButton
+                      id='opiekunU'
                       style={{ color: "green" }}
-                      onClick={() => {
-                        setOpiekunU(0);
+                      onClick={e => {
+                        onClick(e,0);
                       }}
                     >
                       <CheckCircleOutlineIcon />
                     </IconButton>
                   ) : (
                     <IconButton
+                    id='opiekunU'
                       style={{ color: "red" }}
-                      onClick={() => {
-                        setOpiekunU(1);
+                      onClick={e => {
+                        onClick(e,1);
                       }}
                     >
                       <HighlightOffIcon />
@@ -215,18 +216,20 @@ function AddAdminDialog({
                 <div>
                   {dyrektor == 1 ? (
                     <IconButton
+                      id='dyrektor'
                       style={{ color: "green" }}
-                      onClick={() => {
-                        setDyrektor(0);
+                      onClick={e => {
+                        onClick(e,0);
                       }}
                     >
                       <CheckCircleOutlineIcon />
                     </IconButton>
                   ) : (
                     <IconButton
+                    id='dyrektor'
                       style={{ color: "red" }}
-                      onClick={() => {
-                        setDyrektor(1);
+                      onClick={e => {
+                        onClick(e,1);
                       }}
                     >
                       <HighlightOffIcon />
@@ -246,19 +249,17 @@ function AddAdminDialog({
                 <div>
                   {dziekanat == 1 ? (
                     <IconButton
+                      id='dziekanat'
                       style={{ color: "green" }}
-                      onClick={() => {
-                        setDziekanat(0);
-                      }}
+                      onClick={e=>onClick(e,0)}
                     >
                       <CheckCircleOutlineIcon />
                     </IconButton>
                   ) : (
                     <IconButton
+                      id='dziekanat'
                       style={{ color: "red" }}
-                      onClick={() => {
-                        setDziekanat(1);
-                      }}
+                      onClick={e=>onClick(e,1)}
                     >
                       <HighlightOffIcon />
                     </IconButton>
