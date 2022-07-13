@@ -88,6 +88,19 @@ function Nav() {
       }
     },
 
+    linksLogoLitSM:{
+      textDecoration: 'none', 
+      color:'white',
+      "&:hover": {
+        color:'yellow',
+        textDecoration: 'none', 
+      },
+      [theme.breakpoints.down("md")]:{
+        marginLeft:theme.spacing(8),
+        
+      }
+    },
+
     sidebarBtn:{
       textDecoration: 'none', 
       color:'white',
@@ -168,7 +181,7 @@ function Nav() {
             <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
           </Typography>
           <Typography variant='h5' className={classes.logoLit}>
-            <Link to='/' className={classes.links} >ANS</Link>
+            <Link to='/' className={classes.linksLogoLitSM} >ANS</Link>
           </Typography>
           <div className={classes.menu}>
             <Link to ='/profil/konto' className={classes.links} >
