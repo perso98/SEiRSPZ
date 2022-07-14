@@ -244,7 +244,7 @@ app.post('/api/createAccount2',async  (req,res)=>{
         });
         if (checkLogin == null) {
             const hashed = await bcrypt.hash(userObject.password, 10);
-         await student.create({
+        const newAcc = await student.create({
               login:userObject.login,
               haslo:hashed,
               isOpiekunZakl:userObject.opiekunZ,
@@ -254,8 +254,11 @@ app.post('/api/createAccount2',async  (req,res)=>{
               isDziekanat:userObject.dziekanat,
               isOpiekun:userObject.opuekunU,
             })
+           
             res.send({
-              message: "Konto zostało pomyślnie utworzone"
+              message: "Konto zostało pomyślnie utworzone",
+              id:newAcc.id
+              
             });
           }
           else {

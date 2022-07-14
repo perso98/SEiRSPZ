@@ -26,7 +26,6 @@ import EditAdminDialog from "./EditAdminDialog";
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
-    width: "70%",
     "& thead th": {
       fontWeight: "600",
       color: "white",
@@ -36,12 +35,13 @@ const useStyles = makeStyles((theme) => ({
     background: "#08448c",
   },
   searchInp: {
-    width: "60%",
+    width: "100%",
+    marginRight:theme.spacing(20), 
   },
   toolbar: {
     marginTop: "2%",
     display: "flex",
-    width: "70%",
+    width: "100%",
     justifyContent: "space-between",
   },
   NoData: {
@@ -93,14 +93,6 @@ export default function Uprawnienia() {
       });
   };
   const [addOpen, setAddOpen] = useState(false);
-  const [admin, setAdmin] = useState(0);
-  const [opiekunZ, setOpiekunZ] = useState(0);
-  const [opiekunU, setOpiekunU] = useState(0);
-  const [dyrektor, setDyrektor] = useState(0);
-  const [dziekanat, setDziekanat] = useState(0);
-  const [student2, setStudent] = useState(0);
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
 
   const handleAddClose = () => {
     setAddOpen(false);
@@ -138,6 +130,7 @@ export default function Uprawnienia() {
           setStudents([
             ...students,
             {
+              id:res.data.id,
               login: userObject.login,
               password: userObject.password,
               isOpiekunZakl:userObject.opiekunZ,
@@ -145,7 +138,8 @@ export default function Uprawnienia() {
               isDyrektor:userObject.dyrektor,
               isOpiekun:userObject.opiekunU,
               isDziekanat:userObject.dziekanat,
-              isDyrektor:userObject.dyrektor
+              isDyrektor:userObject.dyrektor,
+              isStudent:userObject.student,
             },
           ]);
           setUserObject({...userObject,
@@ -242,6 +236,9 @@ export default function Uprawnienia() {
 
   return (
     <>
+    <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
+    <div/>
+    <div>
       <Toolbar className={classes.toolbar}>
         <TextField
           className={classes.searchInp}
@@ -343,7 +340,9 @@ export default function Uprawnienia() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Table>
-
+      </div>
+      <div/>
+      </div>
       <AddAdminDialog
         addOpen={addOpen}
         handleAddClose={handleAddClose}
