@@ -10,6 +10,7 @@ import Dzienniczek from '../components/Dzienniczek';
 import Konto from '../components/Konto';
 import Uprawnienia from '../components/Uprawnienia';
 import NoPage from '../components/NoPage'
+import OpiekunZ from '../components/OpiekunZ';
 
 
 
@@ -29,6 +30,7 @@ function Logged() {
             <Route path='Dzienniczek' element={<Dzienniczek/>}/>
             <Route path='konto' element={<Konto/>}/>
             <Route path='uprawnienia' element={<Uprawnienia/>}/>
+            <Route path='opiekunZ' element={<OpiekunZ/>}/>
             <Route path='*' element={<NoPage/>}/>
             {/* <Route path='ListaStudentow' element={<ListaStudentow/>}/> */}
           </Route>

@@ -97,6 +97,7 @@ function Sidebar() {
 
   const [student,setStudent]=useState()
   const [admin,setAdmin]=useState()
+  const [opiekunZ,setOpiekunZ]=useState()
   Axios.defaults.withCredentials=true
   useEffect(()=>{
       Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>
@@ -105,6 +106,7 @@ function Sidebar() {
           {
               setStudent(res.data.user.isStudent)
               setAdmin(res.data.user.isAdmin)
+              setOpiekunZ(res.data.user.isOpiekunZakl)
              
           }
       })
@@ -165,6 +167,15 @@ function Sidebar() {
               <div className={classes.item}>
                 <Homeicon className={classes.icon} />
                 <Typography className={classes.text} >Uprawnienia</Typography>
+              </div>
+            </Link>}
+          </div>
+          
+          <div className={classes.item}>
+            { opiekunZ==1 && <Link to ='profil/OpiekunZ' className={classes.links} >
+              <div className={classes.item}>
+                <Homeicon className={classes.icon} />
+                <Typography className={classes.text} >Opiekun Z</Typography>
               </div>
             </Link>}
           </div>
