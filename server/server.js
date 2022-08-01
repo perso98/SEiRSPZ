@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST","PUT","DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -43,58 +43,60 @@ app.listen(5000, () => {
 
 app.post("/api/createAccount", async (req, res) => {
   const { registerLogin, registerPassword, registerPassword2 } = req.body;
-  var id_student = 0
+  var id_student = 0;
   const loginChecker = await student.findOne({
     where: {
       login: registerLogin,
     },
   });
-  
+
   if (loginChecker == null) {
     if (registerPassword == registerPassword2) {
       const hashedPassword = await bcrypt.hash(registerPassword, 10);
       // try {
       //   await db.sequelize.transaction(async function (t) {
-          await student.create({
+      await student
+        .create(
+          {
             login: registerLogin,
             haslo: hashedPassword,
           }
           // ,{
           //   transaction: t,
           // }
-          )
-          .then(async () => {
-            const id_student_get = await student.findOne({
-              attributes: ['id'],
-              where:{
-                login: registerLogin,
-              }
-            })
-            console.log("-----------------------")
-            console.log(id_student_get.toJSON().id)
-            id_student = id_student_get.toJSON().id
-          })
-          .then(async () => {
-            console.log(id_student)
-            var itemArray=[];
-            for(i=1; i<=70; i++){
-              encja1={
-                id_student: id_student,
-                dzien: "" + i,
-                data: null,
-                ilosc_godzin: null,
-                opis: null,
-                efekt_uczenia: null,
-                zatwierdzenie: null,
-              }
-              itemArray.push(encja1);
-            }
-            return await dziennik.bulkCreate(itemArray)
-          })
-        
-        res.send({
-          message: "Konto zostało pomyślnie utworzone",
+        )
+        .then(async () => {
+          const id_student_get = await student.findOne({
+            attributes: ["id"],
+            where: {
+              login: registerLogin,
+            },
+          });
+          console.log("-----------------------");
+          console.log(id_student_get.toJSON().id);
+          id_student = id_student_get.toJSON().id;
+        })
+        .then(async () => {
+          console.log(id_student);
+          var itemArray = [];
+          for (i = 1; i <= 70; i++) {
+            encja1 = {
+              id_student: id_student,
+              dzien: "" + i,
+              data: null,
+              ilosc_godzin: null,
+              opis: null,
+              efekt_uczenia: null,
+              zatwierdzenie: null,
+            };
+            itemArray.push(encja1);
+          }
+          return await dziennik.bulkCreate(itemArray);
         });
+
+      res.send({
+        message: "Konto zostało pomyślnie utworzone",
+      });
       // }
       // )}
       // catch{
@@ -121,11 +123,11 @@ app.get("/api/loginToAccount", (req, res) => {
 });
 
 app.post("/api/loginToAccount", async (req, res) => {
-  const { loginLogin, loginPassword } = req.body;
+  const { login, password } = req.body;
 
   const checkLogin = await student.findOne({
     where: {
-      login: loginLogin,
+      login: login,
     },
   });
   if (checkLogin == null) {
@@ -134,11 +136,11 @@ app.post("/api/loginToAccount", async (req, res) => {
       message: "Błędny login",
     });
   } else if (checkLogin) {
-    if (await bcrypt.compare(loginPassword, checkLogin.haslo)) {
+    if (await bcrypt.compare(password, checkLogin.haslo)) {
       req.session.user = checkLogin;
       req.session.logged = true;
       res.send({
-        message: "Pomyślne zalogowanie",
+        logged: true,
       });
     } else {
       res.send({
@@ -228,82 +230,77 @@ app.post("/api/createForm", async (req, res) => {
 
 app.put("/api/changeRole", async (req, res) => {
   const { action, type, id } = req.body;
-  updatedStudent = await student.update({ [action]: type }, { where: { id: id } });
+  updatedStudent = await student.update(
+    { [action]: type },
+    { where: { id: id } }
+  );
   res.send(updatedStudent);
 });
 
-
 //Utworzenie konta w admin panelu
-app.post('/api/createAccount2',async  (req,res)=>{
-        const {userObject} = req.body
-        try {
-        const checkLogin = await student.findOne({
-          where: {
-            login: userObject.login,
-          },
-        });
-        if (checkLogin == null) {
-            const hashed = await bcrypt.hash(userObject.password, 10);
-        const newAcc = await student.create({
-              login:userObject.login,
-              haslo:hashed,
-              isOpiekunZakl:userObject.opiekunZ,
-              isStudent:userObject.student,
-              isDyrektor:userObject.dyrektor,
-              isAdmin:userObject.admin,
-              isDziekanat:userObject.dziekanat,
-              isOpiekun:userObject.opuekunU,
-            })
-           
-            res.send({
-              message: "Konto zostało pomyślnie utworzone",
-              id:newAcc.id
-              
-            });
-          }
-          else {
-            res.send({message:'Login jest już zajęty'})
-          }
-        }
-        catch (err){
-          res.send({message:err.message})
-        }
-})
-//Zmiana informacji o użytkowniku w panelu admina(ediirButton)
-app.put('/api/changeUserInfo',async (req,res)=>{
-
-  const {id,changeLogin}=req.body
-
+app.post("/api/createAccount2", async (req, res) => {
+  const { userObject } = req.body;
   try {
-  await student.update({
-    login:changeLogin,
-  },
-  {
-  where:{
-    id:id
+    const checkLogin = await student.findOne({
+      where: {
+        login: userObject.login,
+      },
+    });
+    if (checkLogin == null) {
+      const hashed = await bcrypt.hash(userObject.password, 10);
+      const newAcc = await student.create({
+        login: userObject.login,
+        haslo: hashed,
+        isOpiekunZakl: userObject.opiekunZ,
+        isStudent: userObject.student,
+        isDyrektor: userObject.dyrektor,
+        isAdmin: userObject.admin,
+        isDziekanat: userObject.dziekanat,
+        isOpiekun: userObject.opuekunU,
+      });
 
-  }})
-  res.send({message:'Zmiana przeszła pomyślnie...'})
-}
-catch(err){
-  res.send({message:err.message})
-}
-
-})
-//Usuwanie w panelu admina użytkowników
-app.delete('/api/deleteUser/:id', async (req,res)=>{
-  const id= req.params.id
-  try {
-  await student.destroy({where:{
-    id:id,
-  }})
-  res.send({message:'Usunięto'})
-}
-  catch (err){
-    res.send({message:err.message})
+      res.send({
+        message: "Konto zostało pomyślnie utworzone",
+        id: newAcc.id,
+      });
+    } else {
+      res.send({ message: "Login jest już zajęty" });
+    }
+  } catch (err) {
+    res.send({ message: err.message });
   }
+});
+//Zmiana informacji o użytkowniku w panelu admina(ediirButton)
+app.put("/api/changeUserInfo", async (req, res) => {
+  const { id, changeLogin } = req.body;
 
-
-
-})
-
+  try {
+    await student.update(
+      {
+        login: changeLogin,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+    res.send({ message: "Zmiana przeszła pomyślnie..." });
+  } catch (err) {
+    res.send({ message: err.message });
+  }
+});
+//Usuwanie w panelu admina użytkowników
+app.delete("/api/deleteUser/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    await student.destroy({
+      where: {
+        id: id,
+      },
+    });
+    res.send({ message: "Usunięto" });
+  } catch (err) {
+    res.send({ message: err.message });
+  }
+});

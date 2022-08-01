@@ -4,7 +4,7 @@ import Button from '@mui/material/Button'
 import DialogOpiekunZ from "./DialogOpiekunZ";
 import {useState} from 'react'
 
-function DzienniczekDni({ Dzienniczek }) {
+function DzienniczekDni(props) {
   const [open,setOpen] = useState(false)
   const [checkDay,setCheckDay] = useState(null)
   const handleClose = () =>{
@@ -18,7 +18,7 @@ function DzienniczekDni({ Dzienniczek }) {
   return (
     <div>
       <Grid container spacing={3}>
-        {Dzienniczek.map((val) => {
+        {props.Dzienniczek.map((val) => {
           return (
             <Grid item xs={12} md={12} lg={6}>
               <div
