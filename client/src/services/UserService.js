@@ -3,22 +3,21 @@ import { url } from "./Url";
 
 Axios.defaults.withCredentials = true;
 export const createAccount = async (
-  registerLogin,
-  registerPassword,
-  registerPassword2,
+  login,
+  password,
+  password2,
   setRegisterStatus,
   setalertSeverity,
   setOpen
 ) => {
   await Axios.post(`${url}createAccount`, {
-    registerLogin: registerLogin,
-    registerPassword: registerPassword,
-    registerPassword2: registerPassword2,
+    login: login,
+    password: password,
+    password2: password2,
   }).then((res) => {
     if (res.data.message) {
       setRegisterStatus(res.data.message);
-      if (res.data.message == "Konto zostało pomyślnie utworzone")
-        setalertSeverity(false);
+      if (res.data.register) setalertSeverity(false);
       else setalertSeverity(true);
       setOpen(true);
     }

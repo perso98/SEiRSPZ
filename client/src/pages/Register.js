@@ -15,9 +15,9 @@ function Register() {
     },
   }));
   const classes = useStyles();
-  const [registerLogin, setLogin] = useState("");
-  const [registerPassword, setPassword] = useState("");
-  const [registerPassword2, setPassword2] = useState("");
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [registerStatus, setRegisterStatus] = useState("");
   const [alertSeverity, setalertSeverity] = useState("");
 
@@ -78,9 +78,9 @@ function Register() {
           style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
           onClick={() => {
             createAccount(
-              registerLogin,
-              registerPassword,
-              registerPassword2,
+              login,
+              password,
+              password2,
               setRegisterStatus,
               setalertSeverity,
               setOpen

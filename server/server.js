@@ -42,23 +42,23 @@ app.listen(5000, () => {
 });
 
 app.post("/api/createAccount", async (req, res) => {
-  const { registerLogin, registerPassword, registerPassword2 } = req.body;
+  const { login, password, password2 } = req.body;
   var id_student = 0;
   const loginChecker = await student.findOne({
     where: {
-      login: registerLogin,
+      login: login,
     },
   });
 
   if (loginChecker == null) {
-    if (registerPassword == registerPassword2) {
-      const hashedPassword = await bcrypt.hash(registerPassword, 10);
+    if (password == password2) {
+      const hashedPassword = await bcrypt.hash(password, 10);
       // try {
       //   await db.sequelize.transaction(async function (t) {
       await student
         .create(
           {
-            login: registerLogin,
+            login: login,
             haslo: hashedPassword,
           }
           // ,{
@@ -69,7 +69,7 @@ app.post("/api/createAccount", async (req, res) => {
           const id_student_get = await student.findOne({
             attributes: ["id"],
             where: {
-              login: registerLogin,
+              login: login,
             },
           });
           console.log("-----------------------");
@@ -96,6 +96,7 @@ app.post("/api/createAccount", async (req, res) => {
 
       res.send({
         message: "Konto zostało pomyślnie utworzone",
+        register: true,
       });
       // }
       // )}
