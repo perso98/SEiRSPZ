@@ -5,7 +5,7 @@ const db = require("./models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
-const { student, dziennik } = require("./models");
+const { student, dziennik, efektUczeniaSie } = require("./models");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 
@@ -160,6 +160,24 @@ app.get("/api/getStudents", async (req, res) => {
 
   res.send(listStudent);
 });
+
+app.get("/api/getDziennik", async (req, res) => {
+  const listDziennik = await dziennik.findAll(
+    {
+    where: { id_student : req.session.user.id}
+  }
+  );
+
+  res.send(listDziennik);
+});
+
+app.get("/api/getEfektUczenia", async (req, res) => {
+  const listEfektUczenia = await efektUczeniaSie.findAll();
+
+  res.send(listEfektUczenia);
+});
+
+
 app.post("/api/changePasswordToAccount", async (req, res) => {
   const { changePassword, changePassword2 } = req.body;
   if (changePassword == changePassword2) {
@@ -307,3 +325,38 @@ app.delete('/api/deleteUser/:id', async (req,res)=>{
 
 })
 
+//Utworzenie Dnia w dzienniczku
+app.post('/api/createDay',async  (req,res)=>{
+  const {dayObject} = req.body
+  try {
+  const checkDay = await dziennik.findOne({
+    where: {
+      dzien: dayObject.dzien,
+    },
+  });
+  if (checkDay == null) {
+    const newDay = await dziennik.create({
+      id_student:req.session.user.id,  
+      dzien:dayObject.dzien,
+      data:dayObject.data,
+      ilosc_godzin:dayObject.iloscGodzin,
+      opis:dayObject.opis,
+      efekt_uczenia:dayObject.demoSimpleSelect,
+      zatwierdzenie:"Nie zatwierdzono"
+      // potrzebna zmiana w bazie na bool
+      })
+     
+      res.send({
+        message: "Dzień został pomyślnie dodany",
+        id:newDay.id
+        
+      });
+    }
+    else {
+      res.send({message:'Jest już taki dzień'})
+    }
+  }
+  catch (err){
+    res.send({message:err.message})
+  }
+})

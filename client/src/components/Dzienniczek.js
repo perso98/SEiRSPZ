@@ -1,20 +1,29 @@
-import React from 'react'
+import React ,{ useState, useEffect } from "react";
+import axios, * as others from "axios";
+import {
+    makeStyles,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TablePagination,
+    TableRow,
+    Toolbar,
+    TextField,
+  } from "@material-ui/core";
 import {Link} from 'react-router-dom'
-import { makeStyles } from '@mui/styles'
-import { Container, Typography, Grid, Input, TextField } from '@mui/material'
+import { Container, Typography, Grid, Input } from '@mui/material'
 import Button from '@mui/material/Button';
-
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-
+import AddDayDialog from "./AddDayDialog";
 
 const useStyles = makeStyles(theme => ({
     containerMain:{
-        height: "100vh",
+        height: "100%",
     },
     dni:{
         paddingTop: theme.spacing(2),
@@ -33,8 +42,8 @@ const useStyles = makeStyles(theme => ({
         textDecoration: 'none', 
         color:'black',
         "&:hover": {
-          color:'white',
-          textDecoration: 'none', 
+            color:'white',
+            textDecoration: 'none', 
         },
     },
     content:{
@@ -50,164 +59,134 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-
-
 function Dzienniczek() {
+
+    const [dziennik, setDziennik] = useState([]);
+    const [efektUczenia, setEfektUczenia] = useState([]);
+    const [loading, setLoading] = useState(true);
+    
+
     const classes = useStyles();
+    
+    const [addOpen, setAddOpen] = useState(false);
 
-    const [age, setAge] = React.useState('');
+    const handleAddClose = () => {
+        setAddOpen(false);
+    };
+    const handleAddOpen = () => {
+        axios.get("http://localhost:5000/api/getEfektUczenia").then((res) => {
+              setEfektUczenia(res.data);
+            });
+        setAddOpen(true);
+    };
+    axios.defaults.withCredentials = true;
+    useEffect(() => {
+        axios.get("http://localhost:5000/api/getDziennik").then((res) => {
+          setDziennik(res.data);
+          setLoading(false);
+          
+        });
+      }, []);
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+    const [dayObject,setDayObject] = useState({
+        id_student:"",  
+        dzien:"",
+        data:"",
+        iloscGodzin:"",
+        opis:"",
+        demoSimpleSelect:"",
+        age:""
+    })
+
+    const onChange=(e)=>{
+        const {value,id}=e.target
+        setDayObject({...dayObject,[id]:value})
+      }
+
+    const createDay = () => {
+        axios
+          .post("http://localhost:5000/api/createDay", {
+          dayObject:dayObject
+          })
+          .then((res) => {
+            if (res.data.message == "Konto zostało pomyślnie utworzone") {
+              setDziennik([
+                ...dziennik,
+                {
+                  id:res.data.id,
+                  id_student: dayObject.login,
+                  dzien: dayObject.dzien,
+                  data:dayObject.data,
+                  ilosc_godzin:dayObject.iloscGodzin,
+                  opis:dayObject.opis,
+                  efekt_uczenia:dayObject.age,
+
+                },
+              ]);
+              setDayObject({...dayObject,
+                id_student:"",  
+                dzien:"",
+                data:"",
+                iloscGodzin:"",
+                opis:"",
+                demoSimpleSelect:"",
+              })
+            }
+     
+            alert(res.data.message);
+          });
+      };
+      
+    
 
   return (
-    <div className={classes.containerMain}>
-
     
+    <div className={classes.containerMain}>
+ 
+ 
+        <Button variant="contained" onClick={handleAddOpen}>
+          Dodaj nowy dzień
+        </Button>
+    
+        
+
         <Grid >
-            <Grid item className={classes.dni}>
-                <details>
-                    <summary>
-                        Nieuzupelnione
-                    </summary>
-                    <ol className={classes.ol}>
-                        <li>
-                            <Link to ='Dzienniczek' className={classes.links} >
-                                <div className={classes.dniItem}>
-                                    <Typography className={classes.text} >Dzień 1</Typography>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to ='Dzienniczek' className={classes.links} >
-                                <div className={classes.dniItem}>
-                                    <Typography className={classes.text} >Dzień 2</Typography>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to ='Dzienniczek' className={classes.links} >
-                                <div className={classes.dniItem}>
-                                    <Typography className={classes.text} >Dzień 3</Typography>
-                                </div>
-                            </Link>
-                        </li>
-                    </ol>
-                </details>
-            
-                <details>
-                    <summary>
-                        Uzupelnione
-                    </summary>
-                    <ol className={classes.ol}>
-                        <li>
-                            <Link to ='Dzienniczek' className={classes.links} >
-                                <div className={classes.dniItem}>
-                                    <Typography className={classes.text} >Dzień 4</Typography>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to ='Dzienniczek' className={classes.links} >
-                                <div className={classes.dniItem}>
-                                    <Typography className={classes.text} >Dzień 4</Typography>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to ='Dzienniczek' className={classes.links} >
-                                <div className={classes.dniItem}>
-                                    <Typography className={classes.text} >Dzień 4</Typography>
-                                </div>
-                            </Link>
-                        </li>
-                    </ol>
-                </details>
-                <div>
-                
-                    <Button variant="contained">Dodaj dzień</Button>
-                
-                </div>
-                
-            </Grid>
-            <Grid item xs className={classes.content}>
+            {dziennik.map((val) => (
                 <Grid container>
-                    <Grid item xs>
-                        <form className={classes.form}>
-                            <div>
-                                <Grid container>
-                                    <Grid item margin={3}>
-                                        Dzień X
-                                    </Grid>
-                                    <Grid item marginRight={1}>
-                                        <TextField className={classes.TextField}
-                                        label="Data"
-                                        id="data"
-                                        defaultValue="XX.XX.XXXX"
-                                        size='8'
-                                        sx={{ width: '15ch'}}
-                                        margin="normal"
-                                        />
-                                    </Grid>
-                                    <Grid item >
-                                        <TextField className={classes.TextField}
-                                        label="Ilość godzin"
-                                        id="iloscGodzin"
-                                        defaultValue="8"
-                                        sx={{ width: '13ch'}}
-                                        margin="normal"
-                                        />
-                                    </Grid>
-                                    <Grid item xs margin={3}>
-                                        Status Zatwierdzono / Niezatwierdzono
-                                    </Grid>
-                                </Grid>
-                            </div>
-                            <div>
-                                <TextField className={classes.TextField}
-                                    fullWidth 
-                                    label="Opis wykonanej pracy"
-                                    multiline
-                                    margin="normal"
-                                />
-                            </div>
-
-                            <div>
-                                <Button variant="contained">Dodaj załącznik</Button>
-                            </div>
-
-                            <Box sx={{ minWidth: 200, maxWidth: 200, paddingTop: 2 , paddingBottom: 2 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Efekt uczenia się</InputLabel>
-                                    <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={age}
-                                    label="Efekt uczenia się"
-                                    onChange={handleChange}
-                                    >
-                                    <MenuItem value={10}>1</MenuItem>
-                                    <MenuItem value={20}>2</MenuItem>
-                                    <MenuItem value={30}>3</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Box>
-
-                            <div>
-                                <Button variant="contained">Zapisz</Button>
-                            </div>
-                        </form>
+                    <Grid item xs = {1}>
+                        <div>
+                            {val.dzien}
+                        </div>
+                    </Grid>
+                    <Grid item xs = {1}>
+                        <div>
+                            {val.data}
+                        </div>
+                    </Grid>
+                    <Grid item xs = {2}>
+                        <div>
+                            {val.zatwierdzenie}
+                        </div>
+                    </Grid>
+                    <Grid item xs = {1}>
+                        <div>
+                            dar
+                        </div>
                     </Grid>
                 </Grid>
                 
-            
-            </Grid>
-            <Grid item xs={12}>
                 
-            </Grid>
+
+            ))}
         </Grid>
+        <AddDayDialog
+        addOpen={addOpen}
+        handleAddClose={handleAddClose}
+        createDay={createDay}
+        onChange={onChange}
+        dayObject={dayObject}
+        efektUczenia = {efektUczenia}
+        />
     </div>
   )
 }
