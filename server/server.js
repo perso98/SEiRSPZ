@@ -75,23 +75,6 @@ app.post("/api/createAccount", async (req, res) => {
           console.log("-----------------------");
           console.log(id_student_get.toJSON().id);
           id_student = id_student_get.toJSON().id;
-        })
-        .then(async () => {
-          console.log(id_student);
-          var itemArray = [];
-          for (i = 1; i <= 70; i++) {
-            encja1 = {
-              id_student: id_student,
-              dzien: "" + i,
-              data: null,
-              ilosc_godzin: null,
-              opis: null,
-              efekt_uczenia: null,
-              zatwierdzenie: null,
-            };
-            itemArray.push(encja1);
-          }
-          return await dziennik.bulkCreate(itemArray);
         });
 
       res.send({
@@ -131,7 +114,7 @@ app.post("/api/loginToAccount", async (req, res) => {
       login: login,
     },
   });
-  if (checkLogin == null) {
+  if (!checkLogin) {
     req.session.logged = false;
     res.send({
       message: "Błędny login",
@@ -165,11 +148,9 @@ app.get("/api/getStudents", async (req, res) => {
 });
 
 app.get("/api/getDziennik", async (req, res) => {
-  const listDziennik = await dziennik.findAll(
-    {
-    where: { id_student : req.session.user.id}
-  }
-  );
+  const listDziennik = await dziennik.findAll({
+    where: { id_student: req.session.user.id },
+  });
 
   res.send(listDziennik);
 });
@@ -179,7 +160,6 @@ app.get("/api/getEfektUczenia", async (req, res) => {
 
   res.send(listEfektUczenia);
 });
-
 
 app.post("/api/changePasswordToAccount", async (req, res) => {
   const { changePassword, changePassword2 } = req.body;
@@ -310,43 +290,38 @@ app.put("/api/changeUserInfo", async (req, res) => {
   }
 });
 
-
-
 //Utworzenie Dnia w dzienniczku
-app.post('/api/createDay',async  (req,res)=>{
-  const {dayObject} = req.body
+app.post("/api/createDay", async (req, res) => {
+  const { dayObject } = req.body;
   try {
-  const checkDay = await dziennik.findOne({
-    where: {
-      dzien: dayObject.dzien,
-    },
-  });
-  if (checkDay == null) {
-    const newDay = await dziennik.create({
-      id_student:req.session.user.id,  
-      dzien:dayObject.dzien,
-      data:dayObject.data,
-      ilosc_godzin:dayObject.iloscGodzin,
-      opis:dayObject.opis,
-      efekt_uczenia:dayObject.demoSimpleSelect,
-      zatwierdzenie:"Nie zatwierdzono"
-      // potrzebna zmiana w bazie na bool
-      })
-     
+    const checkDay = await dziennik.findOne({
+      where: {
+        dzien: dayObject.dzien,
+      },
+    });
+    if (checkDay == null) {
+      const newDay = await dziennik.create({
+        id_student: req.session.user.id,
+        dzien: dayObject.dzien,
+        data: dayObject.data,
+        ilosc_godzin: dayObject.iloscGodzin,
+        opis: dayObject.opis,
+        efekt_uczenia: dayObject.demoSimpleSelect,
+        zatwierdzenie: "Nie zatwierdzono",
+        // potrzebna zmiana w bazie na bool
+      });
+
       res.send({
         message: "Dzień został pomyślnie dodany",
-        id:newDay.id
-        
+        id: newDay.id,
       });
+    } else {
+      res.send({ message: "Jest już taki dzień" });
     }
-    else {
-      res.send({message:'Jest już taki dzień'})
-    }
+  } catch (err) {
+    res.send({ message: err.message });
   }
-  catch (err){
-    res.send({message:err.message})
-  }
-})
+});
 
 //Usuwanie w panelu admina użytkowników
 app.delete("/api/deleteUser/:id", async (req, res) => {

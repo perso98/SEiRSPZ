@@ -108,11 +108,13 @@ function Nav() {
   const classes = useStyles();
   Axios.defaults.withCredentials = true;
   const [logged, setLogged] = useState("");
-  useEffect((setLogged) => {
+  useEffect(() => {
     Axios.get("http://localhost:5000/api/loginToAccount").then((res) => {
-      setLogged(res.data.logged);
+      if (res.data.logged == true) {
+        setLogged(res.data.logged);
+      }
     });
-  });
+  }, []);
 
   Axios.defaults.withCredentials = true;
   useEffect(() => {
