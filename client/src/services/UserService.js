@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { url } from "./Url";
+import { useEffect } from "react";
 
 Axios.defaults.withCredentials = true;
 export const createAccount = async (
@@ -31,7 +32,7 @@ export const loginToAccount = async (
   setOpen,
   navigate
 ) => {
-  await Axios.post("http://localhost:5000/api/loginToAccount", {
+  await Axios.post(`${url}loginToAccount`, {
     login: login,
     password: password,
   }).then((res) => {
@@ -41,4 +42,15 @@ export const loginToAccount = async (
       setOpen(true);
     }
   });
+};
+
+export const getLoginToAccountInfo = (setLogged) => {
+  Axios.get(`${url}loginToAccount`).then((res) => {
+    setLogged(res.data.logged);
+  });
+};
+
+export const logout = (navigate) => {
+  Axios.post(`${url}logoutFromAccount`);
+  navigate("/");
 };

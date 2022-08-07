@@ -50,7 +50,7 @@ app.post("/api/createAccount", async (req, res) => {
     },
   });
 
-  if (loginChecker == null) {
+  if (!loginChecker) {
     if (password == password2) {
       const hashedPassword = await bcrypt.hash(password, 10);
       // try {

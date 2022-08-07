@@ -1,209 +1,198 @@
-import {React,useState,useEffect} from 'react'
-import {Link} from 'react-router-dom'
-import  Axios  from 'axios'
-import { useNavigate } from 'react-router-dom'
-import { makeStyles } from '@mui/styles'
-import { AppBar, Toolbar, Typography, Button , Container} from '@mui/material'
-import logo from '../img/ans.png'
-import Person from '@mui/icons-material/Person';
-import Person2 from '@mui/icons-material/PersonAddAlt1';
-import ProfilImg from '@mui/icons-material/AccountCircleOutlined';
-import LogoutImg from '@mui/icons-material/LogoutOutlined';
-import DehazeIcon from '@mui/icons-material/Dehaze';
-import Homeicon from '@mui/icons-material/Home';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import Sidebar from '../components/Sidebar';
-
+import { React, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { makeStyles } from "@mui/styles";
+import { AppBar, Toolbar, Typography, Button, Container } from "@mui/material";
+import Person from "@mui/icons-material/Person";
+import Person2 from "@mui/icons-material/PersonAddAlt1";
+import ProfilImg from "@mui/icons-material/AccountCircleOutlined";
+import LogoutImg from "@mui/icons-material/LogoutOutlined";
+import Sidebar from "../components/Sidebar";
+import { getLoginToAccountInfo, logout } from "../services/UserService";
 
 function Nav() {
-  const useStyles = makeStyles(theme => ({
-    logoBig:{
-      display:'block',
-      [theme.breakpoints.down("md")]:{
-        display:'none',
-      }
-    },
-
-    logoLit:{
-      display:'none',
-      [theme.breakpoints.down("md")]:{
-        display:'block',
-        
-      }
-    },
-    toolbar:{
-      display:'flex',
-      justifyContent:'space-around',
-      [theme.breakpoints.down("md")]:{
-        justifyContent:'space-between',
+  const useStyles = makeStyles((theme) => ({
+    logoBig: {
+      display: "block",
+      [theme.breakpoints.down("md")]: {
+        display: "none",
       },
     },
-    
-    login:{
-      display:'flex',
-      alignItems:'center',
-      marginRight:theme.spacing(3),  
-      fontSize:'20px',
-      [theme.breakpoints.down("md")]:{
-        fontSize:'16px'
-      }
-      ,
-      [theme.breakpoints.down("sm")]:{
-        fontSize:'12px',
-        marginRight:theme.spacing(3),
-      }
-      
+
+    logoLit: {
+      display: "none",
+      [theme.breakpoints.down("md")]: {
+        display: "block",
+      },
     },
-    register:{
-      
-      display:'flex',
-      alignItems:'center',
-      marginRight:theme.spacing(2),
-      fontSize:'20px',
-      [theme.breakpoints.down("md")]:{
-        fontSize:'16px'
-      }    ,
-      [theme.breakpoints.down("sm")]:{
-        fontSize:'12px',
-        marginRight:theme.spacing(1),
-      }  
+    toolbar: {
+      display: "flex",
+      justifyContent: "space-around",
+      [theme.breakpoints.down("md")]: {
+        justifyContent: "space-between",
+      },
     },
 
-    menu:{
-      display:'flex',
+    login: {
+      display: "flex",
+      alignItems: "center",
+      marginRight: theme.spacing(3),
+      fontSize: "20px",
+      [theme.breakpoints.down("md")]: {
+        fontSize: "16px",
+      },
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "12px",
+        marginRight: theme.spacing(3),
+      },
+    },
+    register: {
+      display: "flex",
+      alignItems: "center",
+      marginRight: theme.spacing(2),
+      fontSize: "20px",
+      [theme.breakpoints.down("md")]: {
+        fontSize: "16px",
+      },
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "12px",
+        marginRight: theme.spacing(1),
+      },
     },
 
-    links:{
-      textDecoration: 'none', 
-      color:'white',
+    menu: {
+      display: "flex",
+    },
+
+    links: {
+      textDecoration: "none",
+      color: "white",
       "&:hover": {
-        color:'yellow',
-        textDecoration: 'none', 
+        color: "yellow",
+        textDecoration: "none",
       },
-      [theme.breakpoints.down("md")]:{
-        marginLeft:theme.spacing(5),
-        
-      }
+      [theme.breakpoints.down("md")]: {
+        marginLeft: theme.spacing(5),
+      },
     },
 
-    linksLogoLitSM:{
-      textDecoration: 'none', 
-      color:'white',
+    linksLogoLitSM: {
+      textDecoration: "none",
+      color: "white",
       "&:hover": {
-        color:'yellow',
-        textDecoration: 'none', 
+        color: "yellow",
+        textDecoration: "none",
       },
-      [theme.breakpoints.down("md")]:{
-        marginLeft:theme.spacing(8),
-        
-      }
+      [theme.breakpoints.down("md")]: {
+        marginLeft: theme.spacing(8),
+      },
     },
 
-    sidebarBtn:{
-      textDecoration: 'none', 
-      color:'white',
+    sidebarBtn: {
+      textDecoration: "none",
+      color: "white",
       "&:hover": {
-        color:'yellow',
-        textDecoration: 'none', 
+        color: "yellow",
+        textDecoration: "none",
       },
     },
 
-    buttonLogout:{
-      color:'white',
-      fontSize:'20px',
+    buttonLogout: {
+      color: "white",
+      fontSize: "20px",
     },
-
-
-
   }));
 
-  const navigate = useNavigate()
-  const classes = useStyles()
-  Axios.defaults.withCredentials=true
-  const [logged,setLogged]=useState('')
-  useEffect( ()=> {
-    Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
-      setLogged(res.data.logged)  
-    })
-  })
+  const navigate = useNavigate();
+  const classes = useStyles();
+  Axios.defaults.withCredentials = true;
+  const [logged, setLogged] = useState("");
+  useEffect((setLogged) => {
+    Axios.get("http://localhost:5000/api/loginToAccount").then((res) => {
+      setLogged(res.data.logged);
+    });
+  });
 
-  const logout = ()=>{ 
-    Axios.post("http://localhost:5000/api/logoutFromAccount")
-    navigate('/')
-  }
+  Axios.defaults.withCredentials = true;
+  useEffect(() => {
+    getLoginToAccountInfo(setLogged);
+  });
 
-  const [student,setStudent]=useState()
-  const [admin,setAdmin]=useState()
-  Axios.defaults.withCredentials=true
-  useEffect(()=>{
-    Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>{
-      if(res.data.logged==true)
-      {
-        setStudent(res.data.user.isStudent)
-        setAdmin(res.data.user.isAdmin)
-      }
-    })
-  })
-
-  const Navbar = () => { 
+  const Navbar = () => {
     return (
       <AppBar position="fixed">
         <Toolbar className={classes.toolbar}>
-          <Typography variant='h5' className={classes.logoBig} >
-            <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
+          <Typography variant="h5" className={classes.logoBig}>
+            <Link to="/" className={classes.links}>
+              Akademia Nauk Stosowanych
+            </Link>
           </Typography>
-          <Typography variant='h5' className={classes.logoLit}>
-            <Link to='/' className={classes.links} >ANS</Link>
+          <Typography variant="h5" className={classes.logoLit}>
+            <Link to="/" className={classes.links}>
+              ANS
+            </Link>
           </Typography>
           <div className={classes.menu}>
-            <Link to ='login' className={classes.links} >
+            <Link to="login" className={classes.links}>
               <div className={classes.login}>
-                <Person style={{marginRight:'0.2rem'}}/>Logowanie
-              </div></Link>
-            <Link to ='register' className={classes.links} >
+                <Person style={{ marginRight: "0.2rem" }} />
+                Logowanie
+              </div>
+            </Link>
+            <Link to="register" className={classes.links}>
               <div className={classes.register}>
-                <Person2 style={{marginRight:'0.3rem'}}/>Rejestracja
-              </div></Link>
+                <Person2 style={{ marginRight: "0.3rem" }} />
+                Rejestracja
+              </div>
+            </Link>
           </div>
         </Toolbar>
       </AppBar>
-    )
-  }
+    );
+  };
 
-  const NavLogged = () => { 
+  const NavLogged = () => {
     return (
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <Sidebar/>
-          <Typography variant='h5' className={classes.logoBig} >
-            <Link to='/' className={classes.links} >Akademia Nauk Stosowanych</Link>
+          <Sidebar />
+          <Typography variant="h5" className={classes.logoBig}>
+            <Link to="/" className={classes.links}>
+              Akademia Nauk Stosowanych
+            </Link>
           </Typography>
-          <Typography variant='h5' className={classes.logoLit}>
-            <Link to='/' className={classes.linksLogoLitSM} >ANS</Link>
+          <Typography variant="h5" className={classes.logoLit}>
+            <Link to="/" className={classes.linksLogoLitSM}>
+              ANS
+            </Link>
           </Typography>
           <div className={classes.menu}>
-            <Link to ='/profil/konto' className={classes.links} >
+            <Link to="/profil/konto" className={classes.links}>
               <div className={classes.login}>
-                <ProfilImg style={{marginRight:'0.2rem'}}/>Konto
-              </div></Link>
-            <Link to='/' onClick={logout} className={classes.links}> 
+                <ProfilImg style={{ marginRight: "0.2rem" }} />
+                Konto
+              </div>
+            </Link>
+            <Link
+              to="/"
+              onClick={() => {
+                logout(navigate);
+              }}
+              className={classes.links}
+            >
               <div className={classes.register}>
-                <LogoutImg style={{marginRight:'0.2rem'}}/>
+                <LogoutImg style={{ marginRight: "0.2rem" }} />
                 Wyloguj
-              </div></Link>
+              </div>
+            </Link>
           </div>
         </Toolbar>
       </AppBar>
-    )
-  }
+    );
+  };
 
-  return (
-     <>         
-      {logged ?       <NavLogged/> :<Navbar/> }        
-    </>
-  )
+  return <>{logged ? <NavLogged /> : <Navbar />}</>;
 }
 
-export default Nav
+export default Nav;
