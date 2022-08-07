@@ -100,7 +100,7 @@ function Dzienniczek() {
       }, []);
 
     const [dayObject,setDayObject] = useState({
-        id_student:"",  
+        userId:"",  
         dzien:"",
         data:"",
         iloscGodzin:"",
@@ -125,7 +125,7 @@ function Dzienniczek() {
                 ...dziennik,
                 {
                   id:res.data.id,
-                  id_student: dayObject.login,
+                  userId: dayObject.login,
                   dzien: dayObject.dzien,
                   data:dayObject.data,
                   ilosc_godzin:dayObject.iloscGodzin,
@@ -135,7 +135,7 @@ function Dzienniczek() {
                 },
               ]);
               setDayObject({...dayObject,
-                id_student:"",  
+                userId:"",  
                 dzien:"",
                 data:"",
                 iloscGodzin:"",
@@ -199,7 +199,7 @@ function Dzienniczek() {
                     </Grid>
                     <Grid item xs = {2}>
                         <div>
-                            {val.zatwierdzenie}
+                            {val.status}
                         </div>
                     </Grid>
                     <Grid item xs = {3}>

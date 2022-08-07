@@ -5,7 +5,7 @@ const db = require("./models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
-const { student, dziennik, efektUczeniaSie } = require("./models");
+const { user, dziennik, efektUczeniaSie } = require("./models");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 
@@ -43,8 +43,8 @@ app.listen(5000, () => {
 
 app.post("/api/createAccount", async (req, res) => {
   const { login, password, password2 } = req.body;
-  var id_student = 0;
-  const loginChecker = await student.findOne({
+  var id_user = 0;
+  const loginChecker = await user.findOne({
     where: {
       login: login,
     },
@@ -55,7 +55,7 @@ app.post("/api/createAccount", async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
       // try {
       //   await db.sequelize.transaction(async function (t) {
-      await student
+      await user
         .create(
           {
             login: login,
@@ -66,15 +66,15 @@ app.post("/api/createAccount", async (req, res) => {
           // }
         )
         .then(async () => {
-          const id_student_get = await student.findOne({
+          const id_user_get = await user.findOne({
             attributes: ["id"],
             where: {
               login: login,
             },
           });
           console.log("-----------------------");
-          console.log(id_student_get.toJSON().id);
-          id_student = id_student_get.toJSON().id;
+          console.log(id_user_get.toJSON().id);
+          id_user = id_user_get.toJSON().id;
         });
 
       res.send({
@@ -109,7 +109,7 @@ app.get("/api/loginToAccount", (req, res) => {
 app.post("/api/loginToAccount", async (req, res) => {
   const { login, password } = req.body;
 
-  const checkLogin = await student.findOne({
+  const checkLogin = await user.findOne({
     where: {
       login: login,
     },
@@ -142,15 +142,18 @@ app.post("/api/logoutFromAccount", (req, res) => {
 });
 
 app.get("/api/getStudents", async (req, res) => {
-  const listStudent = await student.findAll();
+  const listStudent = await user.findAll();
 
   res.send(listStudent);
 });
 
+
 app.get("/api/getDziennik", async (req, res) => {
+
   const listDziennik = await dziennik.findAll({
-    where: { id_student: req.session.user.id },
+    where: { userId: req.session.user.id },
   });
+
 
   res.send(listDziennik);
 });
@@ -165,7 +168,7 @@ app.post("/api/changePasswordToAccount", async (req, res) => {
   const { changePassword, changePassword2 } = req.body;
   if (changePassword == changePassword2) {
     const hashedPassword = await bcrypt.hash(changePassword, 10);
-    await student.update(
+    await user.update(
       { haslo: hashedPassword },
       { where: { login: req.session.user.login } }
     );
@@ -192,7 +195,7 @@ app.post("/api/createForm", async (req, res) => {
       rola,
     } = req.body;
 
-    student.create(
+    user.create(
       {
         login: login,
         haslo: await bcrypt.hash(haslo, 10),
@@ -229,7 +232,7 @@ app.post("/api/createForm", async (req, res) => {
 
 app.put("/api/changeRole", async (req, res) => {
   const { action, type, id } = req.body;
-  updatedStudent = await student.update(
+  updatedStudent = await user.update(
     { [action]: type },
     { where: { id: id } }
   );
@@ -240,18 +243,18 @@ app.put("/api/changeRole", async (req, res) => {
 app.post("/api/createAccount2", async (req, res) => {
   const { userObject } = req.body;
   try {
-    const checkLogin = await student.findOne({
+    const checkLogin = await user.findOne({
       where: {
         login: userObject.login,
       },
     });
     if (checkLogin == null) {
       const hashed = await bcrypt.hash(userObject.password, 10);
-      const newAcc = await student.create({
+      const newAcc = await user.create({
         login: userObject.login,
         haslo: hashed,
         isOpiekunZakl: userObject.opiekunZ,
-        isStudent: userObject.student,
+        isStudent: userObject.user,
         isDyrektor: userObject.dyrektor,
         isAdmin: userObject.admin,
         isDziekanat: userObject.dziekanat,
@@ -274,7 +277,7 @@ app.put("/api/changeUserInfo", async (req, res) => {
   const { id, changeLogin } = req.body;
 
   try {
-    await student.update(
+    await user.update(
       {
         login: changeLogin,
       },
@@ -297,18 +300,18 @@ app.post("/api/createDay", async (req, res) => {
     const checkDay = await dziennik.findOne({
       where: {
         dzien: dayObject.dzien,
-        id_student: req.session.user.id,
+        userId: req.session.user.id,
       },
     });
     if (checkDay == null) {
       const newDay = await dziennik.create({
-        id_student: req.session.user.id,
+        userId: req.session.user.id,
         dzien: dayObject.dzien,
         data: dayObject.data,
         ilosc_godzin: dayObject.iloscGodzin,
         opis: dayObject.opis,
         efekt_uczenia: dayObject.demoSimpleSelect,
-        zatwierdzenie: "Nie zatwierdzono",
+        status: "Nie zatwierdzono",
         // potrzebna zmiana w bazie na bool
       });
 
@@ -328,7 +331,7 @@ app.post("/api/createDay", async (req, res) => {
 app.delete("/api/deleteUser/:id", async (req, res) => {
   const id = req.params.id;
   try {
-    await student.destroy({
+    await user.destroy({
       where: {
         id: id,
       },

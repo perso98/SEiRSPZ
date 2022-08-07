@@ -2,10 +2,6 @@ module.exports=(sequelize,DataTypes)=>
 {
 const dziennik=sequelize.define("dziennik",
 {
-    id_student:{
-        type:DataTypes.INTEGER,
-        allowNull:true,
-    },
     dzien:{
         type:DataTypes.STRING,
         allowNull:true,
@@ -22,11 +18,11 @@ const dziennik=sequelize.define("dziennik",
         type:DataTypes.STRING,
         allowNull:true,
     },
-    efekt_uczenia:{
+    id_efekt_uczenia:{
         type:DataTypes.STRING,
         allowNull:true,
     },
-    zatwierdzenie:{
+    status:{
         type:DataTypes.STRING,
         allowNull:true,
     },
@@ -42,12 +38,20 @@ const dziennik=sequelize.define("dziennik",
   }
 
   dziennik.associate = models => {
-    dziennik.belongsTo(models.student, {
+    dziennik.hasMany(models.komentarze, {
+        onDelete:"cascade"
+    });
+  }
+
+  dziennik.associate = models => {
+    dziennik.belongsTo(models.user, {
         foreignKey: {
             allowNull: true
         }
     });
   }
+
+
 
 return dziennik
 }

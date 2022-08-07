@@ -15,13 +15,6 @@ const efektUczeniaSie=sequelize.define("efektUczeniaSie",
     collate: 'utf8_general_ci',
   })
 
-  efektUczeniaSie.associate = models => {
-    efektUczeniaSie.belongsTo(models.opiekuni, {
-        foreignKey: {
-            allowNull: true
-        }
-    });
-  }
 
 return efektUczeniaSie
 }
