@@ -20,6 +20,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import AddDayDialog from "./AddDayDialog";
+import EditDay from "./EditDay";
+
 
 const useStyles = makeStyles(theme => ({
     containerMain:{
@@ -63,8 +65,18 @@ function Dzienniczek() {
 
     const [dziennik, setDziennik] = useState([]);
     const [efektUczenia, setEfektUczenia] = useState([]);
-    const [loading, setLoading] = useState(true);
     
+    const [open,setOpen] = useState(false)
+    const [checkDay,setCheckDay] = useState(null)
+    const handleClose = () =>{
+        setOpen(false)
+    }
+
+    const handleOpen=(val)=>{
+      setCheckDay(val)
+      setOpen(true)
+    }
+
 
     const classes = useStyles();
     
@@ -83,7 +95,6 @@ function Dzienniczek() {
     useEffect(() => {
         axios.get("http://localhost:5000/api/getDziennik").then((res) => {
           setDziennik(res.data);
-          setLoading(false);
           
         });
       }, []);
@@ -151,6 +162,29 @@ function Dzienniczek() {
         
 
         <Grid >
+                <Grid container>
+                    <Grid item xs = {1}>
+                        <div>
+                            Dzień
+                        </div>
+                    </Grid>
+                    <Grid item xs = {1}>
+                        <div>
+                            Data
+                        </div>
+                    </Grid>
+                    <Grid item xs = {2}>
+                        <div>
+                            Status
+                        </div>
+                    </Grid>
+                    <Grid item xs = {1}>
+                        <div>
+                            Opis
+                        </div>
+                    </Grid>
+                </Grid>
+
             {dziennik.map((val) => (
                 <Grid container>
                     <Grid item xs = {1}>
@@ -168,17 +202,24 @@ function Dzienniczek() {
                             {val.zatwierdzenie}
                         </div>
                     </Grid>
+                    <Grid item xs = {3}>
+                        <div>
+                            {val.opis}
+                        </div>
+                    </Grid>
                     <Grid item xs = {1}>
                         <div>
-                            dar
+                        <Button 
+                            onClick={() => {handleOpen(val)}}
+                            variant="contained" color="warning">
+                            Edutuj
+                        </Button>
                         </div>
                     </Grid>
                 </Grid>
-                
-                
-
             ))}
         </Grid>
+        <EditDay open={open} handleClose={handleClose} checkDay={checkDay}/>
         <AddDayDialog
         addOpen={addOpen}
         handleAddClose={handleAddClose}

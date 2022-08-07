@@ -73,7 +73,6 @@ function AddDayDialog({
 
     const classes = useStyles();
 
-    
 
     const {
         dzien,
@@ -84,12 +83,10 @@ function AddDayDialog({
       } = dayObject;
 
 
-    const [age, setAge] = React.useState('');
-
-   
+    const [efekt, setEfekt] = React.useState('');
 
     const handleChange = (event) => {
-        setAge(event.target.value);
+        setEfekt(event.target.value);
     };
 
     
@@ -115,9 +112,6 @@ function AddDayDialog({
                             <form className={classes.form}>
                                 <div>
                                     <Grid container>
-                                        <Grid item marginRight={1}>
-                                            dar
-                                        </Grid>
                                         <Grid item marginRight={1}>
                                         <TextField className={classes.TextField}
                                             label="Dzień"
@@ -164,18 +158,6 @@ function AddDayDialog({
                                     />
                                 </div>
 
-                                <div>
-                                    <TextField className={classes.TextField}
-                                        fullWidth 
-                                        label="dar dar"
-                                        id="demoSimpleSelect"
-                                        value={demoSimpleSelect}
-                                        defaultValue = {age}
-                                        onChange={(e) => onChange(e)}
-                                        multiline
-                                        margin="normal"
-                                    />
-                                </div>
 
                                 <div>
                                     <Button variant="contained">Dodaj załącznik</Button>
@@ -187,17 +169,15 @@ function AddDayDialog({
                                         <Select
                                         labelId="demoSimpleSelect-label"
                                         id="demoSimpleSelect"
-                                        value={age}
+                                        value={efekt}
                                         label="Efekt uczenia się"
                                         onChange={handleChange}
-
                                         >
                                         <MenuItem value={0}>-</MenuItem>
                                         {efektUczenia.map((val) => (
                                             <MenuItem value={val.efektUczeniaSieNazwa}>{val.efektUczeniaSieNazwa}</MenuItem>
                                         ))
                                         }
-                                        
                                         </Select>
                                     </FormControl>
                                 </Box>

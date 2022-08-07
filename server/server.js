@@ -297,6 +297,7 @@ app.post("/api/createDay", async (req, res) => {
     const checkDay = await dziennik.findOne({
       where: {
         dzien: dayObject.dzien,
+        id_student: req.session.user.id,
       },
     });
     if (checkDay == null) {
