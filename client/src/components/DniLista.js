@@ -1,56 +1,75 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import Button from '@mui/material/Button'
+import Button from "@mui/material/Button";
 import DialogOpiekunZ from "./DialogOpiekunZ";
-import {useState} from 'react'
+import { useState } from "react";
 
 function DzienniczekDni(props) {
-  const [open,setOpen] = useState(false)
-  const [checkDay,setCheckDay] = useState(null)
-  const handleClose = () =>{
-      setOpen(false)
-  }
-  const handleOpen=(val)=>{
-    setCheckDay(val)
-    setOpen(true)
-  }
-  
+  const [open, setOpen] = useState(false);
+  const [checkDay, setCheckDay] = useState(null);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = (val) => {
+    setCheckDay(val);
+    setOpen(true);
+  };
+
   return (
     <div>
       <Grid container spacing={3}>
-        {props.Dzienniczek.map((val) => {
+        {props.dzienniczek.map((val) => {
           return (
             <Grid item xs={12} md={12} lg={6}>
               <div
                 style={{
-                  backgroundImage: 'linear-gradient(#073874, #042144)',
-                   color:'white',
+                  backgroundImage: "linear-gradient(#073874, #042144)",
+                  color: "white",
                   padding: "2rem",
                   display: "flex",
                   flexDirection: "column",
-                  borderRadius:'25px',
-                  boxShadow:' 0 0 5px black',
+                  borderRadius: "25px",
+                  boxShadow: " 0 0 5px black",
                 }}
               >
-                <div style={{display:'flex',justifyContent:'space-between'}}>Dzień : {val.id} <Button 
-                onClick={() => {handleOpen(val)}}
-                variant="contained" color="warning">
-                  Szczegóły
-                </Button></div> <div style={{margin:'1rem 0 1rem 0'}}>Tytuł: {val.title}</div> <div style={{margin:'0 0 1rem 0'}}>Student: {val.opis}</div>
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                <Button variant="contained" color="success">
-                  Akceptuj
-                </Button>
-                <Button variant="contained" color="error">
-                  Odrzuć
-                </Button>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  Dzień : {val.dzien} Data: {val.data}
+                  <Button
+                    onClick={() => {
+                      handleOpen(val);
+                    }}
+                    variant="contained"
+                    color="warning"
+                  >
+                    Szczegóły
+                  </Button>
+                </div>{" "}
+                <div style={{ margin: "1rem 0 1rem 0" }}>Opis: {val.opis}</div>{" "}
+                <div style={{ margin: "0 0 1rem 0" }}>
+                  Student: {val.user.login}
+                </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Button variant="contained" color="success">
+                    Akceptuj
+                  </Button>
+                  <Button variant="contained" color="error">
+                    Odrzuć
+                  </Button>
                 </div>
               </div>
             </Grid>
           );
         })}
       </Grid>
-      <DialogOpiekunZ open={open} handleClose={handleClose} checkDay={checkDay}/>
+      <DialogOpiekunZ
+        open={open}
+        handleClose={handleClose}
+        checkDay={checkDay}
+      />
     </div>
   );
 }

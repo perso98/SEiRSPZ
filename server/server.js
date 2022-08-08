@@ -147,13 +147,10 @@ app.get("/api/getStudents", async (req, res) => {
   res.send(listStudent);
 });
 
-
 app.get("/api/getDziennik", async (req, res) => {
-
   const listDziennik = await dziennik.findAll({
     where: { userId: req.session.user.id },
   });
-
 
   res.send(listDziennik);
 });
@@ -232,10 +229,7 @@ app.post("/api/createForm", async (req, res) => {
 
 app.put("/api/changeRole", async (req, res) => {
   const { action, type, id } = req.body;
-  updatedStudent = await user.update(
-    { [action]: type },
-    { where: { id: id } }
-  );
+  updatedStudent = await user.update({ [action]: type }, { where: { id: id } });
   res.send(updatedStudent);
 });
 
@@ -339,5 +333,17 @@ app.delete("/api/deleteUser/:id", async (req, res) => {
     res.send({ message: "Usunięto" });
   } catch (err) {
     res.send({ message: err.message });
+  }
+});
+//pobieranie dni dla opiekunaZ
+
+app.get("/api/getDaysOpiekunZ", async (req, res) => {
+  try {
+    const getDays = await dziennik.findAll({
+      include: { model: user, where: { id_opiekunZ: req.session.user.id } },
+    });
+    res.send(getDays);
+  } catch (err) {
+    console.log(err);
   }
 });
