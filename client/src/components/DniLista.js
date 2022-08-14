@@ -26,7 +26,8 @@ function DzienniczekDni(props) {
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  Dzień : {val.dzien} Data: {val.data}
+                  <h6 style={{ textAlign: "center" }}>Dzień: {val.dzien}</h6>{" "}
+                  <h6 style={{ textAlign: "center" }}>Data: {val.data}</h6>
                   <Button
                     onClick={() => {
                       props.handleOpen(val);
@@ -34,13 +35,18 @@ function DzienniczekDni(props) {
                     variant="contained"
                     color="warning"
                   >
-                    Szczegóły
+                    Edycja
                   </Button>
                 </div>{" "}
                 {props.status &&
                   (val.statusOpiekunaZ == "Zaakceptowano" ? (
                     <div
-                      style={{ color: "green", display: "flex", gap: "0.4rem" }}
+                      style={{
+                        color: "green",
+                        display: "flex",
+                        gap: "0.4rem",
+                        marginTop: "1rem",
+                      }}
                     >
                       <h6 style={{ color: "white" }}>
                         Status opiekuna zakładowego:
@@ -53,6 +59,7 @@ function DzienniczekDni(props) {
                         color: "#A52A2A",
                         display: "flex",
                         gap: "0.4rem",
+                        marginTop: "1rem",
                       }}
                     >
                       <h6 style={{ color: "white" }}>
@@ -64,7 +71,12 @@ function DzienniczekDni(props) {
                 {props.status &&
                   (val.statusOpiekunaU == "Zaakceptowano" ? (
                     <div
-                      style={{ color: "green", display: "flex", gap: "0.4rem" }}
+                      style={{
+                        color: "green",
+                        display: "flex",
+                        gap: "0.4rem",
+                        marginTop: "1rem",
+                      }}
                     >
                       <h6 style={{ color: "white" }}>
                         Status opiekuna uczelnianego:
@@ -77,6 +89,7 @@ function DzienniczekDni(props) {
                         color: "#A52A2A",
                         display: "flex",
                         gap: "0.4rem",
+                        marginTop: "1rem",
                       }}
                     >
                       <h6 style={{ color: "white" }}>

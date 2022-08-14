@@ -33,7 +33,8 @@ export default function Pagination(props) {
         breakLabel="..."
         nextLabel=">"
         onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
+        pageRangeDisplayed={4}
+        marginPagesDisplayed={0}
         pageCount={pageCount}
         previousLabel="<"
         renderOnZeroPageCount={null}
