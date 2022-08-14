@@ -12,25 +12,23 @@ import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 
 import Dialog from "@mui/material/Dialog";
 
-
-const useStyles = makeStyles(theme => ({
-    container:{
-        paddingTop: theme.spacing(2),
-        position: "fixed",
-        top: 0,
-        left: 0,
-        height: "100vh",
-        // width: "20vh",
-        // maxWidth: " 15vh",
-        color: "white",
-        backgroundColor: "#022d61",
-        paddingLeft: theme.spacing(3),
-        [theme.breakpoints.down("sm")]:{
-          alignItems: "center",
-          paddingRight: theme.spacing(0),
-          paddingLeft: theme.spacing(2),
-          marginTop: theme.spacing(-1),
-      }
+const useStyles = makeStyles((theme) => ({
+  container: {
+    paddingTop: theme.spacing(2),
+    position: "fixed",
+    top: 0,
+    left: 0,
+    height: "100vh",
+    // width: "20vh",
+    // maxWidth: " 15vh",
+    color: "white",
+    backgroundColor: "#022d61",
+    paddingLeft: theme.spacing(3),
+    [theme.breakpoints.down("sm")]: {
+      alignItems: "center",
+      paddingRight: theme.spacing(0),
+      paddingLeft: theme.spacing(2),
+      marginTop: theme.spacing(-1),
     },
   },
   item: {
@@ -56,11 +54,11 @@ const useStyles = makeStyles(theme => ({
   sidebarIcon: {
     color: "white",
   },
-
-    sidebarIconbtn:{
-      color:'white',
-      position:"flex",
-      right: 0
+  sidebarIconbtn: {
+    color: "white",
+    position: "flex",
+    right: 0,
+  },
 
   sidebarIconcontainer: {
     position: "absolute",
@@ -83,108 +81,115 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Sidebar() {
+  const [open, setOpen] = useState(false);
 
-  const [open,setOpen] = useState(false)
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  const handleClose = () =>{
-      setOpen(false)
-  }
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
-  const handleOpen = () =>{
-    setOpen(true)
-  }
-
-  const [student,setStudent]=useState()
-  const [admin,setAdmin]=useState()
-  const [opiekunZ,setOpiekunZ]=useState()
-  Axios.defaults.withCredentials=true
-  useEffect(()=>{
-      Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>
-      {
-          if(res.data.logged==true)
-          {
-              setStudent(res.data.user.isStudent)
-              setAdmin(res.data.user.isAdmin)
-              setOpiekunZ(res.data.user.isOpiekunZakl)
-             
-          }
-      })
-  })
+  const [student, setStudent] = useState();
+  const [admin, setAdmin] = useState();
+  const [opiekunZ, setOpiekunZ] = useState();
+  Axios.defaults.withCredentials = true;
+  useEffect(() => {
+    Axios.get("http://localhost:5000/api/loginToAccount").then((res) => {
+      if (res.data.logged == true) {
+        setStudent(res.data.user.isStudent);
+        setAdmin(res.data.user.isAdmin);
+        setOpiekunZ(res.data.user.isOpiekunZakl);
+      }
+    });
+  });
   const classes = useStyles();
 
   return (
     <>
-      <Button
-      onClick={handleOpen}>
-        <DehazeIcon className={classes.sidebarIconbtn}/>
+      <Button onClick={handleOpen}>
+        <DehazeIcon className={classes.sidebarIconbtn} />
       </Button>
-      
-      <Dialog
-        open={open}
-        onClose={handleClose}>
-      <div className={classes.sidebarIconcontainer}>
-        <div>
-            
-          <div className={classes.menu}>
-            <div className={classes.container}>
-            <Button 
-            onClick={handleClose}>
-              <DehazeIcon className={classes.sidebarIcon}/>
-            </Button>
-                { student==1 && <Link to ='profil/Dzienniczek' className={classes.links} >
-                  <div className={classes.item}>
-                    <DateRangeIcon className={classes.icon}/>
-                    <Typography className={classes.text} >Dzienniczek</Typography> 
-                  </div>
-                </Link> }
 
-                <Link to ='profil/Form' className={classes.links} >
+      <Dialog open={open} onClose={handleClose}>
+        <div className={classes.sidebarIconcontainer}>
+          <div>
+            <div className={classes.menu}>
+              <div className={classes.container}>
+                <Button onClick={handleClose}>
+                  <DehazeIcon className={classes.sidebarIcon} />
+                </Button>
+                {student == 1 && (
+                  <Link to="profil/Dzienniczek" className={classes.links}>
+                    <div className={classes.item}>
+                      <DateRangeIcon className={classes.icon} />
+                      <Typography className={classes.text}>
+                        Dzienniczek
+                      </Typography>
+                    </div>
+                  </Link>
+                )}
+
+                <Link to="profil/Form" className={classes.links}>
                   <div className={classes.item}>
-                      <AssignmentIcon className={classes.icon}/>
-                      <Typography className={classes.text} >Formularz</Typography>
+                    <AssignmentIcon className={classes.icon} />
+                    <Typography className={classes.text}>Formularz</Typography>
                   </div>
                 </Link>
 
                 <div className={classes.item}>
                   <QuestionMarkIcon className={classes.icon} />
-                  <Typography className={classes.text} >Pomoc</Typography>
+                  <Typography className={classes.text}>Pomoc</Typography>
                 </div>
 
                 <div className={classes.item}>
-                  <Link to ='Home' className={classes.links} >
+                  <Link to="Home" className={classes.links}>
                     <div className={classes.item}>
                       <Homeicon className={classes.icon} />
-                      <Typography className={classes.text} >Strona główna</Typography>
+                      <Typography className={classes.text}>
+                        Strona główna
+                      </Typography>
                     </div>
                   </Link>
                 </div>
 
                 <div className={classes.item}>
-                  { admin==1 && <Link to ='profil/Uprawnienia' className={classes.links} >
-                    <div className={classes.item}>
-                      <Homeicon className={classes.icon} />
-                      <Typography className={classes.text} >Uprawnienia</Typography>
-                    </div>
-                  </Link>}
+                  {admin == 1 && (
+                    <Link to="profil/Uprawnienia" className={classes.links}>
+                      <div className={classes.item}>
+                        <Homeicon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Uprawnienia
+                        </Typography>
+                      </div>
+                    </Link>
+                  )}
                 </div>
-                
+
                 <div className={classes.item}>
-                  { opiekunZ==1 && <Link to ='profil/OpiekunZ' className={classes.links} >
-                    <div className={classes.item}>
-                      <Homeicon className={classes.icon} />
-                      <Typography className={classes.text} >Opiekun Z</Typography>
-                    </div>
-                  </Link>}
+                  {opiekunZ == 1 && (
+                    <Link to="profil/OpiekunZ" className={classes.links}>
+                      <div className={classes.item}>
+                        <Homeicon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Opiekun Z
+                        </Typography>
+                      </div>
+                    </Link>
+                  )}
                 </div>
+                <Link to="profil/opiekunStatus" className={classes.links}>
+                  <div className={classes.item}>
+                    <Homeicon className={classes.icon} />
+                    <Typography className={classes.text}>
+                      Opiekun Status
+                    </Typography>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
-          <Link to="profil/opiekunStatus" className={classes.links}>
-            <div className={classes.item}>
-              <Homeicon className={classes.icon} />
-              <Typography className={classes.text}>Opiekun Status</Typography>
-            </div>
-          </Link>
         </div>
       </Dialog>
     </>
