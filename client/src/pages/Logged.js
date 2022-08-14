@@ -13,11 +13,10 @@ import NoPage from '../components/NoPage'
 import OpiekunZ from '../components/OpiekunZ';
 import DodawanieOpiekunow from '../components/DodawanieOpiekunow';
 import Dane from '../components/Dane';
-
+import OpiekunStatus from "../components/OpiekunStatus";
 
 function Logged() {
    
-
   return (   
     <Grid container>
     {/* <Grid item >
@@ -34,6 +33,7 @@ function Logged() {
             <Route path='uprawnienia' element={<Uprawnienia/>}/>
             <Route path='opiekunZ' element={<OpiekunZ/>}/>
             <Route path='*' element={<NoPage/>}/>
+            <Route path="opiekunStatus" element={<OpiekunStatus />} />
             {/* <Route path='ListaStudentow' element={<ListaStudentow/>}/> */}
           </Route>
         </Routes>
