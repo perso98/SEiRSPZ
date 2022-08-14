@@ -28,10 +28,12 @@ function Nav() {
     },
     toolbar: {
       display: "flex",
-      justifyContent: "space-around",
-      [theme.breakpoints.down("md")]: {
-        justifyContent: "space-between",
-      },
+      
+      justifyContent: "space-between",
+      // justifyContent: "space-around",
+      // [theme.breakpoints.down("md")]: {
+      //   justifyContent: "space-between",
+      // },
     },
 
     login: {
