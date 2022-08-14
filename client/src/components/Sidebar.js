@@ -81,35 +81,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Sidebar() {
+  const [open, setOpen] = useState(false);
 
-  const [open,setOpen] = useState(false)
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  const handleClose = () =>{
-      setOpen(false)
-  }
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
-  const handleOpen = () =>{
-    setOpen(true)
-  }
-
-  const [student,setStudent]=useState()
-  const [admin,setAdmin]=useState()
-  const [opiekunZ,setOpiekunZ]=useState()
-  const [dziekanat,setDziekanat]=useState()
-  Axios.defaults.withCredentials=true
-  useEffect(()=>{
-      Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>
-      {
-          if(res.data.logged==true)
-          {
-              setStudent(res.data.user.isStudent)
-              setAdmin(res.data.user.isAdmin)
-              setOpiekunZ(res.data.user.isOpiekunZakl)
-              setDziekanat(res.data.user.isDziekanat)
-             
-          }
-      })
-  })
+  const [student, setStudent] = useState();
+  const [admin, setAdmin] = useState();
+  const [opiekunZ, setOpiekunZ] = useState();
+  const [dziekanat, setDziekanat] = useState();
+  Axios.defaults.withCredentials = true;
+  useEffect(() => {
+    Axios.get("http://localhost:5000/api/loginToAccount").then((res) => {
+      if (res.data.logged == true) {
+        setStudent(res.data.user.isStudent);
+        setAdmin(res.data.user.isAdmin);
+        setOpiekunZ(res.data.user.isOpiekunZakl);
+        setDziekanat(res.data.user.isDziekanat);
+      }
+    });
+  });
   const classes = useStyles();
 
   return (
@@ -117,50 +113,57 @@ function Sidebar() {
       <Button onClick={handleOpen}>
         <DehazeIcon className={classes.sidebarIconbtn} />
       </Button>
-      
-      <Dialog
-        open={open}
-        onClose={handleClose}>
-      <div className={classes.sidebarIconcontainer}>
-        <div>
-            
-          <div className={classes.menu}>
-            <div className={classes.container}>
-            <Button 
-            onClick={handleClose}>
-              <DehazeIcon className={classes.sidebarIcon}/>
-            </Button>
-                { student==1 && (<Link to ='profil/Dzienniczek' className={classes.links} >
-                  <div className={classes.item}>
-                    <DateRangeIcon className={classes.icon}/>
-                    <Typography className={classes.text} >Dzienniczek</Typography> 
-                  </div>
-                </Link> 
+
+      <Dialog open={open} onClose={handleClose}>
+        <div className={classes.sidebarIconcontainer}>
+          <div>
+            <div className={classes.menu}>
+              <div className={classes.container}>
+                <Button onClick={handleClose}>
+                  <DehazeIcon className={classes.sidebarIcon} />
+                </Button>
+                {student == 1 && (
+                  <Link to="profil/Dzienniczek" className={classes.links}>
+                    <div className={classes.item}>
+                      <DateRangeIcon className={classes.icon} />
+                      <Typography className={classes.text}>
+                        Dzienniczek
+                      </Typography>
+                    </div>
+                  </Link>
                 )}
-                { dziekanat==1 && <div>
-                <Link to ='profil/Dane' className={classes.links} >
-                  <div className={classes.item}>
-                      <AssignmentIcon className={classes.icon}/>
-                      <Typography className={classes.text} >Dodaj dane</Typography>
-                  </div>
-                </Link> 
+                {dziekanat == 1 && (
+                  <div>
+                    <Link to="profil/Dane" className={classes.links}>
+                      <div className={classes.item}>
+                        <AssignmentIcon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Dodaj dane
+                        </Typography>
+                      </div>
+                    </Link>
 
-                <Link to ='profil/DodawanieOpiekunow' className={classes.links} >
-                  <div className={classes.item}>
-                      <AssignmentIcon className={classes.icon}/>
-                      <Typography className={classes.text} >Dodaj opiekunów</Typography>
-                  </div>
-                </Link> 
+                    <Link
+                      to="profil/DodawanieOpiekunow"
+                      className={classes.links}
+                    >
+                      <div className={classes.item}>
+                        <AssignmentIcon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Dodaj opiekunów
+                        </Typography>
+                      </div>
+                    </Link>
 
-                <Link to ='profil/Form' className={classes.links} >
-                  <div className={classes.item}>
-                      <AssignmentIcon className={classes.icon}/>
-                      <Typography className={classes.text} >Form</Typography>
+                    <Link to="profil/Form" className={classes.links}>
+                      <div className={classes.item}>
+                        <AssignmentIcon className={classes.icon} />
+                        <Typography className={classes.text}>Form</Typography>
+                      </div>
+                    </Link>
                   </div>
-                </Link> 
-                </div>
-                }
-                
+                )}
+
                 <div className={classes.item}>
                   <QuestionMarkIcon className={classes.icon} />
                   <Typography className={classes.text}>Pomoc</Typography>
@@ -191,16 +194,14 @@ function Sidebar() {
                 </div>
 
                 <div className={classes.item}>
-                  {opiekunZ == 1 && (
-                    <Link to="profil/OpiekunZ" className={classes.links}>
-                      <div className={classes.item}>
-                        <Homeicon className={classes.icon} />
-                        <Typography className={classes.text}>
-                          Opiekun Z
-                        </Typography>
-                      </div>
-                    </Link>
-                  )}
+                  <Link to="profil/OpiekunZ" className={classes.links}>
+                    <div className={classes.item}>
+                      <Homeicon className={classes.icon} />
+                      <Typography className={classes.text}>
+                        Opiekun Z
+                      </Typography>
+                    </div>
+                  </Link>
                 </div>
                 <Link to="profil/opiekunStatus" className={classes.links}>
                   <div className={classes.item}>

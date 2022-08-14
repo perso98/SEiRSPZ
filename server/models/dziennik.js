@@ -39,20 +39,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
     });
-  };
-
-  dziennik.associate = (models) => {
+    dziennik.hasMany(models.komentarze, {
+      onDelete: "cascade",
+    });
     dziennik.hasMany(models.dzienZalaczniki, {
       onDelete: "cascade",
     });
   };
-
-  dziennik.associate = (models) => {
-    dziennik.hasMany(models.komentarze, {
-      onDelete: "cascade",
-    });
-  };
-
 
   return dziennik;
 };

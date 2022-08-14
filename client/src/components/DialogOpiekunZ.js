@@ -37,7 +37,8 @@ function DialogOpiekunZ(props) {
                   margin="normal"
                   label="Opis"
                   style={{ width: "100%" }}
-                  value={props.checkDay.opis}
+                  defaultValue={props.checkDay.opis}
+                  onChange={(e) => props.setOpis(e.target.value)}
                 />
               </div>
 
@@ -52,6 +53,7 @@ function DialogOpiekunZ(props) {
                   margin="normal"
                   label="Dodaj komentarz"
                   style={{ width: "100%" }}
+                  onChange={(e) => props.setKomentarz(e.target.value)}
                 />
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -60,7 +62,7 @@ function DialogOpiekunZ(props) {
                   variant="contained"
                   color="success"
                   onClick={() => {
-                    props.acceptStatus(props.checkDay.id);
+                    props.acceptStatusEdit(props.checkDay.id);
                     props.handleClose();
                   }}
                 >
@@ -70,7 +72,7 @@ function DialogOpiekunZ(props) {
                   variant="contained"
                   color="error"
                   onClick={() => {
-                    props.declineStatus(props.checkDay.id);
+                    props.declineStatusEdit(props.checkDay.id);
                     props.handleClose();
                   }}
                 >

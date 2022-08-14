@@ -14,6 +14,8 @@ function OpiekunZ() {
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
   const [itemOffset, setItemOffset] = useState(0);
+  const [komentarz, setKomentarz] = useState("");
+  const [opis, setOpis] = useState();
   const handleClose = () => {
     setOpen(false);
   };
@@ -47,6 +49,38 @@ function OpiekunZ() {
     axios
       .post("http://localhost:5000/api/declineStatus", {
         id: id,
+      })
+      .then((res) => {
+        setDzienniczek(
+          dzienniczek.filter((val) => {
+            return val.id != id;
+          })
+        );
+      });
+  };
+
+  const acceptStatusEdit = (id) => {
+    axios
+      .post("http://localhost:5000/api/acceptStatusEdit", {
+        id: id,
+        opis: opis,
+        komentarz: komentarz,
+      })
+      .then((res) => {
+        setDzienniczek(
+          dzienniczek.filter((val) => {
+            return val.id != id;
+          })
+        );
+      });
+  };
+
+  const declineStatusEdit = (id) => {
+    axios
+      .post("http://localhost:5000/api/declineStatusEdit", {
+        id: id,
+        opis: opis,
+        komentarz: komentarz,
       })
       .then((res) => {
         setDzienniczek(
@@ -94,8 +128,10 @@ function OpiekunZ() {
         open={open}
         handleClose={handleClose}
         checkDay={checkDay}
-        acceptStatus={acceptStatus}
-        declineStatus={declineStatus}
+        acceptStatusEdit={acceptStatusEdit}
+        declineStatusEdit={declineStatusEdit}
+        setOpis={setOpis}
+        setKomentarz={setKomentarz}
       />
     </>
   );
