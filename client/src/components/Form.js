@@ -1,9 +1,17 @@
 import React,{useState,useEffect} from 'react'
 import Axios from "axios"
+import { makeStyles } from '@mui/styles'
+
+const useStyles = makeStyles(theme => ({
+    container:{
+        marginBottom: theme.spacing(10)
+    },
+}));
+
 
 function Form() {
-    const [login,setlogin]=useState("");
-    const [haslo,sethaslo]=useState("");
+    const classes = useStyles();
+
     const [imie,setimie]=useState("");
     const [nazwisko,setNazwisko]=useState("");
     const [indeks,setIndeks]=useState("");
@@ -14,16 +22,15 @@ function Form() {
     const [rodzaj_studiow, setRodzaj_studiow] = useState("");
     const [telefon, setTelefon] = useState("");
     const [email, setEmail] = useState("");
-    const [rola, setRola] = useState("");
+    
     const [FormStatus, setFormStatus] = useState("");
     
+
 
     const createForm = ()=>
     {
         Axios.post("http://localhost:5000/api/createForm",
         {
-            login : login,
-            haslo : haslo,
             imie : imie,
             nazwisko : nazwisko,
             indeks : indeks,
@@ -34,7 +41,6 @@ function Form() {
             rodzaj_studiow : rodzaj_studiow,
             telefon : telefon,
             email : email,
-            rola : rola,
         }).then((res) => {
             if (res.data.message) {
                 setFormStatus(res.data.message);
@@ -43,27 +49,10 @@ function Form() {
     }
 
     return (
+        <div className={classes.container}>
         <div className='center'> 
             <div className='homeClass'><h3>Form</h3>
                 <div className='form-group'>
-                    <div>
-                        <label for="student">Student</label>
-                        <input type="radio" name="rola" id="student" value="student" onChange={(e=>{setRola(e.target.value)})} ></input>
-                        <label for="dyrektor">Dyrektor</label>
-                        <input type="radio" name="rola" id="dyrektor" value="dyrektor" onChange={(e=>{setRola(e.target.value)})} ></input>
-                        <label for="opiekun">Opiekun</label>
-                        <input type="radio" name="rola" id="opiekun" value="opiekun" onChange={(e=>{setRola(e.target.value)})} ></input>
-                    </div>
-
-                    <div>
-                        <label>login :</label>
-                        <input type="text" name="login" placeholder="Podaj login" onChange={(e=>{setlogin(e.target.value)})} ></input>
-                    </div>
-                    <div>
-                        <label>hasło :</label>
-                        <input type="text" name="haslo" placeholder="Podaj haslo" onChange={(e=>{sethaslo(e.target.value)})} ></input>
-                    </div>
-
                     <div>
                         <label>Imie :</label>
                         <input type="text" name="imie" placeholder="Podaj imie" onChange={(e=>{setimie(e.target.value)})} ></input>
@@ -112,6 +101,7 @@ function Form() {
                     <h4>{FormStatus}</h4>
 
                 </div>
+        </div>
         </div>
         </div>
     )

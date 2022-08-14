@@ -37,7 +37,7 @@ export const loginToAccount = async (
     password: password,
   }).then((res) => {
     if (res.data.message) setLoginStatus(res.data.message);
-    if (res.data.logged) navigate("/profil");
+    if (res.data.logged) navigate("/home");
     else {
       setOpen(true);
     }

@@ -11,7 +11,8 @@ import Konto from '../components/Konto';
 import Uprawnienia from '../components/Uprawnienia';
 import NoPage from '../components/NoPage'
 import OpiekunZ from '../components/OpiekunZ';
-
+import DodawanieOpiekunow from '../components/DodawanieOpiekunow';
+import Dane from '../components/Dane';
 
 
 function Logged() {
@@ -28,6 +29,7 @@ function Logged() {
             <Route index element={<Dzienniczek/>}/>
             <Route path='Form' element={<Form/>}/>
             <Route path='Dzienniczek' element={<Dzienniczek/>}/>
+            <Route path='DodawanieOpiekunow' element={<DodawanieOpiekunow/>}/>
             <Route path='konto' element={<Konto/>}/>
             <Route path='uprawnienia' element={<Uprawnienia/>}/>
             <Route path='opiekunZ' element={<OpiekunZ/>}/>

@@ -1,6 +1,6 @@
 module.exports=(sequelize,DataTypes)=>
 {
-const komentarze=sequelize.define("komentarze",
+const efektyStudent=sequelize.define("efektyStudent",
 {
     komentarz:{
         type:DataTypes.STRING,
@@ -11,15 +11,9 @@ const komentarze=sequelize.define("komentarze",
     collate: 'utf8_general_ci',
   })
 
-  komentarze.associate = models => {
-    komentarze.belongsTo(models.dziennik, {
-        foreignKey: {
-            allowNull: true
-        }
-    });
-}
-komentarze.associate = models => {
-    komentarze.belongsTo(models.user, {
+
+  efektyStudent.associate = models => {
+    efektyStudent.belongsTo(models.user, {
         foreignKey: {
             allowNull: true
         }
@@ -27,6 +21,15 @@ komentarze.associate = models => {
 }
 
 
+efektyStudent.associate = models => {
+    efektyStudent.belongsTo(models.efektyLista, {
+        foreignKey: {
+            allowNull: true
+        }
+    });
+}
 
-return komentarze
+
+
+return efektyStudent
 }

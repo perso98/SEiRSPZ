@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      id_efekt_uczenia: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       statusOpiekunaU: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -38,6 +34,14 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   dziennik.associate = (models) => {
+    dziennik.belongsTo(models.user, {
+      foreignKey: {
+        allowNull: true,
+      },
+    });
+  };
+
+  dziennik.associate = (models) => {
     dziennik.hasMany(models.dzienZalaczniki, {
       onDelete: "cascade",
     });
@@ -49,13 +53,6 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  dziennik.associate = (models) => {
-    dziennik.belongsTo(models.user, {
-      foreignKey: {
-        allowNull: true,
-      },
-    });
-  };
 
   return dziennik;
 };

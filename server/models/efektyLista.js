@@ -1,8 +1,8 @@
 module.exports=(sequelize,DataTypes)=>
 {
-const efektUczeniaSie=sequelize.define("efektUczeniaSie",
+const efektyLista=sequelize.define("efektyLista",
 {
-    efektUczeniaSieNazwa:{
+    nazwa:{
         type:DataTypes.STRING,
         allowNull:true,
     },
@@ -15,6 +15,13 @@ const efektUczeniaSie=sequelize.define("efektUczeniaSie",
     collate: 'utf8_general_ci',
   })
 
+  efektyLista.associate = (models) => {
+    efektyLista.hasMany(models.efektyStudent, {
+      onDelete: "cascade",
+    });
+  };
 
-return efektUczeniaSie
+
+
+return efektyLista
 }

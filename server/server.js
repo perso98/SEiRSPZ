@@ -5,7 +5,7 @@ const db = require("./models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
-const { user, dziennik, efektUczeniaSie } = require("./models");
+const { user, dziennik, efektUczeniaSie, dane, komentarze,  } = require("./models");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 
@@ -161,6 +161,66 @@ app.get("/api/getEfektUczenia", async (req, res) => {
   res.send(listEfektUczenia);
 });
 
+
+app.get("/api/getOpiekuni", async (req, res) => {
+  const listOpiekun = await user.findAll({
+    where: { isOpiekun: 1 },
+  })
+
+  const listStudentsO = await user.findAll({
+    where: 
+    {
+      [Op.or]: [
+        { id_opiekunZ: null },
+        { id_opiekunU: null }
+      ],
+      [Op.and]: [
+        { isStudent: 1 },
+      ],
+    }
+  });
+
+  res.send(listOpiekun, listStudentsO);
+});
+
+app.get("/api/getOpiekun/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const Opiekun = await dane.findOne({
+    where: { id: id },
+  })
+
+  res.send(Opiekun);
+});
+
+app.get("/api/getStudentsO", async (req, res) => {
+  const { Op } = require("sequelize");
+  const listStudentsO = await user.findAll({
+    where: 
+    {
+      [Op.or]: [
+        { id_opiekunZ: null },
+        { id_opiekunU: null }
+      ],
+      [Op.and]: [
+        { isStudent: 1 },
+      ],
+    }
+  });
+  console.log(listStudentsO)
+  res.send(listStudentsO);
+});
+
+app.get("/api/getStudentsNO", async (req, res) => {
+  const listDziennik = await dziennik.findAll({
+    where: { userId: req.session.user.id },
+  });
+
+  res.send(listDziennik);
+});
+
+
+
 app.post("/api/changePasswordToAccount", async (req, res) => {
   const { changePassword, changePassword2 } = req.body;
   if (changePassword == changePassword2) {
@@ -175,10 +235,7 @@ app.post("/api/changePasswordToAccount", async (req, res) => {
 
 app.post("/api/createForm", async (req, res) => {
   try {
-    //await db.sequelize.transaction(async function (t) {
     const {
-      login,
-      haslo,
       imie,
       nazwisko,
       indeks,
@@ -189,13 +246,10 @@ app.post("/api/createForm", async (req, res) => {
       rodzaj_studiow,
       telefon,
       email,
-      rola,
     } = req.body;
 
-    user.create(
+    await dane.create(
       {
-        login: login,
-        haslo: await bcrypt.hash(haslo, 10),
         imie: imie,
         nazwisko: nazwisko,
         indeks: indeks,
@@ -206,16 +260,11 @@ app.post("/api/createForm", async (req, res) => {
         rodzaj_studiow: rodzaj_studiow,
         telefon: telefon,
         email: email,
-        rola: rola,
       }
-      // , {
-      //     transaction: t,
-      // }
     );
     console.log("Wysłano");
     res.send({
       message: "pomyślnie wysłano ;)",
-      //});
     });
   } catch {
     console.log("Błąd");
@@ -305,7 +354,8 @@ app.post("/api/createDay", async (req, res) => {
         ilosc_godzin: dayObject.iloscGodzin,
         opis: dayObject.opis,
         efekt_uczenia: dayObject.demoSimpleSelect,
-        status: "Nie zatwierdzono",
+        statusOpiekunaU: "Nie zatwierdzono",
+        statusOpiekunaZ: "Nie zatwierdzono",
         // potrzebna zmiana w bazie na bool
       });
 

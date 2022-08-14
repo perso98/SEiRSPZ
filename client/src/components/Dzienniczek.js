@@ -25,6 +25,7 @@ import EditDay from "./EditDay";
 
 const useStyles = makeStyles(theme => ({
     containerMain:{
+        margin: "15px",
         height: "100%",
     },
     dni:{
@@ -59,6 +60,9 @@ const useStyles = makeStyles(theme => ({
     form:{
         paddingRight: theme.spacing(2),
     },
+    nowyDzienBTN:{
+        marginBottom: "15px",
+    }
 }));
 
 function Dzienniczek() {
@@ -76,7 +80,6 @@ function Dzienniczek() {
       setCheckDay(val)
       setOpen(true)
     }
-
 
     const classes = useStyles();
     
@@ -147,20 +150,16 @@ function Dzienniczek() {
             alert(res.data.message);
           });
       };
-      
-    
 
   return (
     
     <div className={classes.containerMain}>
- 
- 
-        <Button variant="contained" onClick={handleAddOpen}>
+        <div className={classes.nowyDzienBTN}>
+        <Button  variant="contained" onClick={handleAddOpen}>
           Dodaj nowy dzień
         </Button>
-    
+        </div>
         
-
         <Grid >
                 <Grid container>
                     <Grid item xs = {1}>
@@ -175,7 +174,12 @@ function Dzienniczek() {
                     </Grid>
                     <Grid item xs = {2}>
                         <div>
-                            Status
+                            Status Opiekuna Uczelnianego
+                        </div>
+                    </Grid>
+                    <Grid item xs = {2}>
+                        <div>
+                            Status Opiekuna Zakładowego
                         </div>
                     </Grid>
                     <Grid item xs = {1}>
@@ -199,7 +203,12 @@ function Dzienniczek() {
                     </Grid>
                     <Grid item xs = {2}>
                         <div>
-                            {val.status}
+                            {val.statusOpiekunaU}
+                        </div>
+                    </Grid>
+                    <Grid item xs = {2}>
+                        <div>
+                            {val.statusOpiekunaZ}
                         </div>
                     </Grid>
                     <Grid item xs = {3}>

@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
       charset: "utf8",
       collate: "utf8_general_ci",
     }
-  );
+  )
 
   user.associate = (models) => {
     user.belongsTo(models.dane, {
@@ -67,11 +67,14 @@ module.exports = (sequelize, DataTypes) => {
     user.hasMany(models.dziennik, {
       onDelete: "cascade",
     });
-  };
+    user.hasMany(models.komentarze, {
+      onDelete: "cascade",
+    })
+    user.hasMany(models.efektyStudent, {
+      onDelete: "cascade",
+    });
+  }
 
-  user.associate = (models) => {
-    user.hasMany(models.komentarze);
-  };
 
   return user;
 };

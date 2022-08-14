@@ -101,6 +101,7 @@ function Sidebar() {
   const [student,setStudent]=useState()
   const [admin,setAdmin]=useState()
   const [opiekunZ,setOpiekunZ]=useState()
+  const [dziekanat,setDziekanat]=useState()
   Axios.defaults.withCredentials=true
   useEffect(()=>{
       Axios.get("http://localhost:5000/api/loginToAccount").then((res)=>
@@ -110,6 +111,7 @@ function Sidebar() {
               setStudent(res.data.user.isStudent)
               setAdmin(res.data.user.isAdmin)
               setOpiekunZ(res.data.user.isOpiekunZakl)
+              setDziekanat(res.data.user.isDziekanat)
              
           }
       })
@@ -142,12 +144,29 @@ function Sidebar() {
                   </div>
                 </Link> }
 
+                { dziekanat==1 && <div>
+                <Link to ='profil/Dane' className={classes.links} >
+                  <div className={classes.item}>
+                      <AssignmentIcon className={classes.icon}/>
+                      <Typography className={classes.text} >Dodaj dane</Typography>
+                  </div>
+                </Link> 
+
+                <Link to ='profil/DodawanieOpiekunow' className={classes.links} >
+                  <div className={classes.item}>
+                      <AssignmentIcon className={classes.icon}/>
+                      <Typography className={classes.text} >Dodaj opiekunów</Typography>
+                  </div>
+                </Link> 
+
                 <Link to ='profil/Form' className={classes.links} >
                   <div className={classes.item}>
                       <AssignmentIcon className={classes.icon}/>
-                      <Typography className={classes.text} >Formularz</Typography>
+                      <Typography className={classes.text} >Form</Typography>
                   </div>
-                </Link>
+                </Link> 
+                </div>
+                }
 
                 <div className={classes.item}>
                   <QuestionMarkIcon className={classes.icon} />

@@ -30,11 +30,18 @@ function EditDay({ open, handleClose, checkDay }) {
           <DialogContent>
 
             <div style={{ margin: "1rem 0px 1rem 0 " }}>
-            <h5>Opis:</h5> {checkDay.opis}
+              <h5>Opis:</h5> {checkDay.opis}
             </div>
 
             <div style={{ margin: "1rem 0px 1rem 0 " }}>
-            <h5>Zatwierdzenie: </h5>{checkDay.zatwierdzenie}
+              <b>Zatwierdzenie </b>
+
+              <h5>Opiekun uczelniany: </h5>
+              {checkDay.statusOpiekunaU}
+
+              <h5>Opiekun zakładowy: </h5>
+              {checkDay.statusOpiekunaZ}
+
             </div>
 
             <h5>Efekty uczenia:</h5>
