@@ -4,6 +4,7 @@ const app = express();
 const db = require("./models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const { Op } = require("sequelize");
 
 const { user, dziennik, efektUczeniaSie, dane, komentarze,  } = require("./models");
 const cors = require("cors");
@@ -388,12 +389,102 @@ app.delete("/api/deleteUser/:id", async (req, res) => {
 //pobieranie dni dla opiekunaZ
 
 app.get("/api/getDaysOpiekunZ", async (req, res) => {
-  try {
-    const getDays = await dziennik.findAll({
-      include: { model: user, where: { id_opiekunZ: req.session.user.id } },
-    });
-    res.send(getDays);
-  } catch (err) {
-    console.log(err);
-  }
+  if (req.session.user.isOpiekunZakl)
+    try {
+      const getDays = await dziennik.findAll({
+        where: { statusOpiekunaZ: { [Op.eq]: null } },
+        include: { model: user, where: { id_opiekunZ: req.session.user.id } },
+      });
+      res.send(getDays);
+    } catch (err) {
+      console.log(err);
+    }
+
+  if (req.session.user.isOpiekun)
+    try {
+      const getDays = await dziennik.findAll({
+        where: { statusOpiekunaU: { [Op.eq]: null } },
+        include: { model: user, where: { id_opiekunU: req.session.user.id } },
+      });
+      res.send(getDays);
+    } catch (err) {
+      console.log(err);
+    }
+});
+
+app.post("/api/acceptStatus", async (req, res) => {
+  const { id } = req.body;
+  if (req.session.user.isOpiekunZakl)
+    try {
+      await dziennik
+        .update({ statusOpiekunaZ: "Zaakceptowano" }, { where: { id: id } })
+        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
+    } catch (err) {
+      console.log(err);
+    }
+  if (req.session.user.isOpiekun)
+    try {
+      await dziennik
+        .update({ statusOpiekunaU: "Zaakceptowano" }, { where: { id: id } })
+        .then(res.send({ success: true, status: "statusOpiekunaU" }));
+    } catch (err) {
+      console.log(err);
+    }
+});
+
+app.post("/api/declineStatus", async (req, res) => {
+  const { id } = req.body;
+
+  if (req.session.user.isOpiekunZakl)
+    try {
+      await dziennik
+        .update({ statusOpiekunaZ: "Odrzucono" }, { where: { id: id } })
+        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
+    } catch (err) {
+      console.log(err);
+    }
+
+  if (req.session.user.isOpiekun)
+    try {
+      await dziennik
+        .update({ statusOpiekunaU: "Odrzucono" }, { where: { id: id } })
+        .then(res.send({ success: true, status: "statusOpiekunaU" }));
+    } catch (err) {
+      console.log(err);
+    }
+});
+
+//wziecie wszystkich dni z dzienniczka juz z statusem
+app.get("/api/getDaysOpiekunStatus", async (req, res) => {
+  if (req.session.user.isOpiekunZakl)
+    try {
+      const getDays = await dziennik.findAll({
+        where: { statusOpiekunaZ: { [Op.ne]: null } },
+        include: {
+          model: user,
+          where: {
+            id_opiekunZ: req.session.user.id,
+          },
+        },
+      });
+      res.send(getDays);
+    } catch (err) {
+      console.log(err);
+    }
+
+  if (req.session.user.isOpiekun)
+    try {
+      const getDays = await dziennik.findAll({
+        where: { statusOpiekunaU: { [Op.ne]: null } },
+        include: {
+          model: user,
+          where: {
+            id_opiekunU: req.session.user.id,
+          },
+        },
+      });
+      res.send(getDays);
+    } catch (err) {
+      console.log(err);
+    }
 });

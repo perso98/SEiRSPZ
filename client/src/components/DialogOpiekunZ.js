@@ -29,7 +29,9 @@ function DialogOpiekunZ(props) {
           <DialogTitle
             style={{ justifyContent: "space-between", display: "flex" }}
           >
-            Dzień:{props.checkDay.id}
+            <h5>Dzień : {props.checkDay.dzien}</h5>
+            <h5> Data: {props.checkDay.data}</h5>
+
             <IconButton onClick={props.handleClose}>
               <CloseIcon />
             </IconButton>
@@ -57,7 +59,7 @@ function DialogOpiekunZ(props) {
 
                 <div style={{ margin: "1rem 0px 1rem 0 " }}>
                   <h5>E-mail:</h5>
-                  {props.checkDay.opis}
+                  {props.checkDay.user.login}
                 </div>
                 <div>
                   <TextField
@@ -72,10 +74,24 @@ function DialogOpiekunZ(props) {
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   {" "}
-                  <Button variant="contained" color="success">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => {
+                      props.acceptStatus(props.checkDay.id);
+                      props.handleClose();
+                    }}
+                  >
                     Akceptuj
                   </Button>
-                  <Button variant="contained" color="error">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                      props.declineStatus(props.checkDay.id);
+                      props.handleClose();
+                    }}
+                  >
                     Odrzuć
                   </Button>
                 </div>
@@ -90,13 +106,13 @@ function DialogOpiekunZ(props) {
                   Tryb Edycji
                 </Button>
                 <div style={{ margin: "1rem 0px 1rem 0 " }}>
-                  <h5>Opis:</h5> Wczoraj dasdkasdkasmd asdkmsak daksm dkas
-                  dkmsakm dksamk dskamd kasd ds dsad{" "}
+                  <h5>Opis:</h5>
+                  {props.checkDay.opis}
                 </div>
 
                 <div style={{ margin: "1rem 0px 1rem 0 " }}>
                   <h5>E-mail:</h5>
-                  {props.checkDay.opis}
+                  {props.checkDay.user.login}
                 </div>
 
                 <h5>Efekty uczenia:</h5>
@@ -105,10 +121,24 @@ function DialogOpiekunZ(props) {
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   {" "}
-                  <Button variant="contained" color="success">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => {
+                      props.acceptStatus(props.checkDay.id);
+                      props.handleClose();
+                    }}
+                  >
                     Akceptuj
                   </Button>
-                  <Button variant="contained" color="error">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                      props.declineStatus(props.checkDay.id);
+                      props.handleClose();
+                    }}
+                  >
                     Odrzuć
                   </Button>
                 </div>

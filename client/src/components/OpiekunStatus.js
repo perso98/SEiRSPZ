@@ -7,13 +7,14 @@ import * as axios from "axios";
 import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
 
-function OpiekunZ() {
+function OpiekunStatus() {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
   const [itemOffset, setItemOffset] = useState(0);
+  var status = true;
   const handleClose = () => {
     setOpen(false);
   };
@@ -23,7 +24,7 @@ function OpiekunZ() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getDaysOpiekunZ").then((res) => {
+    axios.get("http://localhost:5000/api/getDaysOpiekunStatus").then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
@@ -36,8 +37,10 @@ function OpiekunZ() {
       })
       .then((res) => {
         setDzienniczek(
-          dzienniczek.filter((val) => {
-            return val.id != id;
+          dzienniczek.map((val) => {
+            return val.id == id
+              ? { ...val, [res.data.status]: "Zaakceptowano" }
+              : val;
           })
         );
       });
@@ -50,8 +53,10 @@ function OpiekunZ() {
       })
       .then((res) => {
         setDzienniczek(
-          dzienniczek.filter((val) => {
-            return val.id != id;
+          dzienniczek.map((val) => {
+            return val.id == id
+              ? { ...val, [res.data.status]: "Odrzucono" }
+              : val;
           })
         );
       });
@@ -88,6 +93,7 @@ function OpiekunZ() {
           open={open}
           itemOffset={itemOffset}
           setItemOffset={setItemOffset}
+          status={status}
         />
       </Container>
       <DialogOpiekunZ
@@ -101,4 +107,4 @@ function OpiekunZ() {
   );
 }
 
-export default OpiekunZ;
+export default OpiekunStatus;
