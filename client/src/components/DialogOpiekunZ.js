@@ -8,15 +8,6 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography, TextField } from "@mui/material";
 function DialogOpiekunZ(props) {
-  const [edycja, setEdycja] = useState(false);
-
-  const editClickTrue = () => {
-    setEdycja(true);
-  };
-  const editClickFalse = () => {
-    setEdycja(false);
-  };
-
   return (
     <>
       {props.open && (
@@ -29,121 +20,64 @@ function DialogOpiekunZ(props) {
           <DialogTitle
             style={{ justifyContent: "space-between", display: "flex" }}
           >
-            <h5>Dzień : {props.checkDay.dzien}</h5>
-            <h5> Data: {props.checkDay.data}</h5>
-
+            <h6 style={{ textAlign: "center" }}>
+              Dzień: {props.checkDay.dzien}
+            </h6>{" "}
+            <h6 style={{ textAlign: "center" }}>Data: {props.checkDay.data}</h6>
             <IconButton onClick={props.handleClose}>
               <CloseIcon />
             </IconButton>
           </DialogTitle>
           <DialogContent>
-            {edycja ? (
-              <>
+            <>
+              <div>
+                <TextField
+                  multiline
+                  rows={3}
+                  margin="normal"
+                  label="Opis"
+                  style={{ width: "100%" }}
+                  value={props.checkDay.opis}
+                />
+              </div>
+
+              <div style={{ margin: "1rem 0px 1rem 0 " }}>
+                <h5>E-mail:</h5>
+                {props.checkDay.user.login}
+              </div>
+              <div>
+                <TextField
+                  multiline
+                  rows={2}
+                  margin="normal"
+                  label="Dodaj komentarz"
+                  style={{ width: "100%" }}
+                />
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                {" "}
                 <Button
                   variant="contained"
-                  color="warning"
-                  onClick={editClickFalse}
+                  color="success"
+                  onClick={() => {
+                    props.acceptStatus(props.checkDay.id);
+                    props.handleClose();
+                  }}
                 >
-                  Tryb Zwykły
+                  Akceptuj
                 </Button>
-                <div>
-                  <TextField
-                    multiline
-                    rows={3}
-                    margin="normal"
-                    label="Opis"
-                    style={{ width: "100%" }}
-                    value={props.checkDay.opis}
-                  />
-                </div>
-
-                <div style={{ margin: "1rem 0px 1rem 0 " }}>
-                  <h5>E-mail:</h5>
-                  {props.checkDay.user.login}
-                </div>
-                <div>
-                  <TextField
-                    multiline
-                    rows={2}
-                    margin="normal"
-                    label="Dodaj komentarz"
-                    style={{ width: "100%" }}
-                  />
-                </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  {" "}
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => {
-                      props.acceptStatus(props.checkDay.id);
-                      props.handleClose();
-                    }}
-                  >
-                    Akceptuj
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => {
-                      props.declineStatus(props.checkDay.id);
-                      props.handleClose();
-                    }}
-                  >
-                    Odrzuć
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
                 <Button
                   variant="contained"
-                  color="warning"
-                  onClick={editClickTrue}
+                  color="error"
+                  onClick={() => {
+                    props.declineStatus(props.checkDay.id);
+                    props.handleClose();
+                  }}
                 >
-                  Tryb Edycji
+                  Odrzuć
                 </Button>
-                <div style={{ margin: "1rem 0px 1rem 0 " }}>
-                  <h5>Opis:</h5>
-                  {props.checkDay.opis}
-                </div>
-
-                <div style={{ margin: "1rem 0px 1rem 0 " }}>
-                  <h5>E-mail:</h5>
-                  {props.checkDay.user.login}
-                </div>
-
-                <h5>Efekty uczenia:</h5>
-
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  {" "}
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => {
-                      props.acceptStatus(props.checkDay.id);
-                      props.handleClose();
-                    }}
-                  >
-                    Akceptuj
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => {
-                      props.declineStatus(props.checkDay.id);
-                      props.handleClose();
-                    }}
-                  >
-                    Odrzuć
-                  </Button>
-                </div>
-              </>
-            )}
+              </div>
+            </>
           </DialogContent>
           <DialogActions></DialogActions>
         </Dialog>
