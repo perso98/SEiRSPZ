@@ -27,14 +27,15 @@ export default function Pagination(props) {
         declineStatus={props.declineStatus}
         open={props.open}
         handleOpen={props.handleOpen}
+        status={props.status}
       />
       <ReactPaginate
         breakLabel="..."
-        nextLabel="Następna >"
+        nextLabel=">"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={pageCount}
-        previousLabel="< Poprzednia"
+        previousLabel="<"
         renderOnZeroPageCount={null}
         containerClassName="pagination"
         pageLinkClassName="page-num"

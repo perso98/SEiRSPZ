@@ -37,12 +37,54 @@ function DzienniczekDni(props) {
                     Szczegóły
                   </Button>
                 </div>{" "}
-                {val.statusOpiekunaZ != null &&
-                val.statusOpiekunaZ == "Zaakceptowano" ? (
-                  <div style={{ color: "green" }}>{val.statusOpiekunaZ}</div>
-                ) : (
-                  <div style={{ color: "#A52A2A" }}>{val.statusOpiekunaZ}</div>
-                )}
+                {props.status &&
+                  (val.statusOpiekunaZ == "Zaakceptowano" ? (
+                    <div
+                      style={{ color: "green", display: "flex", gap: "0.4rem" }}
+                    >
+                      <h6 style={{ color: "white" }}>
+                        Status opiekuna zakładowego:
+                      </h6>
+                      <h6>{val.statusOpiekunaZ}</h6>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        color: "#A52A2A",
+                        display: "flex",
+                        gap: "0.4rem",
+                      }}
+                    >
+                      <h6 style={{ color: "white" }}>
+                        Status opiekuna zakładowego:
+                      </h6>
+                      <h6>{val.statusOpiekunaZ}</h6>
+                    </div>
+                  ))}
+                {props.status &&
+                  (val.statusOpiekunaU == "Zaakceptowano" ? (
+                    <div
+                      style={{ color: "green", display: "flex", gap: "0.4rem" }}
+                    >
+                      <h6 style={{ color: "white" }}>
+                        Status opiekuna uczelnianego:
+                      </h6>
+                      <h6>{val.statusOpiekunaU}</h6>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        color: "#A52A2A",
+                        display: "flex",
+                        gap: "0.4rem",
+                      }}
+                    >
+                      <h6 style={{ color: "white" }}>
+                        Status opiekuna uczelnianego:
+                      </h6>
+                      <h6>{val.statusOpiekunaU}</h6>
+                    </div>
+                  ))}
                 <div style={{ margin: "1rem 0 1rem 0" }}>Opis: {val.opis}</div>{" "}
                 <div style={{ margin: "0 0 1rem 0" }}>
                   Student: {val.user.login}

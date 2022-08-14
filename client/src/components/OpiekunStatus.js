@@ -14,6 +14,7 @@ function OpiekunStatus() {
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
   const [itemOffset, setItemOffset] = useState(0);
+  var status = true;
   const handleClose = () => {
     setOpen(false);
   };
@@ -36,8 +37,10 @@ function OpiekunStatus() {
       })
       .then((res) => {
         setDzienniczek(
-          dzienniczek.filter((val) => {
-            return val.id != id;
+          dzienniczek.map((val) => {
+            return val.id == id
+              ? { ...val, [res.data.status]: "Zaakceptowano" }
+              : val;
           })
         );
       });
@@ -50,8 +53,10 @@ function OpiekunStatus() {
       })
       .then((res) => {
         setDzienniczek(
-          dzienniczek.filter((val) => {
-            return val.id != id;
+          dzienniczek.map((val) => {
+            return val.id == id
+              ? { ...val, [res.data.status]: "Odrzucono" }
+              : val;
           })
         );
       });
@@ -88,6 +93,7 @@ function OpiekunStatus() {
           open={open}
           itemOffset={itemOffset}
           setItemOffset={setItemOffset}
+          status={status}
         />
       </Container>
       <DialogOpiekunZ

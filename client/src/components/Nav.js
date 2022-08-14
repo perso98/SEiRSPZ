@@ -28,7 +28,7 @@ function Nav() {
     },
     toolbar: {
       display: "flex",
-      
+
       justifyContent: "space-between",
       // justifyContent: "space-around",
       // [theme.breakpoints.down("md")]: {
@@ -39,14 +39,14 @@ function Nav() {
     login: {
       display: "flex",
       alignItems: "center",
-      marginRight: theme.spacing(3),
+      marginRight: theme.spacing(4),
       fontSize: "20px",
       [theme.breakpoints.down("md")]: {
         fontSize: "16px",
       },
       [theme.breakpoints.down("sm")]: {
         fontSize: "12px",
-        marginRight: theme.spacing(3),
+        marginRight: theme.spacing(1),
       },
     },
     register: {
@@ -75,7 +75,7 @@ function Nav() {
         textDecoration: "none",
       },
       [theme.breakpoints.down("md")]: {
-        marginLeft: theme.spacing(5),
+        marginLeft: theme.spacing(1),
       },
     },
 
@@ -87,7 +87,7 @@ function Nav() {
         textDecoration: "none",
       },
       [theme.breakpoints.down("md")]: {
-        marginLeft: theme.spacing(8),
+        marginLeft: theme.spacing(1),
       },
     },
 

@@ -6,7 +6,7 @@ import { TextField } from "@material-ui/core";
 function SearchBar(props) {
   return (
     <TextField
-      style={{ width: "100%", margin: "2rem" }}
+      style={{ width: "100%", marginBottom: "3rem" }}
       label="Szukaj"
       variant="outlined"
       InputProps={{

@@ -31,7 +31,7 @@
   align-items: center;
   font-size: 1.3rem;
   gap:5px;
-  margin:3rem;
+  margin: 5rem;
 }
 .pagination .page-num
 {
@@ -43,13 +43,16 @@
   border:1px solid #08448c;
   color:#08448c;
   background-color: white;
+
 }
 .pagination .page-num:hover{
   background-color: #08448c;
   color: white;
+
 }
 
 .pagination .active {
   background-color: #08448c;
   color: white;
 }
+

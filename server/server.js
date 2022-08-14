@@ -368,7 +368,7 @@ app.post("/api/acceptStatus", async (req, res) => {
     try {
       await dziennik
         .update({ statusOpiekunaZ: "Zaakceptowano" }, { where: { id: id } })
-        .then(res.send({ success: true }));
+        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
     } catch (err) {
       console.log(err);
     }
@@ -376,7 +376,7 @@ app.post("/api/acceptStatus", async (req, res) => {
     try {
       await dziennik
         .update({ statusOpiekunaU: "Zaakceptowano" }, { where: { id: id } })
-        .then(res.send({ success: true }));
+        .then(res.send({ success: true, status: "statusOpiekunaU" }));
     } catch (err) {
       console.log(err);
     }
@@ -389,7 +389,7 @@ app.post("/api/declineStatus", async (req, res) => {
     try {
       await dziennik
         .update({ statusOpiekunaZ: "Odrzucono" }, { where: { id: id } })
-        .then(res.send({ success: true }));
+        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
     } catch (err) {
       console.log(err);
     }
@@ -398,7 +398,7 @@ app.post("/api/declineStatus", async (req, res) => {
     try {
       await dziennik
         .update({ statusOpiekunaU: "Odrzucono" }, { where: { id: id } })
-        .then(res.send({ success: true }));
+        .then(res.send({ success: true, status: "statusOpiekunaU" }));
     } catch (err) {
       console.log(err);
     }
