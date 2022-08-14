@@ -5,23 +5,14 @@ import DialogOpiekunZ from "./DialogOpiekunZ";
 import { useState } from "react";
 
 function DzienniczekDni(props) {
-  const [open, setOpen] = useState(false);
-  const [checkDay, setCheckDay] = useState(null);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = (val) => {
-    setCheckDay(val);
-    setOpen(true);
-  };
-
   return (
     <div>
       <Grid container spacing={3}>
-        {props.dzienniczek.map((val) => {
+        {props.currentItems.map((val) => {
           return (
             <Grid item xs={12} md={12} lg={6}>
               <div
+                key={val}
                 style={{
                   backgroundImage: "linear-gradient(#073874, #042144)",
                   color: "white",
@@ -38,7 +29,7 @@ function DzienniczekDni(props) {
                   Dzień : {val.dzien} Data: {val.data}
                   <Button
                     onClick={() => {
-                      handleOpen(val);
+                      props.handleOpen(val);
                     }}
                     variant="contained"
                     color="warning"
@@ -46,6 +37,12 @@ function DzienniczekDni(props) {
                     Szczegóły
                   </Button>
                 </div>{" "}
+                {val.statusOpiekunaZ != null &&
+                val.statusOpiekunaZ == "Zaakceptowano" ? (
+                  <div style={{ color: "green" }}>{val.statusOpiekunaZ}</div>
+                ) : (
+                  <div style={{ color: "#A52A2A" }}>{val.statusOpiekunaZ}</div>
+                )}
                 <div style={{ margin: "1rem 0 1rem 0" }}>Opis: {val.opis}</div>{" "}
                 <div style={{ margin: "0 0 1rem 0" }}>
                   Student: {val.user.login}
@@ -53,10 +50,18 @@ function DzienniczekDni(props) {
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <Button variant="contained" color="success">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => props.acceptStatus(val.id)}
+                  >
                     Akceptuj
                   </Button>
-                  <Button variant="contained" color="error">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => props.declineStatus(val.id)}
+                  >
                     Odrzuć
                   </Button>
                 </div>
@@ -65,11 +70,6 @@ function DzienniczekDni(props) {
           );
         })}
       </Grid>
-      <DialogOpiekunZ
-        open={open}
-        handleClose={handleClose}
-        checkDay={checkDay}
-      />
     </div>
   );
 }

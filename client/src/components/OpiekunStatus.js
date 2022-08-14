@@ -7,7 +7,7 @@ import * as axios from "axios";
 import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
 
-function OpiekunZ() {
+function OpiekunStatus() {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchLogin, setSearchLogin] = useState("");
@@ -23,7 +23,7 @@ function OpiekunZ() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getDaysOpiekunZ").then((res) => {
+    axios.get("http://localhost:5000/api/getDaysOpiekunStatus").then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
@@ -101,4 +101,4 @@ function OpiekunZ() {
   );
 }
 
-export default OpiekunZ;
+export default OpiekunStatus;

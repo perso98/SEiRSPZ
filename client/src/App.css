@@ -22,3 +22,34 @@
 .homeClass label {
     margin-top: 10%;
 }
+
+.pagination{
+  list-style: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  gap:5px;
+  margin:3rem;
+}
+.pagination .page-num
+{
+  text-decoration: none;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-weight: 500;
+  border:1px solid #08448c;
+  color:#08448c;
+  background-color: white;
+}
+.pagination .page-num:hover{
+  background-color: #08448c;
+  color: white;
+}
+
+.pagination .active {
+  background-color: #08448c;
+  color: white;
+}
