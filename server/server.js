@@ -355,8 +355,8 @@ app.post("/api/createDay", async (req, res) => {
         ilosc_godzin: dayObject.iloscGodzin,
         opis: dayObject.opis,
         efekt_uczenia: dayObject.demoSimpleSelect,
-        statusOpiekunaU: "Nie zatwierdzono",
-        statusOpiekunaZ: "Nie zatwierdzono",
+        statusOpiekunaU: "Oczekiwanie",
+        statusOpiekunaZ: "Oczekiwanie",
         // potrzebna zmiana w bazie na bool
       });
 
