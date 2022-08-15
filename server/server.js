@@ -6,7 +6,13 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const { Op } = require("sequelize");
 
-const { user, dziennik, efektUczeniaSie, dane, komentarze,  } = require("./models");
+const {
+  user,
+  dziennik,
+  efektUczeniaSie,
+  dane,
+  komentarze,
+} = require("./models");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 
@@ -162,23 +168,16 @@ app.get("/api/getEfektUczenia", async (req, res) => {
   res.send(listEfektUczenia);
 });
 
-
 app.get("/api/getOpiekuni", async (req, res) => {
   const listOpiekun = await user.findAll({
     where: { isOpiekun: 1 },
-  })
+  });
 
   const listStudentsO = await user.findAll({
-    where: 
-    {
-      [Op.or]: [
-        { id_opiekunZ: null },
-        { id_opiekunU: null }
-      ],
-      [Op.and]: [
-        { isStudent: 1 },
-      ],
-    }
+    where: {
+      [Op.or]: [{ id_opiekunZ: null }, { id_opiekunU: null }],
+      [Op.and]: [{ isStudent: 1 }],
+    },
   });
 
   res.send(listOpiekun, listStudentsO);
@@ -189,7 +188,7 @@ app.get("/api/getOpiekun/:id", async (req, res) => {
 
   const Opiekun = await dane.findOne({
     where: { id: id },
-  })
+  });
 
   res.send(Opiekun);
 });
@@ -197,18 +196,12 @@ app.get("/api/getOpiekun/:id", async (req, res) => {
 app.get("/api/getStudentsO", async (req, res) => {
   const { Op } = require("sequelize");
   const listStudentsO = await user.findAll({
-    where: 
-    {
-      [Op.or]: [
-        { id_opiekunZ: null },
-        { id_opiekunU: null }
-      ],
-      [Op.and]: [
-        { isStudent: 1 },
-      ],
-    }
+    where: {
+      [Op.or]: [{ id_opiekunZ: null }, { id_opiekunU: null }],
+      [Op.and]: [{ isStudent: 1 }],
+    },
   });
-  console.log(listStudentsO)
+  console.log(listStudentsO);
   res.send(listStudentsO);
 });
 
@@ -219,8 +212,6 @@ app.get("/api/getStudentsNO", async (req, res) => {
 
   res.send(listDziennik);
 });
-
-
 
 app.post("/api/changePasswordToAccount", async (req, res) => {
   const { changePassword, changePassword2 } = req.body;
@@ -249,20 +240,18 @@ app.post("/api/createForm", async (req, res) => {
       email,
     } = req.body;
 
-    await dane.create(
-      {
-        imie: imie,
-        nazwisko: nazwisko,
-        indeks: indeks,
-        studia: studia,
-        kierunek: kierunek,
-        specjalnosc: specjalnosc,
-        rok_studiow: rok_studiow,
-        rodzaj_studiow: rodzaj_studiow,
-        telefon: telefon,
-        email: email,
-      }
-    );
+    await dane.create({
+      imie: imie,
+      nazwisko: nazwisko,
+      indeks: indeks,
+      studia: studia,
+      kierunek: kierunek,
+      specjalnosc: specjalnosc,
+      rok_studiow: rok_studiow,
+      rodzaj_studiow: rodzaj_studiow,
+      telefon: telefon,
+      email: email,
+    });
     console.log("Wysłano");
     res.send({
       message: "pomyślnie wysłano ;)",
@@ -456,34 +445,126 @@ app.post("/api/declineStatus", async (req, res) => {
 
 //wziecie wszystkich dni z dzienniczka juz z statusem
 app.get("/api/getDaysOpiekunStatus", async (req, res) => {
+  try {
+    if (req.session.user.isOpiekunZakl)
+      try {
+        const getDays = await dziennik.findAll({
+          where: { statusOpiekunaZ: { [Op.ne]: null } },
+          include: {
+            model: user,
+            where: {
+              id_opiekunZ: req.session.user.id,
+            },
+          },
+        });
+        res.send(getDays);
+      } catch (err) {
+        console.log(err);
+      }
+  } catch (err) {
+    console.log(err);
+  }
+
+  try {
+    if (req.session.user.isOpiekun)
+      try {
+        const getDays = await dziennik.findAll({
+          where: { statusOpiekunaU: { [Op.ne]: null } },
+          include: {
+            model: user,
+            where: {
+              id_opiekunU: req.session.user.id,
+            },
+          },
+        });
+        res.send(getDays);
+      } catch (err) {
+        console.log(err);
+      }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/api/acceptStatusEdit", async (req, res) => {
+  const { id, opis, komentarz } = req.body;
   if (req.session.user.isOpiekunZakl)
     try {
-      const getDays = await dziennik.findAll({
-        where: { statusOpiekunaZ: { [Op.ne]: null } },
-        include: {
-          model: user,
-          where: {
-            id_opiekunZ: req.session.user.id,
-          },
-        },
-      });
-      res.send(getDays);
+      await dziennik
+        .update(
+          { statusOpiekunaZ: "Zaakceptowano", opis: opis },
+          { where: { id: id } }
+        )
+        .then(async () => {
+          if (komentarz.length > 2)
+            await komentarze.create({
+              dziennikId: id,
+              userId: req.session.user.id,
+              komentarz: komentarz,
+            });
+        })
+        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
     } catch (err) {
       console.log(err);
     }
-
   if (req.session.user.isOpiekun)
     try {
-      const getDays = await dziennik.findAll({
-        where: { statusOpiekunaU: { [Op.ne]: null } },
-        include: {
-          model: user,
-          where: {
-            id_opiekunU: req.session.user.id,
-          },
-        },
-      });
-      res.send(getDays);
+      await dziennik
+        .update(
+          { statusOpiekunaU: "Zaakceptowano", opis: opis },
+          { where: { id: id } }
+        )
+        .then(async () => {
+          if (komentarz.length > 2)
+            await komentarze.create({
+              dziennikId: id,
+              userId: req.session.user.id,
+              komentarz: komentarz,
+            });
+        })
+        .then(res.send({ success: true, status: "statusOpiekunaU" }));
+    } catch (err) {
+      console.log(err);
+    }
+});
+
+app.post("/api/declineStatusEdit", async (req, res) => {
+  const { id, opis, komentarz } = req.body;
+  if (req.session.user.isOpiekunZakl)
+    try {
+      await dziennik
+        .update(
+          { statusOpiekunaZ: "Odrzucono", opis: opis },
+          { where: { id: id } }
+        )
+        .then(async () => {
+          if (komentarz.length > 2)
+            await komentarze.create({
+              dziennikId: id,
+              userId: req.session.user.id,
+              komentarz: komentarz,
+            });
+        })
+        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
+    } catch (err) {
+      console.log(err);
+    }
+  if (req.session.user.isOpiekun)
+    try {
+      await dziennik
+        .update(
+          { statusOpiekunaU: "Odrzucono", opis: opis },
+          { where: { id: id } }
+        )
+        .then(async () => {
+          if (komentarz.length > 2)
+            await komentarze.create({
+              dziennikId: id,
+              userId: req.session.user.id,
+              komentarz: komentarz,
+            });
+        })
+        .then(res.send({ success: true, status: "statusOpiekunaU" }));
     } catch (err) {
       console.log(err);
     }
