@@ -9,8 +9,10 @@ const { Op } = require("sequelize");
 const {
   user,
   dziennik,
-  efektUczeniaSie,
+  efektyLista,
+  efektyStudent,
   dane,
+  firma,
   komentarze,
 } = require("./models");
 const cors = require("cors");
@@ -163,7 +165,7 @@ app.get("/api/getDziennik", async (req, res) => {
 });
 
 app.get("/api/getEfektUczenia", async (req, res) => {
-  const listEfektUczenia = await efektUczeniaSie.findAll();
+  const listEfektUczenia = await efektyLista.findAll();
 
   res.send(listEfektUczenia);
 });
@@ -193,24 +195,22 @@ app.get("/api/getOpiekun/:id", async (req, res) => {
   res.send(Opiekun);
 });
 
-app.get("/api/getStudentsO", async (req, res) => {
-  const { Op } = require("sequelize");
-  const listStudentsO = await user.findAll({
-    where: {
-      [Op.or]: [{ id_opiekunZ: null }, { id_opiekunU: null }],
-      [Op.and]: [{ isStudent: 1 }],
-    },
-  });
-  console.log(listStudentsO);
-  res.send(listStudentsO);
+app.get("/api/getDane", async (req, res) => {
+  const listDane = await dane.findAll();
+
+  res.send(listDane);
 });
 
-app.get("/api/getStudentsNO", async (req, res) => {
-  const listDziennik = await dziennik.findAll({
-    where: { userId: req.session.user.id },
-  });
+app.get("/api/getUser", async (req, res) => {
+  const listUser = await user.findAll();
 
-  res.send(listDziennik);
+  res.send(listUser);
+});
+
+app.get("/api/getFirma", async (req, res) => {
+  const listUser = await firma.findAll();
+
+  res.send(listUser);
 });
 
 app.post("/api/changePasswordToAccount", async (req, res) => {
@@ -324,6 +324,58 @@ app.put("/api/changeUserInfo", async (req, res) => {
   } catch (err) {
     res.send({ message: err.message });
   }
+});
+
+//Dodanie zakładu
+app.post("/api/createFirma", async (req, res) => {
+  const { firmaObject } = req.body;
+  try {
+    const checkFirma = await firma.findOne({
+      where: {
+        nazwa: firmaObject.nazwa,
+      },
+    });
+    if (checkFirma == null) {
+      const newFirma = await firma.create({
+        nazwa: firmaObject.nazwa,
+        opis: firmaObject.opis,
+      });
+
+      res.send({
+        message: "Zakład został dodany",
+        id: newFirma.id,
+      });
+    } else {
+      res.send({ message: "Jest już taki zakład" });
+    }
+  } catch (err) {
+    res.send({ message: err.message });
+  }
+});
+
+//Dodanie Opiekuna do zakladu
+
+app.put("/api/addOpiekunFirma", async (req, res) => {
+  const { id, firmaId } = req.body;
+  updateOpiekun = await user.update({ 
+    firmaId: firmaId 
+  }, { 
+    where: { id: id } 
+  });
+  res.send(updateOpiekun);
+  console.log("1111111111111111111")
+});
+
+
+app.put("/api/delOpiekunFirma", async (req, res) => {
+  const { id, firmaId } = req.body;
+  updateOpiekun = await user.update({ 
+    firmaId: null
+  }, { 
+    where: { id: id } 
+  });
+  res.send(updateOpiekun);
+  console.log("1111111111111111111")
 });
 
 //Utworzenie Dnia w dzienniczku

@@ -42,6 +42,26 @@ const dane=sequelize.define("dane",
         type:DataTypes.STRING,
         allowNull:true,
     },
+    numerPorozumienia:{
+        type:DataTypes.STRING,
+        allowNull:true,
+    },
+    czasTrwaniaPraktyki:{
+        type:DataTypes.STRING,
+        allowNull:true,
+    },
+    porozumienieOd:{
+        type:DataTypes.STRING,
+        allowNull:true,
+    },
+    porozumienieDo:{
+        type:DataTypes.STRING,
+        allowNull:true,
+    },
+    dataPorozumienia:{
+        type:DataTypes.STRING,
+        allowNull:true,
+    },
     
 }, {
     charset: 'utf8',

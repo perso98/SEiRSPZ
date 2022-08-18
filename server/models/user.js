@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       isStudent: {
         type: DataTypes.INTEGER,
-        defaultValue: 1,
+        defaultValue: 0,
       },
       isOpiekunZakl: {
         type: DataTypes.INTEGER,
@@ -56,6 +56,11 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   user.associate = (models) => {
+    user.belongsTo(models.dane, {
+      foreignKey: {
+        allowNull: true,
+      },
+    });
     user.belongsTo(models.dane, {
       foreignKey: {
         allowNull: true,

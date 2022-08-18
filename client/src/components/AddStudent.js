@@ -1,0 +1,199 @@
+import React,{ useState, useEffect} from 'react'
+import axios, { Axios } from 'axios'
+import {
+    InputAdornment,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+  } from "@mui/material";
+import {
+    makeStyles,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TablePagination,
+    TableRow,
+    Toolbar,
+    TextField,
+  } from "@material-ui/core";
+import {Link} from 'react-router-dom'
+import Button from "@mui/material/Button";
+import { Container, Typography, Grid, Input } from '@mui/material'
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+
+const useStyles = makeStyles(theme => ({
+    containerMain:{
+        height: "100vh",
+    },
+    dni:{
+        paddingTop: theme.spacing(2),
+        paddingLeft: theme.spacing(5),
+        paddingRight: theme.spacing(5),
+    },
+    ol:{
+        listStyle: "none",
+    },
+    dniItem:{
+        display:"flex",
+        alignItems:"center",
+        fontSize: "20px !important",
+    },
+    links:{
+        textDecoration: 'none', 
+        color:'black',
+        "&:hover": {
+            color:'white',
+            textDecoration: 'none', 
+        },
+    },
+    content:{
+        paddingTop: theme.spacing(2),
+    },
+
+    label:{
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(1),
+    },
+    form:{
+        paddingRight: theme.spacing(2),
+    },
+}));
+
+function AddStudent(
+    {
+        idFirma,
+        user,
+        dane,
+        addOpen,
+        handleClose,
+        addOpiekunFirma,
+        delOpiekunFirma,
+        onChange,
+        object,
+      }
+) {
+
+    const giveButton = (id, firmaId) => {
+        return (
+          <Button
+            onClick={() => {
+                addOpiekunFirma(id, firmaId);
+            }}
+          >
+            Dodaj
+          </Button>
+        );
+      };
+
+      const deleteButton = (id, firmaId) => {
+        return (
+          <Button
+            onClick={() => {
+                delOpiekunFirma(id, firmaId);
+            }}
+          >
+            Usuń
+          </Button>
+        );
+      };
+
+      
+    const classes = useStyles();
+
+
+  return (
+    <Dialog open={addOpen} onClose={handleClose} fullWidth="60%">
+      <DialogTitle style={{ display: "flex", justifyContent: "space-between" }}>
+        Firma: {idFirma.nazwa}
+        <div>Dodawanie studenta </div>
+        <IconButton aria-label="close" onClick={handleClose}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText style={{ marginTop: "2%" }}>
+            <div>
+                <Grid item xs className={classes.content}>
+                    <Grid container>
+                    <Grid item xs >
+                            <div>
+                            Przypisani Studenci<p></p>
+                            Imie i naziwkso: 
+                            
+                            {user.map((val) => (
+                                    <Grid>
+                                        { val.isStudent === 1    && val.firmaId === idFirma.id ? (
+                                            dane.map((daneAO) => (
+                                                daneAO.id === val.daneId ? (
+                                                    <div>
+                                                        <Grid item xs = {2}>
+                                                            <div style={{display: "flex", gap: "0.4rem"}}>
+                                                                <div>{daneAO.imie}</div><div>{daneAO.nazwisko}</div>
+                                                                <div>
+                                                                    <Grid item xs = {2}>
+                                                                    {deleteButton(val.id, idFirma.id )}
+                                                                    </Grid>
+                                                                </div>
+                                                            </div>
+                                                        </Grid>
+                                                    </div>
+                                                ): null
+                                            ))
+                                        ): null}
+                                    </Grid>
+                            ))}
+                            </div>
+
+                            <div>
+                            <div className={classes.przerwa}>Studenci lista</div>
+                            {user.map((val) => (
+                                    <Grid>
+                                        { val.isStudent === 1  && val.firmaId !== idFirma.id ? (
+                                            dane.map((daneNO) => (
+                                                daneNO.id === val.daneId ? (
+                                                    <div>
+                                                        <Grid item xs = {2}>
+                                                            <div style={{display: "flex", gap: "0.4rem"}}>
+                                                                login:<div>{val.login}</div>
+                                                            </div>
+                                                        </Grid>
+                                                        <Grid item xs = {2}>
+                                                            <div style={{display: "flex", gap: "0.4rem"}}>
+                                                                imie:<div>{daneNO.imie}</div>
+                                                            </div>
+                                                        </Grid>
+                                                        <Grid item xs = {2}>
+                                                            <div style={{display: "flex", gap: "0.4rem"}}>
+                                                                naziwkso:<div>{daneNO.nazwisko}</div>
+                                                            </div>
+                                                        </Grid>
+                                                        <Grid item xs = {2}>
+                                                            {giveButton(val.id, idFirma.id )}
+                                                        </Grid>
+                                                    </div>
+                                                ): null
+                                            ))
+                                        ): null}
+                                    </Grid>
+                            ))}
+                            </div>
+
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+            <div/>
+
+          </div>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions></DialogActions>
+    </Dialog>
+  );
+}
+
+export default AddStudent
