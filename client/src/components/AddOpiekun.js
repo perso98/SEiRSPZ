@@ -135,7 +135,13 @@ function AddOpiekun(
                             {user.map((val) => (
                                     <Grid>
                                         {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === idFirma.id ? (
-                                            dane.map((daneAO) => (
+                                            <div>
+                                                <Grid item xs = {2}>
+                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                        login:<div>{val.login}</div>
+                                                    </div>
+                                                </Grid>
+                                            {dane.map((daneAO) => (
                                                 daneAO.id === val.daneId ? (
                                                     <div>
                                                         <Grid item xs = {2}>
@@ -150,16 +156,18 @@ function AddOpiekun(
                                                                     <div  style={{display: "flex", gap: "0.4rem"}}>
                                                                         <div>(Opiekun</div><div>uczelniany)</div>
                                                                     </div>
-                                                                    }<Grid item xs = {2}>
-                                                                    {deleteButton(val.id, idFirma.id )}
-                                                                    </Grid>
+                                                                    }
 
                                                                 </div>
                                                             </div>
                                                         </Grid>
                                                     </div>
                                                 ): null
-                                            ))
+                                            ))}
+                                            <Grid item xs = {2}>
+                                                {deleteButton(val.id, idFirma.id )}
+                                            </Grid>
+                                            </div>
                                         ): null}
                                     </Grid>
                             ))}
@@ -169,15 +177,17 @@ function AddOpiekun(
                             <div className={classes.przerwa}>Opiekuni lista</div>
                             {user.map((val) => (
                                     <Grid>
-                                        {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId !== idFirma.id ? (
-                                            dane.map((daneNO) => (
+                                        {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === null ? (
+                                            <div>
+                                                <Grid item xs = {2}>
+                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                        login:<div>{val.login}</div>
+                                                    </div>
+                                                </Grid>
+                                            {dane.map((daneNO) => (
                                                 daneNO.id === val.daneId ? (
                                                     <div>
-                                                        <Grid item xs = {2}>
-                                                            <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                login:<div>{val.login}</div>
-                                                            </div>
-                                                        </Grid>
+                                                        
                                                         <Grid item xs = {2}>
                                                             <div style={{display: "flex", gap: "0.4rem"}}>
                                                                 imie:<div>{daneNO.imie}</div>
@@ -188,12 +198,14 @@ function AddOpiekun(
                                                                 naziwkso:<div>{daneNO.nazwisko}</div>
                                                             </div>
                                                         </Grid>
-                                                        <Grid item xs = {2}>
-                                                            {giveButton(val.id, idFirma.id )}
-                                                        </Grid>
+                                                       
                                                     </div>
                                                 ): null
-                                            ))
+                                            ))}
+                                             <Grid item xs = {2}>
+                                                {giveButton(val.id, idFirma.id )}
+                                            </Grid>
+                                            </div>
                                         ): null}
                                     </Grid>
                             ))}

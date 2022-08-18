@@ -256,19 +256,22 @@ const [firmaIdS, setFirmaSId] = useState(false);
                     {user.map((val) => (
                         <Grid>
                             {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === firmaD.id ? (
-                                dane.map((daneO) => (
+                                <div>
+                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                        Login:<div>{val.login}</div>
+                                    </div>
+                                {dane.map((daneO) => (
                                     daneO.id === val.daneId ? (
                                         <div style={{marginBottom: "10px"}}>
-                                                <div style={{display: "flex", gap: "0.4rem"}}>
-                                                    Login:<div>{val.login}</div>
-                                                </div>
+                                                
                                                 <div style={{display: "flex", gap: "0.4rem"}}>
                                                     Imie i naziwkso:<div>{daneO.imie}</div>
                                                     {daneO.nazwisko}
                                                 </div>
                                         </div>
                                     ): null
-                                ))
+                                ))}
+                                </div>
                             ): null}
                         </Grid>
                     ))}
@@ -289,12 +292,14 @@ const [firmaIdS, setFirmaSId] = useState(false);
                     {user.map((val) => (
                         <Grid>
                             {val.isStudent === 1 && val.firmaId === firmaD.id ? (
-                                dane.map((daneS) => (
+                                <div>
+                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                        Login:<div>{val.login}</div>
+                                    </div>
+                                {dane.map((daneS) => (
                                     daneS.id === val.daneId ? (
                                         <div style={{marginBottom: "10px"}}>
-                                                <div style={{display: "flex", gap: "0.4rem"}}>
-                                                    Login:<div>{val.login}</div>
-                                                </div>
+                                                
                                                 <div style={{display: "flex", gap: "0.4rem"}}>
                                                     Imie i naziwkso:<div>{daneS.imie}</div>
                                                     {daneS.nazwisko}
@@ -304,7 +309,8 @@ const [firmaIdS, setFirmaSId] = useState(false);
                                                 </div>
                                         </div>
                                     ): null
-                                ))
+                                ))}
+                                </div>
                             ): null}
                         </Grid>
                     ))}

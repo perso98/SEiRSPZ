@@ -127,22 +127,30 @@ function AddStudent(
                             {user.map((val) => (
                                     <Grid>
                                         { val.isStudent === 1    && val.firmaId === idFirma.id ? (
-                                            dane.map((daneAO) => (
+                                            <div>
+                                                <Grid item xs = {2}>
+                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                        login:<div>{val.login}</div>
+                                                    </div>
+                                                </Grid>
+                                            {dane.map((daneAO) => (
                                                 daneAO.id === val.daneId ? (
                                                     <div>
                                                         <Grid item xs = {2}>
                                                             <div style={{display: "flex", gap: "0.4rem"}}>
                                                                 <div>{daneAO.imie}</div><div>{daneAO.nazwisko}</div>
                                                                 <div>
-                                                                    <Grid item xs = {2}>
-                                                                    {deleteButton(val.id, idFirma.id )}
-                                                                    </Grid>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </Grid>
                                                     </div>
                                                 ): null
-                                            ))
+                                            ))}
+                                            <Grid item xs = {2}>
+                                                {deleteButton(val.id, idFirma.id )}
+                                            </Grid>
+                                            </div>
                                         ): null}
                                     </Grid>
                             ))}
@@ -152,15 +160,17 @@ function AddStudent(
                             <div className={classes.przerwa}>Studenci lista</div>
                             {user.map((val) => (
                                     <Grid>
-                                        { val.isStudent === 1  && val.firmaId !== idFirma.id ? (
-                                            dane.map((daneNO) => (
+                                        { val.isStudent === 1  && val.firmaId === null ? (
+                                            <div>
+                                                <Grid item xs = {2}>
+                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                        login:<div>{val.login}</div>
+                                                    </div>
+                                                </Grid>
+                                            {dane.map((daneNO) => (
                                                 daneNO.id === val.daneId ? (
                                                     <div>
-                                                        <Grid item xs = {2}>
-                                                            <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                login:<div>{val.login}</div>
-                                                            </div>
-                                                        </Grid>
+                                                        
                                                         <Grid item xs = {2}>
                                                             <div style={{display: "flex", gap: "0.4rem"}}>
                                                                 imie:<div>{daneNO.imie}</div>
@@ -171,12 +181,14 @@ function AddStudent(
                                                                 naziwkso:<div>{daneNO.nazwisko}</div>
                                                             </div>
                                                         </Grid>
-                                                        <Grid item xs = {2}>
-                                                            {giveButton(val.id, idFirma.id )}
-                                                        </Grid>
+                                                        
                                                     </div>
                                                 ): null
-                                            ))
+                                            ))}
+                                            <Grid item xs = {2}>
+                                                {giveButton(val.id, idFirma.id )}
+                                            </Grid>
+                                            </div>
                                         ): null}
                                     </Grid>
                             ))}
