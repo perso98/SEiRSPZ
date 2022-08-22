@@ -14,7 +14,10 @@ function OpiekunStatus() {
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
   const [itemOffset, setItemOffset] = useState(0);
-  var status = true;
+  const [komentarz, setKomentarz] = useState("");
+  const [opis, setOpis] = useState();
+  const statusOpiekuna = "statusOpiekunaZ";
+  const status = true;
   const handleClose = () => {
     setOpen(false);
   };
@@ -24,41 +27,52 @@ function OpiekunStatus() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getDaysOpiekunStatus").then((res) => {
+    axios.get("http://localhost:5000/api/getDaysOpiekunZStatus").then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
   }, []);
 
-  const acceptStatus = (id) => {
+  const changeStatus = (id, status) => {
     axios
-      .post("http://localhost:5000/api/acceptStatus", {
+      .post("http://localhost:5000/api/changeStatus", {
         id: id,
+        status: status,
+        statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
         setDzienniczek(
           dzienniczek.map((val) => {
-            return val.id == id
-              ? { ...val, [res.data.status]: "Zaakceptowano" }
-              : val;
+            return val.id == id ? { ...val, [res.data.status]: status } : val;
           })
         );
       });
   };
 
-  const declineStatus = (id) => {
+  const changeStatusEdit = (id, status) => {
     axios
-      .post("http://localhost:5000/api/declineStatus", {
+      .post("http://localhost:5000/api/changeStatusEdit", {
         id: id,
+        status: status,
+        opis: opis,
+        komentarz: komentarz,
+        statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        setDzienniczek(
-          dzienniczek.map((val) => {
-            return val.id == id
-              ? { ...val, [res.data.status]: "Odrzucono" }
-              : val;
-          })
-        );
+        if (!opis)
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == id ? { ...val, [res.data.status]: status } : val;
+            })
+          );
+        else
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == id
+                ? { ...val, [res.data.status]: status, opis: opis }
+                : val;
+            })
+          );
       });
   };
 
@@ -87,8 +101,7 @@ function OpiekunStatus() {
         )}
         <Pagination
           data={recordsAfterFiltering}
-          acceptStatus={acceptStatus}
-          declineStatus={declineStatus}
+          changeStatus={changeStatus}
           handleOpen={handleOpen}
           open={open}
           itemOffset={itemOffset}
@@ -100,8 +113,9 @@ function OpiekunStatus() {
         open={open}
         handleClose={handleClose}
         checkDay={checkDay}
-        acceptStatus={acceptStatus}
-        declineStatus={declineStatus}
+        changeStatusEdit={changeStatusEdit}
+        setOpis={setOpis}
+        setKomentarz={setKomentarz}
       />
     </>
   );

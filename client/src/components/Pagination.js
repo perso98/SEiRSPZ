@@ -23,8 +23,7 @@ export default function Pagination(props) {
     <>
       <DniLista
         currentItems={currentItems}
-        acceptStatus={props.acceptStatus}
-        declineStatus={props.declineStatus}
+        changeStatus={props.changeStatus}
         open={props.open}
         handleOpen={props.handleOpen}
         status={props.status}

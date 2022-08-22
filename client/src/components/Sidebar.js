@@ -203,11 +203,25 @@ function Sidebar() {
                     </div>
                   </Link>
                 </div>
-                <Link to="profil/opiekunStatus" className={classes.links}>
+                <Link to="profil/opiekunU" className={classes.links}>
+                  <div className={classes.item}>
+                    <Homeicon className={classes.icon} />
+                    <Typography className={classes.text}>Opiekun U</Typography>
+                  </div>
+                </Link>
+                <Link to="profil/opiekunZStatus" className={classes.links}>
                   <div className={classes.item}>
                     <Homeicon className={classes.icon} />
                     <Typography className={classes.text}>
-                      Opiekun Status
+                      Opiekun Z Historia
+                    </Typography>
+                  </div>
+                </Link>
+                <Link to="profil/opiekunUStatus" className={classes.links}>
+                  <div className={classes.item}>
+                    <Homeicon className={classes.icon} />
+                    <Typography className={classes.text}>
+                      Opiekun U Historia
                     </Typography>
                   </div>
                 </Link>

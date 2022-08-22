@@ -108,14 +108,18 @@ function DzienniczekDni(props) {
                   <Button
                     variant="contained"
                     color="success"
-                    onClick={() => props.acceptStatus(val.id)}
+                    onClick={() => {
+                      props.changeStatus(val.id, "Zaakceptowano");
+                    }}
                   >
                     Akceptuj
                   </Button>
                   <Button
                     variant="contained"
                     color="error"
-                    onClick={() => props.declineStatus(val.id)}
+                    onClick={() => {
+                      props.changeStatus(val.id, "Odrzucono");
+                    }}
                   >
                     Odrzuć
                   </Button>

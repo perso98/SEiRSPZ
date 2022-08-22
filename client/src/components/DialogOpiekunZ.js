@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { Typography, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 function DialogOpiekunZ(props) {
   return (
     <>
@@ -62,7 +62,7 @@ function DialogOpiekunZ(props) {
                   variant="contained"
                   color="success"
                   onClick={() => {
-                    props.acceptStatusEdit(props.checkDay.id);
+                    props.changeStatusEdit(props.checkDay.id, "Zaakceptowano");
                     props.handleClose();
                   }}
                 >
@@ -72,7 +72,7 @@ function DialogOpiekunZ(props) {
                   variant="contained"
                   color="error"
                   onClick={() => {
-                    props.declineStatusEdit(props.checkDay.id);
+                    props.changeStatusEdit(props.checkDay.id, "Odrzucono");
                     props.handleClose();
                   }}
                 >
