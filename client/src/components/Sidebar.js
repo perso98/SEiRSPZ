@@ -134,14 +134,14 @@ function Sidebar() {
                 )}
                 {dziekanat == 1 && (
                   <div>
-                    <Link to="profil/Dane" className={classes.links}>
+                    {/* <Link to="profil/Dane" className={classes.links}>
                       <div className={classes.item}>
                         <AssignmentIcon className={classes.icon} />
                         <Typography className={classes.text}>
                           Dodaj dane
                         </Typography>
                       </div>
-                    </Link>
+                    </Link> */}
 
                     <Link
                       to="profil/DodawanieOpiekunow"
@@ -155,21 +155,21 @@ function Sidebar() {
                       </div>
                     </Link>
 
-                    <Link to="profil/Form" className={classes.links}>
+                    {/* <Link to="profil/Form" className={classes.links}>
                       <div className={classes.item}>
                         <AssignmentIcon className={classes.icon} />
                         <Typography className={classes.text}>Form</Typography>
                       </div>
-                    </Link>
+                    </Link> */}
                   </div>
                 )}
 
-                <div className={classes.item}>
+                {/* <div className={classes.item}>
                   <QuestionMarkIcon className={classes.icon} />
                   <Typography className={classes.text}>Pomoc</Typography>
-                </div>
+                </div> */}
 
-                <div className={classes.item}>
+                {/* <div className={classes.item}>
                   <Link to="Home" className={classes.links}>
                     <div className={classes.item}>
                       <Homeicon className={classes.icon} />
@@ -178,7 +178,7 @@ function Sidebar() {
                       </Typography>
                     </div>
                   </Link>
-                </div>
+                </div> */}
 
                 <div className={classes.item}>
                   {admin == 1 && (
