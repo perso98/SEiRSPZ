@@ -357,7 +357,7 @@ app.post("/api/createFirma", async (req, res) => {
 
 app.put("/api/addOpiekunFirma", async (req, res) => {
   const { id, firmaId } = req.body;
-  const updateOpiekun = await user.update({ 
+  updateOpiekun = await user.update({ 
     firmaId: firmaId 
   }, { 
     where: { id: id } 
@@ -366,16 +366,15 @@ app.put("/api/addOpiekunFirma", async (req, res) => {
   console.log("1111111111111111111")
 });
 
-
 app.put("/api/delOpiekunFirma", async (req, res) => {
   const { id, firmaId } = req.body;
-  const updateOpiekun = await user.update({ 
+  updateOpiekun = await user.update({ 
     firmaId: null
   }, { 
     where: { id: id } 
   });
   res.send(updateOpiekun);
-  console.log("1111111111111111111")
+  console.log("1111111111111111111");
 });
 
 //Utworzenie Dnia w dzienniczku
@@ -519,112 +518,99 @@ app.delete("/api/deleteUser/:id", async (req, res) => {
 //pobieranie dni dla opiekunaZ
 
 app.get("/api/getDaysOpiekunZ", async (req, res) => {
-  if (req.session.user.isOpiekunZakl)
-    try {
-      const getDays = await dziennik.findAll({
-        where: { statusOpiekunaZ: { [Op.eq]: null } },
-        include: { model: user, where: { id_opiekunZ: req.session.user.id } },
-      });
-      res.send(getDays);
-    } catch (err) {
-      console.log(err);
-    }
-
-  if (req.session.user.isOpiekun)
-    try {
-      const getDays = await dziennik.findAll({
-        where: { statusOpiekunaU: { [Op.eq]: null } },
-        include: { model: user, where: { id_opiekunU: req.session.user.id } },
-      });
-      res.send(getDays);
-    } catch (err) {
-      console.log(err);
-    }
-});
-
-app.post("/api/acceptStatus", async (req, res) => {
-  const { id } = req.body;
-  if (req.session.user.isOpiekunZakl)
-    try {
-      await dziennik
-        .update({ statusOpiekunaZ: "Zaakceptowano" }, { where: { id: id } })
-        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
-    } catch (err) {
-      console.log(err);
-    }
-  if (req.session.user.isOpiekun)
-    try {
-      await dziennik
-        .update({ statusOpiekunaU: "Zaakceptowano" }, { where: { id: id } })
-        .then(res.send({ success: true, status: "statusOpiekunaU" }));
-    } catch (err) {
-      console.log(err);
-    }
-});
-
-app.post("/api/declineStatus", async (req, res) => {
-  const { id } = req.body;
-
-  if (req.session.user.isOpiekunZakl)
-    try {
-      await dziennik
-        .update({ statusOpiekunaZ: "Odrzucono" }, { where: { id: id } })
-        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
-    } catch (err) {
-      console.log(err);
-    }
-
-  if (req.session.user.isOpiekun)
-    try {
-      await dziennik
-        .update({ statusOpiekunaU: "Odrzucono" }, { where: { id: id } })
-        .then(res.send({ success: true, status: "statusOpiekunaU" }));
-    } catch (err) {
-      console.log(err);
-    }
-});
-
-//wziecie wszystkich dni z dzienniczka juz z statusem
-app.get("/api/getDaysOpiekunStatus", async (req, res) => {
   try {
-    if (req.session.user.isOpiekunZakl)
-      try {
-        const getDays = await dziennik.findAll({
-          where: { statusOpiekunaZ: { [Op.ne]: null } },
-          include: {
-            model: user,
-            where: {
-              id_opiekunZ: req.session.user.id,
-            },
-          },
-        });
-        res.send(getDays);
-      } catch (err) {
-        console.log(err);
-      }
+    const getDays = await dziennik.findAll({
+      where: { statusOpiekunaZ: { [Op.eq]: "Oczekiwanie" } },
+      include: { model: user, where: { id_opiekunZ: req.session.user.id } },
+    });
+
+    res.send(getDays);
+  } catch (err) {
+    console.log(err);
+  }
+});
+//pobieranie dni dzienniczka studentow dla opiekuna uczelnianego
+
+app.get("/api/getDaysOpiekunU", async (req, res) => {
+  try {
+    const getDays = await dziennik.findAll({
+      where: { statusOpiekunaU: { [Op.eq]: "Oczekiwanie" } },
+      include: { model: user, where: { id_opiekunU: req.session.user.id } },
+    });
+
+    res.send(getDays);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+//akceptacja dnia z dzienniczka studenta przez opiekuna zakładowego
+app.post("/api/changeStatus", async (req, res) => {
+  const { id, status, statusOpiekuna } = req.body;
+  try {
+    await dziennik
+      .update({ [statusOpiekuna]: status }, { where: { id: id } })
+      .then(res.send({ success: true, status: statusOpiekuna }));
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+//wziecie wszystkich dni z dzienniczka juz z statusem nadanym przez opiekuna zakładowego
+app.get("/api/getDaysOpiekunZStatus", async (req, res) => {
+  try {
+    const getDays = await dziennik.findAll({
+      where: { statusOpiekunaZ: { [Op.ne]: "Oczekiwanie" } },
+      include: {
+        model: user,
+        where: {
+          id_opiekunZ: req.session.user.id,
+        },
+      },
+    });
+    res.send(getDays);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+//wziecie wszystkich dni z dzienniczka juz z statusem nadanym przez opiekuna uczelnianego
+app.get("/api/getDaysOpiekunUStatus", async (req, res) => {
+  try {
+    const getDays = await dziennik.findAll({
+      where: { statusOpiekunaU: { [Op.ne]: "Oczekiwanie" } },
+      include: {
+        model: user,
+        where: {
+          id_opiekunU: req.session.user.id,
+        },
+      },
+    });
+    res.send(getDays);
+  } catch (err) {
+    console.log(err);
+  }
+});
+//wziecie wszystkich dni z dzienniczka juz z statusem nadanym przez opiekuna zakładowego i akceptacja go
+app.post("/api/changeStatusEdit", async (req, res) => {
+  const { id, opis, komentarz, status, statusOpiekuna } = req.body;
+  try {
+    await dziennik
+      .update({ [statusOpiekuna]: status, opis: opis }, { where: { id: id } })
+      .then(async () => {
+        if (komentarz.length > 2)
+          await komentarze.create({
+            dziennikId: id,
+            userId: req.session.user.id,
+            komentarz: komentarz,
+          });
+      })
+      .then(res.send({ success: true, status: statusOpiekuna }));
   } catch (err) {
     console.log(err);
   }
 
-  try {
-    if (req.session.user.isOpiekun)
-      try {
-        const getDays = await dziennik.findAll({
-          where: { statusOpiekunaU: { [Op.ne]: null } },
-          include: {
-            model: user,
-            where: {
-              id_opiekunU: req.session.user.id,
-            },
-          },
-        });
-        res.send(getDays);
-      } catch (err) {
-        console.log(err);
-      }
-  } catch (err) {
-    console.log(err);
-  }
+  
 });
 
 app.post("/api/acceptStatusEdit", async (req, res) => {
@@ -709,4 +695,4 @@ app.post("/api/declineStatusEdit", async (req, res) => {
     } catch (err) {
       console.log(err);
     }
-});
+  });
