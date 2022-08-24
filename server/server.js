@@ -357,7 +357,7 @@ app.post("/api/createFirma", async (req, res) => {
 
 app.put("/api/addOpiekunFirma", async (req, res) => {
   const { id, firmaId } = req.body;
-  updateOpiekun = await user.update({ 
+  const updateOpiekun = await user.update({ 
     firmaId: firmaId 
   }, { 
     where: { id: id } 
@@ -369,7 +369,7 @@ app.put("/api/addOpiekunFirma", async (req, res) => {
 
 app.put("/api/delOpiekunFirma", async (req, res) => {
   const { id, firmaId } = req.body;
-  updateOpiekun = await user.update({ 
+  const updateOpiekun = await user.update({ 
     firmaId: null
   }, { 
     where: { id: id } 
@@ -412,6 +412,95 @@ app.post("/api/createDay", async (req, res) => {
     res.send({ message: err.message });
   }
 });
+
+// Edycja dnia w dzienniczku
+app.post("/api/createEditDay", async (req, res) => {
+  const { 
+    id, 
+    changeOpis,
+    changeDzien,
+    changeData,
+    changeIloscGodzin,
+  } = req.body;
+  try {
+   await dziennik.update(
+      {
+        dzien: changeDzien,
+        data: changeData,
+        ilosc_godzin: changeIloscGodzin,
+        opis: changeOpis,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    )
+    const editDay = await dziennik.findOne(
+      {
+        where: {
+          id: id,
+        },
+      }
+    )
+    res.send({ message: "Zmiana przeszła pomyślnie...",
+      editDzien: editDay.dzien,
+      editData: editDay.data,
+      editIlosc_godzin: editDay.ilosc_godzin,
+      editOpis: editDay.opis,
+    
+    });
+  } catch (err) {
+    res.send({ message: err.message });
+  }
+});
+
+//Usuwanie dnia z dzinniczka
+app.delete("/api/deleteDay/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    await dziennik.destroy({
+      where: {
+        id: id,
+      },
+    });
+    res.send({ message: "Usunięto" });
+  } catch (err) {
+    res.send({ message: err.message });
+  }
+});
+
+//Edit firma nazwa
+app.put("/api/updateFirma", async (req, res) => {
+  const { id, changeNazwa } = req.body;
+
+  try {
+    await firma.update(
+      {
+        nazwa: changeNazwa,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+    const editFirma = await firma.findOne(
+      {
+        where: {
+          id: id,
+        },
+      }
+    )
+
+    res.send({ message: "Zmiana przeszła pomyślnie..." ,
+    editNazwa: editFirma.nazwa,
+  });
+  } catch (err) {
+    res.send({ message: err.message });
+  }
+});
+
 
 //Usuwanie w panelu admina użytkowników
 app.delete("/api/deleteUser/:id", async (req, res) => {

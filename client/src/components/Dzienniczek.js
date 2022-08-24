@@ -1,5 +1,5 @@
 import React ,{ useState, useEffect } from "react";
-import axios, * as others from "axios";
+import axios from 'axios'
 import {
     makeStyles,
     Table,
@@ -22,79 +22,33 @@ import Select from '@mui/material/Select';
 import AddDayDialog from "./AddDayDialog";
 import EditDay from "./EditDay";
 
-
 const useStyles = makeStyles(theme => ({
     containerMain:{
+        fontSize: "12px",
         margin: "15px",
         height: "100%",
-    },
-    dni:{
-        paddingTop: theme.spacing(2),
-        paddingLeft: theme.spacing(5),
-        paddingRight: theme.spacing(5),
-    },
-    ol:{
-        listStyle: "none",
-    },
-    dniItem:{
-        display:"flex",
-        alignItems:"center",
-        fontSize: "20px !important",
-    },
-    links:{
-        textDecoration: 'none', 
-        color:'black',
-        "&:hover": {
-            color:'white',
-            textDecoration: 'none', 
-        },
-    },
-    content:{
-        paddingTop: theme.spacing(2),
+        marginBottom:"100px",
+        [theme.breakpoints.up("sm")]: {
+            fontSize: "15px",
+          },
     },
 
-    label:{
-        paddingLeft: theme.spacing(3),
-        paddingRight: theme.spacing(1),
-    },
-    form:{
-        paddingRight: theme.spacing(2),
-    },
     nowyDzienBTN:{
         marginBottom: "15px",
+    },
+    btnEdycja:{
+        fontSize: "12px",
     }
 }));
 
 function Dzienniczek() {
 
-    const [dziennik, setDziennik] = useState([]);
-    const [efektUczenia, setEfektUczenia] = useState([]);
-    
-    const [open,setOpen] = useState(false)
-    const [checkDay,setCheckDay] = useState(null)
-    const handleClose = () =>{
-        setOpen(false)
-    }
-
-    const handleOpen=(val)=>{
-      setCheckDay(val)
-      setOpen(true)
-    }
-
     const classes = useStyles();
     
-    const [addOpen, setAddOpen] = useState(false);
+    const [checkDay,setCheckDay] = useState(null)
 
-    const handleAddClose = () => {
-        setAddOpen(false);
-    };
-    const handleAddOpen = () => {
-        axios.get("http://localhost:5000/api/getEfektUczenia").then((res) => {
-              setEfektUczenia(res.data);
-            });
-        setAddOpen(true);
-    };
-    axios.defaults.withCredentials = true;
+    const [dziennik, setDziennik] = useState([]);
+
     useEffect(() => {
         axios.get("http://localhost:5000/api/getDziennik").then((res) => {
           setDziennik(res.data);
@@ -103,14 +57,113 @@ function Dzienniczek() {
       }, []);
 
     const [dayObject,setDayObject] = useState({
-        userId:"",  
-        dzien:"",
-        data:"",
-        iloscGodzin:"",
-        opis:"",
-        demoSimpleSelect:"",
-        age:""
+    userId:"",  
+    dzien:"",
+    data:"",
+    iloscGodzin:"",
+    opis:"",
     })
+
+// Edycja  dnia
+
+const [editOpen, setEditOpen] = useState(false);
+
+const [editDay, setEditDay] = useState(null);
+
+const handleEditClose = () => {
+    setEditOpen(false);
+    setChangeDzien()
+    setChangeData()
+    setChangeIloscGodzin()
+    setChangeOpis()
+};
+const handleEditOpen = (val) => {
+    setEditOpen(true);
+    setEditDay(val);
+};
+
+
+const [dayObject2,setDayObject2] = useState({
+    userId:"",  
+    dzien:"",
+    data:"",
+    iloscGodzin:"",
+    opis:"",
+    })
+
+const [changeDzien, setChangeDzien] = useState();
+const [changeData, setChangeData] = useState();
+const [changeIloscGodzin, setChangeIloscGodzin] = useState();
+const [changeOpis, setChangeOpis] = useState();
+
+
+const onChangeDay=(e)=>{
+    const {value,id}=e.target
+    setDayObject2({...dayObject2,[id]:value})
+  }
+
+const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
+    axios
+      .post("http://localhost:5000/api/createEditDay", {
+      id: id,
+      changeOpis: changeOpis,
+      changeDzien: changeDzien, 
+      changeData: changeData,  
+      changeIloscGodzin: changeIloscGodzin,
+      })
+      .then((res) => {
+        setDziennik(
+            dziennik.map((val) => (
+                val.id == id ? { 
+                    ...val, 
+                    opis: res.data.editOpis, 
+                    dzien: res.data.editDzien, 
+                    data: res.data.editData,  
+                    ilosc_godzin: res.data.editIlosc_godzin,
+                } : val
+            ))
+        )
+      })
+      .then(() => { 
+        setChangeDzien()
+        setChangeData()
+        setChangeIloscGodzin()
+        setChangeOpis()
+      })
+
+  };
+
+  const deleteDay = (id) => {
+    const acceptDelete = window.confirm(`Czy pewno chcesz usunąć ?`);
+    if (acceptDelete)
+    axios.delete(`http://localhost:5000/api/deleteDay/${id}`).then((res) => {
+      })
+      .then((res) => {
+        setDziennik(
+            dziennik.filter((val) => {
+              return val.id != id;
+            })
+          );
+        setEditOpen(false);
+
+      });
+      
+  };
+
+
+// dodawanie dnia
+
+    const [addOpen, setAddOpen] = useState(false);
+
+    const handleAddClose = () => {
+        setAddOpen(false);
+    };
+    const handleAddOpen = () => {
+        setAddOpen(true);
+    };
+ 
+
+  
 
     const onChange=(e)=>{
         const {value,id}=e.target
@@ -123,7 +176,7 @@ function Dzienniczek() {
           dayObject:dayObject
           })
           .then((res) => {
-            if (res.data.message == "Konto zostało pomyślnie utworzone") {
+            if (res.data.message == "Dzień został pomyślnie dodany") {
               setDziennik([
                 ...dziennik,
                 {
@@ -133,8 +186,8 @@ function Dzienniczek() {
                   data:dayObject.data,
                   ilosc_godzin:dayObject.iloscGodzin,
                   opis:dayObject.opis,
-                  efekt_uczenia:dayObject.age,
-
+                  statusOpiekunaU:"Oczekiwanie",
+                  statusOpiekunaZ:"Oczekiwanie",
                 },
               ]);
               setDayObject({...dayObject,
@@ -143,13 +196,19 @@ function Dzienniczek() {
                 data:"",
                 iloscGodzin:"",
                 opis:"",
-                demoSimpleSelect:"",
               })
             }
      
             alert(res.data.message);
           });
       };
+//
+    const maxCharacter = (string, int) => {
+        const trimString = string.slice(0,int);
+        return(trimString)
+    }
+
+
 
   return (
     
@@ -161,66 +220,79 @@ function Dzienniczek() {
         </div>
         
         <Grid >
-                <Grid container>
-                    <Grid item xs = {1}>
-                        <div>
-                            Dzień
-                        </div>
-                    </Grid>
-                    <Grid item xs = {1}>
-                        <div>
-                            Data
-                        </div>
-                    </Grid>
-                    <Grid item xs = {2}>
-                        <div>
-                            Status Opiekuna Uczelnianego
-                        </div>
-                    </Grid>
-                    <Grid item xs = {2}>
-                        <div>
-                            Status Opiekuna Zakładowego
-                        </div>
-                    </Grid>
-                    <Grid item xs = {1}>
-                        <div>
-                            Opis
-                        </div>
-                    </Grid>
+            <Grid container>
+                <Grid item xs = {1} md = {1} style={{marginRight:"3px"}}>
+                    <div>
+                        Dzień
+                    </div>
                 </Grid>
+                <Grid item xs = {2} md = {1}>
+                    <div>
+                        Data
+                    </div>
+                </Grid>
+                <Grid item xs = {3} md = {1}>
+                    <div>
+                        Status Opiekuna Uczelnianego
+                    </div>
+                </Grid>
+                <Grid item xs = {3} md = {1}>
+                    <div>
+                        Status Opiekuna Zakładowego
+                    </div>
+                </Grid>
+                <Grid item xs = {1} md = {1}>
+                    <div>
+                        Opis
+                    </div>
+                </Grid>
+                <Grid item xs = {1} md = {1}>
+                    <div>
+                    dar
+                    </div>
+                </Grid>
+            </Grid>
 
             {dziennik.map((val) => (
-                <Grid container>
-                    <Grid item xs = {1}>
+                <Grid container >
+                    <Grid item xs = {1} md = {1} style={{marginRight:"3px"}}>
                         <div>
                             {val.dzien}
                         </div>
                     </Grid>
-                    <Grid item xs = {1}>
+                    <Grid item xs = {2} md = {1}>
                         <div>
                             {val.data}
                         </div>
                     </Grid>
-                    <Grid item xs = {2}>
+                    <Grid item xs = {3} md = {1}>
                         <div>
                             {val.statusOpiekunaU}
                         </div>
                     </Grid>
-                    <Grid item xs = {2}>
+                    <Grid item xs = {3} md = {1}>
                         <div>
                             {val.statusOpiekunaZ}
                         </div>
                     </Grid>
-                    <Grid item xs = {3}>
+                    <Grid item xs = {1} md = {1}>
                         <div>
-                            {val.opis}
+                            { val.opis.length < 26  ? (
+                                <div>
+                                   {val.opis}
+                                </div>
+                            ): <div>
+                                {maxCharacter(val.opis,25)}...
+                                </div>}
+                            
                         </div>
                     </Grid>
-                    <Grid item xs = {1}>
+                    <Grid item xs = {2} md = {1}>
                         <div>
-                        <Button 
-                            onClick={() => {handleOpen(val)}}
-                            variant="contained" color="warning">
+                        <Button className={classes.btnEdycja}
+                            onClick={() => {handleEditOpen(val)}}
+                            variant="contained" 
+                            color="warning">
                             Edutuj
                         </Button>
                         </div>
@@ -228,14 +300,27 @@ function Dzienniczek() {
                 </Grid>
             ))}
         </Grid>
-        <EditDay open={open} handleClose={handleClose} checkDay={checkDay}/>
+
+        <EditDay 
+        editOpen={editOpen} 
+        handleEditClose={handleEditClose} 
+        editDay={editDay}
+        deleteDay={deleteDay}
+        onChangeDay={onChangeDay}
+        createEditDay={createEditDay}
+        setChangeOpis={setChangeOpis}
+        setChangeDzien={setChangeDzien}
+        setChangeData={setChangeData}
+        setChangeIloscGodzin={setChangeIloscGodzin}
+        dayObject={dayObject}
+        />
+
         <AddDayDialog
         addOpen={addOpen}
         handleAddClose={handleAddClose}
         createDay={createDay}
         onChange={onChange}
         dayObject={dayObject}
-        efektUczenia = {efektUczenia}
         />
     </div>
   )

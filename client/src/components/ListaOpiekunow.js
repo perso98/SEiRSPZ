@@ -3,9 +3,13 @@ import axios from 'axios'
 
 import { Container, Grid} from '@mui/material'
 import AddFirma from "./AddFirma";
+import EditFirma from "./EditFirma";
 import AddOpiekun from "./AddOpiekun";
 import AddStudent from "./AddStudent";
 import Button from "@mui/material/Button";
+import { Typography, TextField, FormControl, FilledInput } from "@mui/material";
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+
 
 function ListaOpiekunow() {
 
@@ -169,157 +173,204 @@ const [firmaIdS, setFirmaSId] = useState(false);
           });
       };
 
+      //Firma Edit
 
+    const [changeNazwa, setChangeNazwa] = useState();
+    const [firmaEditOpen, setfirmaEditOpen] = useState(false);
+    const [firmaEditInfo, setfirmaEditInfo] = useState([]);
+
+    const handlefirmaEditClose = () => {
+        setfirmaEditOpen(false);
+        setChangeNazwa();
+    };
+    const handlefirmaEditOpen = (val) => {
+        setfirmaEditInfo(val)
+        setfirmaEditOpen(true);
+    };
+    const onChangeEditFirma=(e)=>{
+        const {value,id}=e.target
+        setFirma({...firma,[id]:value})
+      }
+    
+
+    const updateFirma = (id) => {
+        axios.put("http://localhost:5000/api/updateFirma", {
+            id: id,
+            changeNazwa: changeNazwa,
+          })
+          .then((res) => {
+            setFirma(
+                firma.map((val) => {
+                  return val.id == id ? { ...val, 
+                    nazwa: res.data.editNazwa 
+                } : val;
+                })
+              );
+          });
+      };
 
   return (
     <div>
         
         <Container style={{ paddingTop: "3rem", paddingBottom: "3rem", marginBottom: "50px"}}>
-        <Button  variant="contained" onClick={handleAddOpen} style={{marginBottom: "20px"}}>
-          Dodaj Zakład
-        </Button>
+            <Button  variant="contained" onClick={handleAddOpen} style={{marginBottom: "20px"}}>
+                Dodaj Zakład
+            </Button>
 
-        <AddOpiekun
-            idFirma={firmaIdO}
-            user={user}
-            dane={dane}
-            addOpen={addOOpen}
-            handleClose={handleAddOClose}
-            addOpiekunFirma={addOpiekunFirma}
-            delOpiekunFirma={delOpiekunFirma}
-            onChange={onChangeAddOpiekun}
-            object={opiekunObject}
-            setChangeFirma={setChangeFirma}
+            <AddOpiekun
+                idFirma={firmaIdO}
+                user={user}
+                dane={dane}
+                addOpen={addOOpen}
+                handleClose={handleAddOClose}
+                addOpiekunFirma={addOpiekunFirma}
+                delOpiekunFirma={delOpiekunFirma}
+                onChange={onChangeAddOpiekun}
+                object={opiekunObject}
+                setChangeFirma={setChangeFirma}
 
-        />
-        <AddStudent
-            idFirma={firmaIdS}
-            user={user}
-            dane={dane}
-            addOpen={addSOpen}
-            handleClose={handleAddSClose}
-            addOpiekunFirma={addOpiekunFirma}
-            delOpiekunFirma={delOpiekunFirma}
-            onChange={onChangeAddStudent}
-            object={studentObject}
-            setChangeFirma={setChangeFirma}
-        />
-        <AddFirma
-            addOpen={addOpen}
-            handleAddClose={handleAddClose}
-            createFirma={createFirma}
-            onChange={onChange}
-            firmaObject={firmaObject}
-        />
-        <Grid container
-            style={{
-            justifyContent: "space-around",
-            }}
-        >
-            {firma.map((firmaD) => (
-                <div
+            />
+            <AddStudent
+                idFirma={firmaIdS}
+                user={user}
+                dane={dane}
+                addOpen={addSOpen}
+                handleClose={handleAddSClose}
+                addOpiekunFirma={addOpiekunFirma}
+                delOpiekunFirma={delOpiekunFirma}
+                onChange={onChangeAddStudent}
+                object={studentObject}
+                setChangeFirma={setChangeFirma}
+            />
+            <AddFirma
+                addOpen={addOpen}
+                handleAddClose={handleAddClose}
+                createFirma={createFirma}
+                onChange={onChange}
+                firmaObject={firmaObject}
+            />
+            <EditFirma
+                open={firmaEditOpen}
+                handleClose={handlefirmaEditClose}
+                info={firmaEditInfo}
+                operacja={updateFirma}
+                onChange={onChangeEditFirma}
+                setChange={setChangeNazwa}
+            />
+            <Grid container
                 style={{
-                    marginBottom:"30px",
-                    backgroundImage: "linear-gradient(#073874, #042144)",
-                    color: "white",
-                    padding: "2rem",
-                    display: "flex",
-                    minWidth: "350px",
-                    flexDirection: "column",
-                    borderRadius: "25px",
-                    boxShadow: " 0 0 5px black",
+                justifyContent: "space-around",
                 }}
-                >
-                    
-                    
-                    <div style={{display: "flex", gap: "0.4rem"}}>
-                        Firma:
-                        <div >
-                            {firmaD.nazwa}
+            >
+                {firma.map((firmaD) => (
+                    <div
+                    style={{
+                        marginBottom:"30px",
+                        backgroundImage: "linear-gradient(#073874, #042144)",
+                        color: "white",
+                        padding: "2rem",
+                        display: "flex",
+                        minWidth: "350px",
+                        flexDirection: "column",
+                        borderRadius: "25px",
+                        boxShadow: " 0 0 5px black",
+                    }}
+                    >
+                        <div style={{display: "flex", alignItems:"center", justifyContent: "flex-start"}}>
+                            <div style={{display: "flex", marginRight:"5px"}}>
+                            Firma: {firmaD.nazwa}
+                            </div>
+                            <div style={{display: "flex"}}>
+                            <ModeEditIcon
+                            fontSize="small"
+                            onClick={()=> handlefirmaEditOpen(firmaD)}
+                            />
+                            </div>
+                            
                         </div>
-                    </div>
-                    
-                    <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                    <h6 style={{ textAlign: "center" }}>Opiekuni: </h6>
-                    <Button
-                        onClick={() => {handleAddOOpen(firmaD)}}
-                        variant="contained"
-                        color="warning"
-                    >
-                        Dodaj
-                    </Button>
-                    
-                    </div>
+                        
+                        
+                        <div
+                        style={{ display: "flex", justifyContent: "space-between" }}
+                        >
+                        <h6 style={{ textAlign: "center" }}>Opiekuni: </h6>
+                        <Button
+                            onClick={() => {handleAddOOpen(firmaD)}}
+                            variant="contained"
+                            color="warning"
+                        >
+                            Dodaj
+                        </Button>
+                        
+                        </div>
 
-                    {user.map((val) => (
-                        <Grid>
-                            {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === firmaD.id ? (
-                                <div>
-                                    <div style={{display: "flex", gap: "0.4rem"}}>
-                                        Login:<div>{val.login}</div>
-                                    </div>
-                                {dane.map((daneO) => (
-                                    daneO.id === val.daneId ? (
-                                        <div style={{marginBottom: "10px"}}>
-                                                
-                                                <div style={{display: "flex", gap: "0.4rem"}}>
-                                                    Imie i naziwkso:<div>{daneO.imie}</div>
-                                                    {daneO.nazwisko}
-                                                </div>
+                        {user.map((val) => (
+                            <Grid>
+                                {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === firmaD.id ? (
+                                    <div>
+                                        <div style={{display: "flex", gap: "0.4rem"}}>
+                                            Login:<div>{val.login}</div>
                                         </div>
-                                    ): null
-                                ))}
-                                </div>
-                            ): null}
-                        </Grid>
-                    ))}
-                    <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                    <h6 style={{ textAlign: "center" }}>Studenci: </h6>
-                    <Button
-                        onClick={() => {handleAddSOpen(firmaD)}}
-                        variant="contained"
-                        color="warning"
-                    >
-                        Dodaj
-                    </Button>
-                    
+                                    {dane.map((daneO) => (
+                                        daneO.id === val.daneId ? (
+                                            <div style={{marginBottom: "10px"}}>
+                                                    
+                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                        Imie i naziwkso:<div>{daneO.imie}</div>
+                                                        {daneO.nazwisko}
+                                                    </div>
+                                            </div>
+                                        ): null
+                                    ))}
+                                    </div>
+                                ): null}
+                            </Grid>
+                        ))}
+                        <div
+                        style={{ display: "flex", justifyContent: "space-between" }}
+                        >
+                        <h6 style={{ textAlign: "center" }}>Studenci: </h6>
+                        <Button
+                            onClick={() => {handleAddSOpen(firmaD)}}
+                            variant="contained"
+                            color="warning"
+                        >
+                            Dodaj
+                        </Button>
+                        
+                        </div>
+                        
+                        {user.map((val) => (
+                            <Grid>
+                                {val.isStudent === 1 && val.firmaId === firmaD.id ? (
+                                    <div>
+                                        <div style={{display: "flex", gap: "0.4rem"}}>
+                                            Login:<div>{val.login}</div>
+                                        </div>
+                                    {dane.map((daneS) => (
+                                        daneS.id === val.daneId ? (
+                                            <div style={{marginBottom: "10px"}}>
+                                                    
+                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                        Imie i naziwkso:<div>{daneS.imie}</div>
+                                                        {daneS.nazwisko}
+                                                    </div>
+                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                        Indeks:<div>{daneS.indeks}</div>
+                                                    </div>
+                                            </div>
+                                        ): null
+                                    ))}
+                                    </div>
+                                ): null}
+                            </Grid>
+                        ))}
                     </div>
-                    
-                    {user.map((val) => (
-                        <Grid>
-                            {val.isStudent === 1 && val.firmaId === firmaD.id ? (
-                                <div>
-                                    <div style={{display: "flex", gap: "0.4rem"}}>
-                                        Login:<div>{val.login}</div>
-                                    </div>
-                                {dane.map((daneS) => (
-                                    daneS.id === val.daneId ? (
-                                        <div style={{marginBottom: "10px"}}>
-                                                
-                                                <div style={{display: "flex", gap: "0.4rem"}}>
-                                                    Imie i naziwkso:<div>{daneS.imie}</div>
-                                                    {daneS.nazwisko}
-                                                </div>
-                                                <div style={{display: "flex", gap: "0.4rem"}}>
-                                                    Indeks:<div>{daneS.indeks}</div>
-                                                </div>
-                                        </div>
-                                    ): null
-                                ))}
-                                </div>
-                            ): null}
-                        </Grid>
-                    ))}
-                </div>
-            ))}
-        </Grid>
-        <Button  variant="contained" onClick={handleAddOpen} style={{marginBottom: "40px"}}>
-          Dodaj Zakład
-        </Button>
+                ))}
+            </Grid>
+            <Button  variant="contained" onClick={handleAddOpen} style={{marginBottom: "40px"}}>
+            Dodaj Zakład
+            </Button>
         </Container>
 
        

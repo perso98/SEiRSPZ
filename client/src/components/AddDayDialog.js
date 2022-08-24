@@ -66,8 +66,6 @@ function AddDayDialog({
   createDay,
   onChange,
   dayObject,
-  efektUczenia,
-  
 }) {
 
 
@@ -79,20 +77,7 @@ function AddDayDialog({
         data,
         iloscGodzin,
         opis,
-        demoSimpleSelect,
       } = dayObject;
-
-
-    const [efekt, setEfekt] = React.useState('');
-
-    const handleChange = (event) => {
-        setEfekt(event.target.value);
-    };
-
-    
-    
-    
-
 
 {
   return (
@@ -145,8 +130,6 @@ function AddDayDialog({
                                         </Grid>
                                         
                                     </Grid>
-                                </div>
-                                <div>
                                     <TextField className={classes.TextField}
                                         fullWidth 
                                         label="Opis wykonanej pracy"
@@ -163,7 +146,7 @@ function AddDayDialog({
                                     <Button variant="contained">Dodaj załącznik</Button>
                                 </div>
 
-                                <Box sx={{ minWidth: 200, maxWidth: 200, paddingTop: 2 , paddingBottom: 2 }}>
+                                {/* <Box sx={{ minWidth: 200, maxWidth: 200, paddingTop: 2 , paddingBottom: 2 }}>
                                     <FormControl fullWidth>
                                         <InputLabel id="demoSimpleSelect-label">Efekt uczenia się</InputLabel>
                                         <Select
@@ -180,7 +163,7 @@ function AddDayDialog({
                                         }
                                         </Select>
                                     </FormControl>
-                                </Box>
+                                </Box> */}
 
                                
                             </form>
@@ -201,7 +184,6 @@ function AddDayDialog({
           </div>
         </DialogContentText>
       </DialogContent>
-      <DialogActions></DialogActions>
     </Dialog>
   );
 }
