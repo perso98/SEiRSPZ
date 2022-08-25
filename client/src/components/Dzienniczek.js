@@ -23,6 +23,9 @@ import AddDayDialog from "./AddDayDialog";
 import EditDay from "./EditDay";
 import EfektyUczeniaSie from "./EfektyUczeniaSie";
 
+import { experimentalStyled as styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+
 const useStyles = makeStyles(theme => ({
     containerMain:{
         fontSize: "12px",
@@ -209,6 +212,14 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
         return(trimString)
     }
 
+
+    const Item = styled(Paper)(({ theme }) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+        ...theme.typography.body2,
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+      }));
 
 
   return (
