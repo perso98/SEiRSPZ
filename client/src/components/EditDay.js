@@ -159,7 +159,7 @@ function EditDay(
               createEditDay(editDay.id, editDay.dzien, editDay.data, editDay.ilosc_godzin, editDay.opis);
             }}
           >
-            Zmień {editDay.opis}
+            Zmień
           </Button>
 
           <Button

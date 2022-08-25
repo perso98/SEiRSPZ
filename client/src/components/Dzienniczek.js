@@ -21,6 +21,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import AddDayDialog from "./AddDayDialog";
 import EditDay from "./EditDay";
+import EfektyUczeniaSie from "./EfektyUczeniaSie";
 
 const useStyles = makeStyles(theme => ({
     containerMain:{
@@ -218,87 +219,102 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
           Dodaj nowy dzień
         </Button>
         </div>
-        
-        <Grid >
-            <Grid container>
-                <Grid item xs = {1} md = {1} style={{marginRight:"3px"}}>
-                    <div>
-                        Dzień
-                    </div>
-                </Grid>
-                <Grid item xs = {2} md = {1}>
-                    <div>
-                        Data
-                    </div>
-                </Grid>
-                <Grid item xs = {3} md = {1}>
-                    <div>
-                        Status Opiekuna Uczelnianego
-                    </div>
-                </Grid>
-                <Grid item xs = {3} md = {1}>
-                    <div>
-                        Status Opiekuna Zakładowego
-                    </div>
-                </Grid>
-                <Grid item xs = {1} md = {1}>
-                    <div>
-                        Opis
-                    </div>
-                </Grid>
-                <Grid item xs = {1} md = {1}>
-                    <div>
-                    dar
-                    </div>
-                </Grid>
-            </Grid>
 
-            {dziennik.map((val) => (
-                <Grid container >
+        <Grid container>
+            <Grid xs={12}  md={8}>
+                <Item></Item>
+            </Grid>
+            <Grid xs={12}  md={4}>
+                <Item></Item>
+            </Grid>
+        </Grid>
+
+
+        <Grid container>
+            <Grid xs={12}  md={8}>
+                <Grid container>
                     <Grid item xs = {1} md = {1} style={{marginRight:"3px"}}>
                         <div>
-                            {val.dzien}
+                            Dzień
                         </div>
                     </Grid>
-                    <Grid item xs = {2} md = {1}>
+                    <Grid item xs = {2} md = {2}>
                         <div>
-                            {val.data}
+                            Data
                         </div>
                     </Grid>
-                    <Grid item xs = {3} md = {1}>
+                    <Grid item xs = {3} md = {3}>
                         <div>
-                            {val.statusOpiekunaU}
+                            Status Opiekuna Uczelnianego
                         </div>
                     </Grid>
-                    <Grid item xs = {3} md = {1}>
+                    <Grid item xs = {3} md = {3}>
                         <div>
-                            {val.statusOpiekunaZ}
+                            Status Opiekuna Zakładowego
                         </div>
                     </Grid>
                     <Grid item xs = {1} md = {1}>
                         <div>
-                            { val.opis.length < 26  ? (
-                                <div>
-                                   {val.opis}
-                                </div>
-                            ): <div>
-                                {maxCharacter(val.opis,25)}...
-                                </div>}
-                            
+                            Opis
                         </div>
                     </Grid>
-                    <Grid item xs = {2} md = {1}>
+                    <Grid item xs = {1} md = {1}>
                         <div>
-                        <Button className={classes.btnEdycja}
-                            onClick={() => {handleEditOpen(val)}}
-                            variant="contained" 
-                            color="warning">
-                            Edutuj
-                        </Button>
+                        
                         </div>
                     </Grid>
                 </Grid>
-            ))}
+
+                {dziennik.map((val) => (
+                    <Grid container >
+                        <Grid item xs = {1} md = {1} style={{marginRight:"3px"}}>
+                            <div>
+                                {val.dzien}
+                            </div>
+                        </Grid>
+                        <Grid item xs = {2} md = {2}>
+                            <div>
+                                {val.data}
+                            </div>
+                        </Grid>
+                        <Grid item xs = {3} md = {3}>
+                            <div>
+                                {val.statusOpiekunaU}
+                            </div>
+                        </Grid>
+                        <Grid item xs = {3} md = {3}>
+                            <div>
+                                {val.statusOpiekunaZ}
+                            </div>
+                        </Grid>
+                        <Grid item xs = {1} md = {1}>
+                            <div>
+                                { val.opis.length < 26  ? (
+                                    <div>
+                                    {val.opis}
+                                    </div>
+                                ): <div>
+                                    {maxCharacter(val.opis,25)}...
+                                    </div>}
+                                
+                            </div>
+                        </Grid>
+                        <Grid item xs = {2} md = {1}>
+                            <div>
+                            <Button className={classes.btnEdycja}
+                                onClick={() => {handleEditOpen(val)}}
+                                variant="contained" 
+                                color="warning">
+                                Edutuj
+                            </Button>
+                            </div>
+                        </Grid>
+                    </Grid>
+                ))}
+            </Grid>
+            <Grid xs={12}  md={4}>
+                    <EfektyUczeniaSie/>
+            </Grid>
         </Grid>
 
         <EditDay 

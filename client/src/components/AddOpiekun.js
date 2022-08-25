@@ -133,7 +133,7 @@ function AddOpiekun(
                             Imie i naziwkso: 
                             
                             {user.map((val) => (
-                                    <Grid>
+                                    <Grid style={{marginBottom:"15px"}} >
                                         {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === idFirma.id ? (
                                             <div>
                                                 <Grid item xs = {2}>
@@ -176,7 +176,7 @@ function AddOpiekun(
                             <div>
                             <div className={classes.przerwa}>Opiekuni lista</div>
                             {user.map((val) => (
-                                    <Grid>
+                                    <Grid >
                                         {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === null ? (
                                             <div>
                                                 <Grid item xs = {2}>
