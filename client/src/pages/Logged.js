@@ -8,12 +8,12 @@ import { Container, Grid } from "@mui/material";
 import Form from "../components/Form";
 import Dzienniczek from "../components/Dzienniczek";
 import Konto from "../components/Konto";
-import Uprawnienia from "../components/Uprawnienia";
-import NoPage from "../components/NoPage";
-import OpiekunZ from "../components/OpiekunZ";
+import Uprawnienia from "./Uprawnienia";
+import NoPage from "./NoPage";
+import OpiekunZ from "./OpiekunZ";
 import DodawanieOpiekunow from "../components/DodawanieOpiekunow";
 import OpiekunUHistory from "./OpiekunUHistory";
-import OpiekunStatus from "../components/OpiekunStatus";
+import OpiekunStatus from "./OpiekunStatus";
 import OpiekunU from "./OpiekunU";
 import OpiekunZEfekty from "./EfektyOpiekunZ";
 function Logged() {

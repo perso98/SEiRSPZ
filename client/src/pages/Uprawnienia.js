@@ -13,16 +13,14 @@ import {
 import Button from "@mui/material/Button";
 import React, { useState, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import {
-  InputAdornment
-} from "@mui/material";
+import { InputAdornment } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import IconButton from "@mui/material/IconButton";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddAdminDialog from "./AddAdminDialog";
-import EditAdminDialog from "./EditAdminDialog";
+import AddAdminDialog from "../components/AddAdminDialog";
+import EditAdminDialog from "../components/EditAdminDialog";
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
@@ -36,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInp: {
     width: "100%",
-    marginRight:theme.spacing(20), 
+    marginRight: theme.spacing(20),
   },
   toolbar: {
     marginTop: "2%",
@@ -69,7 +67,6 @@ export default function Uprawnienia() {
   const [pageRows, setpageRows] = useState(pages[page]);
   const [searchLogin, setSearchLogin] = useState("");
 
-
   const HeadCells = [
     { id: "login", label: "Login" },
     { id: "isStudent", label: "Student" },
@@ -101,53 +98,49 @@ export default function Uprawnienia() {
     setAddOpen(true);
   };
 
-  const [userObject,setUserObject] = useState({
-    login:'',
-    password:'',
-    admin:0,
-    opiekunU:0,
-    opiekunZ:0,
-    student:0,
-    dziekanat:0,
-    dyrektor:0,
-  })
-  const onChange=(e)=>{
-    const {value,id}=e.target
-    setUserObject({...userObject,[id]:value})
-  }
-  const onClick=(e,number)=>
-  {
-    const {id}=e.currentTarget
-    setUserObject({...userObject,[id]:number})
-  }
+  const [userObject, setUserObject] = useState({
+    login: "",
+    password: "",
+    admin: 0,
+    opiekunU: 0,
+    opiekunZ: 0,
+    student: 0,
+    dziekanat: 0,
+    dyrektor: 0,
+  });
+  const onChange = (e) => {
+    const { value, id } = e.target;
+    setUserObject({ ...userObject, [id]: value });
+  };
+  const onClick = (e, number) => {
+    const { id } = e.currentTarget;
+    setUserObject({ ...userObject, [id]: number });
+  };
   const createAcc = () => {
     axios
       .post("http://localhost:5000/api/createAccount2", {
-      userObject:userObject
+        userObject: userObject,
       })
       .then((res) => {
         if (res.data.message == "Konto zostało pomyślnie utworzone") {
           setStudents([
             ...students,
             {
-              id:res.data.id,
+              id: res.data.id,
               login: userObject.login,
               password: userObject.password,
-              isOpiekunZakl:userObject.opiekunZ,
-              isAdmin:userObject.admin,
-              isDyrektor:userObject.dyrektor,
-              isOpiekun:userObject.opiekunU,
-              isDziekanat:userObject.dziekanat,
-              isDyrektor:userObject.dyrektor,
-              isStudent:userObject.student,
+              isOpiekunZakl: userObject.opiekunZ,
+              isAdmin: userObject.admin,
+              isDyrektor: userObject.dyrektor,
+              isOpiekun: userObject.opiekunU,
+              isDziekanat: userObject.dziekanat,
+              isDyrektor: userObject.dyrektor,
+              isStudent: userObject.student,
             },
           ]);
-          setUserObject({...userObject,
-            login:'',
-            password:'',
-          })
+          setUserObject({ ...userObject, login: "", password: "" });
         }
- 
+
         alert(res.data.message);
       });
   };
@@ -236,112 +229,118 @@ export default function Uprawnienia() {
 
   return (
     <>
-    <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
-    <div/>
-    <div>
-      <Toolbar className={classes.toolbar}>
-        <TextField
-          className={classes.searchInp}
-          label="Szukaj"
-          variant="outlined"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => {
-            setSearchLogin(e.target.value);
-            setPage(0);
-          }}
-        />
-        <Button variant="contained" onClick={handleAddOpen}>
-          Dodaj użytkownika
-        </Button>
-      </Toolbar>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div />
+        <div>
+          <Toolbar className={classes.toolbar}>
+            <TextField
+              className={classes.searchInp}
+              label="Szukaj"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setSearchLogin(e.target.value);
+                setPage(0);
+              }}
+            />
+            <Button variant="contained" onClick={handleAddOpen}>
+              Dodaj użytkownika
+            </Button>
+          </Toolbar>
 
-      <Table className={classes.table}>
-        <TableHead className={classes.tableHead}>
-          <TableRow>
-            {HeadCells.map((head) => (
-              <TableCell style={{ textAlign: "center" }} key={head.id}>
-                {head.label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {loading == true && <TableRow>Ładowanie...</TableRow>}
-          {recordsAfterFiltering.length == 0 && loading == false && (
-            <TableRow className={classes.NoData}>Brak danych...</TableRow>
-          )}
+          <Table className={classes.table}>
+            <TableHead className={classes.tableHead}>
+              <TableRow>
+                {HeadCells.map((head) => (
+                  <TableCell style={{ textAlign: "center" }} key={head.id}>
+                    {head.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {loading == true && <TableRow>Ładowanie...</TableRow>}
+              {recordsAfterFiltering.length == 0 && loading == false && (
+                <TableRow className={classes.NoData}>Brak danych...</TableRow>
+              )}
 
-          {recordsAfter().map((val) => (
-            <TableRow key={val.id}>
-              <TableCell>{val.login}</TableCell>
-              <TableCell style={{ textAlign: "center" }}>
-                {val.isStudent == 0
-                  ? takeButton("isStudent", val.id)
-                  : giveButton("isStudent", val.id)}
-              </TableCell>
-              <TableCell style={{ textAlign: "center" }}>
-                {val.isAdmin == 0
-                  ? takeButton("isAdmin", val.id)
-                  : giveButton("isAdmin", val.id)}
-              </TableCell>
-              <TableCell style={{ textAlign: "center" }}>
-                {val.isOpiekunZakl == 0
-                  ? takeButton("isOpiekunZakl", val.id)
-                  : giveButton("isOpiekunZakl", val.id)}
-              </TableCell>
-              <TableCell style={{ textAlign: "center" }}>
-                {val.isOpiekun == 0
-                  ? takeButton("isOpiekun", val.id)
-                  : giveButton("isOpiekun", val.id)}
-              </TableCell>
-              <TableCell style={{ textAlign: "center" }}>
-                {val.isDyrektor == 0
-                  ? takeButton("isDyrektor", val.id)
-                  : giveButton("isDyrektor", val.id)}
-              </TableCell>
-              <TableCell style={{ textAlign: "center" }}>
-                {val.isDziekanat == 0
-                  ? takeButton("isDziekanat", val.id)
-                  : giveButton("isDziekanat", val.id)}
-              </TableCell>
-              <TableCell>
-                <IconButton
-                  onClick={() => {
-                    handleOpen(val);
-                  }}
-                >
-                  <EditIcon style={{ color: "#FF8C00" }} />
-                </IconButton>
-                <IconButton>
-                  <DeleteIcon
-                    style={{ color: "#A52A2A" }}
-                    onClick={() => {
-                      deleteUser(val.id, val.login);
-                    }}
-                  />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TablePagination
-          component="div"
-          page={page}
-          rowsPerPageOptions={pages}
-          rowsPerPage={pageRows}
-          count={recordsAfterFiltering.length}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Table>
-      </div>
-      <div/>
+              {recordsAfter().map((val) => (
+                <TableRow key={val.id}>
+                  <TableCell>{val.login}</TableCell>
+                  <TableCell style={{ textAlign: "center" }}>
+                    {val.isStudent == 0
+                      ? takeButton("isStudent", val.id)
+                      : giveButton("isStudent", val.id)}
+                  </TableCell>
+                  <TableCell style={{ textAlign: "center" }}>
+                    {val.isAdmin == 0
+                      ? takeButton("isAdmin", val.id)
+                      : giveButton("isAdmin", val.id)}
+                  </TableCell>
+                  <TableCell style={{ textAlign: "center" }}>
+                    {val.isOpiekunZakl == 0
+                      ? takeButton("isOpiekunZakl", val.id)
+                      : giveButton("isOpiekunZakl", val.id)}
+                  </TableCell>
+                  <TableCell style={{ textAlign: "center" }}>
+                    {val.isOpiekun == 0
+                      ? takeButton("isOpiekun", val.id)
+                      : giveButton("isOpiekun", val.id)}
+                  </TableCell>
+                  <TableCell style={{ textAlign: "center" }}>
+                    {val.isDyrektor == 0
+                      ? takeButton("isDyrektor", val.id)
+                      : giveButton("isDyrektor", val.id)}
+                  </TableCell>
+                  <TableCell style={{ textAlign: "center" }}>
+                    {val.isDziekanat == 0
+                      ? takeButton("isDziekanat", val.id)
+                      : giveButton("isDziekanat", val.id)}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => {
+                        handleOpen(val);
+                      }}
+                    >
+                      <EditIcon style={{ color: "#FF8C00" }} />
+                    </IconButton>
+                    <IconButton>
+                      <DeleteIcon
+                        style={{ color: "#A52A2A" }}
+                        onClick={() => {
+                          deleteUser(val.id, val.login);
+                        }}
+                      />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TablePagination
+              component="div"
+              page={page}
+              rowsPerPageOptions={pages}
+              rowsPerPage={pageRows}
+              count={recordsAfterFiltering.length}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Table>
+        </div>
+        <div />
       </div>
       <AddAdminDialog
         addOpen={addOpen}

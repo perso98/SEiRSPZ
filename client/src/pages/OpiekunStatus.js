@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 
 import Container from "@material-ui/core/Container";
 import { useState } from "react";
-import DialogOpiekunZ from "./DialogOpiekunZ";
+import DialogOpiekunZ from "../components/DialogOpiekunZ";
 import * as axios from "axios";
-import SearchBar from "./SearchBar";
-import Pagination from "./Pagination";
-import Button from "@mui/material/Button";
-import ButtonLink from "./Button";
+import SearchBar from "../components/SearchBar";
+import Pagination from "../components/Pagination";
 
-function OpiekunZ() {
+import Button from "../components/Button";
+
+function OpiekunStatus() {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchLogin, setSearchLogin] = useState("");
@@ -20,6 +20,7 @@ function OpiekunZ() {
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
 
+  const status = true;
   const handleClose = () => {
     setOpen(false);
   };
@@ -29,7 +30,7 @@ function OpiekunZ() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getDaysOpiekunZ").then((res) => {
+    axios.get("http://localhost:5000/api/getDaysOpiekunZStatus").then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
@@ -44,8 +45,8 @@ function OpiekunZ() {
       })
       .then((res) => {
         setDzienniczek(
-          dzienniczek.filter((val) => {
-            return val.id != id;
+          dzienniczek.map((val) => {
+            return val.id == id ? { ...val, [res.data.status]: status } : val;
           })
         );
       });
@@ -61,11 +62,20 @@ function OpiekunZ() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        setDzienniczek(
-          dzienniczek.filter((val) => {
-            return val.id != id;
-          })
-        );
+        if (!opis)
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == id ? { ...val, [res.data.status]: status } : val;
+            })
+          );
+        else
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == id
+                ? { ...val, [res.data.status]: status, opis: opis }
+                : val;
+            })
+          );
       });
   };
 
@@ -83,15 +93,14 @@ function OpiekunZ() {
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
         {loading && <h5>Ładowanie...</h5>}
-        <div style={{ justifyContent: "space-between", display: "flex" }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
               setItemOffset={setItemOffset}
             />
           )}
-
-          <ButtonLink linkTo="/profil/opiekunZStatus" text="Historia" />
+          <Button linkTo="/profil/OpiekunZ" text="Nowe" />
         </div>
         {recordsAfterFiltering.length === 0 && !loading && (
           <h6>Nie znaleziono wyniku</h6>
@@ -103,6 +112,7 @@ function OpiekunZ() {
           open={open}
           itemOffset={itemOffset}
           setItemOffset={setItemOffset}
+          status={status}
         />
       </Container>
       <DialogOpiekunZ
@@ -117,4 +127,4 @@ function OpiekunZ() {
   );
 }
 
-export default OpiekunZ;
+export default OpiekunStatus;
