@@ -7,8 +7,8 @@ import { Container, Toolbar, Typography } from "@mui/material";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./Home";
-import ListaStudentow from "./ListaStudentow";
-import Form from "./Form";
+import ListaStudentow from "../pages/ListaStudentow";
+import Form from "../pages/Form";
 import Logged from "../pages/Logged";
 
 const useStyles = makeStyles((theme) => ({

@@ -3,18 +3,11 @@ import Nav from "./components/Nav";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
-import ListaStudentow from "./components/ListaStudentow";
 import Register from "./pages/Register";
-import Form from "./components/Form";
 import Login from "./pages/Login";
-import Dzienniczek from "./components/Dzienniczek";
 import Logged from "./pages/Logged";
-import { Container, Grid } from "@mui/material";
-import Sidebar from "./components/Sidebar";
-import Rightbar from "./components/Rightbar";
-import Footer from "./components/Footer";
+import {Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import Profil from "./components/Konto";
 import NoPage from "./pages/NoPage";
 
 const useStyles = makeStyles((theme) => ({
