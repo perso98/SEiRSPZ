@@ -208,8 +208,7 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
       };
 //
     const maxCharacter = (string, int) => {
-        const trimString = string.slice(0,int);
-        return(trimString)
+        return(string.slice(0,int))
     }
 
 
@@ -254,17 +253,17 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
                             Data
                         </div>
                     </Grid>
-                    <Grid item xs = {3} md = {3}>
+                    <Grid item xs = {3} md = {2}>
                         <div>
                             Status Opiekuna Uczelnianego
                         </div>
                     </Grid>
-                    <Grid item xs = {3} md = {3}>
+                    <Grid item xs = {3} md = {2}>
                         <div>
                             Status Opiekuna Zakładowego
                         </div>
                     </Grid>
-                    <Grid item xs = {1} md = {1}>
+                    <Grid item xs = {1} md = {2}>
                         <div>
                             Opis
                         </div>
@@ -288,17 +287,17 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
                                 {val.data}
                             </div>
                         </Grid>
-                        <Grid item xs = {3} md = {3}>
+                        <Grid item xs = {3} md = {2}>
                             <div>
                                 {val.statusOpiekunaU}
                             </div>
                         </Grid>
-                        <Grid item xs = {3} md = {3}>
+                        <Grid item xs = {3} md = {2}>
                             <div>
                                 {val.statusOpiekunaZ}
                             </div>
                         </Grid>
-                        <Grid item xs = {1} md = {1}>
+                        <Grid item xs = {2} md = {2}>
                             <div>
                                 { val.opis.length < 26  ? (
                                     <div>
@@ -323,8 +322,9 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
                     </Grid>
                 ))}
             </Grid>
-            <Grid xs={12}  md={4}>
-                    <EfektyUczeniaSie/>
+            <Grid xs={12}  md={4} style={{alignItems: "flex-start"}}>
+                    <EfektyUczeniaSie
+                    />
             </Grid>
         </Grid>
 

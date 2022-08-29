@@ -7,8 +7,6 @@ import { Container, Typography } from '@mui/material'
 const useStyles = makeStyles(theme => ({
 container:{
   paddingTop: theme.spacing(2),
-  position: "sticky",
-  top: 0,
   height: "100vh",
 },
 }));
