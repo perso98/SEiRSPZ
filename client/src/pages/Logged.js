@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import { Container, Grid } from "@mui/material";
 import Form from "./Form";
 import Dzienniczek from "./Dzienniczek";
-import Konto from "../components/Konto";
+import Konto from "./Konto";
 import Uprawnienia from "./Uprawnienia";
 import NoPage from "./NoPage";
 import OpiekunZ from "./OpiekunZ";
@@ -42,8 +42,7 @@ function Logged() {
           </Route>
         </Routes>
       </Grid>
-      <Grid item xs={12}>
-      </Grid>
+      <Grid item xs={12}></Grid>
     </Grid>
   );
 }

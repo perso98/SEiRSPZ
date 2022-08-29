@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Logged from "./pages/Logged";
 import {Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import Profil from "./pages/Konto";
 import NoPage from "./pages/NoPage";
 
 const useStyles = makeStyles((theme) => ({
