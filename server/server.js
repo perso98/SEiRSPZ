@@ -18,6 +18,8 @@ const {
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 
+const opiekunZ_controller = require("./controllers/opiekunZ");
+
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -171,7 +173,6 @@ app.get("/api/getEfektUczenia", async (req, res) => {
 });
 
 app.get("/api/listEfektyStudent", async (req, res) => {
-
   const listEfektyStudent = await efektyStudent.findAll({
     where: { userId: req.session.user.id },
   });
@@ -180,27 +181,26 @@ app.get("/api/listEfektyStudent", async (req, res) => {
 });
 
 app.put("/api/createUzasadnienieEfektu", async (req, res) => {
-  const {id, komentarz} = req.body;
-  const uzasadnienieEfektu = await efektyStudent.create(
-    {
-      komentarz: komentarz,
-      efektyListumId: id,
-      userId: req.session.user.id,
-    }
-  );
+  const { id, komentarz } = req.body;
+  const uzasadnienieEfektu = await efektyStudent.create({
+    komentarz: komentarz,
+    efektyListumId: id,
+    userId: req.session.user.id,
+  });
   res.send(uzasadnienieEfektu);
 });
 
 app.put("/api/updateUzasadnienieEfektu", async (req, res) => {
-  const {id, komentarz} = req.body;
+  const { id, komentarz } = req.body;
   const uzasadnienieEfektu = await efektyStudent.update(
     {
       komentarz: komentarz,
-    },{
+    },
+    {
       where: {
         userId: req.session.user.id,
         efektyListumId: id,
-      }
+      },
     }
   );
   res.send(uzasadnienieEfektu);
@@ -213,7 +213,6 @@ app.get("/api/IdUser", async (req, res) => {
 
   res.send(idUser);
 });
-
 
 app.get("/api/getOpiekuni", async (req, res) => {
   const listOpiekun = await user.findAll({
@@ -674,3 +673,4 @@ app.get("/api/getEffectsOpiekunZ", async (req, res) => {
     console.log(err);
   }
 });
+app.get("/api/getEffectsOpiekunZ", opiekunZ_controller.getEffectsOpiekunZ);
