@@ -6,8 +6,8 @@ import { padding, textAlign } from '@mui/system';
 
 const useStyles = makeStyles(theme => ({
     container:{
-        position: "fixed",
-        bottom: 0,
+        position: "sticky",
+        top: 0,
         width: "100%",
         height: "10vh",
         backgroundColor: "#08448c",

@@ -165,10 +165,55 @@ app.get("/api/getDziennik", async (req, res) => {
 });
 
 app.get("/api/getEfektUczenia", async (req, res) => {
-  const listEfektUczenia = await efektyLista.findAll();
+  const listaEfektow = await efektyLista.findAll();
 
-  res.send(listEfektUczenia);
+  res.send(listaEfektow);
 });
+
+app.get("/api/listEfektyStudent", async (req, res) => {
+
+  const listEfektyStudent = await efektyStudent.findAll({
+    where: { userId: req.session.user.id },
+  });
+
+  res.send(listEfektyStudent);
+});
+
+app.put("/api/createUzasadnienieEfektu", async (req, res) => {
+  const {id, komentarz} = req.body;
+  const uzasadnienieEfektu = await efektyStudent.create(
+    {
+      komentarz: komentarz,
+      efektyListumId: id,
+      userId: req.session.user.id,
+    }
+  );
+  res.send(uzasadnienieEfektu);
+});
+
+app.put("/api/updateUzasadnienieEfektu", async (req, res) => {
+  const {id, komentarz} = req.body;
+  const uzasadnienieEfektu = await efektyStudent.update(
+    {
+      komentarz: komentarz,
+    },{
+      where: {
+        userId: req.session.user.id,
+        efektyListumId: id,
+      }
+    }
+  );
+  res.send(uzasadnienieEfektu);
+});
+
+app.get("/api/IdUser", async (req, res) => {
+  const idUser = await user.findOne({
+    where: { id: req.session.user.id },
+  });
+
+  res.send(idUser);
+});
+
 
 app.get("/api/getOpiekuni", async (req, res) => {
   const listOpiekun = await user.findAll({
