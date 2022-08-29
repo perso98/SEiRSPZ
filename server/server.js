@@ -357,22 +357,28 @@ app.post("/api/createFirma", async (req, res) => {
 
 app.put("/api/addOpiekunFirma", async (req, res) => {
   const { id, firmaId } = req.body;
-  updateOpiekun = await user.update({ 
-    firmaId: firmaId 
-  }, { 
-    where: { id: id } 
-  });
+  updateOpiekun = await user.update(
+    {
+      firmaId: firmaId,
+    },
+    {
+      where: { id: id },
+    }
+  );
   res.send(updateOpiekun);
-  console.log("1111111111111111111")
+  console.log("1111111111111111111");
 });
 
 app.put("/api/delOpiekunFirma", async (req, res) => {
   const { id, firmaId } = req.body;
-  updateOpiekun = await user.update({ 
-    firmaId: null
-  }, { 
-    where: { id: id } 
-  });
+  updateOpiekun = await user.update(
+    {
+      firmaId: null,
+    },
+    {
+      where: { id: id },
+    }
+  );
   res.send(updateOpiekun);
   console.log("1111111111111111111");
 });
@@ -414,15 +420,10 @@ app.post("/api/createDay", async (req, res) => {
 
 // Edycja dnia w dzienniczku
 app.post("/api/createEditDay", async (req, res) => {
-  const { 
-    id, 
-    changeOpis,
-    changeDzien,
-    changeData,
-    changeIloscGodzin,
-  } = req.body;
+  const { id, changeOpis, changeDzien, changeData, changeIloscGodzin } =
+    req.body;
   try {
-   await dziennik.update(
+    await dziennik.update(
       {
         dzien: changeDzien,
         data: changeData,
@@ -434,20 +435,18 @@ app.post("/api/createEditDay", async (req, res) => {
           id: id,
         },
       }
-    )
-    const editDay = await dziennik.findOne(
-      {
-        where: {
-          id: id,
-        },
-      }
-    )
-    res.send({ message: "Zmiana przeszła pomyślnie...",
+    );
+    const editDay = await dziennik.findOne({
+      where: {
+        id: id,
+      },
+    });
+    res.send({
+      message: "Zmiana przeszła pomyślnie...",
       editDzien: editDay.dzien,
       editData: editDay.data,
       editIlosc_godzin: editDay.ilosc_godzin,
       editOpis: editDay.opis,
-    
     });
   } catch (err) {
     res.send({ message: err.message });
@@ -484,22 +483,20 @@ app.put("/api/updateFirma", async (req, res) => {
         },
       }
     );
-    const editFirma = await firma.findOne(
-      {
-        where: {
-          id: id,
-        },
-      }
-    )
+    const editFirma = await firma.findOne({
+      where: {
+        id: id,
+      },
+    });
 
-    res.send({ message: "Zmiana przeszła pomyślnie..." ,
-    editNazwa: editFirma.nazwa,
-  });
+    res.send({
+      message: "Zmiana przeszła pomyślnie...",
+      editNazwa: editFirma.nazwa,
+    });
   } catch (err) {
     res.send({ message: err.message });
   }
 });
-
 
 //Usuwanie w panelu admina użytkowników
 app.delete("/api/deleteUser/:id", async (req, res) => {
@@ -609,90 +606,26 @@ app.post("/api/changeStatusEdit", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-
-  
 });
 
-app.post("/api/acceptStatusEdit", async (req, res) => {
-  const { id, opis, komentarz } = req.body;
-  if (req.session.user.isOpiekunZakl)
-    try {
-      await dziennik
-        .update(
-          { statusOpiekunaZ: "Zaakceptowano", opis: opis },
-          { where: { id: id } }
-        )
-        .then(async () => {
-          if (komentarz.length > 2)
-            await komentarze.create({
-              dziennikId: id,
-              userId: req.session.user.id,
-              komentarz: komentarz,
-            });
-        })
-        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
-    } catch (err) {
-      console.log(err);
-    }
-  if (req.session.user.isOpiekun)
-    try {
-      await dziennik
-        .update(
-          { statusOpiekunaU: "Zaakceptowano", opis: opis },
-          { where: { id: id } }
-        )
-        .then(async () => {
-          if (komentarz.length > 2)
-            await komentarze.create({
-              dziennikId: id,
-              userId: req.session.user.id,
-              komentarz: komentarz,
-            });
-        })
-        .then(res.send({ success: true, status: "statusOpiekunaU" }));
-    } catch (err) {
-      console.log(err);
-    }
-});
+//pobieranie efektow uczenia dla opiekunow
 
-app.post("/api/declineStatusEdit", async (req, res) => {
-  const { id, opis, komentarz } = req.body;
-  if (req.session.user.isOpiekunZakl)
-    try {
-      await dziennik
-        .update(
-          { statusOpiekunaZ: "Odrzucono", opis: opis },
-          { where: { id: id } }
-        )
-        .then(async () => {
-          if (komentarz.length > 2)
-            await komentarze.create({
-              dziennikId: id,
-              userId: req.session.user.id,
-              komentarz: komentarz,
-            });
-        })
-        .then(res.send({ success: true, status: "statusOpiekunaZ" }));
-    } catch (err) {
-      console.log(err);
-    }
-  if (req.session.user.isOpiekun)
-    try {
-      await dziennik
-        .update(
-          { statusOpiekunaU: "Odrzucono", opis: opis },
-          { where: { id: id } }
-        )
-        .then(async () => {
-          if (komentarz.length > 2)
-            await komentarze.create({
-              dziennikId: id,
-              userId: req.session.user.id,
-              komentarz: komentarz,
-            });
-        })
-        .then(res.send({ success: true, status: "statusOpiekunaU" }));
-    } catch (err) {
-      console.log(err);
-    }
-  });
+app.get("/api/getEffectsOpiekunZ", async (req, res) => {
+  try {
+    const getEffects = await user.findAll({
+      where: {
+        id_opiekunZ: req.session.user.id,
+      },
+      include: {
+        model: efektyStudent,
+        include: {
+          model: efektyLista,
+        },
+      },
+    });
+
+    res.send(getEffects);
+  } catch (err) {
+    console.log(err);
+  }
+});

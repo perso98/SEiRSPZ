@@ -7,6 +7,8 @@ import * as axios from "axios";
 import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
 
+import Button from "./Button";
+
 function OpiekunStatus() {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,6 +19,7 @@ function OpiekunStatus() {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
+
   const status = true;
   const handleClose = () => {
     setOpen(false);
@@ -90,12 +93,15 @@ function OpiekunStatus() {
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
         {loading && <h5>Ładowanie...</h5>}
-        {!loading && (
-          <SearchBar
-            setSearchLogin={setSearchLogin}
-            setItemOffset={setItemOffset}
-          />
-        )}
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          {!loading && (
+            <SearchBar
+              setSearchLogin={setSearchLogin}
+              setItemOffset={setItemOffset}
+            />
+          )}
+          <Button linkTo="/profil/OpiekunZ" text="Nowe" />
+        </div>
         {recordsAfterFiltering.length === 0 && !loading && (
           <h6>Nie znaleziono wyniku</h6>
         )}

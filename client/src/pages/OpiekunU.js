@@ -6,6 +6,7 @@ import DialogOpiekunZ from "../components/DialogOpiekunZ";
 import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
+import ButtonLink from "../components/Button";
 
 function OpiekunU() {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -94,13 +95,16 @@ function OpiekunU() {
   return (
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        {loading && <h5>Ładowanie...</h5>}
-        {!loading && (
-          <SearchBar
-            setSearchLogin={setSearchLogin}
-            setItemOffset={setItemOffset}
-          />
-        )}
+        <div style={{ justifyContent: "space-between", display: "flex" }}>
+          {loading && <h5>Ładowanie...</h5>}
+          {!loading && (
+            <SearchBar
+              setSearchLogin={setSearchLogin}
+              setItemOffset={setItemOffset}
+            />
+          )}
+          <ButtonLink linkTo="/profil/opiekunUStatus" text="Historia" />
+        </div>
         {recordsAfterFiltering.length === 0 && !loading && (
           <h6>Nie znaleziono wyniku</h6>
         )}
