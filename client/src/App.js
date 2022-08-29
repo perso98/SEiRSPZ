@@ -14,7 +14,7 @@ import Sidebar from "./components/Sidebar";
 import Rightbar from "./components/Rightbar";
 import Footer from "./components/Footer";
 import { makeStyles } from "@mui/styles";
-import Profil from "./components/Konto";
+import Profil from "./pages/Konto";
 import NoPage from "./pages/NoPage";
 
 const useStyles = makeStyles((theme) => ({
