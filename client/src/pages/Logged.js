@@ -15,7 +15,7 @@ import DodawanieOpiekunow from "../components/DodawanieOpiekunow";
 import OpiekunUHistory from "./OpiekunUHistory";
 import OpiekunStatus from "../components/OpiekunStatus";
 import OpiekunU from "./OpiekunU";
-
+import OpiekunZEfekty from "./EfektyOpiekunZ";
 function Logged() {
   return (
     <Grid container>
@@ -36,6 +36,7 @@ function Logged() {
             <Route path="opiekunZStatus" element={<OpiekunStatus />} />
             <Route path="opiekunUStatus" element={<OpiekunUHistory />} />
             <Route path="opiekunU" element={<OpiekunU />} />
+            <Route path="OpiekunZEfekty" element={<OpiekunZEfekty />} />
 
             {/* <Route path='ListaStudentow' element={<ListaStudentow/>}/> */}
           </Route>

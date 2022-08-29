@@ -209,19 +209,12 @@ function Sidebar() {
                     <Typography className={classes.text}>Opiekun U</Typography>
                   </div>
                 </Link>
-                <Link to="profil/opiekunZStatus" className={classes.links}>
+
+                <Link to="profil/OpiekunZEfekty" className={classes.links}>
                   <div className={classes.item}>
                     <Homeicon className={classes.icon} />
                     <Typography className={classes.text}>
-                      Opiekun Z Historia
-                    </Typography>
-                  </div>
-                </Link>
-                <Link to="profil/opiekunUStatus" className={classes.links}>
-                  <div className={classes.item}>
-                    <Homeicon className={classes.icon} />
-                    <Typography className={classes.text}>
-                      Opiekun U Historia
+                      Opiekun Z Efekty
                     </Typography>
                   </div>
                 </Link>

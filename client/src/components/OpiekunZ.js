@@ -6,6 +6,8 @@ import DialogOpiekunZ from "./DialogOpiekunZ";
 import * as axios from "axios";
 import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
+import Button from "@mui/material/Button";
+import ButtonLink from "./Button";
 
 function OpiekunZ() {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -81,12 +83,16 @@ function OpiekunZ() {
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
         {loading && <h5>Ładowanie...</h5>}
-        {!loading && (
-          <SearchBar
-            setSearchLogin={setSearchLogin}
-            setItemOffset={setItemOffset}
-          />
-        )}
+        <div style={{ justifyContent: "space-between", display: "flex" }}>
+          {!loading && (
+            <SearchBar
+              setSearchLogin={setSearchLogin}
+              setItemOffset={setItemOffset}
+            />
+          )}
+
+          <ButtonLink linkTo="/profil/opiekunZStatus" text="Historia" />
+        </div>
         {recordsAfterFiltering.length === 0 && !loading && (
           <h6>Nie znaleziono wyniku</h6>
         )}
