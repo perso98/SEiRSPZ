@@ -287,11 +287,11 @@ app.post("/api/createAccount2", async (req, res) => {
         login: userObject.login,
         haslo: hashed,
         isOpiekunZakl: userObject.opiekunZ,
-        isStudent: userObject.user,
+        isStudent: userObject.student,
         isDyrektor: userObject.dyrektor,
         isAdmin: userObject.admin,
         isDziekanat: userObject.dziekanat,
-        isOpiekun: userObject.opuekunU,
+        isOpiekun: userObject.opiekunU,
       });
 
       res.send({
