@@ -80,3 +80,9 @@ exports.changeRole = async (req, res) => {
   updatedStudent = await user.update({ [action]: type }, { where: { id: id } });
   res.send(updatedStudent);
 };
+
+exports.getStudents = async (req, res) => {
+  const listStudent = await user.findAll();
+
+  res.send(listStudent);
+};

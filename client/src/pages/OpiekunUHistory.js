@@ -20,6 +20,8 @@ function OpiekunUHistory() {
   const statusOpiekuna = "statusOpiekunaU";
   const status = true;
   const handleClose = () => {
+    setKomentarz();
+    setOpis();
     setOpen(false);
   };
   const handleOpen = (val) => {

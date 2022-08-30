@@ -22,6 +22,8 @@ function OpiekunStatus() {
 
   const status = true;
   const handleClose = () => {
+    setKomentarz();
+    setOpis();
     setOpen(false);
   };
   const handleOpen = (val) => {

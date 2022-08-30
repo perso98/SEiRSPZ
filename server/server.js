@@ -16,7 +16,6 @@ const {
   komentarze,
 } = require("./models");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
 
 const opiekunZ_controller = require("./controllers/opiekunZ");
 const opiekunU_controller = require("./controllers/opiekunU");
@@ -54,12 +53,6 @@ db.sequelize.sync();
 
 app.listen(5000, () => {
   console.log("Serwer uruchomiony na porcie 5000");
-});
-
-app.get("/api/getStudents", async (req, res) => {
-  const listStudent = await user.findAll();
-
-  res.send(listStudent);
 });
 
 app.get("/api/getDziennik", async (req, res) => {
@@ -391,6 +384,8 @@ app.post("/api/createAccount", user_controller.createAccount);
 //===========================================================
 
 //Admin
+//Pobranie listy studentów
+app.get("/api/getStudents", admin_controller.getStudents);
 //Usuwanie w panelu admina użytkowników
 app.delete("/api/deleteUser/:id", admin_controller.deleteUser);
 //Zmiana informacji o użytkowniku w panelu admina(editButton)

@@ -21,6 +21,7 @@ function OpiekunZ() {
   const statusOpiekuna = "statusOpiekunaZ";
 
   const handleClose = () => {
+    setOpis();
     setOpen(false);
   };
   const handleOpen = (val) => {

@@ -13,7 +13,7 @@ import NoPage from "./NoPage";
 import OpiekunZ from "./OpiekunZ";
 import DodawanieOpiekunow from "./DodawanieOpiekunow";
 import OpiekunUHistory from "./OpiekunUHistory";
-import OpiekunStatus from "./OpiekunStatus";
+import OpiekunZHistory from "./OpiekunZHistory";
 import OpiekunU from "./OpiekunU";
 import OpiekunZEfekty from "./EfektyOpiekunZ";
 function Logged() {
@@ -33,7 +33,7 @@ function Logged() {
             <Route path="uprawnienia" element={<Uprawnienia />} />
             <Route path="opiekunZ" element={<OpiekunZ />} />
             <Route path="*" element={<NoPage />} />
-            <Route path="opiekunZStatus" element={<OpiekunStatus />} />
+            <Route path="opiekunZStatus" element={<OpiekunZHistory />} />
             <Route path="opiekunUStatus" element={<OpiekunUHistory />} />
             <Route path="opiekunU" element={<OpiekunU />} />
             <Route path="OpiekunZEfekty" element={<OpiekunZEfekty />} />

@@ -15,6 +15,7 @@ function EfektyOpiekunZ() {
   const [itemOffset, setItemOffset] = useState(0);
   const [efekt, setEfekt] = useState(0);
   const handleClose = () => {
+    setOpis();
     setOpen(false);
   };
   const handleOpen = (val) => {
