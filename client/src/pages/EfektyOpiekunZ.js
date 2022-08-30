@@ -14,11 +14,14 @@ function EfektyOpiekunZ() {
   const [checkStudent, setCheckStudent] = useState(null);
   const [itemOffset, setItemOffset] = useState(0);
   const [efekt, setEfekt] = useState(0);
+  const [efektId, setEfektId] = useState(0);
+
   const handleClose = () => {
     setOpis();
     setOpen(false);
   };
   const handleOpen = (val) => {
+    setEfektId(0);
     setCheckStudent(val);
     setOpen(true);
   };
@@ -28,6 +31,33 @@ function EfektyOpiekunZ() {
       setLoading(false);
     });
   }, []);
+
+  const updateDzienniczek = (id, opis, student, status) => {
+    axios
+      .put("http://localhost:5000/api/updateEffects", {
+        id: id,
+        opis: opis,
+        status: status,
+      })
+      .then((res) => {
+        setStudenci(
+          studenci.map((val) => {
+            console.log(studenci);
+            return val.id == student
+              ? {
+                  ...val,
+                  efektyStudents: val.efektyStudents.map((efekty) => {
+                    return efekty.id == id
+                      ? { ...efekty, komentarz: opis, status: status }
+                      : efekty;
+                  }),
+                }
+              : val;
+          })
+        );
+      });
+  };
+
   const recordsAfterFiltering = studenci.filter((val) => {
     if (searchLogin == "") {
       return val;
@@ -70,6 +100,9 @@ function EfektyOpiekunZ() {
         setEfekt={setEfekt}
         opis={opis}
         setOpis={setOpis}
+        updateDzienniczek={updateDzienniczek}
+        efektId={efektId}
+        setEfektId={setEfektId}
       />
     </>
   );

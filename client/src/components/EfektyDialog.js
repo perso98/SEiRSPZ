@@ -20,6 +20,7 @@ function EfektyDialog(props) {
     props.setOpis(
       props.checkStudent.efektyStudents[event.target.value].komentarz
     );
+    props.setEfektId(props.checkStudent.efektyStudents[event.target.value].id);
   };
 
   const handleClose = () => {
@@ -100,6 +101,14 @@ function EfektyDialog(props) {
                   variant="contained"
                   color="success"
                   onClick={() => {
+                    props.updateDzienniczek(
+                      props.efektId == 0
+                        ? props.checkStudent.efektyStudents[0].id
+                        : props.efektId,
+                      props.opis,
+                      props.checkStudent.id,
+                      "Zatwierdzone"
+                    );
                     props.handleClose();
                   }}
                 >
@@ -109,6 +118,12 @@ function EfektyDialog(props) {
                   variant="contained"
                   color="error"
                   onClick={() => {
+                    props.updateDzienniczek(
+                      props.efektId,
+                      props.opis,
+                      props.checkStudent.id,
+                      "Niezatwierdzone"
+                    );
                     props.handleClose();
                   }}
                 >

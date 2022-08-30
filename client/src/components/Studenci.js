@@ -10,7 +10,7 @@ function Studenci(props) {
           return (
             <Grid item xs={12} md={12} lg={6}>
               <div
-                key={val}
+                key={val.id}
                 style={{
                   backgroundImage: "linear-gradient(#073874, #042144)",
                   color: "white",
