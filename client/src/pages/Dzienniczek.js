@@ -19,9 +19,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import AddDayDialog from "./AddDayDialog";
-import EditDay from "./EditDay";
-import EfektyUczeniaSie from "./EfektyUczeniaSie";
+import AddDayDialog from "../components/AddDayDialog";
+import EditDay from "../components/EditDay";
+import EfektyUczeniaSie from "../components/EfektyUczeniaSie";
 
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';

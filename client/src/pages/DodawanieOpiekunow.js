@@ -1,7 +1,7 @@
 import React,{ useState, useEffect} from 'react'
 import axios, { Axios } from 'axios'
 
-import ListaOpiekunow from "./ListaOpiekunow";
+import ListaOpiekunow from "../components/ListaOpiekunow";
 import { Container, Typography, Grid, Input } from '@mui/material'
 import {
     makeStyles,
