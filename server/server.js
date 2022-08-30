@@ -402,27 +402,31 @@ app.post("/api/createAccount2", admin_controller.createAccount);
 
 //===========================================================
 
-//pobieranie dni dzienniczka studentow dla opiekuna zakladowego
-app.get("/api/getDaysOpiekunZ", opiekunZ_controller.getDaysOpiekunZ);
-//pobieranie dni dzienniczka studentow dla opiekuna uczelnianego
-app.get("/api/getDaysOpiekunU", opiekunU_controller.getDaysOpiekunU);
-
-//zmiana statusu akceptacji zaleznie od opiekuna
-app.post("/api/changeStatus", opiekuni_controller.changeStatus);
-
+//Opiekun Zakladowy
 //pobranie wszystkich dni z dzienniczka z historia opiekuna zakladowego
 app.get(
   "/api/getDaysOpiekunZStatus",
   opiekunZ_controller.getDaysOpiekunZStatus
 );
+//pobieranie efektow uczenia dla opiekuna zakladowego
+app.get("/api/getEffectsOpiekunZ", opiekunZ_controller.getEffectsOpiekunZ);
+//pobieranie dni dzienniczka studentow dla opiekuna zakladowego
+app.get("/api/getDaysOpiekunZ", opiekunZ_controller.getDaysOpiekunZ);
+//===========================================================
 
+//Opiekun uczelniany
 //pobranie wszystkich dni z dzienniczka z historia opiekuna uczelnianego
 app.get(
   "/api/getDaysOpiekunUStatus",
   opiekunU_controller.getDaysOpiekunUStatus
 );
+//pobieranie dni dzienniczka studentow dla opiekuna uczelnianego
+app.get("/api/getDaysOpiekunU", opiekunU_controller.getDaysOpiekunU);
+//===========================================================
+
+//Opiekuni razem
 //(historia dzienniczka)zmiana statusu w popupie
 app.post("/api/changeStatusEdit", opiekuni_controller.changeStatusEdit);
-
-//pobieranie efektow uczenia dla opiekuna zakladowego
-app.get("/api/getEffectsOpiekunZ", opiekunZ_controller.getEffectsOpiekunZ);
+//zmiana statusu akceptacji zaleznie od opiekuna
+app.post("/api/changeStatus", opiekuni_controller.changeStatus);
+//===========================================================
