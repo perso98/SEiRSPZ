@@ -19,6 +19,10 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 
 const opiekunZ_controller = require("./controllers/opiekunZ");
+const opiekunU_controller = require("./controllers/opiekunU");
+const opiekuni_controller = require("./controllers/opiekuni");
+const admin_controller = require("./controllers/admin");
+const user_controller = require("./controllers/user");
 
 app.use(
   bodyParser.urlencoded({
@@ -50,106 +54,6 @@ db.sequelize.sync();
 
 app.listen(5000, () => {
   console.log("Serwer uruchomiony na porcie 5000");
-});
-
-app.post("/api/createAccount", async (req, res) => {
-  const { login, password, password2 } = req.body;
-  var id_user = 0;
-  const loginChecker = await user.findOne({
-    where: {
-      login: login,
-    },
-  });
-
-  if (!loginChecker) {
-    if (password == password2) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      // try {
-      //   await db.sequelize.transaction(async function (t) {
-      await user
-        .create(
-          {
-            login: login,
-            haslo: hashedPassword,
-          }
-          // ,{
-          //   transaction: t,
-          // }
-        )
-        .then(async () => {
-          const id_user_get = await user.findOne({
-            attributes: ["id"],
-            where: {
-              login: login,
-            },
-          });
-          console.log("-----------------------");
-          console.log(id_user_get.toJSON().id);
-          id_user = id_user_get.toJSON().id;
-        });
-
-      res.send({
-        message: "Konto zostało pomyślnie utworzone",
-        register: true,
-      });
-      // }
-      // )}
-      // catch{
-      //   res.send({
-      //     message: "Błąd ",
-      //   });
-      // }
-    } else
-      res.send({
-        message: "Hasła się nie zgadzają",
-      });
-  } else
-    res.send({
-      message: "Niestety taki login jest już zajęty",
-    });
-});
-
-app.get("/api/loginToAccount", (req, res) => {
-  if (req.session.user) {
-    res.send({ logged: true, user: req.session.user });
-  } else {
-    res.send({ logged: false });
-  }
-});
-
-app.post("/api/loginToAccount", async (req, res) => {
-  const { login, password } = req.body;
-
-  const checkLogin = await user.findOne({
-    where: {
-      login: login,
-    },
-  });
-  if (!checkLogin) {
-    req.session.logged = false;
-    res.send({
-      message: "Błędny login",
-    });
-  } else if (checkLogin) {
-    if (await bcrypt.compare(password, checkLogin.haslo)) {
-      req.session.user = checkLogin;
-      req.session.logged = true;
-      res.send({
-        logged: true,
-      });
-    } else {
-      res.send({
-        message: "Hasło nie jest poprawne",
-      });
-      req.session.logged = false;
-    }
-  }
-});
-
-app.post("/api/logoutFromAccount", (req, res) => {
-  req.session.destroy();
-  res.clearCookie("key");
-  res.end();
 });
 
 app.get("/api/getStudents", async (req, res) => {
@@ -257,18 +161,6 @@ app.get("/api/getFirma", async (req, res) => {
   res.send(listUser);
 });
 
-app.post("/api/changePasswordToAccount", async (req, res) => {
-  const { changePassword, changePassword2 } = req.body;
-  if (changePassword == changePassword2) {
-    const hashedPassword = await bcrypt.hash(changePassword, 10);
-    await user.update(
-      { haslo: hashedPassword },
-      { where: { login: req.session.user.login } }
-    );
-    res.send({ message: "Pomyślnie zmieniono hasło do konta" });
-  } else res.send({ message: "Hasła się nie zgadzają" });
-});
-
 app.post("/api/createForm", async (req, res) => {
   try {
     const {
@@ -305,68 +197,6 @@ app.post("/api/createForm", async (req, res) => {
     res.send({
       message: "Błąd ;)",
     });
-  }
-});
-
-//Zmiana ról w panelu administratora
-
-app.put("/api/changeRole", async (req, res) => {
-  const { action, type, id } = req.body;
-  updatedStudent = await user.update({ [action]: type }, { where: { id: id } });
-  res.send(updatedStudent);
-});
-
-//Utworzenie konta w admin panelu
-app.post("/api/createAccount2", async (req, res) => {
-  const { userObject } = req.body;
-  try {
-    const checkLogin = await user.findOne({
-      where: {
-        login: userObject.login,
-      },
-    });
-    if (checkLogin == null) {
-      const hashed = await bcrypt.hash(userObject.password, 10);
-      const newAcc = await user.create({
-        login: userObject.login,
-        haslo: hashed,
-        isOpiekunZakl: userObject.opiekunZ,
-        isStudent: userObject.student,
-        isDyrektor: userObject.dyrektor,
-        isAdmin: userObject.admin,
-        isDziekanat: userObject.dziekanat,
-        isOpiekun: userObject.opiekunU,
-      });
-
-      res.send({
-        message: "Konto zostało pomyślnie utworzone",
-        id: newAcc.id,
-      });
-    } else {
-      res.send({ message: "Login jest już zajęty" });
-    }
-  } catch (err) {
-    res.send({ message: err.message });
-  }
-});
-//Zmiana informacji o użytkowniku w panelu admina(ediirButton)
-app.put("/api/changeUserInfo", async (req, res) => {
-  const { id, changeLogin } = req.body;
-
-  try {
-    await user.update(
-      {
-        login: changeLogin,
-      },
-      {
-        where: {
-          id: id,
-        },
-      }
-    );
-    res.send({ message: "Zmiana przeszła pomyślnie..." });
-  } catch (err) {
-    res.send({ message: err.message });
   }
 });
 
@@ -542,135 +372,57 @@ app.put("/api/updateFirma", async (req, res) => {
   }
 });
 
+//Maciek
+//User
+//pobranie danych o sesji uzytkownika jesli jest zalogowany
+app.get("/api/loginToAccount", user_controller.getloginToAccount);
+//zmiana hasla do konta wlasciciela
+app.post(
+  "/api/changePasswordToAccount",
+  user_controller.changePasswordToAccount
+);
+//zalogowanie sie do konta
+app.post("/api/loginToAccount", user_controller.loginToAccount);
+//wylogowanie się z konta
+app.post("/api/logoutFromAccount", user_controller.logoutFromAccount);
+//utworzenie konta
+app.post("/api/createAccount", user_controller.createAccount);
+
+//===========================================================
+
+//Admin
 //Usuwanie w panelu admina użytkowników
-app.delete("/api/deleteUser/:id", async (req, res) => {
-  const id = req.params.id;
-  try {
-    await user.destroy({
-      where: {
-        id: id,
-      },
-    });
-    res.send({ message: "Usunięto" });
-  } catch (err) {
-    res.send({ message: err.message });
-  }
-});
-//pobieranie dni dla opiekunaZ
+app.delete("/api/deleteUser/:id", admin_controller.deleteUser);
+//Zmiana informacji o użytkowniku w panelu admina(editButton)
+app.put("/api/changeUserInfo", admin_controller.changeUserInfo);
+//Zmiana ról w panelu administratora
+app.put("/api/changeRole", admin_controller.changeRole);
+//Utworzenie konta w admin panelu
+app.post("/api/createAccount2", admin_controller.createAccount);
 
-app.get("/api/getDaysOpiekunZ", async (req, res) => {
-  try {
-    const getDays = await dziennik.findAll({
-      where: { statusOpiekunaZ: { [Op.eq]: "Oczekiwanie" } },
-      include: { model: user, where: { id_opiekunZ: req.session.user.id } },
-    });
+//===========================================================
 
-    res.send(getDays);
-  } catch (err) {
-    console.log(err);
-  }
-});
+//pobieranie dni dzienniczka studentow dla opiekuna zakladowego
+app.get("/api/getDaysOpiekunZ", opiekunZ_controller.getDaysOpiekunZ);
 //pobieranie dni dzienniczka studentow dla opiekuna uczelnianego
+app.get("/api/getDaysOpiekunU", opiekunU_controller.getDaysOpiekunU);
 
-app.get("/api/getDaysOpiekunU", async (req, res) => {
-  try {
-    const getDays = await dziennik.findAll({
-      where: { statusOpiekunaU: { [Op.eq]: "Oczekiwanie" } },
-      include: { model: user, where: { id_opiekunU: req.session.user.id } },
-    });
+//zmiana statusu akceptacji zaleznie od opiekuna
+app.post("/api/changeStatus", opiekuni_controller.changeStatus);
 
-    res.send(getDays);
-  } catch (err) {
-    console.log(err);
-  }
-});
+//pobranie wszystkich dni z dzienniczka z historia opiekuna zakladowego
+app.get(
+  "/api/getDaysOpiekunZStatus",
+  opiekunZ_controller.getDaysOpiekunZStatus
+);
 
-//akceptacja dnia z dzienniczka studenta przez opiekuna zakładowego
-app.post("/api/changeStatus", async (req, res) => {
-  const { id, status, statusOpiekuna } = req.body;
-  try {
-    await dziennik
-      .update({ [statusOpiekuna]: status }, { where: { id: id } })
-      .then(res.send({ success: true, status: statusOpiekuna }));
-  } catch (err) {
-    console.log(err);
-  }
-});
+//pobranie wszystkich dni z dzienniczka z historia opiekuna uczelnianego
+app.get(
+  "/api/getDaysOpiekunUStatus",
+  opiekunU_controller.getDaysOpiekunUStatus
+);
+//(historia dzienniczka)zmiana statusu w popupie
+app.post("/api/changeStatusEdit", opiekuni_controller.changeStatusEdit);
 
-//wziecie wszystkich dni z dzienniczka juz z statusem nadanym przez opiekuna zakładowego
-app.get("/api/getDaysOpiekunZStatus", async (req, res) => {
-  try {
-    const getDays = await dziennik.findAll({
-      where: { statusOpiekunaZ: { [Op.ne]: "Oczekiwanie" } },
-      include: {
-        model: user,
-        where: {
-          id_opiekunZ: req.session.user.id,
-        },
-      },
-    });
-    res.send(getDays);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-//wziecie wszystkich dni z dzienniczka juz z statusem nadanym przez opiekuna uczelnianego
-app.get("/api/getDaysOpiekunUStatus", async (req, res) => {
-  try {
-    const getDays = await dziennik.findAll({
-      where: { statusOpiekunaU: { [Op.ne]: "Oczekiwanie" } },
-      include: {
-        model: user,
-        where: {
-          id_opiekunU: req.session.user.id,
-        },
-      },
-    });
-    res.send(getDays);
-  } catch (err) {
-    console.log(err);
-  }
-});
-//wziecie wszystkich dni z dzienniczka juz z statusem nadanym przez opiekuna zakładowego i akceptacja go
-app.post("/api/changeStatusEdit", async (req, res) => {
-  const { id, opis, komentarz, status, statusOpiekuna } = req.body;
-  try {
-    await dziennik
-      .update({ [statusOpiekuna]: status, opis: opis }, { where: { id: id } })
-      .then(async () => {
-        if (komentarz.length > 2)
-          await komentarze.create({
-            dziennikId: id,
-            userId: req.session.user.id,
-            komentarz: komentarz,
-          });
-      })
-      .then(res.send({ success: true, status: statusOpiekuna }));
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-//pobieranie efektow uczenia dla opiekunow
-
-app.get("/api/getEffectsOpiekunZ", async (req, res) => {
-  try {
-    const getEffects = await user.findAll({
-      where: {
-        id_opiekunZ: req.session.user.id,
-      },
-      include: {
-        model: efektyStudent,
-        include: {
-          model: efektyLista,
-        },
-      },
-    });
-
-    res.send(getEffects);
-  } catch (err) {
-    console.log(err);
-  }
-});
+//pobieranie efektow uczenia dla opiekuna zakladowego
 app.get("/api/getEffectsOpiekunZ", opiekunZ_controller.getEffectsOpiekunZ);
