@@ -98,7 +98,9 @@ const {
   };
 
   exports.delOpiekunFirma = async (req, res) => {
-    const { id, firmaId } = req.body;
+    const { id, jakiOpiekun } = req.body;
+    console.log("Usuwanko")
+    console.log(jakiOpiekun)
     updateOpiekun = await user.update(
       {
         firmaId: null,
@@ -107,8 +109,106 @@ const {
         where: { id: id },
       }
     );
+    if (jakiOpiekun == 1){
+      await user.update(
+        {
+          id_opiekunZ: null,
+        },
+        {
+          where: { id_opiekunZ: id },
+        }
+      )
+    }
+    if (jakiOpiekun == 0){
+      console.log("Usuwanko")
+      await user.update(
+        {
+          id_opiekunU: null,
+        },
+        {
+          where: { id_opiekunU: id },
+        }
+      )
+    }
+
     res.send(updateOpiekun);
   };
+
+  
+  exports.addStudentFirma = async (req, res) => {
+    const { id, firmaId, idOpiekuna, jakiOpiekun } = req.body;
+    console.log(jakiOpiekun)
+    console.log(idOpiekuna)
+    if (jakiOpiekun == 1){
+      console.log(firmaId)
+      updateStudent = await user.update(
+        {
+          firmaId: firmaId,
+          id_opiekunZ: idOpiekuna
+        },
+        {
+          where: { id: id },
+        }
+      );
+    }
+    else {
+      console.log(firmaId)
+      updateStudent = await user.update(
+        {
+          firmaId: firmaId,
+          id_opiekunU: idOpiekuna
+        },
+        {
+          where: { id: id },
+        }
+      );
+    }
+    
+    res.send(updateStudent);
+  };
+
+  exports.delStudentFirma = async (req, res) => {
+    const { id, jakiOpiekun } = req.body;
+    console.log(jakiOpiekun)
+    if (jakiOpiekun == 1){
+      console.log("111111111111UsuwanieZ")
+    updateOpiekun = await user.update(
+      {
+        id_opiekunZ: null,
+      },
+      {
+        where: { id: id },
+      }
+    );
+    
+    }
+    else{
+      console.log("111111111111UsuwanieU")
+      updateOpiekun = await user.update(
+        {
+          id_opiekunU: null,
+        },
+        {
+          where: { id: id },
+        }
+      );
+    }
+    await user.update(
+      {
+        firmaId: null,
+      },
+      {
+        where: { 
+          id: id ,
+          id_opiekunZ: null,
+          id_opiekunU: null,
+        },
+      }
+    );
+
+    res.send(updateOpiekun);
+  };
+
 
 
   exports.updateFirma = async (req, res) => {

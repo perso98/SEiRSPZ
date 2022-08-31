@@ -21,6 +21,8 @@ import Select from '@mui/material/Select';
 import Axios from "axios"
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import Zalacznik from "./Zalacznik";
+
 
 const useStyles = makeStyles(theme => ({
     containerMain:{
@@ -72,6 +74,12 @@ function AddDayDialog({
     const classes = useStyles();
 
 
+    const [n, setN] = useState(1);
+
+    const addZalacznik = () => {
+        setN(n+1)
+    };
+
     const {
         dzien,
         data,
@@ -98,34 +106,34 @@ function AddDayDialog({
                                 <div>
                                     <Grid container>
                                         <Grid item marginRight={1}>
-                                        <TextField className={classes.TextField}
-                                            label="Dzień"
-                                            id="dzien"
-                                            value={dzien}
-                                            onChange={(e) => onChange(e)}
-                                            sx={{ width: '8ch'}}
-                                            margin="normal"
+                                            <TextField className={classes.TextField}
+                                                label="Dzień"
+                                                id="dzien"
+                                                value={dzien}
+                                                onChange={(e) => onChange(e)}
+                                                sx={{ width: '8ch'}}
+                                                margin="normal"
                                             />
                                         </Grid>
                                         <Grid item marginRight={1}>
                                             <TextField className={classes.TextField}
-                                            label="Data"
-                                            id="data"
-                                            value={data}
-                                            onChange={(e) => onChange(e)}
-                                            size='8'
-                                            sx={{ width: '15ch'}}
-                                            margin="normal"
+                                                label="Data"
+                                                id="data"
+                                                value={data}
+                                                onChange={(e) => onChange(e)}
+                                                size='8'
+                                                sx={{ width: '15ch'}}
+                                                margin="normal"
                                             />
                                         </Grid>
                                         <Grid item >
                                             <TextField className={classes.TextField}
-                                            label="Ilość godzin"
-                                            id="iloscGodzin"
-                                            value={iloscGodzin}
-                                            onChange={(e) => onChange(e)}
-                                            sx={{ width: '5ch'}}
-                                            margin="normal"
+                                                label="Ilość godzin"
+                                                id="iloscGodzin"
+                                                value={iloscGodzin}
+                                                onChange={(e) => onChange(e)}
+                                                sx={{ width: '5ch'}}
+                                                margin="normal"
                                             />
                                         </Grid>
                                         
@@ -141,10 +149,25 @@ function AddDayDialog({
                                     />
                                 </div>
 
-
                                 <div>
-                                    <Button variant="contained">Dodaj załącznik</Button>
+                                    {/* {iloscZalacznikow.map((val) =>(
+                                        <div>
+                                        {val}
+                                        </div>
+                                    ))} */}
+
+                                        {[...Array(n)].map((e, i) => <Zalacznik
+                                        key={i}
+                                        />)}
                                 </div>
+
+                                <Button 
+                                    variant="contained" 
+                                    onClick={() => {
+                                        addZalacznik();
+                                      }}
+                                >+
+                                </Button>
 
                                 {/* <Box sx={{ minWidth: 200, maxWidth: 200, paddingTop: 2 , paddingBottom: 2 }}>
                                     <FormControl fullWidth>

@@ -6,6 +6,7 @@ const {
     dane,
     firma,
     komentarze,
+    dzienZalaczniki,
   } = require("../models");
   
   exports.getDziennik = async (req, res) => {
@@ -153,3 +154,25 @@ exports.getEfektUczenia = async (req, res) => {
   
     res.send(idUser);
   };
+
+
+  exports.createZalacznik = async (req, res) => {
+      try {
+        const {
+          zalacznik,
+        } = req.body;
+        console.log(zalacznik)
+        await dzienZalaczniki.create({
+          zalacznik: zalacznik,
+        });
+        console.log("Wysłano");
+        res.send({
+          message: "pomyślnie wysłano ;)",
+        });
+      } catch {
+        console.log("Błąd");
+        res.send({
+          message: "Błąd ;)",
+        });
+      }
+    };

@@ -6,6 +6,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const { Op } = require("sequelize");
 
+
 const {
   user,
   dziennik,
@@ -70,6 +71,7 @@ app.get("/api/listEfektyStudent", dzienniczek_controller.listEfektyStudent);
 app.put("/api/createUzasadnienieEfektu", dzienniczek_controller.createUzasadnienieEfektu);
 app.put("/api/updateUzasadnienieEfektu", dzienniczek_controller.updateUzasadnienieEfektu);
 app.get("/api/IdUser", dzienniczek_controller.IdUser);
+app.post("/api/createZalacznik", dzienniczek_controller.createZalacznik);
 //        Firma
 app.get("/api/getOpiekuni", firma_controller.getOpiekuni);
 app.get("/api/getOpiekun/:id", firma_controller.getOpiekunId);
@@ -81,6 +83,8 @@ app.post("/api/createFirma", firma_controller.createFirma);
 //Dodanie Opiekuna do zakladu
 app.put("/api/addOpiekunFirma", firma_controller.addOpiekunFirma);
 app.put("/api/delOpiekunFirma", firma_controller.delOpiekunFirma);
+app.put("/api/addStudentFirma", firma_controller.addStudentFirma);
+app.put("/api/delStudentFirma", firma_controller.delStudentFirma);
 //Edit firma nazwa
 app.put("/api/updateFirma", firma_controller.updateFirma);
 

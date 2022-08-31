@@ -3,7 +3,7 @@ module.exports=(sequelize,DataTypes)=>
 const dzienZalaczniki=sequelize.define("dzienZalaczniki",
 {
     zalacznik:{
-        type:DataTypes.STRING,
+        type:DataTypes.BLOB("long"),
         allowNull:true,
     },
 }, {

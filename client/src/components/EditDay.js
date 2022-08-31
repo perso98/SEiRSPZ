@@ -17,6 +17,8 @@ import {
   TableRow,
   Toolbar,
 } from "@material-ui/core";
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 
 const useStyles = makeStyles(theme => ({
   containerMain:{
@@ -94,8 +96,12 @@ function EditDay(
           <DialogContent>
 
             <div style={{ margin: "1rem 0px 1rem 0 " }}>
-              <h5>Dzień:</h5> 
+              <Stack  direction="row" spacing={1}>
+
+              
+            <Box sx={{ width: 70}}>
               <TextField className={classes.TextField}
+                size="small"
                 label="Dzień"
                 defaultValue= {editDay.dzien}
                 onChange={(e) => {
@@ -103,10 +109,10 @@ function EditDay(
                 }}
                 margin="normal"
                 />
-
-
-              <h5>Data:</h5> 
+            </Box>
+            <Box sx={{ width: 120}}>
               <TextField className={classes.TextField}
+                size="small"
                 label="Data"
                 defaultValue= {editDay.data}
                 onChange={(e) => {
@@ -114,9 +120,11 @@ function EditDay(
                 }}
                 margin="normal"
                 />
+            </Box>
 
-              <h5>Ilość godzin:</h5> 
+            <Box sx={{ width: 120}}>
               <TextField className={classes.TextField}
+                size="small"
                 label="Ilość godzin"
                 defaultValue= {editDay.ilosc_godzin}
                 onChange={(e) => {
@@ -124,7 +132,8 @@ function EditDay(
                 }}
                 margin="normal"
                 />
-              <h5>Opis:</h5> 
+            </Box>
+            </Stack>
               <TextField className={classes.TextField}
                 label="Opis"
                 id="opis"
@@ -140,16 +149,19 @@ function EditDay(
 
             <div style={{ margin: "1rem 0px 1rem 0 " }}>
               <b>Zatwierdzenie </b>
-
-              <h5>Opiekun uczelniany: </h5>
-              {editDay.statusOpiekunaU}
-
-              <h5>Opiekun zakładowy: </h5>
-              {editDay.statusOpiekunaZ}
-
+              <Stack direction="row" spacing={1}>
+                <h5>Opiekun uczelniany:</h5>
+                <div>{editDay.statusOpiekunaU}</div>
+              </Stack>
+              <Stack direction="row" spacing={1}>
+              <h5>Opiekun zakładowy: </h5> 
+              <div>{editDay.statusOpiekunaZ}</div>
+              </Stack>
             </div>
 
-            <h5>Efekty uczenia:</h5>
+            <div>
+                <Button variant="contained">Dodaj załącznik</Button>
+            </div>
 
         <div  style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
             <Button

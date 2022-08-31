@@ -69,9 +69,11 @@ function AddStudent(
         user,
         dane,
         addOpen,
+        idOpiekuna,
+        jakiOpiekun,
         handleClose,
-        addOpiekunFirma,
-        delOpiekunFirma,
+        addStudentFirma,
+        delStudentFirma,
         onChange,
         object,
       }
@@ -80,20 +82,25 @@ function AddStudent(
     const giveButton = (id, firmaId) => {
         return (
           <Button
+            variant="contained"
+            color="success"
             onClick={() => {
-                addOpiekunFirma(id, firmaId);
+                addStudentFirma(id, firmaId, idOpiekuna, jakiOpiekun);
             }}
           >
             Dodaj
           </Button>
+          
         );
       };
 
-      const deleteButton = (id, firmaId) => {
+      const deleteButton = (id) => {
         return (
           <Button
+            variant="contained"
+            color="error"
             onClick={() => {
-                delOpiekunFirma(id, firmaId);
+                delStudentFirma(id, jakiOpiekun);
             }}
           >
             Usuń
@@ -121,76 +128,111 @@ function AddStudent(
                     <Grid container>
                     <Grid item xs >
                             <div>
-                            Przypisani Studenci<p></p>
-                            Imie i naziwkso: 
-                            
-                            {user.map((val) => (
+                                Przypisani Studenci<p></p>
+                                Imie i naziwkso: 
+                                {user.map((val) => (
                                     <Grid>
-                                        { val.isStudent === 1    && val.firmaId === idFirma.id ? (
+                                        { jakiOpiekun === 1 ? (
                                             <div>
-                                                <Grid item xs = {2}>
-                                                    <div style={{display: "flex", gap: "0.4rem"}}>
-                                                        login:<div>{val.login}</div>
-                                                    </div>
-                                                </Grid>
-                                            {dane.map((daneAO) => (
-                                                daneAO.id === val.daneId ? (
-                                                    <div>
-                                                        <Grid item xs = {2}>
-                                                            <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                <div>{daneAO.imie}</div><div>{daneAO.nazwisko}</div>
-                                                                <div>
-                                                                    
-                                                                </div>
-                                                            </div>
+                                                { val.isStudent === 1 && val.firmaId === idFirma.id && val.id_opiekunZ === idOpiekuna  ? (
+                                                    <Grid container>
+                                                        <Grid style={{marginRight:"15px"}}
+                                                        xs = {2}>
+                                                                login: {val.login}
                                                         </Grid>
-                                                    </div>
-                                                ): null
-                                            ))}
-                                            <Grid item xs = {2}>
-                                                {deleteButton(val.id, idFirma.id )}
-                                            </Grid>
+                                                        {dane.map((daneAO) => (
+                                                            daneAO.id === val.daneId ? (
+                                                                    <Grid
+                                                                    style={{marginRight:"15px"}}>
+                                                                        <div style={{ gap: "0.4rem"}}>
+                                                                           {daneAO.imie} {daneAO.nazwisko}
+                                                                        </div>
+                                                                    </Grid>
+                                                            ): null
+                                                        ))}
+                                                        <Grid>
+                                                            {deleteButton(val.id)}
+                                                        </Grid>
+                                                    </Grid>
+                                                ): null}
                                             </div>
+                                        ): <div>
+                                        { val.isStudent === 1 && val.firmaId === idFirma.id && val.id_opiekunU === idOpiekuna  ? (
+                                                <Grid container>
+                                                    <Grid
+                                                    style={{marginRight:"15px"}}
+                                                    xs = {2}>
+                                                        login: {val.login}
+                                                    </Grid>
+                                                    {dane.map((daneAO) => (
+                                                        daneAO.id === val.daneId ? (
+                                                            <Grid style={{marginRight:"15px"}}>
+                                                                Imie i nazwisko: {daneAO.imie} {daneAO.nazwisko} 
+                                                            </Grid>
+                                                        ): null
+                                                    ))}
+                                                    <Grid>
+                                                        {deleteButton(val.id)}
+                                                    </Grid>
+                                                </Grid>
                                         ): null}
+                                    </div>}
                                     </Grid>
-                            ))}
+                                ))}
+
                             </div>
 
                             <div>
                             <div className={classes.przerwa}>Studenci lista</div>
                             {user.map((val) => (
-                                    <Grid>
-                                        { val.isStudent === 1  && val.firmaId === null ? (
-                                            <div>
-                                                <Grid item xs = {2}>
-                                                    <div style={{display: "flex", gap: "0.4rem"}}>
-                                                        login:<div>{val.login}</div>
-                                                    </div>
+                                <Grid>
+                                    { jakiOpiekun === 1 ? (
+                                    <div>
+                                        { val.isStudent === 1 && val.id_opiekunZ === null ? (
+                                            <Grid container>
+                                                <Grid  style={{marginRight:"15px"}}
+                                                xs = {2}>
+                                                        login: {val.login}
                                                 </Grid>
+                                                {dane.map((daneNO) => (
+                                                    daneNO.id === val.daneId ? (
+                                                        <Grid style={{marginRight:"15px"}}>
+                                                            <div>
+                                                                    Imie i nazwisko: {daneNO.imie} {daneNO.nazwisko}
+                                                            </div>
+                                                        </Grid>
+                                                    ): null
+                                                ))}
+                                                <Grid>
+                                                    {giveButton(val.id, idFirma.id )}
+                                                </Grid>
+                                            </Grid>
+                                        ): null}
+                                    </div>
+                                    ): <div>
+                                        { val.isStudent === 1 && val.id_opiekunU === null ? (
+                                        <Grid container>
+                                            <Grid  style={{marginRight:"15px"}}
+                                            xs = {2}>
+                                                    login: {val.login}
+                                            </Grid>
                                             {dane.map((daneNO) => (
                                                 daneNO.id === val.daneId ? (
-                                                    <div>
-                                                        
-                                                        <Grid item xs = {2}>
-                                                            <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                imie:<div>{daneNO.imie}</div>
-                                                            </div>
-                                                        </Grid>
-                                                        <Grid item xs = {2}>
-                                                            <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                naziwkso:<div>{daneNO.nazwisko}</div>
-                                                            </div>
-                                                        </Grid>
-                                                        
-                                                    </div>
+                                                    <Grid style={{marginRight:"15px"}}>
+                                                        <div>
+                                                                Imie i nazwisko: {daneNO.imie} {daneNO.nazwisko}
+                                                        </div>
+                                                    </Grid>
                                                 ): null
                                             ))}
-                                            <Grid item xs = {2}>
+                                            <Grid>
                                                 {giveButton(val.id, idFirma.id )}
                                             </Grid>
-                                            </div>
-                                        ): null}
-                                    </Grid>
+                                        </Grid>
+                                        
+                                    ): null}
+                                    </div>}
+                                </Grid>
                             ))}
                             </div>
 

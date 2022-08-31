@@ -71,6 +71,7 @@ function AddOpiekun(
         user,
         dane,
         addOpen,
+        jakiOpiekun,
         handleClose,
         addOpiekunFirma,
         delOpiekunFirma,
@@ -82,6 +83,8 @@ function AddOpiekun(
     const giveButton = (id, firmaId) => {
         return (
           <Button
+          variant="contained"
+            color="success"
             onClick={() => {
                 addOpiekunFirma(id, firmaId);
             }}
@@ -91,11 +94,13 @@ function AddOpiekun(
         );
       };
 
-      const deleteButton = (id, firmaId) => {
+      const deleteButton = (id) => {
         return (
           <Button
+          variant="contained"
+            color="error"
             onClick={() => {
-                delOpiekunFirma(id, firmaId);
+                delOpiekunFirma(id, jakiOpiekun);
             }}
           >
             Usuń
@@ -165,7 +170,7 @@ function AddOpiekun(
                                                 ): null
                                             ))}
                                             <Grid item xs = {2}>
-                                                {deleteButton(val.id, idFirma.id )}
+                                                {deleteButton(val.id)}
                                             </Grid>
                                             </div>
                                         ): null}

@@ -165,9 +165,6 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
     const handleAddOpen = () => {
         setAddOpen(true);
     };
- 
-
-  
 
     const onChange=(e)=>{
         const {value,id}=e.target
@@ -263,7 +260,7 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
                             Status Opiekuna Zakładowego
                         </div>
                     </Grid>
-                    <Grid item xs = {1} md = {2}>
+                    <Grid item>
                         <div>
                             Opis
                         </div>
