@@ -151,4 +151,5 @@ app.get("/api/getDaysOpiekunU", opiekunU_controller.getDaysOpiekunU);
 app.post("/api/changeStatusEdit", opiekuni_controller.changeStatusEdit);
 //zmiana statusu akceptacji zaleznie od opiekuna
 app.post("/api/changeStatus", opiekuni_controller.changeStatus);
+app.put("/api/updateEffects", opiekuni_controller.updateEffects);
 //===========================================================

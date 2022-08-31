@@ -204,6 +204,7 @@ export default function Uprawnienia() {
     );
   };
   const handleEditClose = () => {
+    setChangeLogin();
     setEditOpen(false);
   };
   const [editStudent, setEditStudent] = useState(null);
@@ -219,11 +220,12 @@ export default function Uprawnienia() {
         changeLogin: changeLogin,
       })
       .then((res) => {
-        setStudents(
-          students.map((val) => {
-            return val.id == id ? { ...val, login: changeLogin } : val;
-          })
-        );
+        if (changeLogin.length > 0)
+          setStudents(
+            students.map((val) => {
+              return val.id == id ? { ...val, login: changeLogin } : val;
+            })
+          );
       });
   };
 

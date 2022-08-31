@@ -39,3 +39,25 @@ exports.changeStatus = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.updateEffects = async (req, res) => {
+  const { id, opis, status } = req.body;
+
+  try {
+    await efektyStudent
+      .update(
+        {
+          komentarz: opis,
+          status: status,
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      )
+      .then(res.send({ opis: opis, status: status }));
+  } catch (err) {
+    res.send(err);
+  }
+};
