@@ -5,6 +5,7 @@ const db = require("./models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const { Op } = require("sequelize");
+const multer = require('multer');
 
 
 const {
@@ -59,6 +60,30 @@ app.listen(5000, () => {
 });
 
 //        Dzienniczek
+app.use(express.static('public'));
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public')
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+});
+
+const upload = multer({storage}).array('file');
+
+app.post('/api/upload', (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            return res.status(500).json(err)
+        }
+
+        return res.status(200).send(req.files)
+    })
+});
+
+
 app.get("/api/getDziennik", dzienniczek_controller.getDziennik);
 //Utworzenie Dnia w dzienniczku
 app.post("/api/createDay", dzienniczek_controller.createDay);
