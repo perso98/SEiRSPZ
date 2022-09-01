@@ -30,15 +30,18 @@ export const loginToAccount = async (
   password,
   setLoginStatus,
   setOpen,
-  navigate
+  navigate,
+  setStatus
 ) => {
   await Axios.post(`${url}loginToAccount`, {
     login: login,
     password: password,
   }).then((res) => {
     if (res.data.message) setLoginStatus(res.data.message);
-    if (res.data.logged) navigate("/home");
-    else {
+    if (res.data.logged) {
+      setStatus(res.data);
+      navigate("/home");
+    } else {
       setOpen(true);
     }
   });
@@ -47,6 +50,12 @@ export const loginToAccount = async (
 export const getLoginToAccountInfo = (setLogged) => {
   Axios.get(`${url}loginToAccount`).then((res) => {
     setLogged(res.data.logged);
+  });
+};
+
+export const getUser = (setUser) => {
+  Axios.get(`${url}loginToAccount`).then((res) => {
+    setUser(res.data);
   });
 };
 

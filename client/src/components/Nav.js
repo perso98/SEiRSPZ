@@ -11,7 +11,7 @@ import LogoutImg from "@mui/icons-material/LogoutOutlined";
 import Sidebar from "../components/Sidebar";
 import { getLoginToAccountInfo, logout } from "../services/UserService";
 
-function Nav() {
+function Nav(props) {
   const useStyles = makeStyles((theme) => ({
     logoBig: {
       display: "block",
@@ -109,19 +109,6 @@ function Nav() {
   const navigate = useNavigate();
   const classes = useStyles();
   Axios.defaults.withCredentials = true;
-  const [logged, setLogged] = useState("");
-  useEffect(() => {
-    Axios.get("http://localhost:5000/api/loginToAccount").then((res) => {
-      if (res.data.logged == true) {
-        setLogged(res.data.logged);
-      }
-    });
-  }, []);
-
-  Axios.defaults.withCredentials = true;
-  useEffect(() => {
-    getLoginToAccountInfo(setLogged);
-  });
 
   const Navbar = () => {
     return (
@@ -160,7 +147,7 @@ function Nav() {
     return (
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <Sidebar />
+          <Sidebar auth={props.auth} />
           <Typography variant="h5" className={classes.logoBig}>
             <Link to="/" className={classes.links}>
               Akademia Nauk Stosowanych
@@ -181,6 +168,7 @@ function Nav() {
             <Link
               to="/"
               onClick={() => {
+                props.setStatus({});
                 logout(navigate);
               }}
               className={classes.links}
@@ -196,7 +184,7 @@ function Nav() {
     );
   };
 
-  return <>{logged ? <NavLogged /> : <Navbar />}</>;
+  return <>{props.auth?.logged ? <NavLogged /> : <Navbar />}</>;
 }
 
 export default Nav;

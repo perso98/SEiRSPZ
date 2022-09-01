@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Sidebar() {
+function Sidebar(props) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -96,16 +96,7 @@ function Sidebar() {
   const [opiekunZ, setOpiekunZ] = useState();
   const [dziekanat, setDziekanat] = useState();
   Axios.defaults.withCredentials = true;
-  useEffect(() => {
-    Axios.get("http://localhost:5000/api/loginToAccount").then((res) => {
-      if (res.data.logged == true) {
-        setStudent(res.data.user.isStudent);
-        setAdmin(res.data.user.isAdmin);
-        setOpiekunZ(res.data.user.isOpiekunZakl);
-        setDziekanat(res.data.user.isDziekanat);
-      }
-    });
-  });
+
   const classes = useStyles();
 
   return (
@@ -122,7 +113,7 @@ function Sidebar() {
                 <Button onClick={handleClose}>
                   <DehazeIcon className={classes.sidebarIcon} />
                 </Button>
-                {student == 1 && (
+                {props.auth?.user.isStudent == 1 && (
                   <Link to="profil/Dzienniczek" className={classes.links}>
                     <div className={classes.item}>
                       <DateRangeIcon className={classes.icon} />
@@ -132,7 +123,7 @@ function Sidebar() {
                     </div>
                   </Link>
                 )}
-                {dziekanat == 1 && (
+                {props.auth?.user.isDziekanat == 1 && (
                   <div>
                     {/* <Link to="profil/Dane" className={classes.links}>
                       <div className={classes.item}>
@@ -181,7 +172,7 @@ function Sidebar() {
                 </div> */}
 
                 <div className={classes.item}>
-                  {admin == 1 && (
+                  {props.auth?.user.isAdmin == 1 && (
                     <Link to="profil/Uprawnienia" className={classes.links}>
                       <div className={classes.item}>
                         <Homeicon className={classes.icon} />

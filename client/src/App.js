@@ -6,10 +6,12 @@ import Home from "./components/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Logged from "./pages/Logged";
-import {Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import Profil from "./pages/Konto";
+import UnLoggedRoute from "./protectedRoutes/UnLoggedRoute";
+import { getUser } from "./services/UserService";
 import NoPage from "./pages/NoPage";
+import NoAuth from "./components/NoAuth";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -26,11 +28,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
+  const [auth, setAuth] = useState();
+  const [status, setStatus] = useState();
+  useEffect(() => {
+    getUser(setAuth);
+    console.log(status);
+  }, [status]);
+
   const classes = useStyles();
   return (
     <div className="App">
       <BrowserRouter>
-        <Nav />
+        <Nav auth={auth} setStatus={setStatus} />
         <Grid container>
           <Grid item xs className={classes.content}>
             <Routes>
@@ -43,23 +52,26 @@ function App() {
                     </div>
                   }
                 />
-                <Route
-                  path="login"
-                  element={
-                    <div className={classes.margingora}>
-                      <Login />
-                    </div>
-                  }
-                />
-                <Route
-                  path="register"
-                  element={
-                    <div className={classes.margingora}>
-                      <Register />
-                    </div>
-                  }
-                />
-                <Route path="profil/*" element={<Logged />} />
+                <Route path="noauth" element={<NoAuth />} />
+                <Route element={<UnLoggedRoute auth={auth} />}>
+                  <Route
+                    path="login"
+                    element={
+                      <div className={classes.margingora}>
+                        <Login setStatus={setStatus} />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="register"
+                    element={
+                      <div className={classes.margingora}>
+                        <Register />
+                      </div>
+                    }
+                  />
+                </Route>
+                <Route path="profil/*" element={<Logged auth={auth} />} />
                 <Route path="*" element={<NoPage />} />
               </Route>
             </Routes>

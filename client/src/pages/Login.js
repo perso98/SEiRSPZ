@@ -6,7 +6,7 @@ import AlertComponent from "../components/AlertComponent";
 import { loginToAccount } from "../services/UserService";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login(props) {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
       marginTop: "10%",
@@ -67,7 +67,14 @@ function Login() {
           variant="contained"
           style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
           onClick={() => {
-            loginToAccount(login, password, setLoginStatus, setOpen, navigate);
+            loginToAccount(
+              login,
+              password,
+              setLoginStatus,
+              setOpen,
+              navigate,
+              props.setStatus
+            );
           }}
         >
           Zaloguj się

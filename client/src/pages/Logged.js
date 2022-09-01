@@ -16,7 +16,9 @@ import OpiekunUHistory from "./OpiekunUHistory";
 import OpiekunZHistory from "./OpiekunZHistory";
 import OpiekunU from "./OpiekunU";
 import OpiekunZEfekty from "./EfektyOpiekunZ";
-function Logged() {
+import LoggedRoute from "../protectedRoutes/LoggedRoute";
+import RoleRoute from "../protectedRoutes/RoleRoute";
+function Logged(props) {
   return (
     <Grid container>
       {/* <Grid item >
@@ -24,19 +26,27 @@ function Logged() {
     </Grid> */}
       <Grid item xs>
         <Routes>
-          <Route path="/">
+          <Route path="/" element={<LoggedRoute auth={props?.auth} />}>
             <Route index element={<Dzienniczek />} />
             <Route path="Form" element={<Form />} />
             <Route path="Dzienniczek" element={<Dzienniczek />} />
             <Route path="DodawanieOpiekunow" element={<DodawanieOpiekunow />} />
             <Route path="konto" element={<Konto />} />
-            <Route path="uprawnienia" element={<Uprawnienia />} />
-            <Route path="opiekunZ" element={<OpiekunZ />} />
+            <Route element={<RoleRoute role={props.auth?.user.isAdmin} />}>
+              <Route path="uprawnienia" element={<Uprawnienia />} />
+            </Route>
+            <Route
+              element={<RoleRoute role={props.auth?.user.isOpiekunZakl} />}
+            >
+              <Route path="opiekunZ" element={<OpiekunZ />} />
+              <Route path="opiekunZStatus" element={<OpiekunZHistory />} />
+            </Route>
+            <Route element={<RoleRoute role={props.auth?.user.isOpiekunU} />}>
+              <Route path="opiekunUStatus" element={<OpiekunUHistory />} />
+              <Route path="opiekunU" element={<OpiekunU />} />
+              <Route path="OpiekunZEfekty" element={<OpiekunZEfekty />} />
+            </Route>
             <Route path="*" element={<NoPage />} />
-            <Route path="opiekunZStatus" element={<OpiekunZHistory />} />
-            <Route path="opiekunUStatus" element={<OpiekunUHistory />} />
-            <Route path="opiekunU" element={<OpiekunU />} />
-            <Route path="OpiekunZEfekty" element={<OpiekunZEfekty />} />
 
             {/* <Route path='ListaStudentow' element={<ListaStudentow/>}/> */}
           </Route>
