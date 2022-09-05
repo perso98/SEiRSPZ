@@ -150,24 +150,12 @@ function AddDayDialog({
                                 </div>
 
                                 <div>
-                                    {/* {iloscZalacznikow.map((val) =>(
-                                        <div>
-                                        {val}
-                                        </div>
-                                    ))} */}
-
-                                        {[...Array(n)].map((e, i) => <Zalacznik
-                                        key={i}
-                                        />)}
+                                 
+                                <Zalacznik/>
+                                        
                                 </div>
 
-                                <Button 
-                                    variant="contained" 
-                                    onClick={() => {
-                                        addZalacznik();
-                                      }}
-                                >+
-                                </Button>
+                                
 
                                 {/* <Box sx={{ minWidth: 200, maxWidth: 200, paddingTop: 2 , paddingBottom: 2 }}>
                                     <FormControl fullWidth>

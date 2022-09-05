@@ -55,7 +55,6 @@ function EfektUzasadnienie(
         });
       }, []);
 
-    
 
     const UpdateSave = listEfektyStudent.map((val) => (
             (val.efektyListumId === info.id ? (
@@ -63,31 +62,31 @@ function EfektUzasadnienie(
             ):null
     )))
 
-    // const Update = <div>
-    //                     <div>
-    //                     <TextField className={classes.TextField}
-    //                         label="Opis"
-    //                         id="opis"
-    //                         onChange={(e) => {
-    //                             set(e.target.value);
-    //                         }}
-    //                         multiline
-    //                         fullWidth
-    //                         margin="normal"
-    //                         />
-    //                     </div>
-    //                     <div  style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
-    //                         <Button
-    //                         variant="contained"
-    //                         onClick={() => {
-    //                             update(info.id);
-    //                         }}
-    //                         >
-    //                             Update 
-    //                         </Button>
+    const Update = <div>
+                        <div>
+                        <TextField className={classes.TextField}
+                            label="Opis"
+                            id="opis"
+                            onChange={(e) => {
+                                set(e.target.value);
+                            }}
+                            multiline
+                            fullWidth
+                            margin="normal"
+                            />
+                        </div>
+                        <div  style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
+                            <Button
+                            variant="contained"
+                            onClick={() => {
+                                update(info.id);
+                            }}
+                            >
+                                Update 
+                            </Button>
 
-    //                     </div>
-    //                 </div>
+                        </div>
+                    </div>
 
 
     const Zapisz = <div>
@@ -133,7 +132,9 @@ function EfektUzasadnienie(
             </IconButton>
           </DialogTitle>
           <DialogContent>
+            
             <div>
+            {Zapisz}
             {listEfektyStudent.map((val) => (
                 <div>
                     {(val.efektyListumId === info.id) ? (
@@ -164,6 +165,8 @@ function EfektUzasadnienie(
                             </div>
                         </div>
                     ): null}
+                    
+                      
                 </div>
             ))}
 
