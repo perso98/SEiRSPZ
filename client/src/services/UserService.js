@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { url } from "./Url";
 import { useEffect } from "react";
+import { common } from "@mui/material/colors";
 
 Axios.defaults.withCredentials = true;
 export const createAccount = async (
@@ -40,26 +41,25 @@ export const loginToAccount = async (
     if (res.data.message) setLoginStatus(res.data.message);
     if (res.data.logged) {
       setStatus(res.data);
-      navigate("/home");
     } else {
       setOpen(true);
     }
   });
 };
 
-export const getLoginToAccountInfo = (setLogged) => {
-  Axios.get(`${url}loginToAccount`).then((res) => {
+export const getLoginToAccountInfo = async (setLogged) => {
+  await Axios.get(`${url}loginToAccount`).then((res) => {
     setLogged(res.data.logged);
   });
 };
 
-export const getUser = (setUser) => {
-  Axios.get(`${url}loginToAccount`).then((res) => {
+export const getUser = async (setUser) => {
+  await Axios.get(`${url}loginToAccount`).then((res) => {
     setUser(res.data);
   });
 };
 
-export const logout = (navigate) => {
-  Axios.post(`${url}logoutFromAccount`);
+export const logout = async (navigate) => {
+  await Axios.post(`${url}logoutFromAccount`);
   navigate("/");
 };

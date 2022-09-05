@@ -38,22 +38,22 @@ exports.loginToAccount = async (req, res) => {
     },
   });
   if (!checkLogin) {
-    req.session.logged = false;
     res.send({
-      message: "Błędny login",
+      message: "Błędny login lub hasło",
     });
-  } else if (checkLogin) {
+  }
+  if (checkLogin) {
     if (await bcrypt.compare(password, checkLogin.haslo)) {
       req.session.user = checkLogin;
       req.session.logged = true;
       res.send({
         logged: true,
+        user: checkLogin,
       });
     } else {
       res.send({
-        message: "Hasło nie jest poprawne",
+        message: "Błędny login lub hasło",
       });
-      req.session.logged = false;
     }
   }
 };
@@ -61,7 +61,7 @@ exports.loginToAccount = async (req, res) => {
 exports.logoutFromAccount = async (req, res) => {
   if (req.session.user) {
     req.session.destroy();
-    res.clearCookie("key");
+    res.clearCookie("user");
     res.end();
   }
 };
