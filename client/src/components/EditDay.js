@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -19,6 +19,11 @@ import {
 } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import Zalacznik from "./Zalacznik";
+import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const useStyles = makeStyles(theme => ({
   containerMain:{
@@ -61,10 +66,17 @@ const useStyles = makeStyles(theme => ({
 function EditDay(
   { 
     editOpen,
+    zalaczniki,
     handleEditClose,
     editDay,
     deleteDay,
     createEditDay,
+    dziennikZalaczniki,
+    setDziennikZalaczniki,
+    addZalacznik,
+    deleteZalacznik,
+    changeZalacznik,
+    setChangeZalacznik,
     setChangeOpis,
     setChangeDzien,
     setChangeData,
@@ -72,9 +84,69 @@ function EditDay(
   }
   ){
 
-    
-
   const classes = useStyles();
+
+  const [files, setFiles] = useState([]);
+
+  const onSuccess = (savedFiles) => {
+      setFiles(savedFiles)
+  };
+
+  const FileUploader = ({onSuccess}) => {
+    const [files, setFiles] = useState([]);
+
+    const onInputChange = (e) => {
+        setFiles(e.target.files)
+        
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        const data = new FormData();
+
+        for(const element of files) {
+            data.append('file', element);
+        }
+        const idDay = editDay.id
+        axios.post(`http://localhost:5000/api/upload/${idDay}`, data,{
+          })
+            .then((response) => {
+                toast.success('Załadowano pomyślnie');
+
+                setDziennikZalaczniki([
+                  ...zalaczniki,
+                  {
+                    id: response.data.id,
+                    zalacznik: response.data.zalacznik,
+                    dziennikId: idDay
+                  },
+                ])
+                setChangeZalacznik(response.data)
+                onSuccess(response.data)
+                console.log("response.data" + response.data)
+            })
+            .catch((e) => {
+                toast.error('Błąd')
+            })
+    };
+
+    return (
+        <form>
+            <div>
+                <Stack direction="row" spacing={1}>
+                <label>Załącz pliki </label>
+                <input type="file"
+                       onChange={onInputChange}
+                       className="form-control"
+                       />
+                       <button onClick={onSubmit}>Submit</button>
+                </Stack>
+            </div>
+        </form>
+    )
+  }
+
 
   return (
     <>
@@ -160,7 +232,57 @@ function EditDay(
             </div>
 
             <div>
-                <Button variant="contained">Dodaj załącznik</Button>
+                { zalaczniki.map((val) => (
+                  <div>
+                    {val.dziennikId === editDay.id ? (
+                      <div> 
+                        <a href={`//localhost:5000/${val.zalacznik}`} download = {`//localhost:5000/${val.zalacznik}`}> <img style={{maxWidth: '200px'}} src={`//localhost:5000/${val.zalacznik}`}/></a>
+                           <Button
+                            variant="contained"
+                            color="error"
+                            style={{ marginTop: "5vh" }}
+                            onClick={() => {
+                              deleteZalacznik(val.id);
+                            }}
+                          >
+                            Usuń
+                          </Button>
+                          <a href={`//localhost:5000/${val.zalacznik}`} download={`//localhost:5000/${val.zalacznik}`}> {val.zalacznik}</a>
+                      </div>
+                    ): null}
+                  </div>
+                  ))}
+
+        <FileUploader onSuccess={onSuccess} />
+
+
+              {/* <form>
+                <div>
+                    <Stack direction="row" spacing={1}>
+                    <label>Załącz pliki </label>
+                    <input type="file"
+                          onChange={onInputChange}
+                          className="form-control"
+                          />
+                    <button 
+                    // onClick={addZalacznik}
+                    // onClick={() => {
+                    //   addZalacznik(editDay.id);
+                    // }}
+                    onClick={() => {addZalacznik(editDay.id)}}
+                    >
+                    
+                    Submit</button>
+                    </Stack>
+                </div>
+              </form> */}
+
+
+              {/* <Zalacznik
+              idDay = {editDay.id}
+              setChangeZalacznik = {setChangeZalacznik}
+              /> */}
+              <ToastContainer/>
             </div>
 
         <div  style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>

@@ -18,6 +18,7 @@ export const FileUploader = ({onSuccess}) => {
 
         for(let i = 0; i < files.length; i++) {
             data.append('file', files[i]);
+            console.log(data)
         }
 
         axios.post('http://localhost:5000/api/upload', data)

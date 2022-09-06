@@ -16,6 +16,7 @@ const {
   dane,
   firma,
   komentarze,
+  dzienZalaczniki,
 } = require("./models");
 const cors = require("cors");
 
@@ -62,26 +63,49 @@ app.listen(5000, () => {
 //        Dzienniczek
 app.use(express.static('public'));
 
-const storage = multer.diskStorage({
+app.post('/api/upload/:idDay', async (req, res) => {
+
+  console.log("server/upload")
+  const idDay = req.params.idDay;
+  
+  console.log(1)
+  console.log("id=============" + idDay)
+
+  const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public')
+      cb(null, 'public')
     },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname)
+    filename: async (req, file, cb) => {
+        const nowDate =  Date.now() + '-' + file.originalname
+        cb(null, nowDate)
+        console.log(3)
+        console.log("id=============" + idDay)
+        const dzienZalacznik = await dzienZalaczniki.create(
+          {
+            zalacznik: nowDate,
+            dziennikId : idDay,
+          }
+        )
+        console.log(4)
+        res.send(dzienZalacznik)
     }
-});
+  });
 
-const upload = multer({storage}).array('file');
+  console.log(2)
 
-app.post('/api/upload', (req, res) => {
-    upload(req, res, (err) => {
+  const upload = multer({storage}).array('file');
+
+  console.log(2.1)
+    upload(req, res, async (err) => {
         if (err) {
+          console.log(2.2)
             return res.status(500).json(err)
         }
-
-        return res.status(200).send(req.files)
+        console.log(2.3)
+        // return res.status(200).send(req.files)
     })
 });
+
 
 
 app.get("/api/getDziennik", dzienniczek_controller.getDziennik);
@@ -91,12 +115,14 @@ app.post("/api/createDay", dzienniczek_controller.createDay);
 app.post("/api/createEditDay", dzienniczek_controller.createEditDay);
 //Usuwanie dnia z dzinniczka
 app.delete("/api/deleteDay/:id", dzienniczek_controller.deleteDay);
+app.delete("/api/deleteZalacznik/:id", dzienniczek_controller.deleteZalacznik);
 app.get("/api/getEfektUczenia", dzienniczek_controller.getEfektUczenia);
 app.get("/api/listEfektyStudent", dzienniczek_controller.listEfektyStudent);
 app.put("/api/createUzasadnienieEfektu", dzienniczek_controller.createUzasadnienieEfektu);
 app.put("/api/updateUzasadnienieEfektu", dzienniczek_controller.updateUzasadnienieEfektu);
 app.get("/api/IdUser", dzienniczek_controller.IdUser);
 app.post("/api/createZalacznik", dzienniczek_controller.createZalacznik);
+app.get("/api/getZalacznik", dzienniczek_controller.getZalacznik);
 //        Firma
 app.get("/api/getOpiekuni", firma_controller.getOpiekuni);
 app.get("/api/getOpiekun/:id", firma_controller.getOpiekunId);
@@ -105,6 +131,8 @@ app.get("/api/getUser", firma_controller.getUser);
 app.get("/api/getFirma", firma_controller.getFirma);
 //Dodanie zakładu
 app.post("/api/createFirma", firma_controller.createFirma);
+app.delete("/api/deleteFirma/:id", firma_controller.deleteFirmaId);
+
 //Dodanie Opiekuna do zakladu
 app.put("/api/addOpiekunFirma", firma_controller.addOpiekunFirma);
 app.put("/api/delOpiekunFirma", firma_controller.delOpiekunFirma);
