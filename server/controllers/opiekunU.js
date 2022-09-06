@@ -8,6 +8,25 @@ const {
   firma,
   komentarze,
 } = require("../models");
+exports.getEffectsOpiekunU = async (req, res) => {
+  try {
+    const getEffects = await user.findAll({
+      where: {
+        id_opiekunu: req.session.user.id,
+      },
+      include: {
+        model: efektyStudent,
+        include: {
+          model: efektyLista,
+        },
+      },
+    });
+
+    res.send(getEffects);
+  } catch (err) {
+    console.log(err);
+  }
+};
 //pobieranie efektow uczenia dla opiekunow
 
 exports.getDaysOpiekunUStatus = async (req, res) => {

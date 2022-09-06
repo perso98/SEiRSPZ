@@ -102,7 +102,7 @@ function OpiekunStatus() {
               setItemOffset={setItemOffset}
             />
           )}
-          <Button linkTo="/profil/OpiekunZ" text="Nowe" />
+          <Button linkTo="/opiekunz" text="Nowe" />
         </div>
         {recordsAfterFiltering.length === 0 && !loading && (
           <h6>Nie znaleziono wyniku</h6>

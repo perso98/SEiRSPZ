@@ -114,7 +114,7 @@ function Sidebar(props) {
                   <DehazeIcon className={classes.sidebarIcon} />
                 </Button>
                 {props.auth?.user.isStudent == 1 && (
-                  <Link to="Dzienniczek" className={classes.links}>
+                  <Link to="/dzienniczek" className={classes.links}>
                     <div className={classes.item}>
                       <DateRangeIcon className={classes.icon} />
                       <Typography className={classes.text}>
@@ -134,7 +134,7 @@ function Sidebar(props) {
                       </div>
                     </Link> */}
 
-                    <Link to="DodawanieOpiekunow" className={classes.links}>
+                    <Link to="/dodawanieopiekunow" className={classes.links}>
                       <div className={classes.item}>
                         <AssignmentIcon className={classes.icon} />
                         <Typography className={classes.text}>
@@ -169,7 +169,7 @@ function Sidebar(props) {
                 </div> */}
 
                 <div className={classes.item}>
-                  <Link to="Uprawnienia" className={classes.links}>
+                  <Link to="/uprawnienia" className={classes.links}>
                     <div className={classes.item}>
                       <Homeicon className={classes.icon} />
                       <Typography className={classes.text}>
@@ -180,7 +180,7 @@ function Sidebar(props) {
                 </div>
 
                 <div className={classes.item}>
-                  <Link to="OpiekunZ" className={classes.links}>
+                  <Link to="/opiekunz" className={classes.links}>
                     <div className={classes.item}>
                       <Homeicon className={classes.icon} />
                       <Typography className={classes.text}>
@@ -189,18 +189,18 @@ function Sidebar(props) {
                     </div>
                   </Link>
                 </div>
-                <Link to="opiekunU" className={classes.links}>
+                <Link to="/opiekunu" className={classes.links}>
                   <div className={classes.item}>
                     <Homeicon className={classes.icon} />
                     <Typography className={classes.text}>Opiekun U</Typography>
                   </div>
                 </Link>
 
-                <Link to="OpiekunZEfekty" className={classes.links}>
+                <Link to="opiekunu/efekty" className={classes.links}>
                   <div className={classes.item}>
                     <Homeicon className={classes.icon} />
                     <Typography className={classes.text}>
-                      Opiekun Z Efekty
+                      Opiekun U Efekty
                     </Typography>
                   </div>
                 </Link>

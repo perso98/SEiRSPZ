@@ -5,7 +5,7 @@ import SearchBar from "../components/SearchBar";
 import PaginationForEffects from "../components/PaginationForEffects";
 import EfektyDialog from "../components/EfektyDialog";
 
-function EfektyOpiekunZ() {
+function EfektyOpiekunU() {
   const [opis, setOpis] = useState("");
   const [studenci, setStudenci] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ function EfektyOpiekunZ() {
     setOpen(true);
   };
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getEffectsOpiekunZ").then((res) => {
+    axios.get("http://localhost:5000/api/getEffectsOpiekunU").then((res) => {
       setStudenci(res.data);
       setLoading(false);
       console.log(res.data);
@@ -109,4 +109,4 @@ function EfektyOpiekunZ() {
   );
 }
 
-export default EfektyOpiekunZ;
+export default EfektyOpiekunU;

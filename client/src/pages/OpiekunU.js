@@ -105,7 +105,7 @@ function OpiekunU() {
               setItemOffset={setItemOffset}
             />
           )}
-          <ButtonLink linkTo="/profil/opiekunUStatus" text="Historia" />
+          <ButtonLink linkTo="/opiekunu/historia" text="Historia" />
         </div>
         {recordsAfterFiltering.length === 0 && !loading && (
           <h6>Nie znaleziono wyniku</h6>

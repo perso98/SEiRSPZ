@@ -21,6 +21,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddAdminDialog from "../components/AddAdminDialog";
 import EditAdminDialog from "../components/EditAdminDialog";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
@@ -79,9 +81,12 @@ export default function Uprawnienia() {
   ];
 
   const deleteUser = (id, login) => {
-    const acceptDelete = window.confirm(`Czy pewno chcesz usunąć ${login}?`);
+    const acceptDelete = window.confirm(
+      `Czy na pewno chcesz usunąć użytkownika ${login} oraz wszystkie jego połączenia danych (dni,komentarze,efekty uczenia się itd)?`
+    );
     if (acceptDelete)
       axios.delete(`http://localhost:5000/api/deleteUser/${id}`).then((res) => {
+        toast.success("Użytkownik usunięty!");
         setStudents(
           students.filter((val) => {
             return val.id != id;
@@ -141,7 +146,7 @@ export default function Uprawnienia() {
           setUserObject({ ...userObject, login: "", password: "" });
         }
 
-        alert(res.data.message);
+        toast.success(res.data.message);
       });
   };
 
@@ -172,6 +177,7 @@ export default function Uprawnienia() {
         id: id,
       })
       .then((res) => {
+        toast.success("Rola zmieniona");
         setStudents(
           students.map((val) => {
             return val.id == id ? { ...val, [action]: type } : val;
@@ -359,6 +365,8 @@ export default function Uprawnienia() {
         changeUserInfo={changeUserInfo}
         setChangeLogin={setChangeLogin}
       />
+
+      <ToastContainer />
     </>
   );
 }

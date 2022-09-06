@@ -3,8 +3,8 @@ import { Outlet, Navigate } from "react-router-dom";
 
 function RoleRoute(props) {
   console.log(props);
-  if (props?.logged === undefined) return null;
-  return props?.role == 1 ? (
+  if (props?.role === undefined) return null;
+  return props?.role ? (
     <Outlet />
   ) : props?.logged ? (
     <Navigate to="/noauth" replace />

@@ -92,7 +92,7 @@ function OpiekunZ() {
             />
           )}
 
-          <ButtonLink linkTo="/profil/opiekunZStatus" text="Historia" />
+          <ButtonLink linkTo="/opiekunz/historia" text="Historia" />
         </div>
         {recordsAfterFiltering.length === 0 && !loading && (
           <h6>Nie znaleziono wyniku</h6>

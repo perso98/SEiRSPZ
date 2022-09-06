@@ -5,7 +5,7 @@ const db = require("./models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const { Op } = require("sequelize");
-const multer = require('multer');
+const multer = require("multer");
 
 const {
   user,
@@ -59,29 +59,28 @@ app.listen(5000, () => {
 });
 
 //        Dzienniczek
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public')
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname)
+  destination: (req, file, cb) => {
+    cb(null, "public");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage }).array("file");
+
+app.post("/api/upload", (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      return res.status(500).json(err);
     }
+
+    return res.status(200).send(req.files);
+  });
 });
-
-const upload = multer({storage}).array('file');
-
-app.post('/api/upload', (req, res) => {
-    upload(req, res, (err) => {
-        if (err) {
-            return res.status(500).json(err)
-        }
-
-        return res.status(200).send(req.files)
-    })
-});
-
 
 app.get("/api/getDziennik", dzienniczek_controller.getDziennik);
 //Utworzenie Dnia w dzienniczku
@@ -160,8 +159,7 @@ app.get(
   "/api/getDaysOpiekunZStatus",
   opiekunZ_controller.getDaysOpiekunZStatus
 );
-//pobieranie efektow uczenia dla opiekuna zakladowego
-app.get("/api/getEffectsOpiekunZ", opiekunZ_controller.getEffectsOpiekunZ);
+
 //pobieranie dni dzienniczka studentow dla opiekuna zakladowego
 app.get("/api/getDaysOpiekunZ", opiekunZ_controller.getDaysOpiekunZ);
 //===========================================================
@@ -172,6 +170,8 @@ app.get(
   "/api/getDaysOpiekunUStatus",
   opiekunU_controller.getDaysOpiekunUStatus
 );
+//pobieranie efektow uczenia dla opiekuna uczelnianego
+app.get("/api/getEffectsOpiekunU", opiekunU_controller.getEffectsOpiekunU);
 //pobieranie dni dzienniczka studentow dla opiekuna uczelnianego
 app.get("/api/getDaysOpiekunU", opiekunU_controller.getDaysOpiekunU);
 //===========================================================
