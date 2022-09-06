@@ -239,3 +239,24 @@ const {
       res.send({ message: err.message });
     }
   };
+
+
+  exports.deleteFirmaId = async (req, res) => {
+    const { id } = req.params.id;
+  
+    try {
+      await firma.delete(
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+  
+      res.send({
+        message: "Pomyślnie usunięto",
+      });
+    } catch (err) {
+      res.send({ message: err.message });
+    }
+  };

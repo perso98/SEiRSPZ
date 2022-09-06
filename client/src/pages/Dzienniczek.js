@@ -26,6 +26,9 @@ import EfektyUczeniaSie from "../components/EfektyUczeniaSie";
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const useStyles = makeStyles(theme => ({
     containerMain:{
         fontSize: "12px",
@@ -53,10 +56,17 @@ function Dzienniczek() {
 
     const [dziennik, setDziennik] = useState([]);
 
+    const [dziennikZalaczniki, setDziennikZalaczniki] = useState([]);
+
     useEffect(() => {
         axios.get("http://localhost:5000/api/getDziennik").then((res) => {
           setDziennik(res.data);
-          
+          console.log(res.data)
+        });
+
+        axios.get("http://localhost:5000/api/getZalacznik").then((res) => {
+            setDziennikZalaczniki(res.data);
+          console.log(res.data)
         });
       }, []);
 
@@ -80,12 +90,12 @@ const handleEditClose = () => {
     setChangeData()
     setChangeIloscGodzin()
     setChangeOpis()
+    setChangeZalacznik()
 };
 const handleEditOpen = (val) => {
     setEditOpen(true);
     setEditDay(val);
 };
-
 
 const [dayObject2,setDayObject2] = useState({
     userId:"",  
@@ -99,7 +109,6 @@ const [changeDzien, setChangeDzien] = useState();
 const [changeData, setChangeData] = useState();
 const [changeIloscGodzin, setChangeIloscGodzin] = useState();
 const [changeOpis, setChangeOpis] = useState();
-
 
 const onChangeDay=(e)=>{
     const {value,id}=e.target
@@ -127,6 +136,20 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
                 } : val
             ))
         )
+        setDziennik([
+            ...dziennik,
+            {
+              id:res.data.id,
+              userId: dayObject.login,
+              dzien: dayObject.dzien,
+              data:dayObject.data,
+              ilosc_godzin:dayObject.iloscGodzin,
+              opis:dayObject.opis,
+              statusOpiekunaU:"Oczekiwanie",
+              statusOpiekunaZ:"Oczekiwanie",
+            },
+          ]);
+        
       })
       .then(() => { 
         setChangeDzien()
@@ -154,6 +177,58 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
       
   };
 
+const [changeZalacznik, setChangeZalacznik] = useState([]);
+
+
+    const addZalacznik = (e, id) => {
+        e.preventDefault();
+        const data = new FormData();
+
+        if (!changeZalacznik.length) {
+            return null
+        }
+        else{
+            data.append('file', changeZalacznik);
+        }
+        
+        console.log(data)
+        axios.post(`http://localhost:5000/api/upload/${id}`, data,{
+        })
+            .then((response) => {
+                console.log("upload/${idDay}" + changeZalacznik)
+                toast.success('Załadowano pomyślnie');
+                // setChangeZalacznik(response.data)
+                console.log("upload/${idDay}" + response.data)
+            })
+            .then(() => {
+                setDziennikZalaczniki([
+                    ...dziennikZalaczniki,
+                    {
+                      id:1,
+
+                    },
+                  ]).then(() => { 
+                setChangeZalacznik()
+              })
+            })
+            .catch((e) => {
+                console.log("Błąd")
+                toast.error('Błąd')
+            })
+    };
+
+  const deleteZalacznik = (id) => {
+    axios.delete(`http://localhost:5000/api/deleteZalacznik/${id}`).then((res) => {
+      })
+      .then((res) => {
+        setDziennikZalaczniki(
+            dziennikZalaczniki.filter((val) => {
+              return val.id != id;
+            })
+          );
+      });
+      
+  };
 
 // dodawanie dnia
 
@@ -235,7 +310,6 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
                 <Item></Item>
             </Grid>
         </Grid>
-
 
         <Grid container>
             <Grid xs={12}  md={8}>
@@ -327,6 +401,12 @@ const createEditDay = (id, dzien, data, iloscGodzin, opis ) => {
 
         <EditDay 
         editOpen={editOpen} 
+        setChangeZalacznik={setChangeZalacznik}
+        zalaczniki= {dziennikZalaczniki}
+        deleteZalacznik = {deleteZalacznik}
+        addZalacznik = {addZalacznik}
+        setDziennikZalaczniki = {setDziennikZalaczniki}
+
         handleEditClose={handleEditClose} 
         editDay={editDay}
         deleteDay={deleteDay}

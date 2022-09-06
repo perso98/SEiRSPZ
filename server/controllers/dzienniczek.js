@@ -12,6 +12,9 @@ const {
   exports.getDziennik = async (req, res) => {
     const listDziennik = await dziennik.findAll({
       where: { userId: req.session.user.id },
+      // include: {
+      //   model: dzienZalaczniki,
+      // },
     });
   
     res.send(listDziennik);
@@ -160,10 +163,14 @@ exports.getEfektUczenia = async (req, res) => {
       try {
         const {
           zalacznik,
+          idDay,
         } = req.body;
+        console.log("data")
         console.log(zalacznik)
+
         await dzienZalaczniki.create({
           zalacznik: zalacznik,
+          dziennikId: idDay,
         });
         console.log("Wysłano");
         res.send({
@@ -174,5 +181,28 @@ exports.getEfektUczenia = async (req, res) => {
         res.send({
           message: "Błąd ;)",
         });
+      }
+    };
+
+    exports.getZalacznik = async (req, res) => {
+      const zalaczniki = await dzienZalaczniki.findAll({
+      });
+
+      res.send(zalaczniki);
+    };
+
+
+
+    exports.deleteZalacznik = async (req, res) => {
+      const id = req.params.id;
+      try {
+        await dzienZalaczniki.destroy({
+          where: {
+            id: id,
+          },
+        });
+        res.send({ message: "Usunięto" });
+      } catch (err) {
+        res.send({ message: err.message });
       }
     };
