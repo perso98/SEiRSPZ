@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import logo from "../img/ans.png";
 import { makeStyles } from "@mui/styles";
 import AlertComponent from "../components/AlertComponent";
-import { loginToAccount } from "../services/UserService";
+import { url } from "../services/Url";
+import Axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 
 function Login(props) {
@@ -22,7 +24,20 @@ function Login(props) {
   const [loginStatus, setLoginStatus] = useState("");
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
+
+  const loginToAccount = async () => {
+    await Axios.post(`${url}loginToAccount`, {
+      login: login,
+      password: password,
+    }).then((res) => {
+      if (res.data.message) setLoginStatus(res.data.message);
+      if (res.data.logged) {
+        props.setStatus(res.data);
+      } else {
+        setOpen(true);
+      }
+    });
+  };
 
   return (
     <Grid
@@ -67,14 +82,7 @@ function Login(props) {
           variant="contained"
           style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
           onClick={() => {
-            loginToAccount(
-              login,
-              password,
-              setLoginStatus,
-              setOpen,
-              navigate,
-              props.setStatus
-            );
+            loginToAccount();
           }}
         >
           Zaloguj się

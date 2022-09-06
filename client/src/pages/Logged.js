@@ -21,34 +21,27 @@ import RoleRoute from "../protectedRoutes/RoleRoute";
 function Logged(props) {
   return (
     <Grid container>
-      {/* <Grid item >
-      <Sidebar/>
-    </Grid> */}
+      <div>Witaj</div>
       <Grid item xs>
         <Routes>
-          <Route path="/" element={<LoggedRoute auth={props?.auth} />}>
-            <Route index element={<Dzienniczek />} />
-            <Route path="Form" element={<Form />} />
-            <Route path="Dzienniczek" element={<Dzienniczek />} />
-            <Route path="DodawanieOpiekunow" element={<DodawanieOpiekunow />} />
-            <Route path="konto" element={<Konto />} />
-            <Route element={<RoleRoute role={props.auth?.user.isAdmin} />}>
-              <Route path="uprawnienia" element={<Uprawnienia />} />
-            </Route>
-            <Route
-              element={<RoleRoute role={props.auth?.user.isOpiekunZakl} />}
-            >
-              <Route path="opiekunZ" element={<OpiekunZ />} />
-              <Route path="opiekunZStatus" element={<OpiekunZHistory />} />
-            </Route>
-            <Route element={<RoleRoute role={props.auth?.user.isOpiekunU} />}>
+          <Route element={<LoggedRoute auth={props?.auth} />}>
+            <Route path="/">
+              <Route index element={<Dzienniczek />} />
+              <Route path="Form" element={<Form />} />
+              <Route path="Dzienniczek" element={<Dzienniczek />} />
+              <Route
+                path="DodawanieOpiekunow"
+                element={<DodawanieOpiekunow />}
+              />
+              <Route path="konto" element={<Konto />} />
+
               <Route path="opiekunUStatus" element={<OpiekunUHistory />} />
               <Route path="opiekunU" element={<OpiekunU />} />
-              <Route path="OpiekunZEfekty" element={<OpiekunZEfekty />} />
-            </Route>
-            <Route path="*" element={<NoPage />} />
 
-            {/* <Route path='ListaStudentow' element={<ListaStudentow/>}/> */}
+              <Route path="*" element={<NoPage />} />
+
+              {/* <Route path='ListaStudentow' element={<ListaStudentow/>}/> */}
+            </Route>
           </Route>
         </Routes>
       </Grid>

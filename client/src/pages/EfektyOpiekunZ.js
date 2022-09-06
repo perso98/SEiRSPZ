@@ -29,6 +29,7 @@ function EfektyOpiekunZ() {
     axios.get("http://localhost:5000/api/getEffectsOpiekunZ").then((res) => {
       setStudenci(res.data);
       setLoading(false);
+      console.log(res.data);
     });
   }, []);
 

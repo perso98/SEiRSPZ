@@ -114,7 +114,7 @@ function Sidebar(props) {
                   <DehazeIcon className={classes.sidebarIcon} />
                 </Button>
                 {props.auth?.user.isStudent == 1 && (
-                  <Link to="profil/Dzienniczek" className={classes.links}>
+                  <Link to="Dzienniczek" className={classes.links}>
                     <div className={classes.item}>
                       <DateRangeIcon className={classes.icon} />
                       <Typography className={classes.text}>
@@ -134,10 +134,7 @@ function Sidebar(props) {
                       </div>
                     </Link> */}
 
-                    <Link
-                      to="profil/DodawanieOpiekunow"
-                      className={classes.links}
-                    >
+                    <Link to="DodawanieOpiekunow" className={classes.links}>
                       <div className={classes.item}>
                         <AssignmentIcon className={classes.icon} />
                         <Typography className={classes.text}>
@@ -172,20 +169,18 @@ function Sidebar(props) {
                 </div> */}
 
                 <div className={classes.item}>
-                  {props.auth?.user.isAdmin == 1 && (
-                    <Link to="profil/Uprawnienia" className={classes.links}>
-                      <div className={classes.item}>
-                        <Homeicon className={classes.icon} />
-                        <Typography className={classes.text}>
-                          Uprawnienia
-                        </Typography>
-                      </div>
-                    </Link>
-                  )}
+                  <Link to="Uprawnienia" className={classes.links}>
+                    <div className={classes.item}>
+                      <Homeicon className={classes.icon} />
+                      <Typography className={classes.text}>
+                        Uprawnienia
+                      </Typography>
+                    </div>
+                  </Link>
                 </div>
 
                 <div className={classes.item}>
-                  <Link to="profil/OpiekunZ" className={classes.links}>
+                  <Link to="OpiekunZ" className={classes.links}>
                     <div className={classes.item}>
                       <Homeicon className={classes.icon} />
                       <Typography className={classes.text}>
@@ -194,14 +189,14 @@ function Sidebar(props) {
                     </div>
                   </Link>
                 </div>
-                <Link to="profil/opiekunU" className={classes.links}>
+                <Link to="opiekunU" className={classes.links}>
                   <div className={classes.item}>
                     <Homeicon className={classes.icon} />
                     <Typography className={classes.text}>Opiekun U</Typography>
                   </div>
                 </Link>
 
-                <Link to="profil/OpiekunZEfekty" className={classes.links}>
+                <Link to="OpiekunZEfekty" className={classes.links}>
                   <div className={classes.item}>
                     <Homeicon className={classes.icon} />
                     <Typography className={classes.text}>

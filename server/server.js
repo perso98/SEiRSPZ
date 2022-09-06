@@ -7,7 +7,6 @@ const cookieParser = require("cookie-parser");
 const { Op } = require("sequelize");
 const multer = require('multer');
 
-
 const {
   user,
   dziennik,
@@ -118,8 +117,14 @@ app.delete("/api/deleteDay/:id", dzienniczek_controller.deleteDay);
 app.delete("/api/deleteZalacznik/:id", dzienniczek_controller.deleteZalacznik);
 app.get("/api/getEfektUczenia", dzienniczek_controller.getEfektUczenia);
 app.get("/api/listEfektyStudent", dzienniczek_controller.listEfektyStudent);
-app.put("/api/createUzasadnienieEfektu", dzienniczek_controller.createUzasadnienieEfektu);
-app.put("/api/updateUzasadnienieEfektu", dzienniczek_controller.updateUzasadnienieEfektu);
+app.put(
+  "/api/createUzasadnienieEfektu",
+  dzienniczek_controller.createUzasadnienieEfektu
+);
+app.put(
+  "/api/updateUzasadnienieEfektu",
+  dzienniczek_controller.updateUzasadnienieEfektu
+);
 app.get("/api/IdUser", dzienniczek_controller.IdUser);
 app.post("/api/createZalacznik", dzienniczek_controller.createZalacznik);
 app.get("/api/getZalacznik", dzienniczek_controller.getZalacznik);
