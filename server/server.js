@@ -59,17 +59,35 @@ app.listen(5000, () => {
   console.log("Serwer uruchomiony na porcie 5000");
 });
 
-//        Dzienniczek
 app.use(express.static('public'));
 
-const storage = multer.diskStorage({
+app.post('/api/upload/:idDay', async (req, res) => {
+
+  console.log("server/upload")
+  const idDay = req.params.idDay;
+  
+  console.log(1)
+  console.log("id=============" + idDay)
+
+  const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public')
+      cb(null, 'public')
     },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname)
+    filename: async (req, file, cb) => {
+        const nowDate =  Date.now() + '-' + file.originalname
+        cb(null, nowDate)
+        console.log(3)
+        console.log("id=============" + idDay)
+        const dzienZalacznik = await dzienZalaczniki.create(
+          {
+            zalacznik: nowDate,
+            dziennikId : idDay,
+          }
+        )
+        console.log(4)
+        res.send(dzienZalacznik)
     }
-});
+  });
 
   console.log(2)
 
