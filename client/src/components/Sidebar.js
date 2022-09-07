@@ -169,11 +169,11 @@ function Sidebar(props) {
                 </div> */}
 
                 <div className={classes.item}>
-                  <Link to="/uprawnienia" className={classes.links}>
+                  <Link to="/admin" className={classes.links}>
                     <div className={classes.item}>
                       <Homeicon className={classes.icon} />
                       <Typography className={classes.text}>
-                        Uprawnienia
+                        Admin Panel
                       </Typography>
                     </div>
                   </Link>

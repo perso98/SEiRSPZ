@@ -12,7 +12,7 @@ import UnLoggedRoute from "./protectedRoutes/UnLoggedRoute";
 
 import NoPage from "./pages/NoPage";
 import NoAuth from "./components/NoAuth";
-import Uprawnienia from "./pages/Uprawnienia";
+import Admin from "./pages/Admin";
 import OpiekunZHistory from "./pages/OpiekunZHistory";
 import OpiekunZ from "./pages/OpiekunZ";
 import RoleRoute from "./protectedRoutes/RoleRoute";
@@ -102,7 +102,7 @@ function App() {
                     />
                   }
                 >
-                  <Route path="uprawnienia" element={<Uprawnienia />} />
+                  <Route path="admin" element={<Admin />} />
                 </Route>
                 <Route
                   element={

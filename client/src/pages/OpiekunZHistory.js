@@ -8,6 +8,8 @@ import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 
 import Button from "../components/Button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function OpiekunStatus() {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -46,6 +48,7 @@ function OpiekunStatus() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
+        toast.success(`Zmiana statusu na ${status}`);
         setDzienniczek(
           dzienniczek.map((val) => {
             return val.id == id ? { ...val, [res.data.status]: status } : val;
@@ -64,13 +67,15 @@ function OpiekunStatus() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        if (!opis)
+        if (!opis) {
+          toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
             dzienniczek.map((val) => {
               return val.id == id ? { ...val, [res.data.status]: status } : val;
             })
           );
-        else
+        } else {
+          toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
             dzienniczek.map((val) => {
               return val.id == id
@@ -78,6 +83,7 @@ function OpiekunStatus() {
                 : val;
             })
           );
+        }
       });
   };
 
@@ -125,6 +131,7 @@ function OpiekunStatus() {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
       />
+      <ToastContainer autoClose={5000} limit={3} />
     </>
   );
 }

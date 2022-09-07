@@ -7,7 +7,8 @@ import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 import ButtonLink from "../components/Button";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function OpiekunU() {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,6 +45,7 @@ function OpiekunU() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
+        toast.success(`Zmiana statusu na ${status}`);
         setDzienniczek(
           dzienniczek.filter((val) => {
             return val.id != id;
@@ -128,6 +130,7 @@ function OpiekunU() {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
       />
+      <ToastContainer />
     </>
   );
 }

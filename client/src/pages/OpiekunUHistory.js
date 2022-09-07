@@ -7,6 +7,8 @@ import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 import ButtonLink from "../components/Button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function OpiekunUHistory() {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -18,6 +20,7 @@ function OpiekunUHistory() {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaU";
+
   const status = true;
   const handleClose = () => {
     setKomentarz();
@@ -44,6 +47,7 @@ function OpiekunUHistory() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
+        toast.success(`Zmiana statusu na ${status}`);
         setDzienniczek(
           dzienniczek.map((val) => {
             return val.id == id ? { ...val, [res.data.status]: status } : val;
@@ -62,13 +66,15 @@ function OpiekunUHistory() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        if (!opis)
+        if (!opis) {
+          toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
             dzienniczek.map((val) => {
               return val.id == id ? { ...val, [res.data.status]: status } : val;
             })
           );
-        else
+        } else {
+          toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
             dzienniczek.map((val) => {
               return val.id == id
@@ -76,6 +82,7 @@ function OpiekunUHistory() {
                 : val;
             })
           );
+        }
       });
   };
 
@@ -123,6 +130,7 @@ function OpiekunUHistory() {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
       />
+      <ToastContainer />
     </>
   );
 }

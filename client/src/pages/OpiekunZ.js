@@ -8,6 +8,8 @@ import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 import Button from "@mui/material/Button";
 import ButtonLink from "../components/Button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function OpiekunZ() {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -44,6 +46,7 @@ function OpiekunZ() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
+        toast.success(`Zmiana statusu na ${status}`);
         setDzienniczek(
           dzienniczek.filter((val) => {
             return val.id != id;
@@ -114,6 +117,7 @@ function OpiekunZ() {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
       />
+      <ToastContainer />
     </>
   );
 }

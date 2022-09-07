@@ -10,6 +10,7 @@ import {
   Toolbar,
   TextField,
 } from "@material-ui/core";
+
 import Button from "@mui/material/Button";
 import React, { useState, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
@@ -26,17 +27,22 @@ import "react-toastify/dist/ReactToastify.css";
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
+
     "& thead th": {
       fontWeight: "600",
       color: "white",
+    },
+  },
+  button: {
+    [theme.breakpoints.down("xs")]: {
+      width: "39%",
     },
   },
   tableHead: {
     background: "#08448c",
   },
   searchInp: {
-    width: "100%",
-    marginRight: theme.spacing(20),
+    width: "80%",
   },
   toolbar: {
     marginTop: "2%",
@@ -50,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "600",
   },
 }));
-export default function Uprawnienia() {
+export default function Admin() {
   const classes = useStyles();
   const [changeLogin, setChangeLogin] = useState();
   const [students, setStudents] = useState([]);
@@ -245,7 +251,7 @@ export default function Uprawnienia() {
         }}
       >
         <div />
-        <div>
+        <div style={{ overflowX: "auto" }}>
           <Toolbar className={classes.toolbar}>
             <TextField
               className={classes.searchInp}
@@ -263,7 +269,11 @@ export default function Uprawnienia() {
                 setPage(0);
               }}
             />
-            <Button variant="contained" onClick={handleAddOpen}>
+            <Button
+              variant="contained"
+              onClick={handleAddOpen}
+              className={classes.button}
+            >
               Dodaj użytkownika
             </Button>
           </Toolbar>
@@ -286,7 +296,11 @@ export default function Uprawnienia() {
 
               {recordsAfter().map((val) => (
                 <TableRow key={val.id}>
-                  <TableCell>{val.login}</TableCell>
+                  <TableCell
+                    style={{ maxWidth: "100px", wordWrap: "break-word" }}
+                  >
+                    {val.login}
+                  </TableCell>
                   <TableCell style={{ textAlign: "center" }}>
                     {val.isStudent == 0
                       ? takeButton("isStudent", val.id)
@@ -337,6 +351,7 @@ export default function Uprawnienia() {
                 </TableRow>
               ))}
             </TableBody>
+
             <TablePagination
               component="div"
               page={page}

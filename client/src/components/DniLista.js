@@ -98,7 +98,11 @@ function DzienniczekDni(props) {
                       <h6>{val.statusOpiekunaU}</h6>
                     </div>
                   ))}
-                <div style={{ margin: "1rem 0 1rem 0" }}>Opis: {val.opis}</div>{" "}
+                <div
+                  style={{ margin: "1rem 0 1rem 0", wordWrap: "break-word" }}
+                >
+                  Opis: {val.opis}
+                </div>{" "}
                 <div style={{ margin: "0 0 1rem 0" }}>
                   Student: {val.user.login}
                 </div>

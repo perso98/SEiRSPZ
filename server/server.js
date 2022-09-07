@@ -59,51 +59,47 @@ app.listen(5000, () => {
   console.log("Serwer uruchomiony na porcie 5000");
 });
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
-app.post('/api/upload/:idDay', async (req, res) => {
-
-  console.log("server/upload")
+app.post("/api/upload/:idDay", async (req, res) => {
+  console.log("server/upload");
   const idDay = req.params.idDay;
-  
-  console.log(1)
-  console.log("id=============" + idDay)
+
+  console.log(1);
+  console.log("id=============" + idDay);
 
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, 'public')
+      cb(null, "public");
     },
     filename: async (req, file, cb) => {
-        const nowDate =  Date.now() + '-' + file.originalname
-        cb(null, nowDate)
-        console.log(3)
-        console.log("id=============" + idDay)
-        const dzienZalacznik = await dzienZalaczniki.create(
-          {
-            zalacznik: nowDate,
-            dziennikId : idDay,
-          }
-        )
-        console.log(4)
-        res.send(dzienZalacznik)
-    }
+      const nowDate = Date.now() + "-" + file.originalname;
+      cb(null, nowDate);
+      console.log(3);
+      console.log("id=============" + idDay);
+      const dzienZalacznik = await dzienZalaczniki.create({
+        zalacznik: nowDate,
+        dziennikId: idDay,
+      });
+      console.log(4);
+      res.send(dzienZalacznik);
+    },
   });
 
-  console.log(2)
+  console.log(2);
 
-  const upload = multer({storage}).array('file');
+  const upload = multer({ storage }).array("file");
 
-  console.log(2.1)
-    upload(req, res, async (err) => {
-        if (err) {
-          console.log(2.2)
-            return res.status(500).json(err)
-        }
-        console.log(2.3)
-        // return res.status(200).send(req.files)
-    })
+  console.log(2.1);
+  upload(req, res, async (err) => {
+    if (err) {
+      console.log(2.2);
+      return res.status(500).json(err);
+    }
+    console.log(2.3);
+    // return res.status(200).send(req.files)
+  });
 });
-
 
 app.get("/api/getDziennik", dzienniczek_controller.getDziennik);
 //Utworzenie Dnia w dzienniczku
