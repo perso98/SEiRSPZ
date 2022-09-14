@@ -67,36 +67,49 @@ function OpiekunUHistory() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        if (!opis) {
-          toast.success(`Zmiana statusu na ${status}`);
+        toast.success(`Zmiana statusu na ${status}`);
 
-          setDzienniczek(
-            dzienniczek.map((val) => {
-              return val.id == id
-                ? {
-                    ...val,
-                    [res.data.status]: status,
-                    komentarzes: [...val.komentarzes, { komentarz: komentarz }],
-                  }
-                : val;
-            })
-          );
-        } else {
-          toast.success(`Zmiana statusu na ${status}`);
+        setDzienniczek(
+          dzienniczek.map((val) => {
+            return val.id == id
+              ? {
+                  ...val,
+                  [res.data.status]: status,
+                  opis: opis ? opis : val.opis,
+                  komentarzes: komentarz
+                    ? [
+                        ...val.komentarzes,
+                        {
+                          commentId: res.data.commentId,
+                          komentarz: komentarz,
+                        },
+                      ]
+                    : [...val.komentarzes],
+                }
+              : val;
+          })
+        );
+      });
+  };
 
-          setDzienniczek(
-            dzienniczek.map((val) => {
-              return val.id == id
-                ? {
-                    ...val,
-                    [res.data.status]: status,
-                    komentarzes: [...val.komentarzes, { komentarz: komentarz }],
-                    opis: opis,
-                  }
-                : val;
-            })
-          );
-        }
+  const deleteComment = (id, day) => {
+    axios
+      .delete(`http://localhost:5000/api/deleteComment/${id}`, {
+        id: id,
+      })
+      .then((res) => {
+        setDzienniczek(
+          dzienniczek.map((val) => {
+            return val.id == day.id
+              ? {
+                  ...val,
+                  komentarzes: val.komentarzes.filter((com) => {
+                    return com.id != id;
+                  }),
+                }
+              : val;
+          })
+        );
       });
   };
 
@@ -138,7 +151,9 @@ function OpiekunUHistory() {
       </Container>
       <DialogOpiekunZ
         open={open}
+        deleteComment={deleteComment}
         handleClose={handleClose}
+        handleOpen={handleOpen}
         checkDay={checkDay}
         changeStatusEdit={changeStatusEdit}
         setOpis={setOpis}

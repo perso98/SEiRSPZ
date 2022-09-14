@@ -46,7 +46,6 @@ function App() {
   useEffect(async () => {
     await Axios.get(`${url}loginToAccount`).then((res) => {
       setAuth(res.data);
-      console.log(res.data);
     });
   }, [status]);
   const classes = useStyles();

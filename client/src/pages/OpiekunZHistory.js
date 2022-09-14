@@ -67,34 +67,28 @@ function OpiekunStatus() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        if (!opis) {
-          toast.success(`Zmiana statusu na ${status}`);
-          setDzienniczek(
-            dzienniczek.map((val) => {
-              return val.id == id
-                ? {
-                    ...val,
-                    [res.data.status]: status,
-                    komentarzes: [...val.komentarzes, { komentarz: komentarz }],
-                  }
-                : val;
-            })
-          );
-        } else {
-          toast.success(`Zmiana statusu na ${status}`);
-          setDzienniczek(
-            dzienniczek.map((val) => {
-              return val.id == id
-                ? {
-                    ...val,
-                    [res.data.status]: status,
-                    opis: opis,
-                    komentarzes: [...val.komentarzes, { komentarz: komentarz }],
-                  }
-                : val;
-            })
-          );
-        }
+        toast.success(`Zmiana statusu na ${status}`);
+
+        setDzienniczek(
+          dzienniczek.map((val) => {
+            return val.id == id
+              ? {
+                  ...val,
+                  [res.data.status]: status,
+                  opis: opis ? opis : val.opis,
+                  komentarzes: komentarz
+                    ? [
+                        ...val.komentarzes,
+                        {
+                          commentId: res.data.commentId,
+                          komentarz: komentarz,
+                        },
+                      ]
+                    : [...val.komentarzes],
+                }
+              : val;
+          })
+        );
       });
   };
 
