@@ -23,6 +23,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddAdminDialog from "../components/AddAdminDialog";
 import EditAdminDialog from "../components/EditAdminDialog";
 import { ToastContainer, toast } from "react-toastify";
+import { url } from "../services/Url";
 import "react-toastify/dist/ReactToastify.css";
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -43,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInp: {
     width: "80%",
+    marginRight: "1rem",
   },
   toolbar: {
     marginTop: "2%",
@@ -64,7 +66,7 @@ export default function Admin() {
   const [editOpen, setEditOpen] = useState(false);
   axios.defaults.withCredentials = true;
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getStudents").then((res) => {
+    axios.get(`${url}getStudents`).then((res) => {
       setStudents(res.data);
       setLoading(false);
     });
@@ -76,7 +78,7 @@ export default function Admin() {
   const [searchLogin, setSearchLogin] = useState("");
 
   const HeadCells = [
-    { id: "login", label: "Login" },
+    { id: "login", label: "E-mail" },
     { id: "isStudent", label: "Student" },
     { id: "isAdmin", label: "Admin" },
     { id: "isOpiekunZakl", label: "Opiekun Z." },
@@ -91,7 +93,7 @@ export default function Admin() {
       `Czy na pewno chcesz usunąć użytkownika ${login} oraz wszystkie jego połączenia danych (dni,komentarze,efekty uczenia się itd)?`
     );
     if (acceptDelete)
-      axios.delete(`http://localhost:5000/api/deleteUser/${id}`).then((res) => {
+      axios.delete(`${url}deleteUser/${id}`).then((res) => {
         toast.success("Użytkownik usunięty!");
         setStudents(
           students.filter((val) => {
@@ -129,7 +131,7 @@ export default function Admin() {
   };
   const createAcc = () => {
     axios
-      .post("http://localhost:5000/api/createAccount2", {
+      .post(`${url}createAccount2`, {
         userObject: userObject,
       })
       .then((res) => {
@@ -177,7 +179,7 @@ export default function Admin() {
 
   const updateRole = (action, type, id) => {
     axios
-      .put("http://localhost:5000/api/changeRole", {
+      .put(`${url}changeRole`, {
         action: action,
         type: type,
         id: id,

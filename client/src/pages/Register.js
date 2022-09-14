@@ -3,7 +3,10 @@ import logo from "../../src/img/ans.png";
 import { Button, Grid, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import RegisterAlertComponent from "../components/RegisterAlertComponent";
-import { createAccount } from "../services/UserService";
+import { url } from "../services/Url";
+import CircularProgress from "@mui/material/CircularProgress";
+import Axios from "axios";
+import Box from "@mui/material/Box";
 function Register() {
   const useStyles = makeStyles((theme) => ({
     registerForm: {
@@ -14,14 +17,33 @@ function Register() {
       },
     },
   }));
+
   const classes = useStyles();
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [registerStatus, setRegisterStatus] = useState("");
   const [alertSeverity, setalertSeverity] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [open, setOpen] = useState(false);
+  Axios.defaults.withCredentials = true;
+
+  const createAccount = async () => {
+    await Axios.post(`${url}createAccount`, {
+      login: login,
+      password: password,
+      password2: password2,
+    }).then((res) => {
+      if (res.data.message) {
+        setRegisterStatus(res.data.message);
+        if (res.data.register) setalertSeverity(false);
+        else setalertSeverity(true);
+        setOpen(true);
+        setLoading(false);
+      }
+    });
+  };
 
   return (
     <Grid
@@ -46,7 +68,7 @@ function Register() {
         <TextField
           required
           name="registerLogin"
-          label="Login:"
+          label="E-mail:"
           onChange={(e) => {
             setLogin(e.target.value);
           }}
@@ -73,22 +95,26 @@ function Register() {
           type="password"
         />
 
-        <Button
-          variant="contained"
-          style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
-          onClick={() => {
-            createAccount(
-              login,
-              password,
-              password2,
-              setRegisterStatus,
-              setalertSeverity,
-              setOpen
-            );
-          }}
-        >
-          Utwórz konto
-        </Button>
+        {loading == false ? (
+          <Button
+            variant="contained"
+            style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+            onClick={() => {
+              setLoading(true);
+              createAccount();
+            }}
+          >
+            Utwórz konto
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+            disabled="true"
+          >
+            <CircularProgress color="inherit" />
+          </Button>
+        )}
       </div>
       <div />
     </Grid>

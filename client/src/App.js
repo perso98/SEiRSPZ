@@ -24,6 +24,7 @@ import Dzienniczek from "./pages/Dzienniczek";
 import Konto from "./pages/Konto";
 import DodawanieOpiekunow from "./pages/DodawanieOpiekunow";
 import Axios from "axios";
+import { url } from ".//services/Url";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -43,19 +44,10 @@ function App() {
   const [auth, setAuth] = useState();
   const [status, setStatus] = useState();
   useEffect(async () => {
-    let isMounted = true;
-    const getUser = async () => {
-      await Axios.get("http://localhost:5000/api/loginToAccount").then(
-        (res) => {
-          isMounted && setAuth(res.data);
-          console.log(res.data);
-        }
-      );
-    };
-    getUser();
-    return () => {
-      isMounted = false;
-    };
+    await Axios.get(`${url}loginToAccount`).then((res) => {
+      setAuth(res.data);
+      console.log(res.data);
+    });
   }, [status]);
   const classes = useStyles();
   return (

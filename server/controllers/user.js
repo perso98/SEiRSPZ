@@ -93,6 +93,6 @@ exports.createAccount = async (req, res) => {
       });
   } else
     res.send({
-      message: "Niestety taki login jest już zajęty",
+      message: "Niestety taki e-mail jest już zajęty",
     });
 };

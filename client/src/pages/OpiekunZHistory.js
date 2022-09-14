@@ -71,7 +71,13 @@ function OpiekunStatus() {
           toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
             dzienniczek.map((val) => {
-              return val.id == id ? { ...val, [res.data.status]: status } : val;
+              return val.id == id
+                ? {
+                    ...val,
+                    [res.data.status]: status,
+                    komentarzes: [...val.komentarzes, { komentarz: komentarz }],
+                  }
+                : val;
             })
           );
         } else {
@@ -79,7 +85,12 @@ function OpiekunStatus() {
           setDzienniczek(
             dzienniczek.map((val) => {
               return val.id == id
-                ? { ...val, [res.data.status]: status, opis: opis }
+                ? {
+                    ...val,
+                    [res.data.status]: status,
+                    opis: opis,
+                    komentarzes: [...val.komentarzes, { komentarz: komentarz }],
+                  }
                 : val;
             })
           );

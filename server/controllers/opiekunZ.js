@@ -14,13 +14,19 @@ exports.getDaysOpiekunZStatus = async (req, res) => {
   try {
     const getDays = await dziennik.findAll({
       where: { statusOpiekunaZ: { [Op.ne]: "Oczekiwanie" } },
-      include: {
-        model: user,
-        where: {
-          id_opiekunZ: req.session.user.id,
+      include: [
+        {
+          model: user,
+          where: {
+            id_opiekunZ: req.session.user.id,
+          },
         },
-      },
+        {
+          model: komentarze,
+        },
+      ],
     });
+
     res.send(getDays);
   } catch (err) {
     console.log(err);
@@ -31,7 +37,17 @@ exports.getDaysOpiekunZ = async (req, res) => {
   try {
     const getDays = await dziennik.findAll({
       where: { statusOpiekunaZ: { [Op.eq]: "Oczekiwanie" } },
-      include: { model: user, where: { id_opiekunZ: req.session.user.id } },
+      include: [
+        {
+          model: user,
+          where: {
+            id_opiekunZ: req.session.user.id,
+          },
+        },
+        {
+          model: komentarze,
+        },
+      ],
     });
 
     res.send(getDays);

@@ -12,7 +12,7 @@ exports.getEffectsOpiekunU = async (req, res) => {
   try {
     const getEffects = await user.findAll({
       where: {
-        id_opiekunu: req.session.user.id,
+        id_opiekunU: req.session.user.id,
       },
       include: {
         model: efektyStudent,
@@ -33,12 +33,18 @@ exports.getDaysOpiekunUStatus = async (req, res) => {
   try {
     const getDays = await dziennik.findAll({
       where: { statusOpiekunaU: { [Op.ne]: "Oczekiwanie" } },
-      include: {
-        model: user,
-        where: {
-          id_opiekunU: req.session.user.id,
+
+      include: [
+        {
+          model: user,
+          where: {
+            id_opiekunU: req.session.user.id,
+          },
         },
-      },
+        {
+          model: komentarze,
+        },
+      ],
     });
     res.send(getDays);
   } catch (err) {
@@ -50,7 +56,17 @@ exports.getDaysOpiekunU = async (req, res) => {
   try {
     const getDays = await dziennik.findAll({
       where: { statusOpiekunaU: { [Op.eq]: "Oczekiwanie" } },
-      include: { model: user, where: { id_opiekunU: req.session.user.id } },
+      include: [
+        {
+          model: user,
+          where: {
+            id_opiekunU: req.session.user.id,
+          },
+        },
+        {
+          model: komentarze,
+        },
+      ],
     });
 
     res.send(getDays);

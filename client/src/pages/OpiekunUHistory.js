@@ -29,6 +29,7 @@ function OpiekunUHistory() {
   };
   const handleOpen = (val) => {
     setCheckDay(val);
+
     setOpen(true);
   };
 
@@ -68,17 +69,30 @@ function OpiekunUHistory() {
       .then((res) => {
         if (!opis) {
           toast.success(`Zmiana statusu na ${status}`);
+
           setDzienniczek(
             dzienniczek.map((val) => {
-              return val.id == id ? { ...val, [res.data.status]: status } : val;
+              return val.id == id
+                ? {
+                    ...val,
+                    [res.data.status]: status,
+                    komentarzes: [...val.komentarzes, { komentarz: komentarz }],
+                  }
+                : val;
             })
           );
         } else {
           toast.success(`Zmiana statusu na ${status}`);
+
           setDzienniczek(
             dzienniczek.map((val) => {
               return val.id == id
-                ? { ...val, [res.data.status]: status, opis: opis }
+                ? {
+                    ...val,
+                    [res.data.status]: status,
+                    komentarzes: [...val.komentarzes, { komentarz: komentarz }],
+                    opis: opis,
+                  }
                 : val;
             })
           );

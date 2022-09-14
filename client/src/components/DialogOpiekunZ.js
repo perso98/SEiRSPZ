@@ -47,6 +47,16 @@ function DialogOpiekunZ(props) {
                 {props.checkDay.user.login}
               </div>
               <div>
+                {props.checkDay.komentarzes.length > 0 && (
+                  <div>Komentarze:</div>
+                )}
+                {props.checkDay.komentarzes?.map((val) => (
+                  <div style={{ wordWrap: "break-word", fontSize: "1rem" }}>
+                    {val.komentarz}
+                  </div>
+                ))}
+              </div>
+              <div>
                 <TextField
                   multiline
                   rows={2}

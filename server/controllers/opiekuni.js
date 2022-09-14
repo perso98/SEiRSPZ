@@ -16,7 +16,7 @@ exports.changeStatusEdit = async (req, res) => {
     await dziennik
       .update({ [statusOpiekuna]: status, opis: opis }, { where: { id: id } })
       .then(async () => {
-        if (komentarz.length > 2)
+        if (komentarz.length > 0 && komentarz.length != undefined)
           await komentarze.create({
             dziennikId: id,
             userId: req.session.user.id,

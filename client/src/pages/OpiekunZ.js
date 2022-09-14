@@ -24,6 +24,7 @@ function OpiekunZ() {
 
   const handleClose = () => {
     setOpis();
+    setKomentarz();
     setOpen(false);
   };
   const handleOpen = (val) => {
