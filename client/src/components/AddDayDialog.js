@@ -70,15 +70,7 @@ function AddDayDialog({
   dayObject,
 }) {
 
-
     const classes = useStyles();
-
-
-    const [n, setN] = useState(1);
-
-    const addZalacznik = () => {
-        setN(n+1)
-    };
 
     const {
         dzien,
@@ -154,29 +146,6 @@ function AddDayDialog({
                                 <Zalacznik/>
                                         
                                 </div>
-
-                                
-
-                                {/* <Box sx={{ minWidth: 200, maxWidth: 200, paddingTop: 2 , paddingBottom: 2 }}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demoSimpleSelect-label">Efekt uczenia się</InputLabel>
-                                        <Select
-                                        labelId="demoSimpleSelect-label"
-                                        id="demoSimpleSelect"
-                                        value={efekt}
-                                        label="Efekt uczenia się"
-                                        onChange={handleChange}
-                                        >
-                                        <MenuItem value={0}>-</MenuItem>
-                                        {efektUczenia.map((val) => (
-                                            <MenuItem value={val.efektUczeniaSieNazwa}>{val.efektUczeniaSieNazwa}</MenuItem>
-                                        ))
-                                        }
-                                        </Select>
-                                    </FormControl>
-                                </Box> */}
-
-                               
                             </form>
                         </Grid>
                     </Grid>

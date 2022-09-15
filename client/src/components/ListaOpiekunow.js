@@ -363,9 +363,9 @@ function ListaOpiekunow() {
                                                 style={{ display: "flex", justifyContent: "space-between" }}
                                                 >   
                                                     <Stack direction="row" spacing={1} alignItems="center">
-                                                        <div>
+                                                        {/* <div>
                                                             Login: {val.login}
-                                                        </div>
+                                                        </div> */}
                                                         <div 
                                                         style={{fontSize:"11px"}}
                                                         >
@@ -387,9 +387,9 @@ function ListaOpiekunow() {
                                                 style={{ display: "flex", justifyContent: "space-between" }}
                                                 >
                                                     <Stack direction="row" spacing={1} alignItems="center">
-                                                        <div>
+                                                        {/* <div>
                                                             Login: {val.login}
-                                                        </div>
+                                                        </div> */}
                                                         <div 
                                                         style={{fontSize:"11px"}}
                                                         >
@@ -415,7 +415,8 @@ function ListaOpiekunow() {
                                                 <div style={{marginBottom: "10px"}}>
                                                         
                                                         <div style={{display: "flex", gap: "0.4rem"}}>
-                                                            Imie i nazwisko:<div>{daneO.imie}</div>
+                                                            {/* Imie i nazwisko: */}
+                                                            <div>{daneO.imie}</div>
                                                             {daneO.nazwisko}
                                                         </div>
                                                 </div>
@@ -431,20 +432,21 @@ function ListaOpiekunow() {
                                                 <Grid>
                                                     {valStudent.isStudent === 1 && valStudent.firmaId === firmaD.id && ( valStudent.id_opiekunU === val.id || valStudent.id_opiekunZ === val.id) ? (
                                                         <div>
-                                                            <div style={{display: "flex", gap: "0.4rem"}}>
+                                                            {/* <div style={{display: "flex", gap: "0.4rem"}}>
                                                                 Login:<div>{valStudent.login}</div>
-                                                            </div>
+                                                            </div> */}
                                                         {dane.map((daneS) => (
                                                             daneS.id === valStudent.daneId ? (
                                                                 <div style={{marginBottom: "10px"}}>
                                                                         
                                                                         <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                            Imie i nazwisko:<div>{daneS.imie}</div>
-                                                                            {daneS.nazwisko}
+                                                                            {/* Imie i nazwisko: */}
+                                                                            <div>{daneS.imie}</div>
+                                                                            {daneS.nazwisko} <div>Indeks: {daneS.indeks}</div>
                                                                         </div>
-                                                                        <div style={{display: "flex", gap: "0.4rem"}}>
+                                                                        {/* <div style={{display: "flex", gap: "0.4rem"}}>
                                                                             Indeks:<div>{daneS.indeks}</div>
-                                                                        </div>
+                                                                        </div> */}
                                                                 </div>
                                                             ): null
                                                         ))}

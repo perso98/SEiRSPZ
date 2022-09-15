@@ -114,6 +114,7 @@ function Sidebar(props) {
                   <DehazeIcon className={classes.sidebarIcon} />
                 </Button>
                 {props.auth?.user.isStudent == 1 && (
+                  <div>
                   <Link to="/dzienniczek" className={classes.links}>
                     <div className={classes.item}>
                       <DateRangeIcon className={classes.icon} />
@@ -122,17 +123,21 @@ function Sidebar(props) {
                       </Typography>
                     </div>
                   </Link>
+
+                  <Link to="form" className={classes.links}>
+                  <div className={classes.item}>
+                    <AssignmentIcon className={classes.icon} />
+                    <Typography className={classes.text}>
+                      Dodaj dane
+                    </Typography>
+                  </div>
+                  
+                </Link>
+                </div>
                 )}
                 {props.auth?.user.isDziekanat == 1 && (
                   <div>
-                    {/* <Link to="profil/Dane" className={classes.links}>
-                      <div className={classes.item}>
-                        <AssignmentIcon className={classes.icon} />
-                        <Typography className={classes.text}>
-                          Dodaj dane
-                        </Typography>
-                      </div>
-                    </Link> */}
+                    
 
                     <Link to="/dodawanieopiekunow" className={classes.links}>
                       <div className={classes.item}>
