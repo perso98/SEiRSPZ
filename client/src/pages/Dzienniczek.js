@@ -136,20 +136,7 @@ function Dzienniczek() {
                 }
               : val
           )
-        );
-        setDziennik([
-          ...dziennik,
-          {
-            id: res.data.id,
-            userId: dayObject.login,
-            dzien: dayObject.dzien,
-            data: dayObject.data,
-            ilosc_godzin: dayObject.iloscGodzin,
-            opis: dayObject.opis,
-            statusOpiekunaU: "Oczekiwanie",
-            statusOpiekunaZ: "Oczekiwanie",
-          },
-        ]);
+        )
       })
       .then(() => {
         setChangeDzien();
@@ -313,10 +300,10 @@ function Dzienniczek() {
             <Grid item xs={2} md={2}>
               <div>Data</div>
             </Grid>
-            <Grid item xs={3} md={2}>
+            <Grid item xs={3} md={2.1}>
               <div>Status Opiekuna Uczelnianego</div>
             </Grid>
-            <Grid item xs={3} md={2}>
+            <Grid item xs={3} md={2.1}>
               <div>Status Opiekuna Zakładowego</div>
             </Grid>
             <Grid item>
@@ -335,10 +322,10 @@ function Dzienniczek() {
               <Grid item xs={2} md={2}>
                 <div>{val.data}</div>
               </Grid>
-              <Grid item xs={3} md={2}>
+              <Grid item xs={3} md={2.1}>
                 <div>{val.statusOpiekunaU}</div>
               </Grid>
-              <Grid item xs={3} md={2}>
+              <Grid item xs={3} md={2.1}>
                 <div>{val.statusOpiekunaZ}</div>
               </Grid>
               <Grid item xs={2} md={2}>

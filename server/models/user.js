@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       isStudent: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
+        type: DataTypes.TINYINT(1),
+        defaultValue: 1,
       },
       isOpiekunZakl: {
         type: DataTypes.INTEGER,
