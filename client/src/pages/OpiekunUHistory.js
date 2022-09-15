@@ -29,7 +29,6 @@ function OpiekunUHistory() {
   };
   const handleOpen = (val) => {
     setCheckDay(val);
-
     setOpen(true);
   };
 
@@ -39,7 +38,26 @@ function OpiekunUHistory() {
       setLoading(false);
     });
   }, []);
-
+  const deleteComment = (id, day) => {
+    axios
+      .delete(`http://localhost:5000/api/deleteComment/${id}`, {
+        id: id,
+      })
+      .then((res) => {
+        setDzienniczek(
+          dzienniczek.map((val) => {
+            return val.id == day.id
+              ? {
+                  ...val,
+                  komentarzes: val.komentarzes.filter((com) => {
+                    return com.id != id;
+                  }),
+                }
+              : val;
+          })
+        );
+      });
+  };
   const changeStatus = (id, status) => {
     axios
       .post("http://localhost:5000/api/changeStatus", {
@@ -92,27 +110,6 @@ function OpiekunUHistory() {
       });
   };
 
-  const deleteComment = (id, day) => {
-    axios
-      .delete(`http://localhost:5000/api/deleteComment/${id}`, {
-        id: id,
-      })
-      .then((res) => {
-        setDzienniczek(
-          dzienniczek.map((val) => {
-            return val.id == day.id
-              ? {
-                  ...val,
-                  komentarzes: val.komentarzes.filter((com) => {
-                    return com.id != id;
-                  }),
-                }
-              : val;
-          })
-        );
-      });
-  };
-
   const recordsAfterFiltering = dzienniczek.filter((val) => {
     if (searchLogin == "") {
       return val;
@@ -150,10 +147,9 @@ function OpiekunUHistory() {
         />
       </Container>
       <DialogOpiekunZ
-        open={open}
         deleteComment={deleteComment}
+        open={open}
         handleClose={handleClose}
-        handleOpen={handleOpen}
         checkDay={checkDay}
         changeStatusEdit={changeStatusEdit}
         setOpis={setOpis}

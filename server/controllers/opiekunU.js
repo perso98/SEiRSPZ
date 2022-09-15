@@ -43,6 +43,8 @@ exports.getDaysOpiekunUStatus = async (req, res) => {
         },
         {
           model: komentarze,
+          where: { userId: req.session.user.id },
+          required: false,
         },
       ],
     });
@@ -65,6 +67,7 @@ exports.getDaysOpiekunU = async (req, res) => {
         },
         {
           model: komentarze,
+          where: { userId: req.session.user.id },
         },
       ],
     });

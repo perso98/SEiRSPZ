@@ -39,7 +39,26 @@ function OpiekunStatus() {
       setLoading(false);
     });
   }, []);
-
+  const deleteComment = (id, day) => {
+    axios
+      .delete(`http://localhost:5000/api/deleteComment/${id}`, {
+        id: id,
+      })
+      .then((res) => {
+        setDzienniczek(
+          dzienniczek.map((val) => {
+            return val.id == day.id
+              ? {
+                  ...val,
+                  komentarzes: val.komentarzes.filter((com) => {
+                    return com.id != id;
+                  }),
+                }
+              : val;
+          })
+        );
+      });
+  };
   const changeStatus = (id, status) => {
     axios
       .post("http://localhost:5000/api/changeStatus", {
@@ -129,6 +148,7 @@ function OpiekunStatus() {
         />
       </Container>
       <DialogOpiekunZ
+        deleteComment={deleteComment}
         open={open}
         handleClose={handleClose}
         checkDay={checkDay}

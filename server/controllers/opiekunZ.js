@@ -23,6 +23,7 @@ exports.getDaysOpiekunZStatus = async (req, res) => {
         },
         {
           model: komentarze,
+          where: { userId: req.session.user.id },
         },
       ],
     });
@@ -46,6 +47,7 @@ exports.getDaysOpiekunZ = async (req, res) => {
         },
         {
           model: komentarze,
+          where: { userId: req.session.user.id },
         },
       ],
     });

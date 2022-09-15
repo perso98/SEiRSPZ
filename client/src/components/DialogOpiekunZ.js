@@ -8,8 +8,20 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Icon, TextField } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+
 function DialogOpiekunZ(props) {
-  const [deleted, setDeleted] = useState([]);
+  const [comments, setComments] = useState(props?.checkDay?.komentarzes);
+  useEffect(() => {
+    setComments(props?.checkDay?.komentarzes);
+  }, [props?.checkDay?.komentarzes]);
+
+  const deleteCom = (id) => {
+    setComments(
+      comments.filter((val) => {
+        return val.id != id;
+      })
+    );
+  };
   return (
     <>
       {props.open && (
@@ -49,10 +61,10 @@ function DialogOpiekunZ(props) {
                 {props.checkDay.user.login}
               </div>
               <div>
-                {props.checkDay.komentarzes?.length > 0 && (
+                {comments?.length > 0 && (
                   <div style={{ marginBottom: "1rem" }}>Komentarze:</div>
                 )}
-                {props.checkDay.komentarzes?.map((val) => (
+                {comments?.map((val) => (
                   <div
                     style={{
                       justifyContent: "space-between",
@@ -78,6 +90,7 @@ function DialogOpiekunZ(props) {
                       <IconButton
                         onClick={() => {
                           props.deleteComment(val.id, props.checkDay);
+                          deleteCom(val.id);
                         }}
                       >
                         <ClearIcon style={{ color: "red" }} />
@@ -103,6 +116,7 @@ function DialogOpiekunZ(props) {
                   color="success"
                   onClick={() => {
                     props.changeStatusEdit(props.checkDay.id, "Zaakceptowano");
+
                     props.handleClose();
                   }}
                 >
