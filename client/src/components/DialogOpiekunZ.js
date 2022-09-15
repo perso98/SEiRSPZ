@@ -62,7 +62,7 @@ function DialogOpiekunZ(props) {
               </div>
               <div>
                 {comments?.length > 0 && (
-                  <div style={{ marginBottom: "1rem" }}>Komentarze:</div>
+                  <div style={{ marginBottom: "1rem" }}>Twoje komentarze:</div>
                 )}
                 {comments?.map((val) => (
                   <div

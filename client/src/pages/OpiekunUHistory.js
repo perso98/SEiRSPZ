@@ -29,6 +29,7 @@ function OpiekunUHistory() {
   };
   const handleOpen = (val) => {
     setCheckDay(val);
+    console.log(val);
     setOpen(true);
   };
 
@@ -98,7 +99,7 @@ function OpiekunUHistory() {
                     ? [
                         ...val.komentarzes,
                         {
-                          commentId: res.data.commentId,
+                          id: res.data.commentId,
                           komentarz: komentarz,
                         },
                       ]

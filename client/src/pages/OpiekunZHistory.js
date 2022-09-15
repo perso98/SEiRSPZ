@@ -99,7 +99,7 @@ function OpiekunStatus() {
                     ? [
                         ...val.komentarzes,
                         {
-                          commentId: res.data.commentId,
+                          id: res.data.commentId,
                           komentarz: komentarz,
                         },
                       ]
