@@ -78,7 +78,7 @@ function DialogOpiekunZ(props) {
                         borderRadius: "25px",
                         boxShadow: " 0 0 5px black",
                         padding: "1rem",
-                        width: "100%",
+                        width: "70%",
                         marginBottom: "1rem",
                         color: "white",
                         backgroundImage: "linear-gradient(#073874, #042144)",
