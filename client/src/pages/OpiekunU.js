@@ -53,29 +53,14 @@ function OpiekunU() {
         );
       });
   };
-
-  const acceptStatusEdit = (id) => {
+  const changeStatusEdit = (id, status) => {
     axios
-      .post("http://localhost:5000/api/acceptStatusEdit", {
+      .post("http://localhost:5000/api/changeStatusEdit", {
         id: id,
+        status: status,
         opis: opis,
         komentarz: komentarz,
-      })
-      .then((res) => {
-        setDzienniczek(
-          dzienniczek.filter((val) => {
-            return val.id != id;
-          })
-        );
-      });
-  };
-
-  const declineStatusEdit = (id) => {
-    axios
-      .post("http://localhost:5000/api/declineStatusEdit", {
-        id: id,
-        opis: opis,
-        komentarz: komentarz,
+        statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
         setDzienniczek(
@@ -125,8 +110,7 @@ function OpiekunU() {
         open={open}
         handleClose={handleClose}
         checkDay={checkDay}
-        acceptStatusEdit={acceptStatusEdit}
-        declineStatusEdit={declineStatusEdit}
+        changeStatusEdit={changeStatusEdit}
         setOpis={setOpis}
         setKomentarz={setKomentarz}
       />

@@ -61,7 +61,8 @@ function Login(props) {
         <TextField
           required
           name="loginLogin"
-          label="Login:"
+          label="E-mail:"
+          type="email"
           onChange={(e) => {
             setLogin(e.target.value);
           }}

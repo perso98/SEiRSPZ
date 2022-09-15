@@ -9,6 +9,7 @@ import Homeicon from "@mui/icons-material/Home";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 import Dialog from "@mui/material/Dialog";
 
@@ -91,10 +92,6 @@ function Sidebar(props) {
     setOpen(true);
   };
 
-  const [student, setStudent] = useState();
-  const [admin, setAdmin] = useState();
-  const [opiekunZ, setOpiekunZ] = useState();
-  const [dziekanat, setDziekanat] = useState();
   Axios.defaults.withCredentials = true;
 
   const classes = useStyles();
@@ -139,14 +136,16 @@ function Sidebar(props) {
                   <div>
                     
 
-                    <Link to="/dodawanieopiekunow" className={classes.links}>
-                      <div className={classes.item}>
-                        <AssignmentIcon className={classes.icon} />
-                        <Typography className={classes.text}>
-                          Dodaj opiekunów
-                        </Typography>
-                      </div>
-                    </Link>
+                    {props.auth?.user.isDziekanat == 1 && (
+                      <Link to="/dodawanieopiekunow" className={classes.links}>
+                        <div className={classes.item}>
+                          <AssignmentIcon className={classes.icon} />
+                          <Typography className={classes.text}>
+                            Dodaj opiekunów
+                          </Typography>
+                        </div>
+                      </Link>
+                    )}
 
                     {/* <Link to="profil/Form" className={classes.links}>
                       <div className={classes.item}>
@@ -173,42 +172,52 @@ function Sidebar(props) {
                   </Link>
                 </div> */}
 
-                <div className={classes.item}>
-                  <Link to="/admin" className={classes.links}>
+                {props.auth?.user.isAdmin == 1 && (
+                  <div className={classes.item}>
+                    <Link to="/admin" className={classes.links}>
+                      <div className={classes.item}>
+                        <NavigateNextIcon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Panel Admina
+                        </Typography>
+                      </div>
+                    </Link>
+                  </div>
+                )}
+
+                {props.auth?.user.isOpiekunZakl == 1 && (
+                  <div className={classes.item}>
+                    <Link to="/opiekunz" className={classes.links}>
+                      <div className={classes.item}>
+                        <NavigateNextIcon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Opiekun Zakładowy
+                        </Typography>
+                      </div>
+                    </Link>
+                  </div>
+                )}
+                {props.auth?.user.isOpiekun == 1 && (
+                  <Link to="/opiekunu" className={classes.links}>
                     <div className={classes.item}>
-                      <Homeicon className={classes.icon} />
+                      <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>
-                        Admin Panel
+                        Opiekun Uczelniany
                       </Typography>
                     </div>
                   </Link>
-                </div>
+                )}
 
-                <div className={classes.item}>
-                  <Link to="/opiekunz" className={classes.links}>
+                {props.auth?.user.isOpiekun == 1 && (
+                  <Link to="opiekunu/efekty" className={classes.links}>
                     <div className={classes.item}>
-                      <Homeicon className={classes.icon} />
+                      <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>
-                        Opiekun Z
+                        Opiekun Ucz. Efekty
                       </Typography>
                     </div>
                   </Link>
-                </div>
-                <Link to="/opiekunu" className={classes.links}>
-                  <div className={classes.item}>
-                    <Homeicon className={classes.icon} />
-                    <Typography className={classes.text}>Opiekun U</Typography>
-                  </div>
-                </Link>
-
-                <Link to="opiekunu/efekty" className={classes.links}>
-                  <div className={classes.item}>
-                    <Homeicon className={classes.icon} />
-                    <Typography className={classes.text}>
-                      Opiekun U Efekty
-                    </Typography>
-                  </div>
-                </Link>
+                )}
               </div>
             </div>
           </div>

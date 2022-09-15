@@ -29,6 +29,7 @@ function OpiekunUHistory() {
   };
   const handleOpen = (val) => {
     setCheckDay(val);
+    console.log(val);
     setOpen(true);
   };
 
@@ -38,7 +39,26 @@ function OpiekunUHistory() {
       setLoading(false);
     });
   }, []);
-
+  const deleteComment = (id, day) => {
+    axios
+      .delete(`http://localhost:5000/api/deleteComment/${id}`, {
+        id: id,
+      })
+      .then((res) => {
+        setDzienniczek(
+          dzienniczek.map((val) => {
+            return val.id == day.id
+              ? {
+                  ...val,
+                  komentarzes: val.komentarzes.filter((com) => {
+                    return com.id != id;
+                  }),
+                }
+              : val;
+          })
+        );
+      });
+  };
   const changeStatus = (id, status) => {
     axios
       .post("http://localhost:5000/api/changeStatus", {
@@ -66,23 +86,28 @@ function OpiekunUHistory() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        if (!opis) {
-          toast.success(`Zmiana statusu na ${status}`);
-          setDzienniczek(
-            dzienniczek.map((val) => {
-              return val.id == id ? { ...val, [res.data.status]: status } : val;
-            })
-          );
-        } else {
-          toast.success(`Zmiana statusu na ${status}`);
-          setDzienniczek(
-            dzienniczek.map((val) => {
-              return val.id == id
-                ? { ...val, [res.data.status]: status, opis: opis }
-                : val;
-            })
-          );
-        }
+        toast.success(`Zmiana statusu na ${status}`);
+
+        setDzienniczek(
+          dzienniczek.map((val) => {
+            return val.id == id
+              ? {
+                  ...val,
+                  [res.data.status]: status,
+                  opis: opis ? opis : val.opis,
+                  komentarzes: komentarz
+                    ? [
+                        ...val.komentarzes,
+                        {
+                          id: res.data.commentId,
+                          komentarz: komentarz,
+                        },
+                      ]
+                    : [...val.komentarzes],
+                }
+              : val;
+          })
+        );
       });
   };
 
@@ -123,6 +148,7 @@ function OpiekunUHistory() {
         />
       </Container>
       <DialogOpiekunZ
+        deleteComment={deleteComment}
         open={open}
         handleClose={handleClose}
         checkDay={checkDay}

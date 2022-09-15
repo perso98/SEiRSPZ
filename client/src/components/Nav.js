@@ -9,7 +9,7 @@ import Person2 from "@mui/icons-material/PersonAddAlt1";
 import ProfilImg from "@mui/icons-material/AccountCircleOutlined";
 import LogoutImg from "@mui/icons-material/LogoutOutlined";
 import Sidebar from "../components/Sidebar";
-import { getLoginToAccountInfo, logout } from "../services/UserService";
+import { url } from "../services/Url";
 
 function Nav(props) {
   const useStyles = makeStyles((theme) => ({
@@ -109,6 +109,10 @@ function Nav(props) {
   const navigate = useNavigate();
   const classes = useStyles();
   Axios.defaults.withCredentials = true;
+  const logout = async () => {
+    await Axios.post(`${url}logoutFromAccount`);
+    navigate("/");
+  };
 
   const Navbar = () => {
     return (
@@ -168,8 +172,8 @@ function Nav(props) {
             <Link
               to="/"
               onClick={() => {
-                props.setStatus({});
-                logout(navigate);
+                props.setStatus();
+                logout();
               }}
               className={classes.links}
             >

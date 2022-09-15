@@ -101,7 +101,10 @@ function DzienniczekDni(props) {
                 <div
                   style={{ margin: "1rem 0 1rem 0", wordWrap: "break-word" }}
                 >
-                  Opis: {val.opis}
+                  Opis:{" "}
+                  {val.opis?.length > 60
+                    ? val.opis.substring(0, 60) + "..."
+                    : val.opis}
                 </div>{" "}
                 <div style={{ margin: "0 0 1rem 0" }}>
                   Student: {val.user.login}

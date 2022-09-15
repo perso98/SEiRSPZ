@@ -43,7 +43,6 @@ function EfektyOpiekunU() {
       .then((res) => {
         setStudenci(
           studenci.map((val) => {
-            console.log(studenci);
             return val.id == student
               ? {
                   ...val,
