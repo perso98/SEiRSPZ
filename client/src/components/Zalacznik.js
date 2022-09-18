@@ -32,6 +32,7 @@ function Zalacznik(
         for(const element of files) {
             data.append('file', element);
         }
+        console.log(data.getAll)
         axios.post(`http://localhost:5000/api/upload/${idDay}`, data,{
           })
             .then((response) => {

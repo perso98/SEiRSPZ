@@ -104,6 +104,7 @@ app.post("/api/upload/:idDay", async (req, res) => {
 app.get("/api/getDziennik", dzienniczek_controller.getDziennik);
 //Utworzenie Dnia w dzienniczku
 app.post("/api/createDay", dzienniczek_controller.createDay);
+app.post("/api/createDay2", dzienniczek_controller.createDay2);
 // Edycja dnia w dzienniczku
 app.post("/api/createEditDay", dzienniczek_controller.createEditDay);
 //Usuwanie dnia z dzinniczka

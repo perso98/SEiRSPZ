@@ -21,23 +21,23 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 1,
       },
       isOpiekunZakl: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT(1),
         defaultValue: 0,
       },
       isOpiekun: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT(1),
         defaultValue: 0,
       },
       isDyrektor: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT(1),
         defaultValue: 0,
       },
       isDziekanat: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT(1),
         defaultValue: 0,
       },
       isAdmin: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT(1),
         defaultValue: 0,
       },
       id_opiekunU: {

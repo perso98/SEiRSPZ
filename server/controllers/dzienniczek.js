@@ -55,6 +55,28 @@ const {
     }
   };
 
+  exports.createDay2 = async (req, res) => {
+    try {
+        const newDay = await dziennik.create({
+          userId: req.session.user.id,
+          dzien: "",
+          data: "",
+          ilosc_godzin: "",
+          opis: "",
+          statusOpiekunaU: "Nie wysłano",
+          statusOpiekunaZ: "Nie wysłano",
+          // potrzebna zmiana w bazie na bool
+        });
+        res.send({
+          message: "Dzień został pomyślnie dodany",
+          id: newDay.id,
+        });
+
+    } catch (err) {
+      res.send({ message: err.message });
+    }
+  };
+
  // Edycja dnia w dzienniczku
   exports.createEditDay = async (req, res) => {
     const { id, changeOpis, changeDzien, changeData, changeIloscGodzin } =

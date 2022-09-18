@@ -85,6 +85,7 @@ function Dzienniczek() {
 
   const handleEditClose = () => {
     setEditOpen(false);
+    setEditDay()
     setChangeDzien();
     setChangeData();
     setChangeIloscGodzin();
@@ -94,6 +95,7 @@ function Dzienniczek() {
   const handleEditOpen = (val) => {
     setEditOpen(true);
     setEditDay(val);
+    console.log(val)
   };
 
   const [dayObject2, setDayObject2] = useState({
@@ -220,12 +222,49 @@ function Dzienniczek() {
     setAddOpen(false);
   };
   const handleAddOpen = () => {
-    setAddOpen(true);
+    createDay2()
+    // setAddOpen(true);
   };
 
   const onChange = (e) => {
     const { value, id } = e.target;
     setDayObject({ ...dayObject, [id]: value });
+  };
+
+ 
+
+  const createDay2 = () => {
+    axios
+      .post("http://localhost:5000/api/createDay2", {
+      })
+      .then((res) => {
+        if (res.data.message == "Dzień został pomyślnie dodany") {
+          setDziennik([
+            ...dziennik,
+            {
+              id: res.data.id,
+              userId: "",
+              dzien:"",
+              data:"",
+              ilosc_godzin:"",
+              opis:"",
+              statusOpiekunaU: "Nie wysłano",
+              statusOpiekunaZ: "Nie wysłano",
+            },
+          ]);
+          const dayObject3 = ({
+            id: res.data.id,
+            userId: "",
+            dzien:"",
+            data:"",
+            ilosc_godzin:"",
+            opis:"",
+            statusOpiekunaU: "Nie wysłano",
+            statusOpiekunaZ: "Nie wysłano",
+          });
+          handleEditOpen(dayObject3)
+        }
+      })
   };
 
   const createDay = () => {
@@ -378,13 +417,13 @@ function Dzienniczek() {
         dayObject={dayObject}
       />
 
-      <AddDayDialog
+      {/* <AddDayDialog
         addOpen={addOpen}
         handleAddClose={handleAddClose}
         createDay={createDay}
         onChange={onChange}
         dayObject={dayObject}
-      />
+      /> */}
     </div>
   );
 }
