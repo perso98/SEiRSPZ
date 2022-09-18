@@ -75,6 +75,15 @@ function OpiekunStatus() {
         );
       });
   };
+  const downloadFile = (name) => {
+    axios({
+      url: `http://localhost:5000/api/downloadFile/${name}`,
+      method: "GET",
+      responseType: "blob",
+    }).then((res) => {
+      FileDownload(res.data, name);
+    });
+  };
 
   const changeStatusEdit = (id, status) => {
     axios
@@ -148,6 +157,7 @@ function OpiekunStatus() {
         />
       </Container>
       <DialogOpiekunZ
+        downloadFile={downloadFile}
         deleteComment={deleteComment}
         open={open}
         handleClose={handleClose}

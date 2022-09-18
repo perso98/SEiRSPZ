@@ -55,7 +55,15 @@ function OpiekunZ() {
         );
       });
   };
-
+  const downloadFile = (name) => {
+    axios({
+      url: `http://localhost:5000/api/downloadFile/${name}`,
+      method: "GET",
+      responseType: "blob",
+    }).then((res) => {
+      FileDownload(res.data, name);
+    });
+  };
   const changeStatusEdit = (id, status) => {
     axios
       .post("http://localhost:5000/api/changeStatusEdit", {
@@ -111,6 +119,7 @@ function OpiekunZ() {
         />
       </Container>
       <DialogOpiekunZ
+        downloadFile={downloadFile}
         open={open}
         handleClose={handleClose}
         checkDay={checkDay}
