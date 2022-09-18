@@ -64,7 +64,7 @@ function DialogOpiekunZ(props) {
                 {props.checkDay.user.login}
               </div>
               <div>
-                {props.checkDay?.dzienZalacznikis.length > 0 && (
+                {props.checkDay?.dzienZalacznikis?.length > 0 && (
                   <div style={{ marginBottom: "1rem" }}>Załączniki:</div>
                 )}
                 {props.checkDay?.dzienZalacznikis?.map((val) => (
@@ -75,7 +75,7 @@ function DialogOpiekunZ(props) {
                     }}
                   >
                     <div className="blueCard">
-                      {val.zalacznik.split("-")[1]}
+                      {val.zalacznik.substring(val.zalacznik.indexOf("-") + 1)}
                     </div>
                     <div style={{ marginLeft: "1rem" }}>
                       <IconButton
