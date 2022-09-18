@@ -7,6 +7,7 @@ const {
   dane,
   firma,
   komentarze,
+  dzienZalaczniki,
 } = require("../models");
 //pobieranie efektow uczenia dla opiekunow
 
