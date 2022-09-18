@@ -7,6 +7,7 @@ const {
   dane,
   firma,
   komentarze,
+  dzienZalaczniki,
 } = require("../models");
 exports.getEffectsOpiekunU = async (req, res) => {
   try {
@@ -46,6 +47,10 @@ exports.getDaysOpiekunUStatus = async (req, res) => {
           where: { userId: req.session.user.id },
           required: false,
         },
+        {
+          model: dzienZalaczniki,
+          required: false,
+        },
       ],
     });
     res.send(getDays);
@@ -68,6 +73,10 @@ exports.getDaysOpiekunU = async (req, res) => {
         {
           model: komentarze,
           where: { userId: req.session.user.id },
+          required: false,
+        },
+        {
+          model: dzienZalaczniki,
           required: false,
         },
       ],

@@ -8,6 +8,8 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Icon, TextField } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import "../App.css";
 
 function DialogOpiekunZ(props) {
   const [comments, setComments] = useState(props?.checkDay?.komentarzes);
@@ -16,6 +18,7 @@ function DialogOpiekunZ(props) {
   }, [props?.checkDay?.komentarzes]);
 
   const deleteCom = (id) => {
+    console.log(props.checkDay);
     setComments(
       comments.filter((val) => {
         return val.id != id;
@@ -61,6 +64,28 @@ function DialogOpiekunZ(props) {
                 {props.checkDay.user.login}
               </div>
               <div>
+                {props.checkDay?.dzienZalacznikis.length > 0 && (
+                  <div style={{ marginBottom: "1rem" }}>Załączniki:</div>
+                )}
+                {props.checkDay?.dzienZalacznikis?.map((val) => (
+                  <div
+                    style={{
+                      justifyContent: "space-between",
+                      display: "flex",
+                    }}
+                  >
+                    <div className="blueCard">{val.zalacznik}</div>
+                    <div style={{ marginLeft: "1rem" }}>
+                      <IconButton
+                        onClick={() => {
+                          props.downloadFile(val.zalacznik);
+                        }}
+                      >
+                        <CloudDownloadIcon style={{ color: "green" }} />
+                      </IconButton>
+                    </div>
+                  </div>
+                ))}
                 {comments?.length > 0 && (
                   <div style={{ marginBottom: "1rem" }}>Twoje komentarze:</div>
                 )}
@@ -71,21 +96,7 @@ function DialogOpiekunZ(props) {
                       display: "flex",
                     }}
                   >
-                    <div
-                      style={{
-                        wordWrap: "break-word",
-                        fontSize: "1rem",
-                        borderRadius: "25px",
-                        boxShadow: " 0 0 5px black",
-                        padding: "1rem",
-                        width: "70%",
-                        marginBottom: "1rem",
-                        color: "white",
-                        backgroundImage: "linear-gradient(#073874, #042144)",
-                      }}
-                    >
-                      {val.komentarz}
-                    </div>
+                    <div className="blueCard">{val.komentarz}</div>
                     <div style={{ marginLeft: "1rem" }}>
                       <IconButton
                         onClick={() => {

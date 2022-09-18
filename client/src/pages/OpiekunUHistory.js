@@ -9,6 +9,7 @@ import Pagination from "../components/Pagination";
 import ButtonLink from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FileDownload from "js-file-download";
 
 function OpiekunUHistory() {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -59,6 +60,16 @@ function OpiekunUHistory() {
         );
       });
   };
+  const downloadFile = (name) => {
+    axios({
+      url: `http://localhost:5000/api/downloadFile/${name}`,
+      method: "GET",
+      responseType: "blob",
+    }).then((res) => {
+      FileDownload(res.data, name);
+    });
+  };
+
   const changeStatus = (id, status) => {
     axios
       .post("http://localhost:5000/api/changeStatus", {
@@ -148,6 +159,7 @@ function OpiekunUHistory() {
         />
       </Container>
       <DialogOpiekunZ
+        downloadFile={downloadFile}
         deleteComment={deleteComment}
         open={open}
         handleClose={handleClose}

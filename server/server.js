@@ -210,5 +210,6 @@ app.post("/api/changeStatus", opiekuni_controller.changeStatus);
 app.put("/api/updateEffects", opiekuni_controller.updateEffects);
 //usuniecie komentarza z dnia
 app.delete("/api/deleteComment/:id", opiekuni_controller.deleteComment);
+app.get("/api/downloadFile/:name", opiekuni_controller.downloadFile);
 
 //===========================================================
