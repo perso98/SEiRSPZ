@@ -74,7 +74,9 @@ function DialogOpiekunZ(props) {
                       display: "flex",
                     }}
                   >
-                    <div className="blueCard">{val.zalacznik}</div>
+                    <div className="blueCard">
+                      {val.zalacznik.split("-")[1]}
+                    </div>
                     <div style={{ marginLeft: "1rem" }}>
                       <IconButton
                         onClick={() => {

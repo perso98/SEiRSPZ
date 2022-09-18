@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import ButtonLink from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FileDownload from "js-file-download";
 
 function OpiekunZ() {
   const [dzienniczek, setDzienniczek] = useState([]);

@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import { useState } from "react";
 import DialogOpiekunZ from "../components/DialogOpiekunZ";
+import FileDownload from "js-file-download";
 import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";

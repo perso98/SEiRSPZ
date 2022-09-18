@@ -8,6 +8,7 @@ import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 import ButtonLink from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
+import FileDownload from "js-file-download";
 import "react-toastify/dist/ReactToastify.css";
 function OpiekunU() {
   const [dzienniczek, setDzienniczek] = useState([]);
