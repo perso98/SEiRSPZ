@@ -47,8 +47,11 @@ exports.deleteComment = async (req, res) => {
 };
 exports.downloadFile = async (req, res) => {
   const name = req.params.name;
-
-  await res.download("./public/" + name);
+  try {
+    await res.download("./public/" + name);
+  } catch (err) {
+    res.send(err);
+  }
 };
 exports.changeStatus = async (req, res) => {
   const { id, status, statusOpiekuna } = req.body;

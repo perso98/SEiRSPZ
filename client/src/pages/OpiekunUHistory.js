@@ -9,6 +9,7 @@ import Pagination from "../components/Pagination";
 import ButtonLink from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { url } from "../services/Url";
 import FileDownload from "js-file-download";
 
 function OpiekunUHistory() {
@@ -35,14 +36,14 @@ function OpiekunUHistory() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getDaysOpiekunUStatus").then((res) => {
+    axios.get(`${url}/getDaysOpiekunUStatus`).then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
   }, []);
   const deleteComment = (id, day) => {
     axios
-      .delete(`http://localhost:5000/api/deleteComment/${id}`, {
+      .delete(`${url}/deleteComment/${id}`, {
         id: id,
       })
       .then((res) => {
@@ -62,17 +63,21 @@ function OpiekunUHistory() {
   };
   const downloadFile = (name) => {
     axios({
-      url: `http://localhost:5000/api/downloadFile/${name}`,
+      url: `${url}/api/downloadFile/${name}`,
       method: "GET",
       responseType: "blob",
-    }).then((res) => {
-      FileDownload(res.data, name);
-    });
+    })
+      .then((res) => {
+        FileDownload(res.data, name);
+      })
+      .catch(function (error) {
+        alert("Plik już nie istnieje");
+      });
   };
 
   const changeStatus = (id, status) => {
     axios
-      .post("http://localhost:5000/api/changeStatus", {
+      .post(`${url}/api/changeStatus`, {
         id: id,
         status: status,
         statusOpiekuna: statusOpiekuna,
@@ -89,7 +94,7 @@ function OpiekunUHistory() {
 
   const changeStatusEdit = (id, status) => {
     axios
-      .post("http://localhost:5000/api/changeStatusEdit", {
+      .post(`${url}/changeStatusEdit`, {
         id: id,
         status: status,
         opis: opis,

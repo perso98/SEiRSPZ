@@ -163,7 +163,7 @@ function Nav(props) {
             </Link>
           </Typography>
           <div className={classes.menu}>
-            <Link to="/profil/konto" className={classes.links}>
+            <Link to="/konto" className={classes.links}>
               <div className={classes.login}>
                 <ProfilImg style={{ marginRight: "0.2rem" }} />
                 Konto
