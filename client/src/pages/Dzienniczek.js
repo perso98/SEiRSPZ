@@ -11,6 +11,7 @@ import {
   Toolbar,
   TextField,
 } from "@material-ui/core";
+import { url } from "../services/Url";
 import { Link } from "react-router-dom";
 import { Container, Typography, Grid, Input } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -22,12 +23,20 @@ import Select from "@mui/material/Select";
 import AddDayDialog from "../components/AddDayDialog";
 import EditDay from "../components/EditDay";
 import EfektyUczeniaSie from "../components/EfektyUczeniaSie";
+import SearchIcon from "@mui/icons-material/Search";
+import { InputAdornment } from "@mui/material";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import IconButton from "@mui/material/IconButton";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { minWidth } from "@mui/system";
 
 const useStyles = makeStyles((theme) => ({
   containerMain: {
@@ -46,6 +55,37 @@ const useStyles = makeStyles((theme) => ({
   btnEdycja: {
     fontSize: "12px",
   },
+  table: {
+    marginTop: theme.spacing(2),
+
+    "& thead th": {
+      fontWeight: "600",
+      color: "white",
+    },
+  },
+  button: {
+    [theme.breakpoints.down("xs")]: {
+      width: "39%",
+    },
+  },
+  tableHead: {
+    background: "#08448c",
+  },
+  searchInp: {
+    width: "80%",
+    marginRight: "1rem",
+  },
+  toolbar: {
+    marginTop: "2%",
+    display: "flex",
+    width: "100%",
+    justifyContent: "space-between",
+  },
+  NoData: {
+    display: "flex",
+    justifyContent: "space-between",
+    fontWeight: "600",
+  },
 }));
 
 function Dzienniczek() {
@@ -57,16 +97,21 @@ function Dzienniczek() {
 
   const [dziennikZalaczniki, setDziennikZalaczniki] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getDziennik").then((res) => {
+    axios.get(`${url}getDziennik`).then((res) => {
       setDziennik(res.data);
       console.log(res.data);
     });
 
-    axios.get("http://localhost:5000/api/getZalacznik").then((res) => {
+    axios.get(`${url}getZalacznik`).then((res) => {
       setDziennikZalaczniki(res.data);
       console.log(res.data);
+      setLoading(false);
     });
+
+
   }, []);
 
   const [dayObject, setDayObject] = useState({
@@ -300,6 +345,17 @@ function Dzienniczek() {
         alert(res.data.message);
       });
   };
+
+  const HeadCells = [
+    { id: "dzien", label: "Dzień" },
+    { id: "data", label: "Data" },
+    { id: "opis", label: "Opis" },
+    { id: "statusOU", label: "Status opiekuna uczelnianego" },
+    { id: "statusOZ", label: "Status opiekuna zakładowego" },
+    { id: "edycja", label: "Edycja" },
+  ];
+
+
   //
   const maxCharacter = (string, int) => {
     return string.slice(0, int);
@@ -332,7 +388,71 @@ function Dzienniczek() {
 
       <Grid container>
         <Grid xs={12} md={8}>
-          <Grid container>
+          <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <div style={{ overflowX: "auto" }}>
+                <Table className={classes.table}>
+                  <TableHead className={classes.tableHead}>
+                    <TableRow>
+                      {HeadCells.map((head) => (
+                        <TableCell style={{ textAlign: "center" }} key={head.id}>
+                          {head.label}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {loading == true && <TableRow>Ładowanie...</TableRow>}
+                    {dziennik.map((val) => (
+                      <TableRow key={val.id}>
+                        <TableCell
+                          style={{ maxWidth: "100px", wordWrap: "break-word" }}
+                        >
+                          {val.dzien}
+                        </TableCell>
+                        <TableCell style={{ textAlign: "center" }}>
+                        {val.data}
+                        </TableCell>
+                        <TableCell style={{ textAlign: "center" }}>
+                        <div style={{ wordWrap: "break-word", minWidth: "120px", maxWidth: "180px" }}>
+                          {val.opis.length < 26 ? (
+                            <div>{val.opis}</div>
+                          ) : (
+                            <div>{maxCharacter(val.opis, 35)}...</div>
+                          )}
+                        </div>
+                        </TableCell>
+                        <TableCell style={{ textAlign: "center" }}>
+                        <div>{val.statusOpiekunaU}</div>
+                        </TableCell>
+                        <TableCell style={{ textAlign: "center" }}>
+                        <div>{val.statusOpiekunaZ}</div>
+                        </TableCell>
+                        <TableCell>
+                          <IconButton
+                          >
+                            <EditIcon style={{ color: "#FF8C00" }} 
+                            onClick={() => {
+                              handleEditOpen(val);
+                            }}/>
+                          </IconButton>
+                        
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+          </div>
+
+          {/* <Grid container>
             <Grid item xs={1} md={1} style={{ marginRight: "3px" }}>
               <div>Dzień</div>
             </Grid>
@@ -351,9 +471,9 @@ function Dzienniczek() {
             <Grid item xs={1} md={1}>
               <div></div>
             </Grid>
-          </Grid>
+          </Grid> */}
 
-          {dziennik.map((val) => (
+          {/* {dziennik.map((val) => (
             <Grid container>
               <Grid item xs={1} md={1} style={{ marginRight: "3px" }}>
                 <div>{val.dzien}</div>
@@ -391,13 +511,15 @@ function Dzienniczek() {
                 </div>
               </Grid>
             </Grid>
-          ))}
+          ))} */}
+
         </Grid>
         <Grid xs={12} md={4} style={{ alignItems: "flex-start" }}>
           <EfektyUczeniaSie />
         </Grid>
       </Grid>
 
+      
       <EditDay
         editOpen={editOpen}
         setChangeZalacznik={setChangeZalacznik}
