@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import ButtonLink from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FileDownload from "js-file-download";
 
 function OpiekunZ() {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -55,7 +56,15 @@ function OpiekunZ() {
         );
       });
   };
-
+  const downloadFile = (name) => {
+    axios({
+      url: `http://localhost:5000/api/downloadFile/${name}`,
+      method: "GET",
+      responseType: "blob",
+    }).then((res) => {
+      FileDownload(res.data, name);
+    });
+  };
   const changeStatusEdit = (id, status) => {
     axios
       .post("http://localhost:5000/api/changeStatusEdit", {
@@ -111,6 +120,7 @@ function OpiekunZ() {
         />
       </Container>
       <DialogOpiekunZ
+        downloadFile={downloadFile}
         open={open}
         handleClose={handleClose}
         checkDay={checkDay}

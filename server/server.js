@@ -206,7 +206,10 @@ app.delete("/api/deleteComment/:id", opiekuni_controller.deleteComment);
 app.post("/api/changeStatusEdit", opiekuni_controller.changeStatusEdit);
 //zmiana statusu akceptacji zaleznie od opiekuna
 app.post("/api/changeStatus", opiekuni_controller.changeStatus);
+//update efektu
 app.put("/api/updateEffects", opiekuni_controller.updateEffects);
+//usuniecie komentarza z dnia
 app.delete("/api/deleteComment/:id", opiekuni_controller.deleteComment);
+app.get("/api/downloadFile/:name", opiekuni_controller.downloadFile);
 
 //===========================================================

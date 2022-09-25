@@ -7,6 +7,7 @@ const {
   dane,
   firma,
   komentarze,
+  dzienZalaczniki,
 } = require("../models");
 //pobieranie efektow uczenia dla opiekunow
 
@@ -24,6 +25,10 @@ exports.getDaysOpiekunZStatus = async (req, res) => {
         {
           model: komentarze,
           where: { userId: req.session.user.id },
+          required: false,
+        },
+        {
+          model: dzienZalaczniki,
           required: false,
         },
       ],
@@ -49,6 +54,10 @@ exports.getDaysOpiekunZ = async (req, res) => {
         {
           model: komentarze,
           where: { userId: req.session.user.id },
+          required: false,
+        },
+        {
+          model: dzienZalaczniki,
           required: false,
         },
       ],

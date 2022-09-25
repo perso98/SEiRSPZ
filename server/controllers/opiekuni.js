@@ -45,6 +45,14 @@ exports.deleteComment = async (req, res) => {
 
   await komentarze.destroy({ where: { id: id } }).then(res.send(id));
 };
+exports.downloadFile = async (req, res) => {
+  const name = req.params.name;
+  try {
+    await res.download("./public/" + name);
+  } catch (err) {
+    res.send(err);
+  }
+};
 exports.changeStatus = async (req, res) => {
   const { id, status, statusOpiekuna } = req.body;
   try {

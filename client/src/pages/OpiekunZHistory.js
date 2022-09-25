@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import { useState } from "react";
 import DialogOpiekunZ from "../components/DialogOpiekunZ";
+import FileDownload from "js-file-download";
 import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
@@ -74,6 +75,15 @@ function OpiekunStatus() {
           })
         );
       });
+  };
+  const downloadFile = (name) => {
+    axios({
+      url: `http://localhost:5000/api/downloadFile/${name}`,
+      method: "GET",
+      responseType: "blob",
+    }).then((res) => {
+      FileDownload(res.data, name);
+    });
   };
 
   const changeStatusEdit = (id, status) => {
@@ -148,6 +158,7 @@ function OpiekunStatus() {
         />
       </Container>
       <DialogOpiekunZ
+        downloadFile={downloadFile}
         deleteComment={deleteComment}
         open={open}
         handleClose={handleClose}
