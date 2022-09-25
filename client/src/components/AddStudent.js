@@ -136,10 +136,10 @@ function AddStudent(
                                             <div>
                                                 { val.isStudent === 1 && val.firmaId === idFirma.id && val.id_opiekunZ === idOpiekuna  ? (
                                                     <Grid container>
-                                                        <Grid style={{marginRight:"15px"}}
+                                                        {/* <Grid style={{marginRight:"15px"}}
                                                         xs = {2}>
                                                                 login: {val.login}
-                                                        </Grid>
+                                                        </Grid> */}
                                                         {dane.map((daneAO) => (
                                                             daneAO.id === val.daneId ? (
                                                                     <Grid
@@ -159,11 +159,11 @@ function AddStudent(
                                         ): <div>
                                         { val.isStudent === 1 && val.firmaId === idFirma.id && val.id_opiekunU === idOpiekuna  ? (
                                                 <Grid container>
-                                                    <Grid
+                                                    {/* <Grid
                                                     style={{marginRight:"15px"}}
                                                     xs = {2}>
                                                         login: {val.login}
-                                                    </Grid>
+                                                    </Grid> */}
                                                     {dane.map((daneAO) => (
                                                         daneAO.id === val.daneId ? (
                                                             <Grid style={{marginRight:"15px"}}>
@@ -190,15 +190,15 @@ function AddStudent(
                                     <div>
                                         { val.isStudent === 1 && val.id_opiekunZ === null ? (
                                             <Grid container>
-                                                <Grid  style={{marginRight:"15px"}}
+                                                {/* <Grid  style={{marginRight:"15px"}}
                                                 xs = {2}>
                                                         login: {val.login}
-                                                </Grid>
+                                                </Grid> */}
                                                 {dane.map((daneNO) => (
                                                     daneNO.id === val.daneId ? (
                                                         <Grid style={{marginRight:"15px"}}>
                                                             <div>
-                                                                    Imie i nazwisko: {daneNO.imie} {daneNO.nazwisko}
+                                                                    {daneNO.imie} {daneNO.nazwisko}
                                                             </div>
                                                         </Grid>
                                                     ): null
@@ -212,15 +212,15 @@ function AddStudent(
                                     ): <div>
                                         { val.isStudent === 1 && val.id_opiekunU === null ? (
                                         <Grid container>
-                                            <Grid  style={{marginRight:"15px"}}
+                                            {/* <Grid  style={{marginRight:"15px"}}
                                             xs = {2}>
                                                     login: {val.login}
-                                            </Grid>
+                                            </Grid> */}
                                             {dane.map((daneNO) => (
                                                 daneNO.id === val.daneId ? (
                                                     <Grid style={{marginRight:"15px"}}>
                                                         <div>
-                                                                Imie i nazwisko: {daneNO.imie} {daneNO.nazwisko}
+                                                                 {daneNO.imie} {daneNO.nazwisko}
                                                         </div>
                                                     </Grid>
                                                 ): null

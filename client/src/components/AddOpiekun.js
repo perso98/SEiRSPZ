@@ -142,9 +142,9 @@ function AddOpiekun(
                                         {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === idFirma.id ? (
                                             <div>
                                                 <Grid item xs = {2}>
-                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                    {/* <div style={{display: "flex", gap: "0.4rem"}}>
                                                         login:<div>{val.login}</div>
-                                                    </div>
+                                                    </div> */}
                                                 </Grid>
                                             {dane.map((daneAO) => (
                                                 daneAO.id === val.daneId ? (
@@ -179,31 +179,39 @@ function AddOpiekun(
                             </div>
 
                             <div>
-                            <div className={classes.przerwa}>Opiekuni lista</div>
+                            <div className={classes.przerwa}>
+                            Opiekuni lista<p></p>
+                            Imie i naziwkso: <p></p>
+                           </div>
                             {user.map((val) => (
-                                    <Grid >
+                                    <Grid style={{marginBottom:"15px"}} >
                                         {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === null ? (
                                             <div>
                                                 <Grid item xs = {2}>
-                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                    {/* <div style={{display: "flex", gap: "0.4rem"}}>
                                                         login:<div>{val.login}</div>
-                                                    </div>
+                                                    </div> */}
                                                 </Grid>
                                             {dane.map((daneNO) => (
                                                 daneNO.id === val.daneId ? (
                                                     <div>
-                                                        
                                                         <Grid item xs = {2}>
                                                             <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                imie:<div>{daneNO.imie}</div>
+                                                                <div>{daneNO.imie}</div><div>{daneNO.nazwisko}</div>
+                                                                <div>
+                                                                    { val.isOpiekunZakl === 1 ? (
+                                                                        <div  style={{display: "flex", gap: "0.4rem"}}>
+                                                                            <div>(Opiekun</div><div>zakładowy)</div>
+                                                                        </div>
+                                                                    ): 
+                                                                    <div  style={{display: "flex", gap: "0.4rem"}}>
+                                                                        <div>(Opiekun</div><div>uczelniany)</div>
+                                                                    </div>
+                                                                    }
+
+                                                                </div>
                                                             </div>
                                                         </Grid>
-                                                        <Grid item xs = {2}>
-                                                            <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                naziwkso:<div>{daneNO.nazwisko}</div>
-                                                            </div>
-                                                        </Grid>
-                                                       
                                                     </div>
                                                 ): null
                                             ))}

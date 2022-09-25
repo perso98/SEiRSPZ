@@ -23,7 +23,9 @@ import Zalacznik from "./Zalacznik";
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import FileDownload from "js-file-download";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const useStyles = makeStyles(theme => ({
   containerMain:{
@@ -86,6 +88,16 @@ function EditDay(
 
   const classes = useStyles();
 
+  const downloadFile = (name) => {
+    axios({
+      url: `http://localhost:5000/api/downloadFile/${name}`,
+      method: "GET",
+      responseType: "blob",
+    }).then((res) => {
+      FileDownload(res.data, name);
+    });
+  };
+
   const [files, setFiles] = useState([]);
 
   const onSuccess = (savedFiles) => {
@@ -135,12 +147,12 @@ function EditDay(
         <form>
             <div>
                 <Stack direction="row" spacing={1}>
-                <label>Załącz pliki </label>
-                <input type="file"
-                       onChange={onInputChange}
-                       className="form-control"
-                       />
-                       <button onClick={onSubmit}>Submit</button>
+                  <label>Załącz pliki </label>
+                  <input type="file"
+                        onChange={onInputChange}
+                        className="form-control"
+                        />
+                  <button onClick={onSubmit}>Załącz</button>
                 </Stack>
             </div>
         </form>
@@ -232,23 +244,56 @@ function EditDay(
             </div>
 
             <div>
+            {zalaczniki?.length > 0 && (
+                  <div style={{ marginBottom: "1rem" }}>Załączniki:</div>
+                )}
+                {zalaczniki?.map((val) => (
+                  <div>
+                  {val.dziennikId === editDay.id ? (
+                  <div
+                    style={{
+                      justifyContent: "space-between",
+                      display: "flex",
+                    }}
+                  >
+                    <div className="blueCard">
+                      {val.zalacznik.substring(val.zalacznik.indexOf("-") + 1)}
+                    </div>
+                    <div style={{ marginLeft: "1rem" }}>
+                      <IconButton
+                        onClick={() => {
+                          downloadFile(val.zalacznik);
+                        }}
+                      >
+                        <CloudDownloadIcon style={{ color: "green" }} />
+                      </IconButton>
+
+                      <IconButton
+                        onClick={() => {
+                              deleteZalacznik(val.id);
+                            }}
+                      >
+                        <ClearIcon style={{ color: "red" }} />
+                      </IconButton>
+                    </div>
+                  </div>
+                  ): null}
+                  </div>
+                ))}
+
                 { zalaczniki.map((val) => (
                   <div>
                     {val.dziennikId === editDay.id ? (
                       <div> 
                         <a href={`//localhost:5000/${val.zalacznik}`} download = {`//localhost:5000/${val.zalacznik}`}> <img style={{maxWidth: '200px'}} src={`//localhost:5000/${val.zalacznik}`}/></a>
-                           <Button
-                            variant="contained"
-                            color="error"
-                            style={{ marginTop: "5vh" }}
-                            onClick={() => {
+                        <IconButton
+                        onClick={() => {
                               deleteZalacznik(val.id);
                             }}
-                          >
-                            Usuń
-                          </Button>
-                          <a href={`//localhost:5000/${val.zalacznik}`} download={`//localhost:5000/${val.zalacznik}`}> {val.zalacznik}</a>
-                      </div>
+                      >
+                        <ClearIcon style={{ color: "red" }} />
+                      </IconButton>
+                          </div>
                     ): null}
                   </div>
                   ))}
