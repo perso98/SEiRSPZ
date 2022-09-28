@@ -48,7 +48,7 @@ exports.deleteComment = async (req, res) => {
 exports.downloadFile = async (req, res) => {
   const name = req.params.name;
   try {
-    await res.download("./public/" + name);
+    await res.download("./user_files/" + name);
   } catch (err) {
     res.send(err);
   }

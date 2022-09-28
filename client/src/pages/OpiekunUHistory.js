@@ -36,7 +36,7 @@ function OpiekunUHistory() {
   };
 
   useEffect(() => {
-    axios.get(`${url}/getDaysOpiekunUStatus`).then((res) => {
+    axios.get(`${url}getDaysOpiekunUStatus`).then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
@@ -63,7 +63,7 @@ function OpiekunUHistory() {
   };
   const downloadFile = (name) => {
     axios({
-      url: `${url}/api/downloadFile/${name}`,
+      url: `${url}downloadFile/${name}`,
       method: "GET",
       responseType: "blob",
     })
@@ -94,7 +94,7 @@ function OpiekunUHistory() {
 
   const changeStatusEdit = (id, status) => {
     axios
-      .post(`${url}/changeStatusEdit`, {
+      .post("http://localhost:5000/api/changeStatusEdit", {
         id: id,
         status: status,
         opis: opis,
