@@ -1,11 +1,9 @@
 const { Op } = require("sequelize");
 const {
-  user,
   dziennik,
-  efektyLista,
+
   efektyStudent,
-  dane,
-  firma,
+
   komentarze,
 } = require("../models");
 //pobieranie efektow uczenia dla opiekunow

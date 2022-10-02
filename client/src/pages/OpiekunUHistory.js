@@ -31,7 +31,7 @@ function OpiekunUHistory() {
   };
   const handleOpen = (val) => {
     setCheckDay(val);
-    console.log(val);
+
     setOpen(true);
   };
 
@@ -77,7 +77,7 @@ function OpiekunUHistory() {
 
   const changeStatus = (id, status) => {
     axios
-      .post(`${url}/api/changeStatus`, {
+      .post(`${url}changeStatus`, {
         id: id,
         status: status,
         statusOpiekuna: statusOpiekuna,
@@ -94,7 +94,7 @@ function OpiekunUHistory() {
 
   const changeStatusEdit = (id, status) => {
     axios
-      .post("http://localhost:5000/api/changeStatusEdit", {
+      .post(`${url}changeStatusEdit`, {
         id: id,
         status: status,
         opis: opis,
