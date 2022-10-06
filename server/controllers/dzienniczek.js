@@ -82,31 +82,42 @@ const {
     const { id, changeOpis, changeDzien, changeData, changeIloscGodzin } =
       req.body;
     try {
-      await dziennik.update(
-        {
+      const checkDay = await dziennik.findOne({
+        where: {
           dzien: changeDzien,
-          data: changeData,
-          ilosc_godzin: changeIloscGodzin,
-          opis: changeOpis,
+          userId: req.session.user.id,
         },
-        {
+      });
+      if (checkDay == null) {
+        await dziennik.update(
+          {
+            dzien: changeDzien,
+            data: changeData,
+            ilosc_godzin: changeIloscGodzin,
+            opis: changeOpis,
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+        const editDay = await dziennik.findOne({
           where: {
             id: id,
           },
-        }
-      );
-      const editDay = await dziennik.findOne({
-        where: {
-          id: id,
-        },
-      });
-      res.send({
-        message: "Zmiana przeszła pomyślnie...",
-        editDzien: editDay.dzien,
-        editData: editDay.data,
-        editIlosc_godzin: editDay.ilosc_godzin,
-        editOpis: editDay.opis,
-      });
+        });
+        res.send({
+          message: "Zmiana przeszła pomyślnie...",
+          editDzien: editDay.dzien,
+          editData: editDay.data,
+          editIlosc_godzin: editDay.ilosc_godzin,
+          editOpis: editDay.opis,
+        });
+      }
+      else {
+        res.send({ message: "Jest już taki dzień" });
+      }
     } catch (err) {
       res.send({ message: err.message });
     }

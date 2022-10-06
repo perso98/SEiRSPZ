@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles'
 import  Axios  from 'axios'
 import { Button, Grid, TextField, Box, Alert,Collapse,IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-
+import Form from "./Form";
 
 function Konto() {
   const useStyles = makeStyles(theme => ({
@@ -21,6 +21,19 @@ function Konto() {
         minWidth:'400px',
       },
     },
+    daneForm : {
+      display:'flex',
+      flexDirection:'column',
+      paddingBottom:'5%',
+      paddingLeft:'5%',
+      paddingRight:'5%',
+      minWidth:'600px',
+      textAlign:'center',
+      [theme.breakpoints.down('md')]:{
+        minWidth:'400px',
+      },
+    },
+
 
 
    }))
@@ -51,88 +64,142 @@ function Konto() {
 
   const classes = useStyles()
   return (
-    <Grid container  sm={12} className={classes.center}  >
-      <div/>
+    <Grid>
+      <Grid container  sm={12} className={classes.center}  >
+        <div/>
 
-        <div className={classes.changePasswordForm}>
+          <div className={classes.changePasswordForm}>
 
-         <Typography variant="h4" color="initial" style={{paddingBottom: '5%'}}> Zmiana hasła</Typography> 
-         { changePasswordStatus!='' &&
-         <Box sx={{ width: '100%' }}>
-   <Collapse in={open}>
+            <Typography variant="h4" color="initial" style={{paddingBottom: '5%'}}> Zmiana hasła</Typography> 
+            { changePasswordStatus!='' &&
+            <Box sx={{ width: '100%' }}>
+              <Collapse in={open}>
 
-    <>
+                <>
 
-    {alertSeverity ?  <Alert severity='error' variant='filled'
-       action={
-         <IconButton
-           aria-label="close"
-           color="inherit"
-           size="medium"
-           onClick={() => {
-             setOpen(false);
-           }}
-         >
-           <CloseIcon fontSize="inherit" />
-         </IconButton>
-       }
-       sx={{ mb: 2 }}
-     >
-       {changePasswordStatus}
-     </Alert> :
-      <Alert severity='success' variant='filled'
-      action={
-        <IconButton
-          aria-label="close"
-          color="inherit"
-          size="medium"
-          onClick={() => {
-            setOpen(false);
-          }}
-        >
-          <CloseIcon fontSize="inherit" />
-        </IconButton>
-      }
-      sx={{ mb: 2 }}
-    >
-      
-      {changePasswordStatus}
-    </Alert>}
+                {alertSeverity ?  <Alert severity='error' variant='filled'
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="medium"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+                  sx={{ mb: 2 }}
+                >
+                  {changePasswordStatus}
+                </Alert> :
+                  <Alert severity='success' variant='filled'
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="medium"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+                  sx={{ mb: 2 }}
+                >
+                  
+                  {changePasswordStatus}
+                </Alert>}
+                </>
+              </Collapse>
+            </Box>}
 
-    </>
-
-    
-   </Collapse>
- </Box>}
-
-        <TextField
-         required
-          id="changePassword"
-          label="Podaj hasło:"
-          margin='normal'
-          type="password"
-          onChange={(e=>{getChangePassword(e.target.value)})}
+            <TextField
+            required
+              id="changePassword"
+              label="Podaj hasło:"
+              margin='normal'
+              type="password"
+              onChange={(e=>{getChangePassword(e.target.value)})}
+              
+            />
+            <TextField
+            type="password"
+            required
+              id="changePassword2"
+              label="Powtórz hasło:"
+              margin='normal'
+              onChange={(e=>{getChangePassword2(e.target.value)})}
+              
+            />
+            <Button variant="contained"  onClick={changePasswordToAccount} style={{marginTop:'20px',minHeight:'50px',fontSize:'15px'}}>
+              Zmień hasło
+            </Button>
+            
+            
+            
+            
+            
+          </div>
           
-        />
-        <TextField
-        type="password"
-         required
-          id="changePassword2"
-          label="Powtórz hasło:"
-          margin='normal'
-          onChange={(e=>{getChangePassword2(e.target.value)})}
+
+            
+        <div/>
           
-        />
-        <Button variant="contained"  onClick={changePasswordToAccount} style={{marginTop:'20px',minHeight:'50px',fontSize:'15px'}}>
-          Zmień hasło
-        </Button>
-        </div>
-          
-          <div/>
         
-      
       </Grid>
+      <Grid container  sm={12} className={classes.center}  >
+      <div className={classes.daneForm}>
+            <Typography variant="h4" color="initial" style={{paddingBottom: '5%'}}> Wprowadź swoje dane</Typography> 
+            <TextField className={classes.TextField}
+                label="Imie"
+                id="dzien"
+                margin="normal"
+            />
+            <TextField className={classes.TextField}
+                label="Nazwisko"
+                id="dzien"
+                margin="normal"
+            />
+            <TextField className={classes.TextField}
+                label="Studia"
+                id="dzien"
+                margin="normal"
+            />
+            <TextField className={classes.TextField}
+                label="Kierunek"
+                id="dzien"
+                margin="normal"
+            />
+            <TextField className={classes.TextField}
+                label="Specjalność"
+                id="dzien"
+                margin="normal"
+            />
+            <TextField className={classes.TextField}
+                label="Rok studiow"
+                id="dzien"
+                margin="normal"
+            />
+            <TextField className={classes.TextField}
+                label="Rodzaj studiow "
+                id="dzien"
+                margin="normal"
+            />
+            <TextField className={classes.TextField}
+                label="Telefon"
+                id="dzien"
+                margin='normal'
+            />
 
+            <Button variant="contained"  style={{marginTop:'20px',minHeight:'50px',fontSize:'15px'}}>
+            Zapisz
+            </Button>
+        </div>
+      </Grid>
+    </Grid>
 
 
   )

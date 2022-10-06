@@ -171,26 +171,30 @@ function Dzienniczek() {
         changeIloscGodzin: changeIloscGodzin,
       })
       .then((res) => {
-        setDziennik(
-          dziennik.map((val) =>
-            val.id == id
-              ? {
-                  ...val,
-                  opis: res.data.editOpis,
-                  dzien: res.data.editDzien,
-                  data: res.data.editData,
-                  ilosc_godzin: res.data.editIlosc_godzin,
-                }
-              : val
+        if (res.data.message == "Dzień został pomyślnie dodany") {
+          setDziennik(
+            dziennik.map((val) =>
+              val.id == id
+                ? {
+                    ...val,
+                    opis: res.data.editOpis,
+                    dzien: res.data.editDzien,
+                    data: res.data.editData,
+                    ilosc_godzin: res.data.editIlosc_godzin,
+                  }
+                : val
+            )
           )
-        )
+          .then(() => {
+            setChangeDzien();
+            setChangeData();
+            setChangeIloscGodzin();
+            setChangeOpis();
+          });
+        }
+        alert(res.data.message)
       })
-      .then(() => {
-        setChangeDzien();
-        setChangeData();
-        setChangeIloscGodzin();
-        setChangeOpis();
-      });
+      
   };
 
   const deleteDay = (id) => {

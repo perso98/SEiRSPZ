@@ -70,7 +70,7 @@ app.post("/api/upload/:idDay", async (req, res) => {
 
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, "public");
+      cb(null, "user_files");
     },
     filename: async (req, file, cb) => {
       const nowDate = Date.now() + "-" + file.originalname;

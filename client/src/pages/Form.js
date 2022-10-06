@@ -1,109 +1,193 @@
 import React,{useState,useEffect} from 'react'
 import Axios from "axios"
 import { makeStyles } from '@mui/styles'
+import { Button, Grid, TextField, Box, Alert,Collapse,IconButton, Typography } from '@mui/material';
+
 
 const useStyles = makeStyles(theme => ({
     container:{
         marginBottom: theme.spacing(10)
     },
+    center : {
+        justifyContent:'space-around',
+     
+      },
+      changePasswordForm : {
+        display:'flex',
+        flexDirection:'column',
+        padding:'5%',
+        minWidth:'600px',
+        textAlign:'center',
+        [theme.breakpoints.down('md')]:{
+          minWidth:'400px',
+        },
+      },
+      daneForm : {
+        display:'flex',
+        flexDirection:'column',
+        paddingBottom:'5%',
+        paddingLeft:'5%',
+        paddingRight:'5%',
+        minWidth:'600px',
+        textAlign:'center',
+        [theme.breakpoints.down('md')]:{
+          minWidth:'400px',
+        },
+      },
 }));
 
 
 function Form() {
     const classes = useStyles();
 
-    const [imie,setimie]=useState("");
-    const [nazwisko,setNazwisko]=useState("");
-    const [indeks,setIndeks]=useState("");
-    const [studia, setStudia] = useState("");
-    const [kierunek, setKierunek] = useState("");
-    const [specjalnosc, setSpecjalnosc] = useState("");
-    const [rok_studiow, setRok_studiow] = useState("");
-    const [rodzaj_studiow, setRodzaj_studiow] = useState("");
-    const [telefon, setTelefon] = useState("");
-    const [email, setEmail] = useState("");
-    
-    const [FormStatus, setFormStatus] = useState("");
-    
+    const [nazwaKierunku, setNazwaKierunku] = useState();
 
+    const [sipsKierunkow, setSipsKierunkow] = useState([]);
 
-    const createForm = ()=>
-    {
-        Axios.post("http://localhost:5000/api/createForm",
+    const dodanieKierunku = () => {
+        setSipsKierunkow([
+        ...sipsKierunkow,
         {
-            imie : imie,
-            nazwisko : nazwisko,
-            indeks : indeks,
-            studia : studia,
-            kierunek : kierunek,
-            specjalnosc : specjalnosc,
-            rok_studiow : rok_studiow,
-            rodzaj_studiow : rodzaj_studiow,
-            telefon : telefon,
-            email : email,
-        }).then((res) => {
-            if (res.data.message) {
-                setFormStatus(res.data.message);
-            }
-          })
+            nazwaKierunku: nazwaKierunku,
+            listaEfektow: [
+            ],
+        },
+      ]);
     }
 
+    const [nazwaEfektu, setNazwaEfektu] = useState();
+
+    
+    const dodanieEfektu = (nazwaKierunku) => {
+
+        
+        // const list = sipsKierunkow.map((val) => (
+        //     val.nazwaKierunku == nazwaKierunku ? { 
+        //         val
+        //     } : null
+        // ))
+        
+        // list.push(nazwaEfektu)
+
+        // setSipsKierunkow(
+        //     sipsKierunkow.map(val => (
+        //         val.nazwaKierunku == nazwaKierunku ? { 
+        //             ...val, 
+        //             listaEfektow()
+        //         } : val
+        //     ))
+        // )
+
+        // console.log(list)
+
+        // setSipsKierunkow(
+        //     sipsKierunkow.map((val) => (
+        //         val.nazwaKierunku == nazwaKierunku ? { 
+        //             ...val, 
+        //             list : val.listaEfektow
+        //         } : val
+        //     ))
+        // )
+
+    }
+
+    const consoleLog = () => {
+        console.log(sipsKierunkow)
+    }
+
+    const [formStatus, setFormStatus] = useState([]);
+    const [dziennikZalaczniki, setDziennikZalaczniki] = useState([]);
+
+
+    
+
     return (
-        <div className={classes.container}>
-        <div className='center'> 
-            <div className='homeClass'><h3>Form</h3>
-                <div className='form-group'>
-                    <div>
-                        <label>Imie :</label>
-                        <input type="text" name="imie" placeholder="Podaj imie" onChange={(e=>{setimie(e.target.value)})} ></input>
-                    </div>
-                    <div>
-                        <label>Nazwisko :</label>
-                        <input type="text" name="nazwisko" placeholder="Podaj nazwisko"  onChange={(e=>{setNazwisko(e.target.value)})} ></input>
-                    </div>
-                    <div>
-                        <label>Indeks :</label>
-                        <input type="text" name="indeks" placeholder="Podaj indeks"  onChange={(e=>{setIndeks(e.target.value)})} ></input>
-                    </div>
-                    <div>
-                        <label>Studia :</label>
-                        <input type="text" name="studia" placeholder="Podaj studia"  onChange={(e=>{setStudia(e.target.value)})} ></input>
-                    </div>
-                    <div>
-                        <label>Kierunek :</label>
-                        <input type="text" name="kierunek" placeholder="Podaj kierunek"  onChange={(e=>{setKierunek(e.target.value)})} ></input>
-                    </div>
-                    <div>
-                        <label>Specjalność :</label>
-                        <input type="text" name="specjalnosc" placeholder="Podaj specjalnosc"  onChange={(e=>{setSpecjalnosc(e.target.value)})} ></input>
-                    </div>
-                    <div>
-                        <label>Rok studiow :</label>
-                        <input type="text" name="rok_studiow" placeholder="Podaj rok studiow"  onChange={(e=>{setRok_studiow(e.target.value)})} ></input>
-                    </div>
-                    <div>
-                        <label>Rodzaj studiow :</label>
-                        <input type="text" name="rodzaj_studiow" placeholder="Podaj rodzaj studiow"  onChange={(e=>{setRodzaj_studiow(e.target.value)})} ></input>
-                    </div>
-                    <div>
-                        <label>Telefon :</label>
-                        <input type="text" name="telefon" placeholder="Podaj Telefon"  onChange={(e=>{setTelefon(e.target.value)})}></input>
-                    </div>
-                    <div>
-                        <label>E-mail :</label>
-                        <input type="text" name="email" placeholder="Podaj E-mail"  onChange={(e=>{setEmail(e.target.value)})} ></input>
-                    </div>
+    <Grid>
+        <Grid container  sm={12} className={classes.center}  >
+            <div/>
 
-                    <div>
-                        <button type="submit" class="btn btn-primary" onClick={createForm}>Wyślij</button>
-                    </div>
+            <div className={classes.changePasswordForm}>
 
-                    <h4>{FormStatus}</h4>
+                <Typography variant="h4" color="initial" style={{paddingBottom: '5%'}}> 
+                    Dodawanie efektów uczenia się
+                </Typography> 
+                
+                <TextField
+                required
+                type="text"
+                label="Kierunek:"
+                margin='normal'
+                onChange={(e) => {
+                    setNazwaKierunku(e.target.value);
+                }}
+                />
+                <Button
+                    variant="contained"
+                    style={{  }}
+                    onClick={() => {
+                        dodanieKierunku();
+                    }}
+                >
+                    Dodaj 
+                </Button>
+            </div>
+            <div/>
+        </Grid>
 
+        <Button
+            variant="contained"
+            style={{  }}
+            onClick={() => {
+                consoleLog();
+            }}
+        >
+            Console log 
+        </Button>
+                            
+        <Grid container  sm={12} className={classes.center}>
+            { sipsKierunkow.length > 0 ? (
+                <div>
+                    {sipsKierunkow.map((val) => (
+                        <div>
+                            <Typography color="initial" style={{fontSize: '26px'}}> 
+                                Kierunek:<br/> <p style={{fontSize: '20px'}}>{val.nazwaKierunku}</p>
+                            </Typography> 
+                            
+                            Efekty uczenia się:
+                            <div>
+                            {val.listaEfektow.map((efekt) => (
+                                <div>
+                                    {efekt.nazwa}
+                                </div>
+                            ))}
+                            </div>
+                            <div>
+                                <TextField
+                                    label="Efekt"
+                                    id="efekt"
+                                    margin="normal"
+                                    onChange={(e) => {
+                                        setNazwaEfektu(e.target.value);
+                                    }}
+                                />
+                                <Button 
+                                    variant="contained" 
+                                    onClick={() => {
+                                        dodanieEfektu(val.nazwaKierunku);
+                                        }} 
+                                    style={{marginTop:'20px',minHeight:'50px',fontSize:'15px'}}
+                                >
+                                    Zapisz
+                                </Button>
+                                
+                            </div> 
+                            
+                        </div>
+                    ))}
                 </div>
-        </div>
-        </div>
-        </div>
+            ): <div>Brak kierunków</div>}
+        </Grid>
+    </Grid>
     )
     
 }

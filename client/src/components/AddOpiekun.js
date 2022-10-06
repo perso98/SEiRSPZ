@@ -183,40 +183,28 @@ function AddOpiekun(
                             Opiekuni lista<p></p>
                             Imie i naziwkso: <p></p>
                            </div>
-                            {user.map((val) => (
+                            {dane.map((val) => (
                                     <Grid style={{marginBottom:"15px"}} >
-                                        {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === null ? (
+                                        {( val.user.isOpiekunZakl === 1 || val.user.isOpiekun === 1 )  && val.user.firmaId === null ? (
                                             <div>
                                                 <Grid item xs = {2}>
-                                                    {/* <div style={{display: "flex", gap: "0.4rem"}}>
-                                                        login:<div>{val.login}</div>
-                                                    </div> */}
-                                                </Grid>
-                                            {dane.map((daneNO) => (
-                                                daneNO.id === val.daneId ? (
-                                                    <div>
-                                                        <Grid item xs = {2}>
-                                                            <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                <div>{daneNO.imie}</div><div>{daneNO.nazwisko}</div>
-                                                                <div>
-                                                                    { val.isOpiekunZakl === 1 ? (
-                                                                        <div  style={{display: "flex", gap: "0.4rem"}}>
-                                                                            <div>(Opiekun</div><div>zakładowy)</div>
-                                                                        </div>
-                                                                    ): 
-                                                                    <div  style={{display: "flex", gap: "0.4rem"}}>
-                                                                        <div>(Opiekun</div><div>uczelniany)</div>
-                                                                    </div>
-                                                                    }
-
+                                                    <div style={{display: "flex", gap: "0.4rem"}}>
+                                                        <div>{val.imie}</div><div>{val.nazwisko}</div>
+                                                        <div>
+                                                            { val.user.isOpiekunZakl === 1 ? (
+                                                                <div  style={{display: "flex", gap: "0.4rem"}}>
+                                                                    <div>(Opiekun</div><div>zakładowy)</div>
                                                                 </div>
+                                                            ): 
+                                                            <div  style={{display: "flex", gap: "0.4rem"}}>
+                                                                <div>(Opiekun</div><div>uczelniany)</div>
                                                             </div>
-                                                        </Grid>
+                                                            }
+                                                        </div>
                                                     </div>
-                                                ): null
-                                            ))}
+                                                </Grid>
                                              <Grid item xs = {2}>
-                                                {giveButton(val.id, idFirma.id )}
+                                                {giveButton(val.user.id, idFirma.id )}
                                             </Grid>
                                             </div>
                                         ): null}
