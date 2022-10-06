@@ -7,7 +7,7 @@ import FileDownload from "js-file-download";
 import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
-
+import { url } from "../services/Url";
 import Button from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,7 +22,6 @@ function OpiekunStatus() {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
-  import { url } from "../services/Url";
 
   const status = true;
   const handleClose = () => {
