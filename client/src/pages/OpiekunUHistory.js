@@ -31,12 +31,12 @@ function OpiekunUHistory() {
   };
   const handleOpen = (val) => {
     setCheckDay(val);
-    console.log(val);
+
     setOpen(true);
   };
 
   useEffect(() => {
-    axios.get(`${url}/getDaysOpiekunUStatus`).then((res) => {
+    axios.get(`${url}getDaysOpiekunUStatus`).then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
@@ -63,7 +63,7 @@ function OpiekunUHistory() {
   };
   const downloadFile = (name) => {
     axios({
-      url: `${url}/api/downloadFile/${name}`,
+      url: `${url}downloadFile/${name}`,
       method: "GET",
       responseType: "blob",
     })
@@ -77,7 +77,7 @@ function OpiekunUHistory() {
 
   const changeStatus = (id, status) => {
     axios
-      .post(`${url}/api/changeStatus`, {
+      .post(`${url}changeStatus`, {
         id: id,
         status: status,
         statusOpiekuna: statusOpiekuna,
@@ -94,7 +94,7 @@ function OpiekunUHistory() {
 
   const changeStatusEdit = (id, status) => {
     axios
-      .post(`${url}/changeStatusEdit`, {
+      .post(`${url}changeStatusEdit`, {
         id: id,
         status: status,
         opis: opis,

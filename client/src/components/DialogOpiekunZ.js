@@ -18,7 +18,6 @@ function DialogOpiekunZ(props) {
   }, [props?.checkDay?.komentarzes]);
 
   const deleteCom = (id) => {
-    console.log(props.checkDay);
     setComments(
       comments.filter((val) => {
         return val.id != id;

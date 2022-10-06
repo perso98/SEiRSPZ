@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -14,6 +14,21 @@ import Select from "@mui/material/Select";
 
 function EfektyDialog(props) {
   const [open, setOpen] = useState(false);
+  const [updateEffect, setUpdateEffect] = useState(
+    props?.checkStudent?.efektyStudents
+  );
+
+  useEffect(() => {
+    setUpdateEffect(props?.checkStudent?.efektyStudents);
+  }, [props?.checkStudent?.efektyStudents]);
+
+  const updatedEffect = (id, opis, status) => {
+    setUpdateEffect(
+      updateEffect.map((val) => {
+        return val.id == id ? { ...val, komentarz: opis, status: status } : val;
+      })
+    );
+  };
 
   const handleChange = (event) => {
     props.setEfekt(event.target.value);
@@ -59,7 +74,7 @@ function EfektyDialog(props) {
                   label="Efekty"
                   onChange={handleChange}
                 >
-                  {props.checkStudent.efektyStudents.map((efekty, index) =>
+                  {updateEffect?.map((efekty, index) =>
                     efekty.status === "Zatwierdzone" ? (
                       <MenuItem value={index}>
                         {efekty.efektyListum.nazwa}
@@ -78,7 +93,7 @@ function EfektyDialog(props) {
                 <div>
                   {" "}
                   {
-                    props.checkStudent.efektyStudents[props.efekt].efektyListum
+                    props?.checkStudent.efektyStudents[props.efekt].efektyListum
                       .opis
                   }
                 </div>
@@ -109,7 +124,13 @@ function EfektyDialog(props) {
                       props.checkStudent.id,
                       "Zatwierdzone"
                     );
-                    props.handleClose();
+                    updatedEffect(
+                      props.efektId == 0
+                        ? props.checkStudent.efektyStudents[0].id
+                        : props.efektId,
+                      props.opis,
+                      "Zatwierdzone"
+                    );
                   }}
                 >
                   Akceptuj
@@ -124,7 +145,13 @@ function EfektyDialog(props) {
                       props.checkStudent.id,
                       "Niezatwierdzone"
                     );
-                    props.handleClose();
+                    updatedEffect(
+                      props.efektId == 0
+                        ? props.checkStudent.efektyStudents[0].id
+                        : props.efektId,
+                      props.opis,
+                      "Niezatwierdzone"
+                    );
                   }}
                 >
                   Odrzuć
