@@ -19,6 +19,7 @@ function Studenci(props) {
                   flexDirection: "column",
                   borderRadius: "25px",
                   boxShadow: " 0 0 5px black",
+                  height: "10rem",
                 }}
               >
                 Login : {val.login}

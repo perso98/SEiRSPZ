@@ -11,6 +11,7 @@ import ButtonLink from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FileDownload from "js-file-download";
+import { url } from "../services/Url";
 
 function OpiekunZ() {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -34,7 +35,7 @@ function OpiekunZ() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getDaysOpiekunZ").then((res) => {
+    axios.get(`${url}getDaysOpiekunZ`).then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
@@ -42,7 +43,7 @@ function OpiekunZ() {
 
   const changeStatus = (id, status) => {
     axios
-      .post("http://localhost:5000/api/changeStatus", {
+      .post(`${url}changeStatus`, {
         id: id,
         status: status,
         statusOpiekuna: statusOpiekuna,
@@ -58,7 +59,7 @@ function OpiekunZ() {
   };
   const downloadFile = (name) => {
     axios({
-      url: `http://localhost:5000/api/downloadFile/${name}`,
+      url: `${url}downloadFile/${name}`,
       method: "GET",
       responseType: "blob",
     }).then((res) => {
@@ -67,7 +68,7 @@ function OpiekunZ() {
   };
   const changeStatusEdit = (id, status) => {
     axios
-      .post("http://localhost:5000/api/changeStatusEdit", {
+      .post(`${url}changeStatusEdit`, {
         id: id,
         status: status,
         opis: opis,

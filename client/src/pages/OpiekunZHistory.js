@@ -22,6 +22,7 @@ function OpiekunStatus() {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
+  import { url } from "../services/Url";
 
   const status = true;
   const handleClose = () => {
@@ -35,14 +36,14 @@ function OpiekunStatus() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getDaysOpiekunZStatus").then((res) => {
+    axios.get(`${url}getDaysOpiekunZStatus`).then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
   }, []);
   const deleteComment = (id, day) => {
     axios
-      .delete(`http://localhost:5000/api/deleteComment/${id}`, {
+      .delete(`${url}deleteComment/${id}`, {
         id: id,
       })
       .then((res) => {
@@ -62,7 +63,7 @@ function OpiekunStatus() {
   };
   const changeStatus = (id, status) => {
     axios
-      .post("http://localhost:5000/api/changeStatus", {
+      .post(`${url}changeStatus`, {
         id: id,
         status: status,
         statusOpiekuna: statusOpiekuna,
@@ -78,7 +79,7 @@ function OpiekunStatus() {
   };
   const downloadFile = (name) => {
     axios({
-      url: `http://localhost:5000/api/downloadFile/${name}`,
+      url: `${url}downloadFile/${name}`,
       method: "GET",
       responseType: "blob",
     }).then((res) => {
@@ -88,7 +89,7 @@ function OpiekunStatus() {
 
   const changeStatusEdit = (id, status) => {
     axios
-      .post("http://localhost:5000/api/changeStatusEdit", {
+      .post(`${url}changeStatusEdit`, {
         id: id,
         status: status,
         opis: opis,
