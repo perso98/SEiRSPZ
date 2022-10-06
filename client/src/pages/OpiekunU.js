@@ -10,6 +10,7 @@ import ButtonLink from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import FileDownload from "js-file-download";
 import "react-toastify/dist/ReactToastify.css";
+import { url } from "../services/Url";
 function OpiekunU() {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,14 +33,14 @@ function OpiekunU() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getDaysOpiekunU").then((res) => {
+    axios.get(`${url}getDaysOpiekunU`).then((res) => {
       setDzienniczek(res.data);
       setLoading(false);
     });
   }, []);
   const downloadFile = (name) => {
     axios({
-      url: `http://localhost:5000/api/downloadFile/${name}`,
+      url: `${url}downloadFile/${name}`,
       method: "GET",
       responseType: "blob",
     }).then((res) => {
@@ -48,7 +49,7 @@ function OpiekunU() {
   };
   const changeStatus = (id, status) => {
     axios
-      .post("http://localhost:5000/api/changeStatus", {
+      .post(`${url}changeStatus`, {
         id: id,
         status: status,
         statusOpiekuna: statusOpiekuna,
@@ -64,7 +65,7 @@ function OpiekunU() {
   };
   const changeStatusEdit = (id, status) => {
     axios
-      .post("http://localhost:5000/api/changeStatusEdit", {
+      .post(`${url}changeStatusEdit`, {
         id: id,
         status: status,
         opis: opis,

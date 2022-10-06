@@ -229,7 +229,7 @@ export default function Admin() {
 
   const changeUserInfo = (id) => {
     axios
-      .put("http://localhost:5000/api/changeUserInfo", {
+      .put(`${url}changeUserInfo`, {
         id: id,
         changeLogin: changeLogin,
       })

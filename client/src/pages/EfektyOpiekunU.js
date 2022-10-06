@@ -4,6 +4,8 @@ import Container from "@material-ui/core/Container";
 import SearchBar from "../components/SearchBar";
 import PaginationForEffects from "../components/PaginationForEffects";
 import EfektyDialog from "../components/EfektyDialog";
+import { ToastContainer, toast } from "react-toastify";
+import { url } from "../services/Url";
 
 function EfektyOpiekunU() {
   const [opis, setOpis] = useState("");
@@ -26,7 +28,7 @@ function EfektyOpiekunU() {
     setOpen(true);
   };
   useEffect(() => {
-    axios.get("http://localhost:5000/api/getEffectsOpiekunU").then((res) => {
+    axios.get(`${url}getEffectsOpiekunU`).then((res) => {
       setStudenci(res.data);
       setLoading(false);
       console.log(res.data);
@@ -35,12 +37,13 @@ function EfektyOpiekunU() {
 
   const updateDzienniczek = (id, opis, student, status) => {
     axios
-      .put("http://localhost:5000/api/updateEffects", {
+      .put(`${url}updateEffects`, {
         id: id,
         opis: opis,
         status: status,
       })
       .then((res) => {
+        toast.success(`Zmiana statusu na ${status}`);
         setStudenci(
           studenci.map((val) => {
             return val.id == student
@@ -104,6 +107,7 @@ function EfektyOpiekunU() {
         efektId={efektId}
         setEfektId={setEfektId}
       />
+      <ToastContainer />
     </>
   );
 }
