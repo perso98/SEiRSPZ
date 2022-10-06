@@ -18,6 +18,7 @@ import {
   TableRow,
   Toolbar,
 } from "@material-ui/core";
+import { url } from "../services/Url";
 
 const useStyles = makeStyles(theme => ({
   containerMain:{
@@ -49,7 +50,7 @@ function EfektUzasadnienie(
 
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/listEfektyStudent").then((res) => {
+        axios.get(`${url}listEfektyStudent`).then((res) => {
             setListEfektyStudent(res.data);
           
         });

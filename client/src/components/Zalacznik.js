@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography, TextField } from "@mui/material";
 import Stack from '@mui/material/Stack';
-
+import { url } from "../services/Url";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -33,7 +33,7 @@ function Zalacznik(
             data.append('file', element);
         }
         console.log(data.getAll)
-        axios.post(`http://localhost:5000/api/upload/${idDay}`, data,{
+        axios.post(`${url}${idDay}`, data,{
           })
             .then((response) => {
                 toast.success('Załadowano pomyślnie');

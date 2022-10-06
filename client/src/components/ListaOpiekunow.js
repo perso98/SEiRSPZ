@@ -11,7 +11,7 @@ import { Typography, TextField, FormControl, FilledInput } from "@mui/material";
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-
+import { url } from "../services/Url";
 function ListaOpiekunow() {
 
     const [dane,setDane]=useState([])
@@ -22,15 +22,15 @@ function ListaOpiekunow() {
 
     useEffect(()=>
     {
-        axios.get("http://localhost:5000/api/getUser").then((res)=>{
+        axios.get(`${url}getUser`).then((res)=>{
             setUser(res.data)
         })
 
-        axios.get("http://localhost:5000/api/getDane").then((res)=>{
+        axios.get(`${url}getDane`).then((res)=>{
             setDane(res.data)
         })
 
-        axios.get("http://localhost:5000/api/getFirma").then((res)=>{
+        axios.get(`${url}getFirma`).then((res)=>{
             setFirma(res.data)
         })
     },[]
@@ -58,7 +58,7 @@ function ListaOpiekunow() {
       }
 
     const createFirma = () => {
-        axios.post("http://localhost:5000/api/createFirma", {
+        axios.post(`${url}createFirma`, {
           firmaObject:firmaObject
           })
           .then((res) => {
@@ -112,7 +112,7 @@ function ListaOpiekunow() {
       }
 
     const addStudentFirma = (id, firmaId, idOpiekuna, jakiOpiekun) => {
-        axios.put("http://localhost:5000/api/addStudentFirma", {
+        axios.put(`${url}addStudentFirma`, {
           id: id,
           firmaId: firmaId,
           idOpiekuna: idOpiekuna,
@@ -138,7 +138,7 @@ function ListaOpiekunow() {
 
 
       const delStudentFirma = (id, jakiOpiekun) => {
-        axios.put("http://localhost:5000/api/delStudentFirma", {
+        axios.put(`${url}delStudentFirma`, {
             id: id,
             jakiOpiekun: jakiOpiekun,
           })
@@ -188,7 +188,7 @@ function ListaOpiekunow() {
       }
 
     const addOpiekunFirma = (id, firmaId) => {
-        axios.put("http://localhost:5000/api/addOpiekunFirma", {
+        axios.put(`${url}addOpiekunFirma`, {
             id: id,
             firmaId: firmaId
           })
@@ -202,7 +202,7 @@ function ListaOpiekunow() {
       };
 
       const delOpiekunFirma = (id, jakiOpiekun) => {
-        axios.put("http://localhost:5000/api/delOpiekunFirma", {
+        axios.put(`${url}delOpiekunFirma`, {
             id: id,
             jakiOpiekun: jakiOpiekun
           })
@@ -236,7 +236,7 @@ function ListaOpiekunow() {
     
 
     const updateFirma = (id) => {
-        axios.put("http://localhost:5000/api/updateFirma", {
+        axios.put(`${url}updateFirma`, {
             id: id,
             changeNazwa: changeNazwa,
           })

@@ -26,6 +26,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import FileDownload from "js-file-download";
 import ClearIcon from "@mui/icons-material/Clear";
+import { url } from "../services/Url";
 
 const useStyles = makeStyles(theme => ({
   containerMain:{
@@ -90,7 +91,7 @@ function EditDay(
 
   const downloadFile = (name) => {
     axios({
-      url: `http://localhost:5000/api/downloadFile/${name}`,
+      url: `${url}downloadFile/${name}`,
       method: "GET",
       responseType: "blob",
     }).then((res) => {
@@ -121,7 +122,7 @@ function EditDay(
             data.append('file', element);
         }
         const idDay = editDay.id
-        axios.post(`http://localhost:5000/api/upload/${idDay}`, data,{
+        axios.post(`${url}upload/${idDay}`, data,{
           })
             .then((response) => {
                 toast.success('Załadowano pomyślnie');

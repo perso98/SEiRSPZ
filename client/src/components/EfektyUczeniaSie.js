@@ -20,7 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import EfektUzasadnienie from "./EfektUzasadnienie";
-
+import { url } from "../services/Url";
 
 const useStyles = makeStyles(theme => ({
     containerMain:{
@@ -49,11 +49,11 @@ function EfektyUczeniaSie() {
     const [idUser, setIdUser] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/getEfektUczenia").then((res) => {
+        axios.get(`${url}getEfektUczenia`).then((res) => {
             setlistaEfektyow(res.data);
           
         });
-        axios.get("http://localhost:5000/api/IdUser").then((res) => {
+        axios.get(`${url}IdUser`).then((res) => {
             setIdUser(res.data);
           
         });
@@ -85,14 +85,14 @@ function EfektyUczeniaSie() {
     };
 
     const createUzasadnienieEfektu = (id) => {
-    axios.put("http://localhost:5000/api/createUzasadnienieEfektu", {
+    axios.put(`${url}createUzasadnienieEfektu`, {
         id: id,
         komentarz: komentarz,
         })
     };
 
     const updateUzasadnienieEfektu = (id) => {
-        axios.put("http://localhost:5000/api/updateUzasadnienieEfektu", {
+        axios.put(`${url}updateUzasadnienieEfektu`, {
             id: id,
             komentarz: komentarz,
             })

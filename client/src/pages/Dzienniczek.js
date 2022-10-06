@@ -163,7 +163,7 @@ function Dzienniczek() {
 
   const createEditDay = (id, dzien, data, iloscGodzin, opis) => {
     axios
-      .post("http://localhost:5000/api/createEditDay", {
+      .post(`${url}createEditDay`, {
         id: id,
         changeOpis: changeOpis,
         changeDzien: changeDzien,
@@ -201,7 +201,7 @@ function Dzienniczek() {
     const acceptDelete = window.confirm(`Czy pewno chcesz usunąć ?`);
     if (acceptDelete)
       axios
-        .delete(`http://localhost:5000/api/deleteDay/${id}`)
+        .delete(`${url}deleteDay/${id}`)
         .then((res) => {})
         .then((res) => {
           setDziennik(
@@ -227,7 +227,7 @@ function Dzienniczek() {
 
     console.log(data);
     axios
-      .post(`http://localhost:5000/api/upload/${id}`, data, {})
+      .post(`${url}upload/${id}`, data, {})
       .then((response) => {
         console.log("upload/${idDay}" + changeZalacznik);
         toast.success("Załadowano pomyślnie");
@@ -252,7 +252,7 @@ function Dzienniczek() {
 
   const deleteZalacznik = (id) => {
     axios
-      .delete(`http://localhost:5000/api/deleteZalacznik/${id}`)
+      .delete(`${url}deleteZalacznik/${id}`)
       .then((res) => {})
       .then((res) => {
         setDziennikZalaczniki(
@@ -284,7 +284,7 @@ function Dzienniczek() {
 
   const createDay2 = () => {
     axios
-      .post("http://localhost:5000/api/createDay2", {
+      .post(`${url}createDay2`, {
       })
       .then((res) => {
         if (res.data.message == "Dzień został pomyślnie dodany") {
@@ -318,7 +318,7 @@ function Dzienniczek() {
 
   const createDay = () => {
     axios
-      .post("http://localhost:5000/api/createDay", {
+      .post(`${url}createDay`, {
         dayObject: dayObject,
       })
       .then((res) => {

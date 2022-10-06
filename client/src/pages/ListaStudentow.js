@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios, { Axios } from 'axios'
 import { useParams } from 'react-router-dom'
+import { url } from "../services/Url";
 
 function ListaStudentow() {
 
@@ -9,7 +10,7 @@ function ListaStudentow() {
   useEffect(()=>
   {
 
-    axios.get("http://localhost:5000/api/getStudents").then((res)=>{
+    axios.get(`${url}getStudents`).then((res)=>{
       
     setStudents(res.data)
       
