@@ -10,6 +10,8 @@ const {
   dzienZalaczniki,
 } = require("../models");
 exports.getEffectsOpiekunU = async (req, res) => {
+  if (!req.session.user)
+    res.send({ message: "Sesja utracona, zaloguj się ponownie" });
   try {
     const getEffects = await user.findAll({
       where: {
@@ -32,28 +34,32 @@ exports.getEffectsOpiekunU = async (req, res) => {
 
 exports.getDaysOpiekunUStatus = async (req, res) => {
   try {
-    const getDays = await dziennik.findAll({
-      where: { statusOpiekunaU: { [Op.ne]: "Oczekiwanie" } },
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
+      const getDays = await dziennik.findAll({
+        where: { statusOpiekunaU: { [Op.ne]: "Oczekiwanie" } },
 
-      include: [
-        {
-          model: user,
-          where: {
-            id_opiekunU: req.session.user.id,
+        include: [
+          {
+            model: user,
+            where: {
+              id_opiekunU: req.session.user.id,
+            },
           },
-        },
-        {
-          model: komentarze,
-          where: { userId: req.session.user.id },
-          required: false,
-        },
-        {
-          model: dzienZalaczniki,
-          required: false,
-        },
-      ],
-    });
-    res.send(getDays);
+          {
+            model: komentarze,
+            where: { userId: req.session.user.id },
+            required: false,
+          },
+          {
+            model: dzienZalaczniki,
+            required: false,
+          },
+        ],
+      });
+      res.send(getDays);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -61,28 +67,32 @@ exports.getDaysOpiekunUStatus = async (req, res) => {
 
 exports.getDaysOpiekunU = async (req, res) => {
   try {
-    const getDays = await dziennik.findAll({
-      where: { statusOpiekunaU: { [Op.eq]: "Oczekiwanie" } },
-      include: [
-        {
-          model: user,
-          where: {
-            id_opiekunU: req.session.user.id,
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
+      const getDays = await dziennik.findAll({
+        where: { statusOpiekunaU: { [Op.eq]: "Oczekiwanie" } },
+        include: [
+          {
+            model: user,
+            where: {
+              id_opiekunU: req.session.user.id,
+            },
           },
-        },
-        {
-          model: komentarze,
-          where: { userId: req.session.user.id },
-          required: false,
-        },
-        {
-          model: dzienZalaczniki,
-          required: false,
-        },
-      ],
-    });
+          {
+            model: komentarze,
+            where: { userId: req.session.user.id },
+            required: false,
+          },
+          {
+            model: dzienZalaczniki,
+            required: false,
+          },
+        ],
+      });
 
-    res.send(getDays);
+      res.send(getDays);
+    }
   } catch (err) {
     console.log(err);
   }

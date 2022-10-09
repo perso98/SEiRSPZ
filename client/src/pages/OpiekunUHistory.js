@@ -11,6 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { url } from "../services/Url";
 import FileDownload from "js-file-download";
+import { useNavigate } from "react-router-dom";
 
 function OpiekunUHistory() {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -22,6 +23,7 @@ function OpiekunUHistory() {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaU";
+  const navigate = useNavigate();
 
   const status = true;
   const handleClose = () => {
@@ -37,6 +39,9 @@ function OpiekunUHistory() {
 
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunUStatus`).then((res) => {
+      if (res.data.message) {
+        navigate("/");
+      }
       setDzienniczek(res.data);
       setLoading(false);
     });
