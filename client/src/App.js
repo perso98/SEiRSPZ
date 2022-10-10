@@ -128,7 +128,7 @@ function App() {
                   <Route path="opiekunu/efekty" element={<EfektyOpiekunU />} />
                   <Route
                     path="opiekunu/historia"
-                    element={<OpiekunUHistory />}
+                    element={<OpiekunUHistory setStatus={setStatus} />}
                   />
                   <Route path="opiekunu" element={<OpiekunU />} />
                 </Route>

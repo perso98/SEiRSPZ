@@ -13,7 +13,7 @@ import { url } from "../services/Url";
 import FileDownload from "js-file-download";
 import { useNavigate } from "react-router-dom";
 
-function OpiekunUHistory() {
+function OpiekunUHistory(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchLogin, setSearchLogin] = useState("");
@@ -40,7 +40,10 @@ function OpiekunUHistory() {
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunUStatus`).then((res) => {
       if (res.data.message) {
-        navigate("/");
+        props.setStatus();
+        alert(res.data.message).then(() => {
+          navigate("/login");
+        });
       }
       setDzienniczek(res.data);
       setLoading(false);
