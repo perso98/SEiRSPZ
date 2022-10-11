@@ -25,6 +25,7 @@ import EditAdminDialog from "../components/EditAdminDialog";
 import { ToastContainer, toast } from "react-toastify";
 import { url } from "../services/Url";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
@@ -58,17 +59,25 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "600",
   },
 }));
-export default function Admin() {
+export default function Admin(props) {
   const classes = useStyles();
   const [changeLogin, setChangeLogin] = useState();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
+  const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get(`${url}getStudents`).then((res) => {
-      setStudents(res.data);
-      setLoading(false);
+      if (res.data.message) {
+        props.setStatus();
+        alert(res.data.message).then(() => {
+          navigate("/login");
+        });
+      } else {
+        setStudents(res.data);
+        setLoading(false);
+      }
     });
   }, []);
 
@@ -94,12 +103,19 @@ export default function Admin() {
     );
     if (acceptDelete)
       axios.delete(`${url}deleteUser/${id}`).then((res) => {
-        toast.success("Użytkownik usunięty!");
-        setStudents(
-          students.filter((val) => {
-            return val.id != id;
-          })
-        );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          toast.success("Użytkownik usunięty!");
+          setStudents(
+            students.filter((val) => {
+              return val.id != id;
+            })
+          );
+        }
       });
   };
   const [addOpen, setAddOpen] = useState(false);
@@ -135,26 +151,33 @@ export default function Admin() {
         userObject: userObject,
       })
       .then((res) => {
-        if (res.data.message == "Konto zostało pomyślnie utworzone") {
-          setStudents([
-            ...students,
-            {
-              id: res.data.id,
-              login: userObject.login,
-              password: userObject.password,
-              isOpiekunZakl: userObject.opiekunZ,
-              isAdmin: userObject.admin,
-              isDyrektor: userObject.dyrektor,
-              isOpiekun: userObject.opiekunU,
-              isDziekanat: userObject.dziekanat,
-              isDyrektor: userObject.dyrektor,
-              isStudent: userObject.student,
-            },
-          ]);
-          setUserObject({ ...userObject, login: "", password: "" });
-        }
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          if (res.data.message == "Konto zostało pomyślnie utworzone") {
+            setStudents([
+              ...students,
+              {
+                id: res.data.id,
+                login: userObject.login,
+                password: userObject.password,
+                isOpiekunZakl: userObject.opiekunZ,
+                isAdmin: userObject.admin,
+                isDyrektor: userObject.dyrektor,
+                isOpiekun: userObject.opiekunU,
+                isDziekanat: userObject.dziekanat,
+                isDyrektor: userObject.dyrektor,
+                isStudent: userObject.student,
+              },
+            ]);
+            setUserObject({ ...userObject, login: "", password: "" });
+          }
 
-        toast.success(res.data.message);
+          toast.success(res.data.message);
+        }
       });
   };
 
@@ -185,12 +208,19 @@ export default function Admin() {
         id: id,
       })
       .then((res) => {
-        toast.success("Rola zmieniona");
-        setStudents(
-          students.map((val) => {
-            return val.id == id ? { ...val, [action]: type } : val;
-          })
-        );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          toast.success("Rola zmieniona");
+          setStudents(
+            students.map((val) => {
+              return val.id == id ? { ...val, [action]: type } : val;
+            })
+          );
+        }
       });
   };
 
@@ -234,12 +264,19 @@ export default function Admin() {
         changeLogin: changeLogin,
       })
       .then((res) => {
-        if (changeLogin.length > 0)
-          setStudents(
-            students.map((val) => {
-              return val.id == id ? { ...val, login: changeLogin } : val;
-            })
-          );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          if (changeLogin.length > 0)
+            setStudents(
+              students.map((val) => {
+                return val.id == id ? { ...val, login: changeLogin } : val;
+              })
+            );
+        }
       });
   };
 

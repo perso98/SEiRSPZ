@@ -6,8 +6,8 @@ import PaginationForEffects from "../components/PaginationForEffects";
 import EfektyDialog from "../components/EfektyDialog";
 import { ToastContainer, toast } from "react-toastify";
 import { url } from "../services/Url";
-
-function EfektyOpiekunU() {
+import { useNavigate } from "react-router-dom";
+function EfektyOpiekunU(props) {
   const [opis, setOpis] = useState("");
   const [studenci, setStudenci] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,6 +17,7 @@ function EfektyOpiekunU() {
   const [itemOffset, setItemOffset] = useState(0);
   const [efekt, setEfekt] = useState(0);
   const [efektId, setEfektId] = useState(0);
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setOpis();
@@ -29,9 +30,15 @@ function EfektyOpiekunU() {
   };
   useEffect(() => {
     axios.get(`${url}getEffectsOpiekunU`).then((res) => {
-      setStudenci(res.data);
-      setLoading(false);
-      console.log(res.data);
+      if (res.data.message) {
+        props.setStatus();
+        alert(res.data.message).then(() => {
+          navigate("/login");
+        });
+      } else {
+        setStudenci(res.data);
+        setLoading(false);
+      }
     });
   }, []);
 
@@ -43,21 +50,28 @@ function EfektyOpiekunU() {
         status: status,
       })
       .then((res) => {
-        toast.success(`Zmiana statusu na ${status}`);
-        setStudenci(
-          studenci.map((val) => {
-            return val.id == student
-              ? {
-                  ...val,
-                  efektyStudents: val.efektyStudents.map((efekty) => {
-                    return efekty.id == id
-                      ? { ...efekty, komentarz: opis, status: status }
-                      : efekty;
-                  }),
-                }
-              : val;
-          })
-        );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          toast.success(`Zmiana statusu na ${status}`);
+          setStudenci(
+            studenci.map((val) => {
+              return val.id == student
+                ? {
+                    ...val,
+                    efektyStudents: val.efektyStudents.map((efekty) => {
+                      return efekty.id == id
+                        ? { ...efekty, komentarz: opis, status: status }
+                        : efekty;
+                    }),
+                  }
+                : val;
+            })
+          );
+        }
       });
   };
 

@@ -93,7 +93,10 @@ function App() {
                     />
                   }
                 >
-                  <Route path="admin" element={<Admin />} />
+                  <Route
+                    path="admin"
+                    element={<Admin setStatus={setStatus} />}
+                  />
                 </Route>
                 <Route
                   element={
@@ -103,10 +106,13 @@ function App() {
                     />
                   }
                 >
-                  <Route path="opiekunz" element={<OpiekunZ />} />
+                  <Route
+                    path="opiekunz"
+                    element={<OpiekunZ setStatus={setStatus} />}
+                  />
                   <Route
                     path="opiekunz/historia"
-                    element={<OpiekunZHistory />}
+                    element={<OpiekunZHistory setStatus={setStatus} />}
                   />
                 </Route>
                 <Route path="form" element={<Form />} />
@@ -125,12 +131,18 @@ function App() {
                     />
                   }
                 >
-                  <Route path="opiekunu/efekty" element={<EfektyOpiekunU />} />
+                  <Route
+                    path="opiekunu/efekty"
+                    element={<EfektyOpiekunU setStatus={setStatus} />}
+                  />
                   <Route
                     path="opiekunu/historia"
                     element={<OpiekunUHistory setStatus={setStatus} />}
                   />
-                  <Route path="opiekunu" element={<OpiekunU />} />
+                  <Route
+                    path="opiekunu"
+                    element={<OpiekunU setStatus={setStatus} />}
+                  />
                 </Route>
                 <Route path="*" element={<NoPage />} />
               </Route>

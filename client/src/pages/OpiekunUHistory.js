@@ -44,29 +44,37 @@ function OpiekunUHistory(props) {
         alert(res.data.message).then(() => {
           navigate("/login");
         });
+      } else {
+        setDzienniczek(res.data);
+        setLoading(false);
       }
-      setDzienniczek(res.data);
-      setLoading(false);
     });
   }, []);
   const deleteComment = (id, day) => {
     axios
-      .delete(`${url}/deleteComment/${id}`, {
+      .delete(`${url}deleteComment/${id}`, {
         id: id,
       })
       .then((res) => {
-        setDzienniczek(
-          dzienniczek.map((val) => {
-            return val.id == day.id
-              ? {
-                  ...val,
-                  komentarzes: val.komentarzes.filter((com) => {
-                    return com.id != id;
-                  }),
-                }
-              : val;
-          })
-        );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == day.id
+                ? {
+                    ...val,
+                    komentarzes: val.komentarzes.filter((com) => {
+                      return com.id != id;
+                    }),
+                  }
+                : val;
+            })
+          );
+        }
       });
   };
   const downloadFile = (name) => {
@@ -76,10 +84,17 @@ function OpiekunUHistory(props) {
       responseType: "blob",
     })
       .then((res) => {
-        FileDownload(res.data, name);
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          FileDownload(res.data, name);
+        }
       })
       .catch(function (error) {
-        alert("Plik już nie istnieje");
+        alert(error);
       });
   };
 
@@ -91,12 +106,19 @@ function OpiekunUHistory(props) {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        toast.success(`Zmiana statusu na ${status}`);
-        setDzienniczek(
-          dzienniczek.map((val) => {
-            return val.id == id ? { ...val, [res.data.status]: status } : val;
-          })
-        );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          toast.success(`Zmiana statusu na ${status}`);
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == id ? { ...val, [res.data.status]: status } : val;
+            })
+          );
+        }
       });
   };
 
@@ -110,28 +132,35 @@ function OpiekunUHistory(props) {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        toast.success(`Zmiana statusu na ${status}`);
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          toast.success(`Zmiana statusu na ${status}`);
 
-        setDzienniczek(
-          dzienniczek.map((val) => {
-            return val.id == id
-              ? {
-                  ...val,
-                  [res.data.status]: status,
-                  opis: opis ? opis : val.opis,
-                  komentarzes: komentarz
-                    ? [
-                        ...val.komentarzes,
-                        {
-                          id: res.data.commentId,
-                          komentarz: komentarz,
-                        },
-                      ]
-                    : [...val.komentarzes],
-                }
-              : val;
-          })
-        );
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == id
+                ? {
+                    ...val,
+                    [res.data.status]: status,
+                    opis: opis ? opis : val.opis,
+                    komentarzes: komentarz
+                      ? [
+                          ...val.komentarzes,
+                          {
+                            id: res.data.commentId,
+                            komentarz: komentarz,
+                          },
+                        ]
+                      : [...val.komentarzes],
+                  }
+                : val;
+            })
+          );
+        }
       });
   };
 

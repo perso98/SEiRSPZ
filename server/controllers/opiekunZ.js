@@ -13,28 +13,32 @@ const {
 
 exports.getDaysOpiekunZStatus = async (req, res) => {
   try {
-    const getDays = await dziennik.findAll({
-      where: { statusOpiekunaZ: { [Op.ne]: "Oczekiwanie" } },
-      include: [
-        {
-          model: user,
-          where: {
-            id_opiekunZ: req.session.user.id,
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
+      const getDays = await dziennik.findAll({
+        where: { statusOpiekunaZ: { [Op.ne]: "Oczekiwanie" } },
+        include: [
+          {
+            model: user,
+            where: {
+              id_opiekunZ: req.session.user.id,
+            },
           },
-        },
-        {
-          model: komentarze,
-          where: { userId: req.session.user.id },
-          required: false,
-        },
-        {
-          model: dzienZalaczniki,
-          required: false,
-        },
-      ],
-    });
+          {
+            model: komentarze,
+            where: { userId: req.session.user.id },
+            required: false,
+          },
+          {
+            model: dzienZalaczniki,
+            required: false,
+          },
+        ],
+      });
 
-    res.send(getDays);
+      res.send(getDays);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -42,28 +46,32 @@ exports.getDaysOpiekunZStatus = async (req, res) => {
 
 exports.getDaysOpiekunZ = async (req, res) => {
   try {
-    const getDays = await dziennik.findAll({
-      where: { statusOpiekunaZ: { [Op.eq]: "Oczekiwanie" } },
-      include: [
-        {
-          model: user,
-          where: {
-            id_opiekunZ: req.session.user.id,
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
+      const getDays = await dziennik.findAll({
+        where: { statusOpiekunaZ: { [Op.eq]: "Oczekiwanie" } },
+        include: [
+          {
+            model: user,
+            where: {
+              id_opiekunZ: req.session.user.id,
+            },
           },
-        },
-        {
-          model: komentarze,
-          where: { userId: req.session.user.id },
-          required: false,
-        },
-        {
-          model: dzienZalaczniki,
-          required: false,
-        },
-      ],
-    });
+          {
+            model: komentarze,
+            where: { userId: req.session.user.id },
+            required: false,
+          },
+          {
+            model: dzienZalaczniki,
+            required: false,
+          },
+        ],
+      });
 
-    res.send(getDays);
+      res.send(getDays);
+    }
   } catch (err) {
     console.log(err);
   }

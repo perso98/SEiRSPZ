@@ -12,8 +12,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FileDownload from "js-file-download";
 import { url } from "../services/Url";
+import { useNavigate } from "react-router-dom";
 
-function OpiekunZ() {
+function OpiekunZ(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchLogin, setSearchLogin] = useState("");
@@ -23,6 +24,7 @@ function OpiekunZ() {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setOpis();
@@ -36,8 +38,15 @@ function OpiekunZ() {
 
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunZ`).then((res) => {
-      setDzienniczek(res.data);
-      setLoading(false);
+      if (res.data.message) {
+        props.setStatus();
+        alert(res.data.message).then(() => {
+          navigate("/login");
+        });
+      } else {
+        setDzienniczek(res.data);
+        setLoading(false);
+      }
     });
   }, []);
 
@@ -49,12 +58,19 @@ function OpiekunZ() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        toast.success(`Zmiana statusu na ${status}`);
-        setDzienniczek(
-          dzienniczek.filter((val) => {
-            return val.id != id;
-          })
-        );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          toast.success(`Zmiana statusu na ${status}`);
+          setDzienniczek(
+            dzienniczek.filter((val) => {
+              return val.id != id;
+            })
+          );
+        }
       });
   };
   const downloadFile = (name) => {
@@ -63,7 +79,14 @@ function OpiekunZ() {
       method: "GET",
       responseType: "blob",
     }).then((res) => {
-      FileDownload(res.data, name);
+      if (res.data.message) {
+        props.setStatus();
+        alert(res.data.message).then(() => {
+          navigate("/login");
+        });
+      } else {
+        FileDownload(res.data, name);
+      }
     });
   };
   const changeStatusEdit = (id, status) => {
@@ -76,11 +99,18 @@ function OpiekunZ() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        setDzienniczek(
-          dzienniczek.filter((val) => {
-            return val.id != id;
-          })
-        );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          setDzienniczek(
+            dzienniczek.filter((val) => {
+              return val.id != id;
+            })
+          );
+        }
       });
   };
 
