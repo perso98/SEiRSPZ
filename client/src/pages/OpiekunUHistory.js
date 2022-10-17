@@ -11,8 +11,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { url } from "../services/Url";
 import FileDownload from "js-file-download";
+import { useNavigate } from "react-router-dom";
 
-function OpiekunUHistory() {
+function OpiekunUHistory(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchLogin, setSearchLogin] = useState("");
@@ -22,6 +23,7 @@ function OpiekunUHistory() {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaU";
+  const navigate = useNavigate();
 
   const status = true;
   const handleClose = () => {
@@ -37,28 +39,42 @@ function OpiekunUHistory() {
 
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunUStatus`).then((res) => {
-      setDzienniczek(res.data);
-      setLoading(false);
+      if (res.data.message) {
+        props.setStatus();
+        alert(res.data.message).then(() => {
+          navigate("/login");
+        });
+      } else {
+        setDzienniczek(res.data);
+        setLoading(false);
+      }
     });
   }, []);
   const deleteComment = (id, day) => {
     axios
-      .delete(`${url}/deleteComment/${id}`, {
+      .delete(`${url}deleteComment/${id}`, {
         id: id,
       })
       .then((res) => {
-        setDzienniczek(
-          dzienniczek.map((val) => {
-            return val.id == day.id
-              ? {
-                  ...val,
-                  komentarzes: val.komentarzes.filter((com) => {
-                    return com.id != id;
-                  }),
-                }
-              : val;
-          })
-        );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == day.id
+                ? {
+                    ...val,
+                    komentarzes: val.komentarzes.filter((com) => {
+                      return com.id != id;
+                    }),
+                  }
+                : val;
+            })
+          );
+        }
       });
   };
   const downloadFile = (name) => {
@@ -68,10 +84,17 @@ function OpiekunUHistory() {
       responseType: "blob",
     })
       .then((res) => {
-        FileDownload(res.data, name);
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          FileDownload(res.data, name);
+        }
       })
       .catch(function (error) {
-        alert("Plik już nie istnieje");
+        alert(error);
       });
   };
 
@@ -83,12 +106,19 @@ function OpiekunUHistory() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        toast.success(`Zmiana statusu na ${status}`);
-        setDzienniczek(
-          dzienniczek.map((val) => {
-            return val.id == id ? { ...val, [res.data.status]: status } : val;
-          })
-        );
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          toast.success(`Zmiana statusu na ${status}`);
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == id ? { ...val, [res.data.status]: status } : val;
+            })
+          );
+        }
       });
   };
 
@@ -102,28 +132,35 @@ function OpiekunUHistory() {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        toast.success(`Zmiana statusu na ${status}`);
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          toast.success(`Zmiana statusu na ${status}`);
 
-        setDzienniczek(
-          dzienniczek.map((val) => {
-            return val.id == id
-              ? {
-                  ...val,
-                  [res.data.status]: status,
-                  opis: opis ? opis : val.opis,
-                  komentarzes: komentarz
-                    ? [
-                        ...val.komentarzes,
-                        {
-                          id: res.data.commentId,
-                          komentarz: komentarz,
-                        },
-                      ]
-                    : [...val.komentarzes],
-                }
-              : val;
-          })
-        );
+          setDzienniczek(
+            dzienniczek.map((val) => {
+              return val.id == id
+                ? {
+                    ...val,
+                    [res.data.status]: status,
+                    opis: opis ? opis : val.opis,
+                    komentarzes: komentarz
+                      ? [
+                          ...val.komentarzes,
+                          {
+                            id: res.data.commentId,
+                            komentarz: komentarz,
+                          },
+                        ]
+                      : [...val.komentarzes],
+                  }
+                : val;
+            })
+          );
+        }
       });
   };
 
