@@ -34,88 +34,25 @@ function EfektUzasadnienie(
     idUser,
     info,
     operacja,
-    update,
     set,
+    komentarze,
   }
   ){
 
     const classes = useStyles();
 
-    const [listEfektyStudent, setListEfektyStudent] = useState([]);
+    // const [listEfektyStudent, setListEfektyStudent] = useState([]);
 
-    const [updateOrSave, setUpdateOrSave] = useState(false);
+  
+    // useEffect(() => {
+    //   console.log(info)
+    //     axios.get(`${url}listEfektyStudent`,{
+    //       id: info
+    //     }).then((res) => {
+    //         setListEfektyStudent(res.data);
+    //     });
 
-
-    const updateOrSave2 = true;
-
-
-    useEffect(() => {
-        axios.get(`${url}listEfektyStudent`).then((res) => {
-            setListEfektyStudent(res.data);
-          
-        });
-      }, []);
-
-
-    const UpdateSave = listEfektyStudent.map((val) => (
-            (val.efektyListumId === info.id ? (
-                val.id
-            ):null
-    )))
-
-    const Update = <div>
-                        <div>
-                        <TextField className={classes.TextField}
-                            label="Opis"
-                            id="opis"
-                            onChange={(e) => {
-                                set(e.target.value);
-                            }}
-                            multiline
-                            fullWidth
-                            margin="normal"
-                            />
-                        </div>
-                        <div  style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
-                            <Button
-                            variant="contained"
-                            onClick={() => {
-                                update(info.id);
-                            }}
-                            >
-                                Update 
-                            </Button>
-
-                        </div>
-                    </div>
-
-
-    const Zapisz = <div>
-                        <div>
-                        <TextField className={classes.TextField}
-                            label="Opis"
-                            id="opis"
-                            onChange={(e) => {
-                                set(e.target.value);
-                            }}
-                            multiline
-                            fullWidth
-                            margin="normal"
-                            />
-                        </div>
-                        <div  style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
-                            <Button
-                            variant="contained"
-                            onClick={() => {
-                                operacja(info.id);
-                            }}
-                            >
-                                Zapisz 
-                            </Button>
-
-                        </div>
-                    </div>
-
+    //   }, []);
 
   return (
         <Dialog
@@ -124,62 +61,56 @@ function EfektUzasadnienie(
           fullWidth="40%"
           style={{ fontSize: "1.2rem", color: "#403c3c" }}
         >
-          <DialogTitle
-            style={{ justifyContent: "space-between", display: "flex" }}
-          >
-            Efekt:{info.nazwa}
+          <DialogTitle>
+            <div style={{ justifyContent: "space-between", display: "flex" }}>
+            Efekt: {info.nazwa}
             <IconButton onClick={handleClose}>
               <CloseIcon />
             </IconButton>
+            </div>
+            <div>
+            Opis: {info.opis}
+            </div>
           </DialogTitle>
+          
           <DialogContent>
             
             <div>
-            {Zapisz}
-            {listEfektyStudent.map((val) => (
                 <div>
-                    {(val.efektyListumId === info.id) ? (
-                        <div>
-                            <div>
-                            <TextField className={classes.TextField}
-                                label="Opis"
-                                id="opis"
-                                defaultValue= {val.komentarz}
-                                onChange={(e) => {
-                                    set(e.target.value);
-                                }}
-                                multiline
-                                fullWidth
-                                margin="normal"
-                                />
-                            </div>
-                            <div  style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
-                                <Button
-                                variant="contained"
-                                onClick={() => {
-                                    update(info.id);
-                                }}
-                                >
-                                    Update 
-                                </Button>
-
-                            </div>
-                        </div>
-                    ): null}
-                    
+                  
+                  <TextField className={classes.TextField}
+                  label="Opis"
+                  id="opis"
+                  defaultValue= {komentarze}
+                  onChange={(e) => {
+                      set(e.target.value);
+                  }}
+                  multiline
+                  fullWidth
+                  margin="normal"
+                                  />
                       
                 </div>
-            ))}
+                <div  style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
+                    <Button
+                    variant="contained"
+                    onClick={() => {
+                        operacja(info.id);
+                    }}
+                    >
+                        Zapisz 
+                    </Button>
 
-                {/* <div>
-                    {updateOrSave2 === true ? (
-                        <div>
-                            {Zapisz}
-                        </div>
-                    ): null}
-                
-                </div> */}
+                </div>
             </div>
+
+                
+
+            
+
+            
+            
+            
 
           </DialogContent>
         </Dialog>

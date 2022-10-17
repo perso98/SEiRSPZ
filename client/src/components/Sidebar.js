@@ -125,7 +125,7 @@ function Sidebar(props) {
                   <div className={classes.item}>
                     <AssignmentIcon className={classes.icon} />
                     <Typography className={classes.text}>
-                      Dodaj dane
+                      Efekty uczenia się
                     </Typography>
                   </div>
                   
@@ -141,7 +141,7 @@ function Sidebar(props) {
                         <div className={classes.item}>
                           <AssignmentIcon className={classes.icon} />
                           <Typography className={classes.text}>
-                            Dodaj opiekunów
+                            Zarządzanie zakładami
                           </Typography>
                         </div>
                       </Link>

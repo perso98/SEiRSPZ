@@ -7,6 +7,7 @@ const {
     firma,
     komentarze,
   } = require("../models");
+  const { Op } = require("sequelize");
 
   exports.getOpiekuni = async (req, res) => {
     const listOpiekun = await user.findAll({
@@ -101,9 +102,7 @@ const {
   };
 
   exports.delOpiekunFirma = async (req, res) => {
-    const { id, jakiOpiekun } = req.body;
-    console.log("Usuwanko")
-    console.log(jakiOpiekun)
+    const { id, isOpiekun, isOpiekunZakl } = req.body;
     updateOpiekun = await user.update(
       {
         firmaId: null,
@@ -112,7 +111,23 @@ const {
         where: { id: id },
       }
     );
-    if (jakiOpiekun == 1){
+    if (isOpiekunZakl == 1){
+      console.log("Usuwanie")
+      await user.update(
+        {
+          id_opiekunZ: null,
+          firmaId: null
+        },
+        {
+          where: { 
+            [Op.and]: [
+            { id_opiekunZ: id },
+            { id_opiekunU: null }
+            ]
+          }
+        }
+      )
+
       await user.update(
         {
           id_opiekunZ: null,
@@ -121,9 +136,24 @@ const {
           where: { id_opiekunZ: id },
         }
       )
+      
     }
-    if (jakiOpiekun == 0){
-      console.log("Usuwanko")
+    if (isOpiekun == 1){
+      console.log("Usuwanie")
+      await user.update(
+        {
+          id_opiekunU: null,
+          firmaId: null
+        },
+        {
+          where: { 
+            [Op.and]: [
+            { id_opiekunU: id },
+            { id_opiekunZ: null }
+            ]
+          }
+        }
+      )
       await user.update(
         {
           id_opiekunU: null,
@@ -140,10 +170,7 @@ const {
   
   exports.addStudentFirma = async (req, res) => {
     const { id, firmaId, idOpiekuna, jakiOpiekun } = req.body;
-    console.log(jakiOpiekun)
-    console.log(idOpiekuna)
     if (jakiOpiekun == 1){
-      console.log(firmaId)
       updateStudent = await user.update(
         {
           firmaId: firmaId,
@@ -155,7 +182,6 @@ const {
       );
     }
     else {
-      console.log(firmaId)
       updateStudent = await user.update(
         {
           firmaId: firmaId,
@@ -172,9 +198,7 @@ const {
 
   exports.delStudentFirma = async (req, res) => {
     const { id, jakiOpiekun } = req.body;
-    console.log(jakiOpiekun)
     if (jakiOpiekun == 1){
-      console.log("111111111111UsuwanieZ")
     updateOpiekun = await user.update(
       {
         id_opiekunZ: null,
@@ -186,7 +210,6 @@ const {
     
     }
     else{
-      console.log("111111111111UsuwanieU")
       updateOpiekun = await user.update(
         {
           id_opiekunU: null,
@@ -258,6 +281,60 @@ const {
   
       res.send({
         message: "Pomyślnie usunięto",
+      });
+    } catch (err) {
+      res.send({ message: err.message });
+    }
+  };
+
+
+  exports.updateStudentPorozumienie = async (req, res) => {
+    const { id, changeNP, changeCTP, changePO, changePD, changeDP } = req.body;
+  console.log(id)
+
+    try {
+      if(changeNP == "")
+      {
+        await dane.update(
+          {
+            numerPorozumienia:null,
+            czasTrwaniaPraktyki:changeCTP,
+            porozumienieOd:changePO,
+            porozumienieDo:changePD,
+            dataPorozumienia: changeDP,
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+      }
+      else{
+        await dane.update(
+          {
+            numerPorozumienia:changeNP,
+            czasTrwaniaPraktyki:changeCTP,
+            porozumienieOd:changePO,
+            porozumienieDo:changePD,
+            dataPorozumienia: changeDP,
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+      }
+      const editStudent = await firma.findOne({
+        where: {
+          id: id,
+        },
+      });
+  
+      res.send({
+        message: "Zmiana przeszła pomyślnie...",
+        editStudent: editStudent.numerPorozumienia,
       });
     } catch (err) {
       res.send({ message: err.message });

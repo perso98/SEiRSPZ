@@ -22,7 +22,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import AddDayDialog from "../components/AddDayDialog";
 import EditDay from "../components/EditDay";
-import EfektyUczeniaSie from "../components/EfektyUczeniaSie";
+
 import SearchIcon from "@mui/icons-material/Search";
 import { InputAdornment } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -30,7 +30,7 @@ import IconButton from "@mui/material/IconButton";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import ButtonLink from "../components/Button";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
@@ -85,6 +85,24 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     fontWeight: "600",
+  },
+  item: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(1),
+    [theme.breakpoints.up("sm")]: {
+      marginBottom: theme.spacing(1),
+      cursor: "pointer",
+    },
+  },
+  links: {
+    textDecoration: "none",
+    color: "white",
+    "&:hover": {
+      color: "yellow",
+      textDecoration: "none",
+    },
   },
 }));
 
@@ -171,7 +189,7 @@ function Dzienniczek() {
         changeIloscGodzin: changeIloscGodzin,
       })
       .then((res) => {
-        if (res.data.message == "Dzień został pomyślnie dodany") {
+        if (res.data.message == "Zmiana przeszła pomyślnie...") {
           setDziennik(
             dziennik.map((val) =>
               val.id == id
@@ -376,28 +394,30 @@ function Dzienniczek() {
   return (
     <div className={classes.containerMain}>
       <div className={classes.nowyDzienBTN}>
+      <div style={{ justifyContent: "space-between", display: "flex" }}>
         <Button variant="contained" onClick={handleAddOpen}>
           Dodaj nowy dzień
         </Button>
+        <Button variant="contained">
+        <Link to="/efekty" className={classes.links}>
+          <div className={classes.item}>
+            <Typography className={classes.text}>
+            Efekty Uczenia się
+            </Typography>
+          </div>
+        </Link>
+        </Button>
+        </div>
       </div>
 
       <Grid container>
-        <Grid xs={12} md={8}>
-          <Item></Item>
-        </Grid>
-        <Grid xs={12} md={4}>
-          <Item></Item>
-        </Grid>
-      </Grid>
-
-      <Grid container>
-        <Grid xs={12} md={8}>
+        <Grid xs={12} md={12}>
           <div>
             <div
               style={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "space-between",
+                justifyContent: "space-around",
               }}
             >
               <div style={{ overflowX: "auto" }}>
@@ -456,71 +476,8 @@ function Dzienniczek() {
             </div>
           </div>
 
-          {/* <Grid container>
-            <Grid item xs={1} md={1} style={{ marginRight: "3px" }}>
-              <div>Dzień</div>
-            </Grid>
-            <Grid item xs={2} md={2}>
-              <div>Data</div>
-            </Grid>
-            <Grid item xs={3} md={2.1}>
-              <div>Status Opiekuna Uczelnianego</div>
-            </Grid>
-            <Grid item xs={3} md={2.1}>
-              <div>Status Opiekuna Zakładowego</div>
-            </Grid>
-            <Grid item>
-              <div>Opis</div>
-            </Grid>
-            <Grid item xs={1} md={1}>
-              <div></div>
-            </Grid>
-          </Grid> */}
-
-          {/* {dziennik.map((val) => (
-            <Grid container>
-              <Grid item xs={1} md={1} style={{ marginRight: "3px" }}>
-                <div>{val.dzien}</div>
-              </Grid>
-              <Grid item xs={2} md={2}>
-                <div>{val.data}</div>
-              </Grid>
-              <Grid item xs={3} md={2.1}>
-                <div>{val.statusOpiekunaU}</div>
-              </Grid>
-              <Grid item xs={3} md={2.1}>
-                <div>{val.statusOpiekunaZ}</div>
-              </Grid>
-              <Grid item xs={2} md={2}>
-                <div style={{ wordWrap: "break-word" }}>
-                  {val.opis.length < 26 ? (
-                    <div>{val.opis}</div>
-                  ) : (
-                    <div>{maxCharacter(val.opis, 35)}...</div>
-                  )}
-                </div>
-              </Grid>
-              <Grid item xs={2} md={1}>
-                <div>
-                  <Button
-                    className={classes.btnEdycja}
-                    onClick={() => {
-                      handleEditOpen(val);
-                    }}
-                    variant="contained"
-                    color="warning"
-                  >
-                    Edutuj
-                  </Button>
-                </div>
-              </Grid>
-            </Grid>
-          ))} */}
-
         </Grid>
-        <Grid xs={12} md={4} style={{ alignItems: "flex-start" }}>
-          <EfektyUczeniaSie />
-        </Grid>
+        
       </Grid>
 
       

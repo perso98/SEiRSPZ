@@ -1,11 +1,12 @@
 import React,{ useState, useEffect} from 'react'
 import axios from 'axios'
 
-import { Container, Grid} from '@mui/material'
+import { Container, formControlLabelClasses, Grid} from '@mui/material'
 import AddFirma from "./AddFirma";
 import EditFirma from "./EditFirma";
 import AddOpiekun from "./AddOpiekun";
 import AddStudent from "./AddStudent";
+import EditStudent from "./EditStudent";
 import Button from "@mui/material/Button";
 import { Typography, TextField, FormControl, FilledInput } from "@mui/material";
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -201,10 +202,11 @@ function ListaOpiekunow() {
           });
       };
 
-      const delOpiekunFirma = (id, jakiOpiekun) => {
+      const delOpiekunFirma = (id, isOpiekun, isOpiekunZakl) => {
         axios.put(`${url}delOpiekunFirma`, {
             id: id,
-            jakiOpiekun: jakiOpiekun
+            isOpiekun: isOpiekun,
+            isOpiekunZakl: isOpiekunZakl,
           })
           .then((res) => {
             setUser(
@@ -250,6 +252,52 @@ function ListaOpiekunow() {
               );
           });
       };
+
+      //EdutStudent
+
+      const [studentEditOpen, setStudentEditOpen] = useState(false);
+      const [studentEditInfo, setStudentEditInfo] = useState([]);
+      const [changeNP, setChangeNP] = useState("");
+      const [changeCTP, setChangeCTP] = useState("");
+      const [changePO, setChangePO] = useState("");
+      const [changePD, setChangePD] = useState("");
+      const [changeDP, setChangeDP] = useState("");
+      
+
+      const handleStudentEditClose = () => {
+        setStudentEditOpen(false);
+        setChangeNazwa();
+      };
+      const handleStudentEditOpen = (val) => {
+        console.log(val)
+        setStudentEditInfo(val)
+        setStudentEditOpen(true);
+      };
+
+      const updateStudent = (id) => {
+        axios.put(`${url}updateStudentPorozumienie`, {
+            id: id,
+            changeNP: changeNP,
+            changeCTP: changeCTP,
+            changePO: changePO,
+            changePD: changePD,
+            changeDP: changeDP,
+
+          })
+          .then((res) => {
+            setFirma(
+                firma.map((val) => {
+                  return val.id == id ? { ...val, 
+                    nazwa: res.data.editNazwa 
+                } : val;
+                })
+              );
+          });
+      };
+
+
+
+      
 
   return (
     <div>
@@ -301,6 +349,18 @@ function ListaOpiekunow() {
                 operacja={updateFirma}
                 onChange={onChangeEditFirma}
                 setChange={setChangeNazwa}
+            />
+            <EditStudent
+                open={studentEditOpen}
+                handleClose={handleStudentEditClose}
+                info={studentEditInfo}
+                operacja={updateStudent}
+                setChange={setChangeNazwa}
+                setChangeNP =  {setChangeNP}
+                setChangeCTP = {setChangeCTP}
+                setChangePO =  {setChangePO}
+                setChangePD =  {setChangePD}
+                setChangeDP =  {setChangeDP}
             />
             <Grid container
                 style={{
@@ -438,12 +498,20 @@ function ListaOpiekunow() {
                                                         {dane.map((daneS) => (
                                                             daneS.id === valStudent.daneId ? (
                                                                 <div style={{marginBottom: "10px"}}>
-                                                                        
-                                                                        <div style={{display: "flex", gap: "0.4rem"}}>
-                                                                            {/* Imie i nazwisko: */}
-                                                                            <div>{daneS.imie}</div>
-                                                                            {daneS.nazwisko} <div>Indeks: {daneS.indeks}</div>
-                                                                        </div>
+                                                                            <div 
+                                                                            onClick={() => {handleStudentEditOpen(daneS)}} 
+                                                                            style={{
+                                                                                display: "flex", 
+                                                                                gap: "0.4rem", 
+                                                                                color: daneS.numerPorozumienia === null ? (
+                                                                                    "red"
+                                                                                    ): "green"
+
+                                                                                }}>
+                                                                                {/* Imie i nazwisko: */}
+                                                                                <div>{daneS.imie}</div>
+                                                                                {daneS.nazwisko} <div>Indeks: {daneS.indeks}</div>
+                                                                            </div>
                                                                         {/* <div style={{display: "flex", gap: "0.4rem"}}>
                                                                             Indeks:<div>{daneS.indeks}</div>
                                                                         </div> */}

@@ -131,11 +131,11 @@ function AddStudent(
                                 Przypisani Studenci<p></p>
                                 Imie i naziwkso: 
                                 {user.map((val) => (
-                                    <Grid>
+                                    <Grid style={{ width: "300px"}}>
                                         { jakiOpiekun === 1 ? (
                                             <div>
                                                 { val.isStudent === 1 && val.firmaId === idFirma.id && val.id_opiekunZ === idOpiekuna  ? (
-                                                    <Grid container>
+                                                    <Grid container style={{ display: "flex", justifyContent: "space-between" }}>
                                                         {/* <Grid style={{marginRight:"15px"}}
                                                         xs = {2}>
                                                                 login: {val.login}
@@ -158,7 +158,7 @@ function AddStudent(
                                             </div>
                                         ): <div>
                                         { val.isStudent === 1 && val.firmaId === idFirma.id && val.id_opiekunU === idOpiekuna  ? (
-                                                <Grid container>
+                                                <Grid container style={{ display: "flex", justifyContent: "space-between" }}>
                                                     {/* <Grid
                                                     style={{marginRight:"15px"}}
                                                     xs = {2}>
@@ -167,7 +167,7 @@ function AddStudent(
                                                     {dane.map((daneAO) => (
                                                         daneAO.id === val.daneId ? (
                                                             <Grid style={{marginRight:"15px"}}>
-                                                                Imie i nazwisko: {daneAO.imie} {daneAO.nazwisko} 
+                                                                {daneAO.imie} {daneAO.nazwisko} 
                                                             </Grid>
                                                         ): null
                                                     ))}
@@ -185,11 +185,11 @@ function AddStudent(
                             <div>
                             <div className={classes.przerwa}>Studenci lista</div>
                             {user.map((val) => (
-                                <Grid>
+                                <Grid style={{ width: "300px"}}>
                                     { jakiOpiekun === 1 ? (
-                                    <div>
+                                    <div >
                                         { val.isStudent === 1 && val.id_opiekunZ === null ? (
-                                            <Grid container>
+                                            <Grid container style={{ display: "flex", justifyContent: "space-between" }} >
                                                 {/* <Grid  style={{marginRight:"15px"}}
                                                 xs = {2}>
                                                         login: {val.login}
@@ -211,7 +211,7 @@ function AddStudent(
                                     </div>
                                     ): <div>
                                         { val.isStudent === 1 && val.id_opiekunU === null ? (
-                                        <Grid container>
+                                        <Grid container style={{ display: "flex", justifyContent: "space-between" }}>
                                             {/* <Grid  style={{marginRight:"15px"}}
                                             xs = {2}>
                                                     login: {val.login}

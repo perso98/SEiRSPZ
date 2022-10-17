@@ -7,8 +7,12 @@ const {
     firma,
     komentarze,
     dzienZalaczniki,
+    listaKierunkow,
   } = require("../models");
-  
+const { Op } = require("Sequelize");
+const multer = require("multer");
+
+
   exports.getDziennik = async (req, res) => {
     const listDziennik = await dziennik.findAll({
       where: { userId: req.session.user.id },
@@ -82,13 +86,13 @@ const {
     const { id, changeOpis, changeDzien, changeData, changeIloscGodzin } =
       req.body;
     try {
-      const checkDay = await dziennik.findOne({
-        where: {
-          dzien: changeDzien,
-          userId: req.session.user.id,
-        },
-      });
-      if (checkDay == null) {
+      // const checkDay = await dziennik.findOne({
+      //   where: {
+      //     id: id,
+      //   },
+      // });
+      // console.log("QQQQQQQQQ"+ checkDay.dzien )
+      // if (checkDay.dzien == null) {
         await dziennik.update(
           {
             dzien: changeDzien,
@@ -114,12 +118,12 @@ const {
           editIlosc_godzin: editDay.ilosc_godzin,
           editOpis: editDay.opis,
         });
-      }
-      else {
-        res.send({ message: "Jest już taki dzień" });
-      }
+      // }
+      // else {
+      //   res.send({ message: "Jest już taki dzień" });
+      // }
     } catch (err) {
-      res.send({ message: err.message });
+      res.send({ message: "Wprawadź numer dnia" });
     }
   };
 
@@ -140,48 +144,87 @@ const {
 
 
 exports.getEfektUczenia = async (req, res) => {
-    const listaEfektow = await efektyLista.findAll();
+
+  const userId = await user.findOne({
+    attributes: ['daneId'],
+    where: {
+      id: req.session.user.id,
+    },
+  })
   
+
+  const specjalnosc = await dane.findOne({
+    attributes: ['specjalnosc'],
+    where: {
+      id: userId.daneId,
+    },
+  })
+  
+
+  const idSpecjalnosc = await listaKierunkow.findOne({
+    attributes: ['id'],
+    where: {
+      nazwa: specjalnosc.specjalnosc,
+    },
+  })
+
+
+  const listaEfektow = await efektyLista.findAll({
+    where: {
+    listaKierunkowId: idSpecjalnosc.id,
+  },});
+
     res.send(listaEfektow);
   };
 
 
   exports.listEfektyStudent = async (req, res) => {
-    const listEfektyStudent = await efektyStudent.findAll({
-      where: { userId: req.session.user.id },
+    const id = req.params.id;
+    const listEfektyStudent = await efektyStudent.findOne({
+      where: {
+        [Op.and]: [
+          { userId: req.session.user.id },
+          { efektyListumId: id }
+        ]
+      }
     });
-  
-    res.send(listEfektyStudent);
-  };
-
-
-  exports.createUzasadnienieEfektu = async (req, res) => {
-    const { id, komentarz } = req.body;
-    const uzasadnienieEfektu = await efektyStudent.create({
-      komentarz: komentarz,
-      efektyListumId: id,
-      userId: req.session.user.id,
-    });
-    res.send(uzasadnienieEfektu);
+    if ( listEfektyStudent == null){
+      res.send(listEfektyStudent);
+    }
+    else{
+    res.send(listEfektyStudent.komentarz);
+  }
   };
 
 
   exports.updateUzasadnienieEfektu = async (req, res) => {
     const { id, komentarz } = req.body;
-    const uzasadnienieEfektu = await efektyStudent.update(
-      {
+    const checkEfekt = await efektyStudent.findOne({
+      where: {efektyListumId: id}
+    })
+    console.log(id,komentarz )
+    if( checkEfekt == null){
+      console.log(2 )
+      const uzasadnienieEfektu = await efektyStudent.create({
         komentarz: komentarz,
+        efektyListumId: id,
+        userId: req.session.user.id,
+      });
+      res.send(uzasadnienieEfektu);
+    }
+    else{
+      console.log(3 )
+      console.log(checkEfekt.id )
+      const uzasadnienieEfektu = await efektyStudent.update(
+        {
+        komentarz: komentarz,
+        },{
+        where: {id: checkEfekt.id}
       },
-      {
-        where: {
-          userId: req.session.user.id,
-          efektyListumId: id,
-        },
-      }
-    );
-    res.send(uzasadnienieEfektu);
+      );
+      res.send(uzasadnienieEfektu);
+    }
   };
-
 
   exports.IdUser = async (req, res) => {
     const idUser = await user.findOne({
@@ -239,3 +282,32 @@ exports.getEfektUczenia = async (req, res) => {
         res.send({ message: err.message });
       }
     };
+
+    exports.upload = async (req, res) => {
+      console.log("server/upload");
+      const idDay = req.params.idDay;
+
+      const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+          cb(null, "user_files");
+        },
+        filename: async (req, file, cb) => {
+          const nowDate = Date.now() + "-" + file.originalname;
+          cb(null, nowDate);
+          const dzienZalacznik = await dzienZalaczniki.create({
+            zalacznik: nowDate,
+            dziennikId: idDay,
+          });
+          res.send(dzienZalacznik);
+        },
+      });
+
+
+      const upload = multer({ storage }).array("file");
+      upload(req, res, async (err) => {
+        if (err) {
+          return res.status(500).json(err);
+        }
+        // return res.status(200).send(req.files)
+      });
+    }

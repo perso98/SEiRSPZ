@@ -7,6 +7,7 @@ const {
   dane,
   firma,
   komentarze,
+  listaKierunkow,
 } = require("../models");
 
 exports.changePasswordToAccount = async (req, res) => {
@@ -19,6 +20,55 @@ exports.changePasswordToAccount = async (req, res) => {
     );
     res.send({ message: "Pomyślnie zmieniono hasło do konta" });
   } else res.send({ message: "Hasła się nie zgadzają" });
+};
+
+exports.changeDaneToAccount = async (req, res) => {
+  const { imie, nazwisko, studia, kierunek, specjalnosc, rokStudiow, rodzajStudiow, telefon } = req.body;
+
+    // First try to find the record
+   const foundItem = await user.findOne({
+    where: {login: req.session.user.login}})
+
+   if (foundItem.daneId == null) {
+    try{
+      const createDane = await dane.create({ 
+        imie: imie,
+        nazwisko: nazwisko,
+        studia: studia,
+        kierunek: kierunek, 
+        specjalnosc: specjalnosc, 
+        rokStudiow: rokStudiow, 
+        rodzajStudiow: rodzajStudiow, 
+        telefon: telefon, 
+      })
+      await user.update({ 
+        daneId: createDane.id,
+      },
+      { where: { id: foundItem.id} })
+      res.send({ message: "Pomyślnie zmieniono dane do konta" ,
+      updateDane: createDane});
+    }
+    catch (err) {
+      res.send({ message: err.message });
+    }
+    }
+    else{
+      const updateDane = await dane.update({ 
+        imie: imie,
+        nazwisko: nazwisko,
+        studia: studia,
+        kierunek: kierunek, 
+        specjalnosc: specjalnosc, 
+        rokStudiow: rokStudiow, 
+        rodzajStudiow: rodzajStudiow, 
+        telefon: telefon, 
+        },
+        { where: { id: foundItem.daneId } }
+      );
+      res.send({ message: "Pomyślnie zmieniono dane do konta",
+    updateDane: updateDane });
+    }
+    
 };
 
 exports.getloginToAccount = async (req, res) => {
@@ -95,4 +145,9 @@ exports.createAccount = async (req, res) => {
     res.send({
       message: "Niestety taki e-mail jest już zajęty",
     });
+};
+
+exports.getListaKierunkow = async (req, res) => {
+    const lista = await listaKierunkow.findAll();
+  res.send(lista);
 };

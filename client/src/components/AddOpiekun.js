@@ -94,13 +94,13 @@ function AddOpiekun(
         );
       };
 
-      const deleteButton = (id) => {
+      const deleteButton = (id, isOpiekun, isOpiekunZakl) => {
         return (
           <Button
           variant="contained"
             color="error"
             onClick={() => {
-                delOpiekunFirma(id, jakiOpiekun);
+                delOpiekunFirma(id, isOpiekun, isOpiekunZakl);
             }}
           >
             Usuń
@@ -170,7 +170,7 @@ function AddOpiekun(
                                                 ): null
                                             ))}
                                             <Grid item xs = {2}>
-                                                {deleteButton(val.id)}
+                                                {deleteButton(val.id, val.isOpiekun, val.isOpiekunZakl)}
                                             </Grid>
                                             </div>
                                         ): null}
@@ -183,15 +183,17 @@ function AddOpiekun(
                             Opiekuni lista<p></p>
                             Imie i naziwkso: <p></p>
                            </div>
-                            {dane.map((val) => (
+                            {user.map((val) => (
                                     <Grid style={{marginBottom:"15px"}} >
-                                        {( val.user.isOpiekunZakl === 1 || val.user.isOpiekun === 1 )  && val.user.firmaId === null ? (
+                                        {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === null ? (
                                             <div>
+                                                {dane.map((dane) => (
+                                                dane.id === val.daneId ? (
                                                 <Grid item xs = {2}>
                                                     <div style={{display: "flex", gap: "0.4rem"}}>
-                                                        <div>{val.imie}</div><div>{val.nazwisko}</div>
+                                                        <div>{dane.imie}</div><div>{dane.nazwisko}</div>
                                                         <div>
-                                                            { val.user.isOpiekunZakl === 1 ? (
+                                                            { val.isOpiekunZakl === 1 ? (
                                                                 <div  style={{display: "flex", gap: "0.4rem"}}>
                                                                     <div>(Opiekun</div><div>zakładowy)</div>
                                                                 </div>
@@ -203,8 +205,10 @@ function AddOpiekun(
                                                         </div>
                                                     </div>
                                                 </Grid>
+                                                 ): null
+                                                 ))}
                                              <Grid item xs = {2}>
-                                                {giveButton(val.user.id, idFirma.id )}
+                                                {giveButton(val.id, idFirma.id )}
                                             </Grid>
                                             </div>
                                         ): null}

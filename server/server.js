@@ -4,8 +4,6 @@ const app = express();
 const db = require("./models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const { Op } = require("sequelize");
-const multer = require("multer");
 
 const {
   user,
@@ -27,6 +25,8 @@ const user_controller = require("./controllers/user");
 const dzienniczek_controller = require("./controllers/dzienniczek");
 const firma_controller = require("./controllers/firma");
 const form_controller = require("./controllers/form");
+const efekty_controller = require("./controllers/efekty");
+
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -61,46 +61,8 @@ app.listen(5000, () => {
 
 app.use(express.static("public"));
 
-app.post("/api/upload/:idDay", async (req, res) => {
-  console.log("server/upload");
-  const idDay = req.params.idDay;
 
-  console.log(1);
-  console.log("id=============" + idDay);
-
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "user_files");
-    },
-    filename: async (req, file, cb) => {
-      const nowDate = Date.now() + "-" + file.originalname;
-      cb(null, nowDate);
-      console.log(3);
-      console.log("id=============" + idDay);
-      const dzienZalacznik = await dzienZalaczniki.create({
-        zalacznik: nowDate,
-        dziennikId: idDay,
-      });
-      console.log(4);
-      res.send(dzienZalacznik);
-    },
-  });
-
-  console.log(2);
-
-  const upload = multer({ storage }).array("file");
-
-  console.log(2.1);
-  upload(req, res, async (err) => {
-    if (err) {
-      console.log(2.2);
-      return res.status(500).json(err);
-    }
-    console.log(2.3);
-    // return res.status(200).send(req.files)
-  });
-});
-
+app.post("/api/upload/:idDay", dzienniczek_controller.upload);
 app.get("/api/getDziennik", dzienniczek_controller.getDziennik);
 //Utworzenie Dnia w dzienniczku
 app.post("/api/createDay", dzienniczek_controller.createDay);
@@ -111,11 +73,7 @@ app.post("/api/createEditDay", dzienniczek_controller.createEditDay);
 app.delete("/api/deleteDay/:id", dzienniczek_controller.deleteDay);
 app.delete("/api/deleteZalacznik/:id", dzienniczek_controller.deleteZalacznik);
 app.get("/api/getEfektUczenia", dzienniczek_controller.getEfektUczenia);
-app.get("/api/listEfektyStudent", dzienniczek_controller.listEfektyStudent);
-app.put(
-  "/api/createUzasadnienieEfektu",
-  dzienniczek_controller.createUzasadnienieEfektu
-);
+app.get("/api/listEfektyStudent/:id", dzienniczek_controller.listEfektyStudent);
 app.put(
   "/api/updateUzasadnienieEfektu",
   dzienniczek_controller.updateUzasadnienieEfektu
@@ -138,9 +96,17 @@ app.put("/api/addOpiekunFirma", firma_controller.addOpiekunFirma);
 app.put("/api/delOpiekunFirma", firma_controller.delOpiekunFirma);
 app.put("/api/addStudentFirma", firma_controller.addStudentFirma);
 app.put("/api/delStudentFirma", firma_controller.delStudentFirma);
+
 //Edit firma nazwa
 app.put("/api/updateFirma", firma_controller.updateFirma);
+app.put("/api/updateStudentPorozumienie", firma_controller.updateStudentPorozumienie);
 
+//        Efekty
+app.get("/api/getEfektyKierunki", efekty_controller.getEfektyKierunki);
+app.put("/api/addKierunek", efekty_controller.addKierunek);
+app.delete("/api/delKierunek/:id", efekty_controller.delKierunek);
+app.put("/api/addEfekt", efekty_controller.addEfekt);
+app.delete("/api/delEfekt/:id", efekty_controller.delEfekt);
 //        Form
 //Wprowadzanie danych
 app.post("/api/createForm", form_controller.createForm);
@@ -154,6 +120,15 @@ app.post(
   "/api/changePasswordToAccount",
   user_controller.changePasswordToAccount
 );
+app.post(
+  "/api/changeDaneToAccount",
+  user_controller.changeDaneToAccount
+);
+app.get(
+  "/api/getListaKierunkow",
+  user_controller.getListaKierunkow
+);
+
 //zalogowanie sie do konta
 app.post("/api/loginToAccount", user_controller.loginToAccount);
 //wylogowanie się z konta
@@ -162,7 +137,6 @@ app.post("/api/logoutFromAccount", user_controller.logoutFromAccount);
 app.post("/api/createAccount", user_controller.createAccount);
 
 //===========================================================
-
 //Admin
 //Pobranie listy studentów
 app.get("/api/getStudents", admin_controller.getStudents);

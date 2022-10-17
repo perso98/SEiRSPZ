@@ -21,6 +21,7 @@ import OpiekunUHistory from "./pages/OpiekunUHistory";
 import OpiekunU from "./pages/OpiekunU";
 import Form from "./pages/Form";
 import Dzienniczek from "./pages/Dzienniczek";
+import EfektyUzasadnienie from "./pages/EfektyUzasadnienie";
 import Konto from "./pages/Konto";
 import DodawanieOpiekunow from "./pages/DodawanieOpiekunow";
 import Axios from "axios";
@@ -111,6 +112,10 @@ function App() {
                 </Route>
                 <Route path="form" element={<Form />} />
                 <Route path="dzienniczek" element={<Dzienniczek />} />
+                <Route
+                    path="efekty"
+                    element={<EfektyUzasadnienie />}
+                  />
                 <Route
                   path="dodawanieopiekunow"
                   element={<DodawanieOpiekunow />}
