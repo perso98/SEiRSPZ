@@ -120,12 +120,10 @@ function Dzienniczek() {
   useEffect(() => {
     axios.get(`${url}getDziennik`).then((res) => {
       setDziennik(res.data);
-      console.log(res.data);
     });
 
     axios.get(`${url}getZalacznik`).then((res) => {
       setDziennikZalaczniki(res.data);
-      console.log(res.data);
       setLoading(false);
     });
 
@@ -158,7 +156,6 @@ function Dzienniczek() {
   const handleEditOpen = (val) => {
     setEditOpen(true);
     setEditDay(val);
-    console.log(val)
   };
 
   const [dayObject2, setDayObject2] = useState({
@@ -243,14 +240,11 @@ function Dzienniczek() {
       data.append("file", changeZalacznik);
     }
 
-    console.log(data);
     axios
       .post(`${url}upload/${id}`, data, {})
       .then((response) => {
-        console.log("upload/${idDay}" + changeZalacznik);
         toast.success("Załadowano pomyślnie");
         // setChangeZalacznik(response.data)
-        console.log("upload/${idDay}" + response.data);
       })
       .then(() => {
         setDziennikZalaczniki([
@@ -263,7 +257,6 @@ function Dzienniczek() {
         });
       })
       .catch((e) => {
-        console.log("Błąd");
         toast.error("Błąd");
       });
   };
@@ -366,6 +359,28 @@ function Dzienniczek() {
 
         alert(res.data.message);
       });
+  };
+
+  const sendDay = (id) => {
+    axios
+      .post(`${url}sendDay`, {
+        id: id,
+      })
+      .then((res) => {
+        if (res.data.message == "Wysłano") {
+          setDziennik(
+            dziennik.map((val) =>
+              val.id == id
+                ? {
+                    ...val,
+                    statusOpiekunaU: "Oczekiwanie",
+                    statusOpiekunaZ: "Oczekiwanie",
+                  }
+                : val
+            )
+          )
+        }
+      })
   };
 
   const HeadCells = [
@@ -485,6 +500,7 @@ function Dzienniczek() {
         editOpen={editOpen}
         setChangeZalacznik={setChangeZalacznik}
         zalaczniki={dziennikZalaczniki}
+        sendDay = {sendDay}
         deleteZalacznik={deleteZalacznik}
         addZalacznik={addZalacznik}
         setDziennikZalaczniki={setDziennikZalaczniki}

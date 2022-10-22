@@ -26,6 +26,7 @@ const dzienniczek_controller = require("./controllers/dzienniczek");
 const firma_controller = require("./controllers/firma");
 const form_controller = require("./controllers/form");
 const efekty_controller = require("./controllers/efekty");
+const dyrektor_controller = require("./controllers/dyrektor");
 
 app.use(
   bodyParser.urlencoded({
@@ -81,6 +82,8 @@ app.put(
 app.get("/api/IdUser", dzienniczek_controller.IdUser);
 app.post("/api/createZalacznik", dzienniczek_controller.createZalacznik);
 app.get("/api/getZalacznik", dzienniczek_controller.getZalacznik);
+app.post("/api/sendDay", dzienniczek_controller.sendDay);
+
 //        Firma
 app.get("/api/getOpiekuni", firma_controller.getOpiekuni);
 app.get("/api/getOpiekun/:id", firma_controller.getOpiekunId);
@@ -110,6 +113,9 @@ app.delete("/api/delEfekt/:id", efekty_controller.delEfekt);
 //        Form
 //Wprowadzanie danych
 app.post("/api/createForm", form_controller.createForm);
+//        Dyrektor
+app.get("/api/getListaOpiekunow", dyrektor_controller.getListaOpiekunow);
+
 
 //Maciek
 //User
@@ -135,6 +141,7 @@ app.post("/api/loginToAccount", user_controller.loginToAccount);
 app.post("/api/logoutFromAccount", user_controller.logoutFromAccount);
 //utworzenie konta
 app.post("/api/createAccount", user_controller.createAccount);
+app.get("/api/getUserSesionId", user_controller.getUserSesionId);
 
 //===========================================================
 //Admin

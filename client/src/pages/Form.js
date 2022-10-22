@@ -1,7 +1,10 @@
 import React,{useState,useEffect} from 'react'
 import axios from "axios"
 import { makeStyles } from '@mui/styles'
-import { Button, Grid, TextField, Box, Alert,Collapse,IconButton, Typography } from '@mui/material';
+import { Button, Grid, TextField,TableRow, TableCell, Table,
+  TableBody,
+  
+  TableHead,  Box, Alert,Collapse,IconButton, Typography } from '@mui/material';
 import { url } from "../services/Url";
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -241,18 +244,35 @@ function Form() {
                       
                       
                       Efekty uczenia się:
-                      <div>
-                      {
-                          val.efektyLista.map((efekt) => (
-                              <div  style={{display: 'flex', alignItems: "center", alignContent: "space-around", justifyContent: "flex-start"}}>
-                                  <div>{efekt.nazwa}</div>
-                                  <div style={{wordWrap: "break-word", minWidth: "200px",  paddingLeft: "12px", paddingRight: "12px" }} > {efekt.opis}</div>
-                                  
-                              </div>
-                          ))
-                          
-                      }
-                      </div>
+                      <Grid>
+                        <Table>
+                          <TableHead >
+                            <TableRow>
+                                <TableCell >
+                                  Efekt
+                                </TableCell>
+                                <TableCell  >
+                                  Opis
+                                </TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                          {
+                              val.efektyLista.map((efekt) => (
+                                    <TableRow>
+                                        <TableCell >
+                                        {efekt.nazwa}
+                                        </TableCell>
+                                        <TableCell >
+                                        {efekt.opis}
+                                        </TableCell>
+                                    </TableRow>
+                              ))
+                              
+                          }
+                          </TableBody>
+                        </Table>
+                      </Grid>
                       { sipsKierunkow.length > 0 ? (
                       <div>
                           <div>
@@ -260,6 +280,7 @@ function Form() {
                                   label="Efekt"
                                   id="efekt"
                                   margin="normal"
+                                  multiline
                                   onChange={(e) => {
                                       setNazwaEfektu(e.target.value);
                                   }}
@@ -309,32 +330,49 @@ function Form() {
                           
                             <p style={{fontSize: '20px'}}>{val.nazwa}</p>
                       </Typography> 
-                      
-                      
                       Efekty uczenia się:
-                      <div>
-                      {
-                          val.efektyLista.map((efekt) => (
-                              <div  style={{display: 'flex', alignItems: "center", alignContent: "space-around", justifyContent: "space-between"}}>
-                                  <div>{efekt.nazwa}</div>
-                                  <div style={{ paddingLeft: "12px", paddingRight: "12px" }} > {efekt.opis}</div>
-                                  <IconButton 
-                                  style={{ color: "red"}}
-                                  onClick={() => {
-                                          usuwanieEfektu(efekt.id, val.id);
-                                      }}>
-                                  <ClearIcon>
-                                  
-                                  
-                                  </ClearIcon>
-                                  </IconButton>
-                                  
-
-                              </div>
-                          ))
-                          
-                      }
-                      </div>
+                      <Grid>
+                        <Table>
+                          <TableHead >
+                            <TableRow>
+                                <TableCell >
+                                  Efekt
+                                </TableCell>
+                                <TableCell  >
+                                  Opis
+                                </TableCell>
+                                <TableCell >
+                                  Usuń
+                                </TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                          {
+                              val.efektyLista.map((efekt) => (
+                                    <TableRow>
+                                        <TableCell >
+                                        {efekt.nazwa}
+                                        </TableCell>
+                                        <TableCell >
+                                        {efekt.opis}
+                                        </TableCell>
+                                        <TableCell >
+                                          <IconButton 
+                                          style={{ color: "red"}}
+                                          onClick={() => {
+                                                  usuwanieEfektu(efekt.id, val.id);
+                                              }}>
+                                            <ClearIcon>
+                                            </ClearIcon>
+                                          </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                              ))
+                              
+                          }
+                          </TableBody>
+                        </Table>
+                      </Grid>
                       { sipsKierunkow.length > 0 ? (
                       <div>
                           <div>
@@ -342,6 +380,7 @@ function Form() {
                                   label="Efekt"
                                   id="efekt"
                                   margin="normal"
+                                  multiline
                                   onChange={(e) => {
                                       setNazwaEfektu(e.target.value);
                                   }}
@@ -350,6 +389,7 @@ function Form() {
                                   label="Opis"
                                   id="opis"
                                   margin="normal"
+                                  multiline
                                   onChange={(e) => {
                                       setOpisEfektu(e.target.value);
                                   }}

@@ -198,40 +198,37 @@ function EfektyUzasadnienie() {
                 set={setKomentarz}
                 komentarze={komentarz}
             />
-            <Grid container style={{marginBottom:"10px"}}>
-            Lista efektów do realizacji
-                <Grid item xs = {4} md = {8}>
-                    <div>
-                        Nazwa efektu
-                    </div>
-                </Grid>
-                <Grid item xs = {1} md = {1}>
-                    <div>
-                        Uzasadnienie
-                    </div>
-                </Grid>
-            </Grid>
-        
-          {listaEfektyow.map((val) => (
-                    <Grid container onMouseLeave={() => hoverClose()}>
-                        <Grid item xs = {4} md = {8} style={{marginBottom:"15px"}}>
-                            <div>
+            <Table className={classes.table}>
+                  <TableHead className={classes.tableHead}>
+                    <TableRow>
+                        <TableCell style={{ textAlign: "center" }} >
+                          Lista efektów do realizacji
+                        </TableCell>
+                        <TableCell style={{ textAlign: "center" }} >
+                          Uzasadnienie
+                        </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                      
+                      {listaEfektyow.map((val) => (
+                        <TableRow >
+                          <TableCell style={{ textAlign: "center" }}>
                             {val.nazwa}
-                            </div>
-                        </Grid>
-                        
-                        <Grid item xs = {2} md = {1}>
-                            <div>
-                            <Button className={classes.btnEdycja} 
-                                variant="contained" 
-                                onClick={() => { handleOpen(val)}}
-                            >
-                                Uzasadnij
-                            </Button>
-                            </div>
-                        </Grid>
-                    </Grid>
-            ))}
+                          </TableCell>
+
+                          <TableCell style={{ textAlign: "center" }}>
+                          <Button className={classes.btnEdycja} 
+                                    variant="contained" 
+                                    onClick={() => { handleOpen(val)}}
+                                >
+                                    Uzasadnij
+                                </Button>
+                        </TableCell>
+                      </TableRow>
+                       ))}
+                  </TableBody>
+                </Table>
             </div>
       </Grid>
     </div>

@@ -202,9 +202,7 @@ exports.getEfektUczenia = async (req, res) => {
     const checkEfekt = await efektyStudent.findOne({
       where: {efektyListumId: id}
     })
-    console.log(id,komentarz )
     if( checkEfekt == null){
-      console.log(2 )
       const uzasadnienieEfektu = await efektyStudent.create({
         komentarz: komentarz,
         efektyListumId: id,
@@ -213,8 +211,6 @@ exports.getEfektUczenia = async (req, res) => {
       res.send(uzasadnienieEfektu);
     }
     else{
-      console.log(3 )
-      console.log(checkEfekt.id )
       const uzasadnienieEfektu = await efektyStudent.update(
         {
         komentarz: komentarz,
@@ -241,19 +237,15 @@ exports.getEfektUczenia = async (req, res) => {
           zalacznik,
           idDay,
         } = req.body;
-        console.log("data")
-        console.log(zalacznik)
 
         await dzienZalaczniki.create({
           zalacznik: zalacznik,
           dziennikId: idDay,
         });
-        console.log("Wysłano");
         res.send({
           message: "pomyślnie wysłano ;)",
         });
       } catch {
-        console.log("Błąd");
         res.send({
           message: "Błąd ;)",
         });
@@ -311,3 +303,33 @@ exports.getEfektUczenia = async (req, res) => {
         // return res.status(200).send(req.files)
       });
     }
+
+    exports.sendDay = async (req, res) => {
+      try {
+      const { id } = req.body;
+      const zalaczniki = await dziennik.update(
+        {
+          statusOpiekunaU: "Oczekiwanie",
+          statusOpiekunaZ: "Oczekiwanie",
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+      
+      res.send({
+        message: "Wysłano",
+        zalaczniki,
+      });
+
+      }
+      catch {
+        res.send({
+          message: "Błąd",
+        });
+      }
+
+      
+    };

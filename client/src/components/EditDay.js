@@ -84,6 +84,7 @@ function EditDay(
     setChangeDzien,
     setChangeData,
     setChangeIloscGodzin,
+    sendDay,
   }
   ){
 
@@ -137,7 +138,6 @@ function EditDay(
                 ])
                 setChangeZalacznik(response.data)
                 onSuccess(response.data)
-                console.log("response.data" + response.data)
             })
             .catch((e) => {
                 toast.error('Błąd')
@@ -148,18 +148,25 @@ function EditDay(
         <form>
             <div>
                 <Stack direction="row" spacing={1}>
-                  <label>Załącz pliki </label>
                   <input type="file"
                         onChange={onInputChange}
                         className="form-control"
                         />
-                  <button onClick={onSubmit}>Załącz</button>
+
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={onSubmit}
+                  >
+                    Załącz
+                  </Button>
                 </Stack>
             </div>
         </form>
     )
   }
 
+  
 
   return (
     <>
@@ -282,11 +289,11 @@ function EditDay(
                   </div>
                 ))}
 
-                { zalaczniki.map((val) => (
+                {/* { zalaczniki.map((val) => (
                   <div>
                     {val.dziennikId === editDay.id ? (
                       <div> 
-                        <a href={`//localhost:5000/${val.zalacznik}`} download = {`//localhost:5000/${val.zalacznik}`}> <img style={{maxWidth: '200px'}} src={`//localhost:5000/${val.zalacznik}`}/></a>
+                        <a href={`//localhost:5000/${val.zalacznik}`} > <img style={{maxWidth: '200px'}} src={`//localhost:5000/${val.zalacznik}`}/></a>
                         <IconButton
                         onClick={() => {
                               deleteZalacznik(val.id);
@@ -297,7 +304,7 @@ function EditDay(
                           </div>
                     ): null}
                   </div>
-                  ))}
+                  ))} */}
 
         <FileUploader onSuccess={onSuccess} />
 
@@ -340,6 +347,16 @@ function EditDay(
             }}
           >
             Zmień
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            style={{ marginTop: "5vh" }}
+            onClick={() => {
+              sendDay(editDay.id);
+            }}
+          >
+            Wyślij
           </Button>
 
           <Button

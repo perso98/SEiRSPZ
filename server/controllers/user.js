@@ -37,8 +37,8 @@ exports.changeDaneToAccount = async (req, res) => {
         studia: studia,
         kierunek: kierunek, 
         specjalnosc: specjalnosc, 
-        rokStudiow: rokStudiow, 
-        rodzajStudiow: rodzajStudiow, 
+        rok_studiow: rokStudiow, 
+        rodzaj_studiow: rodzajStudiow, 
         telefon: telefon, 
       })
       await user.update({ 
@@ -59,8 +59,8 @@ exports.changeDaneToAccount = async (req, res) => {
         studia: studia,
         kierunek: kierunek, 
         specjalnosc: specjalnosc, 
-        rokStudiow: rokStudiow, 
-        rodzajStudiow: rodzajStudiow, 
+        rok_studiow: rokStudiow, 
+        rodzaj_studiow: rodzajStudiow, 
         telefon: telefon, 
         },
         { where: { id: foundItem.daneId } }
@@ -151,3 +151,16 @@ exports.getListaKierunkow = async (req, res) => {
     const lista = await listaKierunkow.findAll();
   res.send(lista);
 };
+
+exports.getUserSesionId = async (req, res) => {
+  const lista = await user.findOne(
+    {where: {id: req.session.user.id}}
+  );
+  const userDane = await dane.findOne({
+    where: { id: lista.daneId },
+  });
+
+
+res.send(userDane);
+};
+

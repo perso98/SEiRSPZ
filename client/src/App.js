@@ -19,6 +19,7 @@ import RoleRoute from "./protectedRoutes/RoleRoute";
 import EfektyOpiekunU from "./pages/EfektyOpiekunU";
 import OpiekunUHistory from "./pages/OpiekunUHistory";
 import OpiekunU from "./pages/OpiekunU";
+import Dyrektor from "./pages/zastepstwa";
 import Form from "./pages/Form";
 import Dzienniczek from "./pages/Dzienniczek";
 import EfektyUzasadnienie from "./pages/EfektyUzasadnienie";
@@ -149,6 +150,20 @@ function App() {
                     element={<OpiekunU setStatus={setStatus} />}
                   />
                 </Route>
+                <Route
+                  element={
+                    <RoleRoute
+                      role={auth?.user?.isAdmin}
+                      logged={auth?.logged}
+                    />
+                  }
+                >
+                  <Route
+                    path="zastepstwa"
+                    element={<Dyrektor setStatus={setStatus} />}
+                  />
+                </Route>
+
                 <Route path="*" element={<NoPage />} />
               </Route>
             </Routes>

@@ -49,15 +49,29 @@ function Konto() {
   }));
 
   const [listaKierunkow, setListaKierunkow] = useState([]);
+  const [user, setUser] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Axios.get(`${url}getListaKierunkow`).then((res) => {
       setListaKierunkow(res.data);
     });
+    Axios.get(`${url}getUserSesionId`).then((res) => {
+      setUser(res.data);
+      setLoading(false)
+      setImie(res.data.imie);
+      setNazwisko(res.data.nazwisko);
+      setStudia(res.data.studia);
+      setKierunek(res.data.kierunek);
+      setSpecjalnosc(res.data.specjalnosc);
+      setRokStudiow(res.data.rok_studiow);
+      setRodzajStudiow(res.data.rodzaj_studiow);
+      setTelefon(res.data.telefon);
+    
+    });
 
   }, []);
 
-console.log(listaKierunkow)
   Axios.defaults.withCredentials = true;
   const [open, setOpen] = useState(false);
   const [changePassword, getChangePassword] = useState("");
@@ -217,6 +231,8 @@ console.log(listaKierunkow)
 
         <div />
       </Grid>
+      {loading === false ? (
+           
       <Grid container sm={12} className={classes.center}>
         <div className={classes.daneForm}>
           <Typography
@@ -276,19 +292,25 @@ console.log(listaKierunkow)
               </Collapse>
             </Box>
           )}
+
+          
+
           <TextField
             className={classes.TextField}
             label="Imie"
             id="imie"
+            defaultValue={user.imie}
             margin="normal"
             onChange={(e) => {
               setImie(e.target.value);
             }}
           />
+
           <TextField
             className={classes.TextField}
             label="Nazwisko"
             id="nazwisko"
+            defaultValue={user.nazwisko}
             margin="normal"
             onChange={(e) => {
               setNazwisko(e.target.value);
@@ -298,15 +320,20 @@ console.log(listaKierunkow)
             className={classes.TextField}
             label="Studia"
             id="studia"
+            defaultValue={user.studia}
+            onChange={(e) => {
+              setStudia(e.target.value);
+            }}
             margin="normal"
           />
           <TextField
             className={classes.TextField}
             label="Kierunek"
             id="kierunek"
+            defaultValue={user.kierunek}
             margin="normal"
             onChange={(e) => {
-              setSpecjalnosc(e.target.value);
+              setKierunek(e.target.value);
             }}
           />
           <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
@@ -315,7 +342,7 @@ console.log(listaKierunkow)
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={specjalnosc}
+                defaultValue={user.specjalnosc}
                 label="specjalnosc"
                 onChange={handleChange}
               >
@@ -330,6 +357,7 @@ console.log(listaKierunkow)
             className={classes.TextField}
             label="Rok studiow"
             id="rok_studiow"
+            defaultValue={user.rok_studiow}
             margin="normal"
             onChange={(e) => {
               setRokStudiow(e.target.value);
@@ -339,6 +367,7 @@ console.log(listaKierunkow)
             className={classes.TextField}
             label="Rodzaj studiow"
             id="rodzaj_studiow"
+            defaultValue={user.rodzaj_studiow}
             margin="normal"
             onChange={(e) => {
               setRodzajStudiow(e.target.value);
@@ -348,6 +377,7 @@ console.log(listaKierunkow)
             className={classes.TextField}
             label="Telefon"
             id="telefon"
+            defaultValue={user.telefon}
             margin="normal"
             onChange={(e) => {
               setTelefon(e.target.value);
@@ -363,6 +393,8 @@ console.log(listaKierunkow)
           </Button>
         </div>
       </Grid>
+       ):null
+       }
     </Grid>
   );
 }
