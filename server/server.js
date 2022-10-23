@@ -115,6 +115,8 @@ app.delete("/api/delEfekt/:id", efekty_controller.delEfekt);
 app.post("/api/createForm", form_controller.createForm);
 //        Dyrektor
 app.get("/api/getListaOpiekunow", dyrektor_controller.getListaOpiekunow);
+app.get("/api/getListaZastepstw", dyrektor_controller.getListaZastepstw);
+
 
 
 //Maciek

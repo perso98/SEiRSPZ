@@ -114,7 +114,7 @@ function Sidebar(props) {
                   <div>
                   <Link to="/dzienniczek" className={classes.links}>
                     <div className={classes.item}>
-                      <DateRangeIcon className={classes.icon} />
+                      <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>
                         Dzienniczek
                       </Typography>
@@ -123,7 +123,7 @@ function Sidebar(props) {
 
                   <Link to="form" className={classes.links}>
                   <div className={classes.item}>
-                    <AssignmentIcon className={classes.icon} />
+                    <NavigateNextIcon className={classes.icon} />
                     <Typography className={classes.text}>
                       Efekty uczenia się
                     </Typography>
@@ -139,7 +139,7 @@ function Sidebar(props) {
                     {props.auth?.user.isDziekanat == 1 && (
                       <Link to="/dodawanieopiekunow" className={classes.links}>
                         <div className={classes.item}>
-                          <AssignmentIcon className={classes.icon} />
+                          <NavigateNextIcon className={classes.icon} />
                           <Typography className={classes.text}>
                             Zarządzanie zakładami
                           </Typography>
@@ -217,6 +217,19 @@ function Sidebar(props) {
                       </Typography>
                     </div>
                   </Link>
+                )}
+
+                {props.auth?.user.isDyrektor == 1 && (
+                  <div className={classes.item}>
+                    <Link to="/zastepstwa" className={classes.links}>
+                      <div className={classes.item}>
+                        <NavigateNextIcon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Zastepstwa
+                        </Typography>
+                      </div>
+                    </Link>
+                  </div>
                 )}
               </div>
             </div>

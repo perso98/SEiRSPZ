@@ -45,6 +45,38 @@ exports.changeDaneToAccount = async (req, res) => {
         daneId: createDane.id,
       },
       { where: { id: foundItem.id} })
+
+      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ1")
+      const numerKuerunku = await listaKierunkow.findOne({ 
+        where: { nazwa: specjalnosc} 
+     })
+     console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ2")
+      const listaEfektow = await efektyLista.findAll({ 
+         where: { listaKierunkowId: numerKuerunku} 
+
+      })
+
+      console.log("listaEfektow" + listaEfektow)
+      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ3")
+      
+      listaEfektow.forEach(element => {
+
+        console.log(element)
+        // const createEfektyEmpty = await efektyStudent.create({ 
+        //   efektyListumId: element,
+        //   userId: req.session.user.id,
+
+        // })
+      });
+      
+        // const createEfektyEmpty = await efektyStudent.create({ 
+        //   efektyListumId: ,
+        //   userId: req.session.user.id,
+
+        // })
+
+
+
       res.send({ message: "Pomyślnie zmieniono dane do konta" ,
       updateDane: createDane});
     }
@@ -65,6 +97,38 @@ exports.changeDaneToAccount = async (req, res) => {
         },
         { where: { id: foundItem.daneId } }
       );
+
+      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ1")
+      console.log(specjalnosc)
+      const numerKierunku = await listaKierunkow.findOne({ 
+        where: { nazwa: specjalnosc} 
+     })
+     console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ2")
+     console.log(numerKierunku.nazwa)
+      const listaEfektow = await efektyLista.findAll({ 
+         where: { listaKierunkowId: numerKierunku.id} 
+      })
+
+      console.log("listaEfektow" + listaEfektow)
+      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ3")
+      
+      await efektyStudent.destroy({ 
+        where:{userId: req.session.user.id,}
+      })
+      listaEfektow.forEach(async element => {
+
+        await efektyStudent.create({ 
+          efektyListumId: element.id,
+          userId: req.session.user.id,
+
+        })
+      });
+      
+        // const createEfektyEmpty = await efektyStudent.create({ 
+        //   efektyListumId: ,
+        //   userId: req.session.user.id,
+
+        // })
       res.send({ message: "Pomyślnie zmieniono dane do konta",
     updateDane: updateDane });
     }
