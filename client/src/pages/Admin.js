@@ -9,6 +9,7 @@ import {
   TableRow,
   Toolbar,
   TextField,
+  Tooltip,
 } from "@material-ui/core";
 
 import Button from "@mui/material/Button";
@@ -23,9 +24,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddAdminDialog from "../components/AddAdminDialog";
 import EditAdminDialog from "../components/EditAdminDialog";
 import { ToastContainer, toast } from "react-toastify";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { url } from "../services/Url";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import Helper from "../components/Helper";
+
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
@@ -36,8 +40,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("s")]: {
       width: "39%",
+      fontSize: "6px",
     },
   },
   tableHead: {
@@ -45,10 +50,9 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInp: {
     width: "80%",
-    marginRight: "1rem",
   },
   toolbar: {
-    marginTop: "2%",
+    marginTop: "1rem",
     display: "flex",
     width: "100%",
     justifyContent: "space-between",
@@ -96,6 +100,7 @@ export default function Admin(props) {
     { id: "isOpiekun", label: "Opiekun U." },
     { id: "isDyrektor", label: "Dyrektor" },
     { id: "isDziekanat", label: "Dziekanat" },
+    { id: "year", label: "Rok utworzenia" },
     { id: "Actions", label: "Akcje" },
   ];
 
@@ -111,7 +116,7 @@ export default function Admin(props) {
             navigate("/login");
           });
         } else {
-          toast.success("Użytkownik usunięty!");
+          toast.success(res.data.messag2);
           setStudents(
             students.filter((val) => {
               return val.id != id;
@@ -293,6 +298,11 @@ export default function Admin(props) {
       setYearSearch("");
     }
   };
+  const info = (
+    <div>
+      <InfoOutlinedIcon /> Dzięki temu przyciskowi możesz dodać użytkownika
+    </div>
+  );
 
   return (
     <>
@@ -301,6 +311,7 @@ export default function Admin(props) {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          marginTop: "2rem",
         }}
       >
         <div />
@@ -343,6 +354,7 @@ export default function Admin(props) {
                 }}
               />
             )}
+            <Helper info={info} title="Admin" />
             <Button
               variant="contained"
               onClick={handleAddOpen}
@@ -351,6 +363,7 @@ export default function Admin(props) {
               Dodaj użytkownika
             </Button>
           </Toolbar>
+
           <Button
             variant="contained"
             onClick={() => {
@@ -415,6 +428,11 @@ export default function Admin(props) {
                       ? takeButton("isDziekanat", val.id)
                       : giveButton("isDziekanat", val.id)}
                   </TableCell>
+                  <TableCell
+                    style={{ textAlign: "center", fontWeight: "bold" }}
+                  >
+                    {val.createdAt.split("-")[0]}
+                  </TableCell>
                   <TableCell>
                     <IconButton
                       onClick={() => {
@@ -424,12 +442,16 @@ export default function Admin(props) {
                       <EditIcon style={{ color: "#FF8C00" }} />
                     </IconButton>
                     <IconButton>
-                      <DeleteIcon
-                        style={{ color: "#A52A2A" }}
-                        onClick={() => {
-                          deleteUser(val.id, val.login);
-                        }}
-                      />
+                      {val.isOpiekun || val.isOpiekunZakl || val.isAdmin ? (
+                        <DeleteIcon style={{ color: "gray" }} disabled="true" />
+                      ) : (
+                        <DeleteIcon
+                          style={{ color: "#A52A2A" }}
+                          onClick={() => {
+                            deleteUser(val.id, val.login);
+                          }}
+                        />
+                      )}
                     </IconButton>
                   </TableCell>
                 </TableRow>

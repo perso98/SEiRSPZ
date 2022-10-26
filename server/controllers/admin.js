@@ -21,10 +21,10 @@ exports.deleteUser = async (req, res) => {
           id: id,
         },
       });
-      res.send({ message: "Usunięto" });
+      res.send({ message2: "Usunięto" });
     }
   } catch (err) {
-    res.send({ message: err.message });
+    res.send({ message2: err.message });
   }
 };
 
