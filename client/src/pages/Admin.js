@@ -65,6 +65,8 @@ export default function Admin(props) {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
+  const [toggleSearch, setToggleSearch] = useState(true);
+  const [yearSearch, setYearSearch] = useState("");
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -81,7 +83,7 @@ export default function Admin(props) {
     });
   }, []);
 
-  const pages = [10, 15, 20];
+  const pages = [7, 15, 20];
   const [page, setPage] = useState(0);
   const [pageRows, setpageRows] = useState(pages[page]);
   const [searchLogin, setSearchLogin] = useState("");
@@ -151,13 +153,13 @@ export default function Admin(props) {
         userObject: userObject,
       })
       .then((res) => {
-        if (res.data.message) {
+        if (res.data.message1) {
           props.setStatus();
-          alert(res.data.message).then(() => {
+          alert(res.data.message1).then(() => {
             navigate("/login");
           });
         } else {
-          if (res.data.message == "Konto zostało pomyślnie utworzone") {
+          if (res.data.message2 == "Konto zostało pomyślnie utworzone") {
             setStudents([
               ...students,
               {
@@ -176,7 +178,7 @@ export default function Admin(props) {
             setUserObject({ ...userObject, login: "", password: "" });
           }
 
-          toast.success(res.data.message);
+          toast.success(res.data.message2);
         }
       });
   };
@@ -190,12 +192,15 @@ export default function Admin(props) {
     setPage(0);
   };
   const recordsAfterFiltering = students.filter((val) => {
-    if (searchLogin == "") {
+    if (searchLogin === "" && yearSearch === "") {
       return val;
-    } else if (val.login.toLowerCase().includes(searchLogin.toLowerCase())) {
-      return val;
+    } else if (searchLogin != "") {
+      return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+    } else if (yearSearch != "") {
+      return val.createdAt.includes(yearSearch);
     }
   });
+
   const recordsAfter = () => {
     return recordsAfterFiltering.slice(page * pageRows, (page + 1) * pageRows);
   };
@@ -279,6 +284,15 @@ export default function Admin(props) {
         }
       });
   };
+  const functionToggleSearch = () => {
+    if (toggleSearch == true) {
+      setToggleSearch(false);
+      setSearchLogin("");
+    } else {
+      setToggleSearch(true);
+      setYearSearch("");
+    }
+  };
 
   return (
     <>
@@ -292,22 +306,43 @@ export default function Admin(props) {
         <div />
         <div style={{ overflowX: "auto" }}>
           <Toolbar className={classes.toolbar}>
-            <TextField
-              className={classes.searchInp}
-              label="Szukaj"
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => {
-                setSearchLogin(e.target.value);
-                setPage(0);
-              }}
-            />
+            {toggleSearch == true ? (
+              <TextField
+                className={classes.searchInp}
+                label="Szukaj po e-mailu"
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setSearchLogin(e.target.value);
+                  setPage(0);
+                }}
+              />
+            ) : (
+              <TextField
+                className={classes.searchInp}
+                type="number"
+                label="Szukaj po roku utworzenia"
+                variant="outlined"
+                InputProps={{
+                  inputProps: { min: 2022, max: 3000 },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setYearSearch(e.target.value);
+                  setPage(0);
+                }}
+              />
+            )}
             <Button
               variant="contained"
               onClick={handleAddOpen}
@@ -316,6 +351,16 @@ export default function Admin(props) {
               Dodaj użytkownika
             </Button>
           </Toolbar>
+          <Button
+            variant="contained"
+            onClick={() => {
+              functionToggleSearch();
+            }}
+            style={{ padding: "1rem", margin: "1.5rem" }}
+          >
+            {" "}
+            Zmień opcje szukania
+          </Button>
 
           <Table className={classes.table}>
             <TableHead className={classes.tableHead}>

@@ -62,7 +62,6 @@ app.listen(5000, () => {
 
 app.use(express.static("public"));
 
-
 app.post("/api/upload/:idDay", dzienniczek_controller.upload);
 app.get("/api/getDziennik", dzienniczek_controller.getDziennik);
 //Utworzenie Dnia w dzienniczku
@@ -102,7 +101,10 @@ app.put("/api/delStudentFirma", firma_controller.delStudentFirma);
 
 //Edit firma nazwa
 app.put("/api/updateFirma", firma_controller.updateFirma);
-app.put("/api/updateStudentPorozumienie", firma_controller.updateStudentPorozumienie);
+app.put(
+  "/api/updateStudentPorozumienie",
+  firma_controller.updateStudentPorozumienie
+);
 
 //        Efekty
 app.get("/api/getEfektyKierunki", efekty_controller.getEfektyKierunki);
@@ -117,8 +119,6 @@ app.post("/api/createForm", form_controller.createForm);
 app.get("/api/getListaOpiekunow", dyrektor_controller.getListaOpiekunow);
 app.get("/api/getListaZastepstw", dyrektor_controller.getListaZastepstw);
 
-
-
 //Maciek
 //User
 //pobranie danych o sesji uzytkownika jesli jest zalogowany
@@ -128,14 +128,8 @@ app.post(
   "/api/changePasswordToAccount",
   user_controller.changePasswordToAccount
 );
-app.post(
-  "/api/changeDaneToAccount",
-  user_controller.changeDaneToAccount
-);
-app.get(
-  "/api/getListaKierunkow",
-  user_controller.getListaKierunkow
-);
+app.post("/api/changeDaneToAccount", user_controller.changeDaneToAccount);
+app.get("/api/getListaKierunkow", user_controller.getListaKierunkow);
 
 //zalogowanie sie do konta
 app.post("/api/loginToAccount", user_controller.loginToAccount);
