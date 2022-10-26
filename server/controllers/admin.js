@@ -21,10 +21,10 @@ exports.deleteUser = async (req, res) => {
           id: id,
         },
       });
-      res.send({ message: "Usunięto" });
+      res.send({ message2: "Usunięto" });
     }
   } catch (err) {
-    res.send({ message: err.message });
+    res.send({ message2: err.message });
   }
 };
 
@@ -56,7 +56,7 @@ exports.createAccount = async (req, res) => {
   const { userObject } = req.body;
   try {
     if (!req.session.user)
-      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      res.send({ message1: "Sesja utracona, zaloguj się ponownie" });
     else {
       const checkLogin = await user.findOne({
         where: {
@@ -77,11 +77,11 @@ exports.createAccount = async (req, res) => {
         });
 
         res.send({
-          message: "Konto zostało pomyślnie utworzone",
+          message2: "Konto zostało pomyślnie utworzone",
           id: newAcc.id,
         });
       } else {
-        res.send({ message: "Login jest już zajęty" });
+        res.send({ message2: "Login jest już zajęty" });
       }
     }
   } catch (err) {

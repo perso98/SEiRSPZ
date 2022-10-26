@@ -9,6 +9,7 @@ import {
   TableRow,
   Toolbar,
   TextField,
+  Tooltip,
 } from "@material-ui/core";
 
 import Button from "@mui/material/Button";
@@ -23,9 +24,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddAdminDialog from "../components/AddAdminDialog";
 import EditAdminDialog from "../components/EditAdminDialog";
 import { ToastContainer, toast } from "react-toastify";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { url } from "../services/Url";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import Helper from "../components/Helper";
+
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
@@ -36,8 +40,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("s")]: {
       width: "39%",
+      fontSize: "6px",
     },
   },
   tableHead: {
@@ -45,10 +50,9 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInp: {
     width: "80%",
-    marginRight: "1rem",
   },
   toolbar: {
-    marginTop: "2%",
+    marginTop: "1rem",
     display: "flex",
     width: "100%",
     justifyContent: "space-between",
@@ -65,6 +69,8 @@ export default function Admin(props) {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
+  const [toggleSearch, setToggleSearch] = useState(true);
+  const [yearSearch, setYearSearch] = useState("");
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -81,7 +87,7 @@ export default function Admin(props) {
     });
   }, []);
 
-  const pages = [10, 15, 20];
+  const pages = [7, 15, 20];
   const [page, setPage] = useState(0);
   const [pageRows, setpageRows] = useState(pages[page]);
   const [searchLogin, setSearchLogin] = useState("");
@@ -94,6 +100,7 @@ export default function Admin(props) {
     { id: "isOpiekun", label: "Opiekun U." },
     { id: "isDyrektor", label: "Dyrektor" },
     { id: "isDziekanat", label: "Dziekanat" },
+    { id: "year", label: "Rok utworzenia" },
     { id: "Actions", label: "Akcje" },
   ];
 
@@ -109,7 +116,7 @@ export default function Admin(props) {
             navigate("/login");
           });
         } else {
-          toast.success("Użytkownik usunięty!");
+          toast.success(res.data.messag2);
           setStudents(
             students.filter((val) => {
               return val.id != id;
@@ -151,13 +158,13 @@ export default function Admin(props) {
         userObject: userObject,
       })
       .then((res) => {
-        if (res.data.message) {
+        if (res.data.message1) {
           props.setStatus();
-          alert(res.data.message).then(() => {
+          alert(res.data.message1).then(() => {
             navigate("/login");
           });
         } else {
-          if (res.data.message == "Konto zostało pomyślnie utworzone") {
+          if (res.data.message2 == "Konto zostało pomyślnie utworzone") {
             setStudents([
               ...students,
               {
@@ -176,7 +183,7 @@ export default function Admin(props) {
             setUserObject({ ...userObject, login: "", password: "" });
           }
 
-          toast.success(res.data.message);
+          toast.success(res.data.message2);
         }
       });
   };
@@ -190,12 +197,15 @@ export default function Admin(props) {
     setPage(0);
   };
   const recordsAfterFiltering = students.filter((val) => {
-    if (searchLogin == "") {
+    if (searchLogin === "" && yearSearch === "") {
       return val;
-    } else if (val.login.toLowerCase().includes(searchLogin.toLowerCase())) {
-      return val;
+    } else if (searchLogin != "") {
+      return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+    } else if (yearSearch != "") {
+      return val.createdAt.split("-")[0] === yearSearch;
     }
   });
+
   const recordsAfter = () => {
     return recordsAfterFiltering.slice(page * pageRows, (page + 1) * pageRows);
   };
@@ -279,6 +289,20 @@ export default function Admin(props) {
         }
       });
   };
+  const functionToggleSearch = () => {
+    if (toggleSearch == true) {
+      setToggleSearch(false);
+      setSearchLogin("");
+    } else {
+      setToggleSearch(true);
+      setYearSearch("");
+    }
+  };
+  const info = (
+    <div>
+      <InfoOutlinedIcon /> Dzięki temu przyciskowi możesz dodać użytkownika
+    </div>
+  );
 
   return (
     <>
@@ -287,27 +311,50 @@ export default function Admin(props) {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          marginTop: "2rem",
         }}
       >
         <div />
         <div style={{ overflowX: "auto" }}>
           <Toolbar className={classes.toolbar}>
-            <TextField
-              className={classes.searchInp}
-              label="Szukaj"
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => {
-                setSearchLogin(e.target.value);
-                setPage(0);
-              }}
-            />
+            {toggleSearch == true ? (
+              <TextField
+                className={classes.searchInp}
+                label="Szukaj po e-mailu"
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setSearchLogin(e.target.value);
+                  setPage(0);
+                }}
+              />
+            ) : (
+              <TextField
+                className={classes.searchInp}
+                type="number"
+                label="Szukaj po roku utworzenia"
+                variant="outlined"
+                InputProps={{
+                  inputProps: { min: 2022, max: 3000 },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setYearSearch(e.target.value);
+                  setPage(0);
+                }}
+              />
+            )}
+            <Helper info={info} title="Admin" />
             <Button
               variant="contained"
               onClick={handleAddOpen}
@@ -316,6 +363,17 @@ export default function Admin(props) {
               Dodaj użytkownika
             </Button>
           </Toolbar>
+
+          <Button
+            variant="contained"
+            onClick={() => {
+              functionToggleSearch();
+            }}
+            style={{ padding: "1rem", margin: "1.5rem" }}
+          >
+            {" "}
+            Zmień opcje szukania
+          </Button>
 
           <Table className={classes.table}>
             <TableHead className={classes.tableHead}>
@@ -370,6 +428,11 @@ export default function Admin(props) {
                       ? takeButton("isDziekanat", val.id)
                       : giveButton("isDziekanat", val.id)}
                   </TableCell>
+                  <TableCell
+                    style={{ textAlign: "center", fontWeight: "bold" }}
+                  >
+                    {val.createdAt.split("-")[0]}
+                  </TableCell>
                   <TableCell>
                     <IconButton
                       onClick={() => {
@@ -379,12 +442,16 @@ export default function Admin(props) {
                       <EditIcon style={{ color: "#FF8C00" }} />
                     </IconButton>
                     <IconButton>
-                      <DeleteIcon
-                        style={{ color: "#A52A2A" }}
-                        onClick={() => {
-                          deleteUser(val.id, val.login);
-                        }}
-                      />
+                      {val.isOpiekun || val.isOpiekunZakl || val.isAdmin ? (
+                        <DeleteIcon style={{ color: "gray" }} disabled="true" />
+                      ) : (
+                        <DeleteIcon
+                          style={{ color: "#A52A2A" }}
+                          onClick={() => {
+                            deleteUser(val.id, val.login);
+                          }}
+                        />
+                      )}
                     </IconButton>
                   </TableCell>
                 </TableRow>

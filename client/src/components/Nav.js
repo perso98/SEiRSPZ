@@ -110,8 +110,14 @@ function Nav(props) {
   const classes = useStyles();
   Axios.defaults.withCredentials = true;
   const logout = async () => {
-    await Axios.post(`${url}logoutFromAccount`);
-    navigate("/");
+    await Axios.post(`${url}logoutFromAccount`).then((res) => {
+      if (res.data.message) {
+        props.setStatus();
+
+        navigate("/");
+      }
+      navigate("/");
+    });
   };
 
   const Navbar = () => {

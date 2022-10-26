@@ -10,7 +10,7 @@ const {
   zastepstwa,
 } = require("../models");
 
-const { Op } = require("Sequelize");
+const { Op } = require("sequelize");
 
   exports.getListaOpiekunow = async (req, res) => {
 
@@ -31,7 +31,6 @@ const { Op } = require("Sequelize");
   
     res.send(listDziennik);
   };
-
 
   exports.getListaZastepstw = async (req, res) => {
     // const listZastepstw = await dane.findAll({

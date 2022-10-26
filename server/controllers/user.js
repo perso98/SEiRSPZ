@@ -23,7 +23,16 @@ exports.changePasswordToAccount = async (req, res) => {
 };
 
 exports.changeDaneToAccount = async (req, res) => {
-  const { imie, nazwisko, studia, kierunek, specjalnosc, rokStudiow, rodzajStudiow, telefon } = req.body;
+  const {
+    imie,
+    nazwisko,
+    studia,
+    kierunek,
+    specjalnosc,
+    rokStudiow,
+    rodzajStudiow,
+    telefon,
+  } = req.body;
 
     // First try to find the record
 
@@ -164,7 +173,9 @@ exports.loginToAccount = async (req, res) => {
 };
 
 exports.logoutFromAccount = async (req, res) => {
-  if (req.session.user) {
+  if (!req.session.user) {
+    res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+  } else {
     req.session.destroy();
     res.clearCookie("user");
     res.end();
@@ -203,19 +214,15 @@ exports.createAccount = async (req, res) => {
 };
 
 exports.getListaKierunkow = async (req, res) => {
-    const lista = await listaKierunkow.findAll();
+  const lista = await listaKierunkow.findAll();
   res.send(lista);
 };
 
 exports.getUserSesionId = async (req, res) => {
-  const lista = await user.findOne(
-    {where: {id: req.session.user.id}}
-  );
+  const lista = await user.findOne({ where: { id: req.session.user.id } });
   const userDane = await dane.findOne({
     where: { id: lista.daneId },
   });
 
-
-res.send(userDane);
+  res.send(userDane);
 };
-
