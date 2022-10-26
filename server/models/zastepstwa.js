@@ -17,12 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       zastepstwa.belongsTo(models.user, {
         foreignKey: {
           allowNull: true,
-        },
-      });
-      zastepstwa.belongsTo(models.user, {
-        foreignKey: {
-          allowNull: true,
-        },
+        }
       });
     };
   

@@ -78,6 +78,9 @@ module.exports = (sequelize, DataTypes) => {
     user.hasMany(models.efektyStudent, {
       onDelete: "cascade",
     });
+    user.hasMany(models.zastepstwa, {
+      onDelete: "cascade",
+    });
   }
 
 

@@ -26,10 +26,11 @@ exports.changeDaneToAccount = async (req, res) => {
   const { imie, nazwisko, studia, kierunek, specjalnosc, rokStudiow, rodzajStudiow, telefon } = req.body;
 
     // First try to find the record
+
    const foundItem = await user.findOne({
     where: {login: req.session.user.login}})
 
-   if (foundItem.daneId == null) {
+  if (foundItem.daneId == null) {
     try{
       const createDane = await dane.create({ 
         imie: imie,
@@ -41,26 +42,21 @@ exports.changeDaneToAccount = async (req, res) => {
         rodzaj_studiow: rodzajStudiow, 
         telefon: telefon, 
       })
+      
       await user.update({ 
         daneId: createDane.id,
-      },
-      { where: { id: foundItem.id} })
+      },{ 
+        where: { id: foundItem.id} 
+      })
 
-      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ1")
       const numerKuerunku = await listaKierunkow.findOne({ 
         where: { nazwa: specjalnosc} 
      })
-     console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ2")
       const listaEfektow = await efektyLista.findAll({ 
          where: { listaKierunkowId: numerKuerunku} 
 
       })
-
-      console.log("listaEfektow" + listaEfektow)
-      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ3")
-      
       listaEfektow.forEach(element => {
-
         console.log(element)
         // const createEfektyEmpty = await efektyStudent.create({ 
         //   efektyListumId: element,
@@ -68,69 +64,64 @@ exports.changeDaneToAccount = async (req, res) => {
 
         // })
       });
-      
         // const createEfektyEmpty = await efektyStudent.create({ 
         //   efektyListumId: ,
         //   userId: req.session.user.id,
 
         // })
-
-
-
       res.send({ message: "Pomyślnie zmieniono dane do konta" ,
       updateDane: createDane});
     }
     catch (err) {
       res.send({ message: err.message });
     }
-    }
+  }
     else{
-      const updateDane = await dane.update({ 
-        imie: imie,
-        nazwisko: nazwisko,
-        studia: studia,
-        kierunek: kierunek, 
-        specjalnosc: specjalnosc, 
-        rok_studiow: rokStudiow, 
-        rodzaj_studiow: rodzajStudiow, 
-        telefon: telefon, 
-        },
-        { where: { id: foundItem.daneId } }
-      );
+      try{
+        const updateDane = await dane.update({ 
+          imie: imie,
+          nazwisko: nazwisko,
+          studia: studia,
+          kierunek: kierunek, 
+          specjalnosc: specjalnosc, 
+          rok_studiow: rokStudiow, 
+          rodzaj_studiow: rodzajStudiow, 
+          telefon: telefon, 
+          },
+          { where: { id: foundItem.daneId } }
+        );
 
-      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ1")
-      console.log(specjalnosc)
-      const numerKierunku = await listaKierunkow.findOne({ 
-        where: { nazwa: specjalnosc} 
-     })
-     console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ2")
-     console.log(numerKierunku.nazwa)
-      const listaEfektow = await efektyLista.findAll({ 
-         where: { listaKierunkowId: numerKierunku.id} 
-      })
-
-      console.log("listaEfektow" + listaEfektow)
-      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ3")
-      
-      await efektyStudent.destroy({ 
-        where:{userId: req.session.user.id,}
-      })
-      listaEfektow.forEach(async element => {
-
-        await efektyStudent.create({ 
-          efektyListumId: element.id,
-          userId: req.session.user.id,
-
+        const numerKierunku = await listaKierunkow.findOne({ 
+          where: { nazwa: specjalnosc} 
         })
-      });
-      
-        // const createEfektyEmpty = await efektyStudent.create({ 
-        //   efektyListumId: ,
-        //   userId: req.session.user.id,
+        const listaEfektow = await efektyLista.findAll({ 
+          where: { listaKierunkowId: numerKierunku.id} 
+        })
 
-        // })
-      res.send({ message: "Pomyślnie zmieniono dane do konta",
-    updateDane: updateDane });
+        
+        await efektyStudent.destroy({ 
+          where:{userId: req.session.user.id,}
+        })
+        listaEfektow.forEach(async element => {
+
+          await efektyStudent.create({ 
+            efektyListumId: element.id,
+            userId: req.session.user.id,
+
+          })
+        });
+        
+          // const createEfektyEmpty = await efektyStudent.create({ 
+          //   efektyListumId: ,
+          //   userId: req.session.user.id,
+
+          // })
+        res.send({ message: "Pomyślnie zmieniono dane do konta",
+        updateDane: updateDane });
+      }
+      catch (err) {
+        res.send({ message: err.message });
+      }
     }
     
 };

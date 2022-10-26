@@ -145,36 +145,46 @@ const multer = require("multer");
 
 exports.getEfektUczenia = async (req, res) => {
 
-  const userId = await user.findOne({
-    attributes: ['daneId'],
-    where: {
-      id: req.session.user.id,
-    },
-  })
-  
+  try {
+    const userId = await user.findOne({
+      attributes: ['daneId'],
+      where: {
+        id: req.session.user.id,
+      },
+    })
 
-  const specjalnosc = await dane.findOne({
-    attributes: ['specjalnosc'],
-    where: {
-      id: userId.daneId,
-    },
-  })
-  
+    
+    const specjalnosc = await dane.findOne({
+      attributes: ['specjalnosc'],
+      where: {
+        id: userId.daneId,
+      },
+    })
 
-  const idSpecjalnosc = await listaKierunkow.findOne({
-    attributes: ['id'],
-    where: {
-      nazwa: specjalnosc.specjalnosc,
-    },
-  })
-
-
-  const listaEfektow = await efektyLista.findAll({
-    where: {
-    listaKierunkowId: idSpecjalnosc.id,
-  },});
-
-    res.send(listaEfektow);
+    if(specjalnosc !== null){
+      const idSpecjalnosc = await listaKierunkow.findOne({
+        attributes: ['id'],
+        where: {
+          nazwa: specjalnosc.specjalnosc,
+        },
+      })
+      
+      const listaEfektow = await efektyLista.findAll({
+        where: {
+        listaKierunkowId: idSpecjalnosc.id,
+      },});
+    
+      res.send(listaEfektow);
+    }
+    else{
+      res.send({
+        message: "Wybierz specjalność",
+      });
+    }
+    
+  } 
+  catch (err) {
+  }
   };
 
 

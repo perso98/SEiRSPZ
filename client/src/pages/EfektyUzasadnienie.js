@@ -115,6 +115,9 @@ function EfektyUzasadnienie() {
 
   const [listEfektyStudent, setListEfektyStudent] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+
+
     useEffect(() => {
       axios.get(`${url}getEfektUczenia`).then((res) => {
         setListaEfektyow(res.data);
@@ -122,7 +125,7 @@ function EfektyUzasadnienie() {
       axios.get(`${url}IdUser`).then((res) => {
         setIdUser(res.data);
     });
-      
+    setLoading(false)
     }, []);
 
 
@@ -210,23 +213,28 @@ function EfektyUzasadnienie() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                      
-                      {listaEfektyow.map((val) => (
-                        <TableRow >
-                          <TableCell style={{ textAlign: "center" }}>
-                            {val.nazwa}
-                          </TableCell>
-
-                          <TableCell style={{ textAlign: "center" }}>
-                          <Button className={classes.btnEdycja} 
-                                    variant="contained" 
-                                    onClick={() => { handleOpen(val)}}
-                                >
-                                    Uzasadnij
-                                </Button>
-                        </TableCell>
-                      </TableRow>
-                       ))}
+                  {loading === false ?(
+                      listaEfektyow.message === "Wybierz specjalność" ?(
+                        <div>Wybierz specjalność w panelu Konto aby pojawiły się efekty uczenia się</div>
+                      ): 
+                        listaEfektyow.map((val) => (
+                            <TableRow >
+                              <TableCell style={{ textAlign: "center" }}>
+                                {val.nazwa}
+                              </TableCell>
+    
+                              <TableCell style={{ textAlign: "center" }}>
+                              <Button className={classes.btnEdycja} 
+                                        variant="contained" 
+                                        onClick={() => { handleOpen(val)}}
+                                    >
+                                        Uzasadnij
+                                    </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                  ): <div>Ładowanie...</div>
+                  }
                   </TableBody>
                 </Table>
             </div>
