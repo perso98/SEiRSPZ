@@ -197,7 +197,7 @@ export default function Admin(props) {
     } else if (searchLogin != "") {
       return val.login.toLowerCase().includes(searchLogin.toLowerCase());
     } else if (yearSearch != "") {
-      return val.createdAt.includes(yearSearch);
+      return val.createdAt.split("-")[0] === yearSearch;
     }
   });
 

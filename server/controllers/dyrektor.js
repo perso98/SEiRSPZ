@@ -10,33 +10,29 @@ const {
   zastepstwa,
 } = require("../models");
 
-const { Op } = require("Sequelize");
+const { Op } = require("sequelize");
 
-  exports.getListaOpiekunow = async (req, res) => {
-    // const listDziennik = await dane.findAll({
-       
-    //   include: {
-    //     model: user,
-    //     as: 'user',
-    //     where: { isOpiekun: { [Op.ne]: 0 } },
-    //   },
-    // });
+exports.getListaOpiekunow = async (req, res) => {
+  // const listDziennik = await dane.findAll({
 
-    const listDziennik2 = await dane.findAll({
-        include: {
-            model: user,
-          },
-       
-    });
-  
-    res.send(listDziennik2);
-  };
+  //   include: {
+  //     model: user,
+  //     as: 'user',
+  //     where: { isOpiekun: { [Op.ne]: 0 } },
+  //   },
+  // });
 
+  const listDziennik2 = await dane.findAll({
+    include: {
+      model: user,
+    },
+  });
 
-  exports.getListaZastepstw = async (req, res) => {
-    const listZastepstw = await zastepstwa.findAll({
-      
-    });
-  
-    res.send(listZastepstw);
-  };
+  res.send(listDziennik2);
+};
+
+exports.getListaZastepstw = async (req, res) => {
+  const listZastepstw = await zastepstwa.findAll({});
+
+  res.send(listZastepstw);
+};
