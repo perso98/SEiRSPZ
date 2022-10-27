@@ -102,7 +102,7 @@ function EfektyDialog(props) {
                   rows={10}
                   margin="normal"
                   label="Opis"
-                  value={props.opis}
+                  value={props?.opis?.length > 0 ? props.opis : ""}
                   style={{ width: "100%" }}
                   onChange={(e) => {
                     props.setOpis(e.target.value);
@@ -140,7 +140,9 @@ function EfektyDialog(props) {
                   color="error"
                   onClick={() => {
                     props.updateDzienniczek(
-                      props.efektId,
+                      props.efektId == 0
+                        ? props.checkStudent.efektyStudents[0].id
+                        : props.efektId,
                       props.opis,
                       props.checkStudent.id,
                       "Niezatwierdzone"
@@ -150,6 +152,7 @@ function EfektyDialog(props) {
                         ? props.checkStudent.efektyStudents[0].id
                         : props.efektId,
                       props.opis,
+                      props.checkStudent.id,
                       "Niezatwierdzone"
                     );
                   }}
