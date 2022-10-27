@@ -118,6 +118,9 @@ app.post("/api/createForm", form_controller.createForm);
 //        Dyrektor
 app.get("/api/getListaOpiekunow", dyrektor_controller.getListaOpiekunow);
 app.get("/api/getListaZastepstw", dyrektor_controller.getListaZastepstw);
+app.put("/api/dodanieZastepstwa/:id", dyrektor_controller.dodanieZastepstwa);
+app.delete("/api/usuwanieZastepstwa/:id", dyrektor_controller.usuwanieZastepstwa);
+
 
 //Maciek
 //User

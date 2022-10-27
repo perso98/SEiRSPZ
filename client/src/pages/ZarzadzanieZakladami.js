@@ -1,7 +1,7 @@
-import React,{ useState, useEffect} from 'react'
+import React from 'react'
 import ListaOpiekunow from "../components/ListaOpiekunow";
 
-function DodawanieOpiekunow() {
+function ZarzadzanieZakladami() {
 
   return (
     <div>
@@ -11,4 +11,4 @@ function DodawanieOpiekunow() {
   )
 }
 
-export default DodawanieOpiekunow
+export default ZarzadzanieZakladami

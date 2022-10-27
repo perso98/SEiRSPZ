@@ -24,6 +24,7 @@ import Button from "@mui/material/Button";
 import { Container, Typography, Grid, Input } from '@mui/material'
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import SearchBar from "./SearchBarNoMargin";
 
 const useStyles = makeStyles(theme => ({
     containerMain:{
@@ -79,13 +80,13 @@ function AddStudent(
       }
 ) {
 
-    const giveButton = (id, firmaId) => {
+    const giveButton = (userId, firmaId, id ) => {
         return (
           <Button
             variant="contained"
             color="success"
             onClick={() => {
-                addStudentFirma(id, firmaId, idOpiekuna, jakiOpiekun);
+                addStudentFirma(userId, firmaId ,id, idOpiekuna, jakiOpiekun);
             }}
           >
             Dodaj
@@ -94,13 +95,13 @@ function AddStudent(
         );
       };
 
-      const deleteButton = (id) => {
+      const deleteButton = (id, userId) => {
         return (
           <Button
             variant="contained"
             color="error"
             onClick={() => {
-                delStudentFirma(id, jakiOpiekun);
+                delStudentFirma(id, userId, jakiOpiekun);
             }}
           >
             Usuń
@@ -110,6 +111,25 @@ function AddStudent(
 
       
     const classes = useStyles();
+
+    const [searchLogin, setSearchLogin] = useState("");
+
+    const [itemOffset, setItemOffset] = useState(0);
+
+    // console.log(dane)
+
+    const recordsAfterFiltering = user.filter((val) => {
+        if (searchLogin == "") {
+          return val;
+        } else if (
+          val.login.toLowerCase().includes(searchLogin.toLowerCase())
+        //   ||
+        //   val.user.nazwisko.toLowerCase().includes(searchLogin.toLowerCase())
+          
+        ) {
+          return val;
+        }
+      });
 
 
   return (
@@ -128,8 +148,67 @@ function AddStudent(
                     <Grid container>
                     <Grid item xs >
                             <div>
-                                Przypisani Studenci<p></p>
-                                Imie i naziwkso: 
+                            <div  style={{marginBottom:"1rem"}}>
+                            <SearchBar
+                            setSearchLogin={setSearchLogin}
+                            setItemOffset={setItemOffset}
+                            />
+                            </div>
+                            <div className={classes.przerwa} style={{marginLeft:"15px", marginBottom:"15px"}}><b>Studenci lista</b></div>
+                            {recordsAfterFiltering.map((val) => (
+                                    jakiOpiekun === 1 ? (
+                                <Grid style={{ width: "300px"}}>
+                                <div >
+                                        { val.isStudent === 1 && val.id_opiekunZ === null ? (
+                                            <Grid container style={{ display: "flex", justifyContent: "space-between" }} >
+                                                {/* <Grid  style={{marginRight:"15px"}}
+                                                xs = {2}>
+                                                        login: {val.login}
+                                                </Grid> */}
+                                                {dane.map((daneNO) => (
+                                                    daneNO.id === val.daneId ? (
+                                                        <Grid style={{marginRight:"15px"}}>
+                                                            <div>
+                                                                    {daneNO.imie} {daneNO.nazwisko}
+                                                            </div>
+                                                        </Grid>
+                                                    ): null
+                                                ))}
+                                                <Grid>
+                                                    {giveButton(val.id, idFirma.id )}
+                                                </Grid>
+                                            </Grid>
+                                        ): null}
+                                    </div>
+                                    </Grid>
+                                    ): 
+                                    <Grid style={{ width: "300px"}}>
+                                    <div>
+                                        { val.isStudent === 1 && val.id_opiekunU === null ? (
+                                        <Grid container style={{ display: "flex", justifyContent: "space-between" }}>
+                                            {/* <Grid  style={{marginRight:"15px"}}
+                                            xs = {2}>
+                                                    login: {val.login}
+                                            </Grid> */}
+                                                {dane.map((daneNO) => (
+                                                daneNO.id === val.daneId ? (
+                                                    <Grid style={{marginRight:"15px"}}>
+                                                        <div>
+                                                                {daneNO.imie} {daneNO.nazwisko}
+                                                        </div>
+                                                    </Grid>
+                                                ): null
+                                            ))}
+                                            <Grid>
+                                                {giveButton(val.id, idFirma.id )}
+                                            </Grid>
+                                        </Grid>
+                                        
+                                    ): null}
+                                    </div>
+                                    </Grid>
+                            ))}
+                                <div className={classes.przerwa} style={{margin:"15px"}}><b>Przypisani Studenci</b></div>
                                 {user.map((val) => (
                                     <Grid style={{ width: "300px"}}>
                                         { jakiOpiekun === 1 ? (
@@ -183,57 +262,9 @@ function AddStudent(
                             </div>
 
                             <div>
-                            <div className={classes.przerwa}>Studenci lista</div>
-                            {user.map((val) => (
-                                <Grid style={{ width: "300px"}}>
-                                    { jakiOpiekun === 1 ? (
-                                    <div >
-                                        { val.isStudent === 1 && val.id_opiekunZ === null ? (
-                                            <Grid container style={{ display: "flex", justifyContent: "space-between" }} >
-                                                {/* <Grid  style={{marginRight:"15px"}}
-                                                xs = {2}>
-                                                        login: {val.login}
-                                                </Grid> */}
-                                                {dane.map((daneNO) => (
-                                                    daneNO.id === val.daneId ? (
-                                                        <Grid style={{marginRight:"15px"}}>
-                                                            <div>
-                                                                    {daneNO.imie} {daneNO.nazwisko}
-                                                            </div>
-                                                        </Grid>
-                                                    ): null
-                                                ))}
-                                                <Grid>
-                                                    {giveButton(val.id, idFirma.id )}
-                                                </Grid>
-                                            </Grid>
-                                        ): null}
-                                    </div>
-                                    ): <div>
-                                        { val.isStudent === 1 && val.id_opiekunU === null ? (
-                                        <Grid container style={{ display: "flex", justifyContent: "space-between" }}>
-                                            {/* <Grid  style={{marginRight:"15px"}}
-                                            xs = {2}>
-                                                    login: {val.login}
-                                            </Grid> */}
-                                            {dane.map((daneNO) => (
-                                                daneNO.id === val.daneId ? (
-                                                    <Grid style={{marginRight:"15px"}}>
-                                                        <div>
-                                                                 {daneNO.imie} {daneNO.nazwisko}
-                                                        </div>
-                                                    </Grid>
-                                                ): null
-                                            ))}
-                                            <Grid>
-                                                {giveButton(val.id, idFirma.id )}
-                                            </Grid>
-                                        </Grid>
-                                        
-                                    ): null}
-                                    </div>}
-                                </Grid>
-                            ))}
+
+                            
+                            
                             </div>
 
                         </Grid>

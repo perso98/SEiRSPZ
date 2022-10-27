@@ -141,35 +141,47 @@ exports.deleteDay = async (req, res) => {
 };
 
 exports.getEfektUczenia = async (req, res) => {
-  const userId = await user.findOne({
-    attributes: ["daneId"],
-    where: {
-      id: req.session.user.id,
-    },
-  });
 
-  const specjalnosc = await dane.findOne({
-    attributes: ["specjalnosc"],
-    where: {
-      id: userId.daneId,
-    },
-  });
+  try {
+    const userId = await user.findOne({
+      attributes: ['daneId'],
+      where: {
+        id: req.session.user.id,
+      },
+    })
 
-  const idSpecjalnosc = await listaKierunkow.findOne({
-    attributes: ["id"],
-    where: {
-      nazwa: specjalnosc.specjalnosc,
-    },
-  });
-
-  const listaEfektow = await efektyLista.findAll({
-    where: {
-      listaKierunkowId: idSpecjalnosc.id,
-    },
-  });
-
-  res.send(listaEfektow);
-};
+    
+    const specjalnosc = await dane.findOne({
+      attributes: ['specjalnosc'],
+      where: {
+        id: userId.daneId,
+      },
+    })
+    if(specjalnosc.specjalnosc !== null){
+      const idSpecjalnosc = await listaKierunkow.findOne({
+        attributes: ['id'],
+        where: {
+          nazwa: specjalnosc.specjalnosc,
+        },
+      })
+      
+      const listaEfektow = await efektyLista.findAll({
+        where: {
+        listaKierunkowId: idSpecjalnosc.id,
+      },});
+    
+      res.send(listaEfektow);
+    }
+    else{
+      res.send({
+        message: "Wybierz specjalność",
+      });
+    }
+    
+  } 
+  catch (err) {
+  }
+  };
 
 exports.listEfektyStudent = async (req, res) => {
   const id = req.params.id;
@@ -287,22 +299,70 @@ exports.upload = async (req, res) => {
 exports.sendDay = async (req, res) => {
   try {
     const { id } = req.body;
-    const zalaczniki = await dziennik.update(
-      {
-        statusOpiekunaU: "Oczekiwanie",
-        statusOpiekunaZ: "Oczekiwanie",
-      },
-      {
-        where: {
-          id: id,
-        },
-      }
-    );
 
-    res.send({
-      message: "Wysłano",
-      zalaczniki,
-    });
+    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQ")
+    const check = await dziennik.findOne({
+      where:{id: id}
+    })
+
+      if(check.statusOpiekunaU === "Zaakceptowano"){
+        await dziennik.update(
+          {
+            statusOpiekunaU: "Zaakceptowano",
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+      }
+      else{
+        await dziennik.update(
+          {
+            statusOpiekunaU: "Oczekiwanie",
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+    
+      }
+
+      if(check.statusOpiekunaZ === "Zaakceptowano"){
+        await dziennik.update(
+          {
+            statusOpiekunaZ: "Zaakceptowano",
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+    
+        
+      }
+      else{
+        await dziennik.update(
+          {
+            statusOpiekunaZ: "Oczekiwanie",
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+    
+        
+      }
+      res.send({
+        message: "Wysłano",
+      });
+
   } catch {
     res.send({
       message: "Błąd",

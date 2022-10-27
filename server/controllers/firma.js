@@ -50,8 +50,6 @@ const {
     const listUser = await user.findAll();
     res.send(listUser);
   };
-  
-
 
   exports.getFirma = async (req, res) => {
     const listUser = await firma.findAll();
@@ -170,6 +168,7 @@ const {
   
   exports.addStudentFirma = async (req, res) => {
     const { id, firmaId, idOpiekuna, jakiOpiekun } = req.body;
+    console.log(id, firmaId, idOpiekuna, jakiOpiekun )
     if (jakiOpiekun == 1){
       updateStudent = await user.update(
         {

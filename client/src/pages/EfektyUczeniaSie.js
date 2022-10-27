@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles'
 import { Button, Grid, TextField,TableRow, TableCell, Table,
   TableBody,
   
-  TableHead,  Box, Alert,Collapse,IconButton, Typography } from '@mui/material';
+  TableHead,IconButton, Typography } from '@mui/material';
 import { url } from "../services/Url";
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function Form() {
+function EfektyUczeniaSie() {
     const classes = useStyles();
 
     const [edit, setEdit] = useState(0);
@@ -64,7 +64,7 @@ function Form() {
             nazwaKierunku: nazwaKierunku,
           })
           .then((res) => {
-            if (res.data.message == "Kierunek został pomyślnie dodany") {
+            if (res.data.message === "Kierunek został pomyślnie dodany") {
                 setSipsKierunkow([
                     ...sipsKierunkow,
                     {
@@ -88,10 +88,10 @@ function Form() {
           .delete(`${url}delKierunek/${id}`, {
           })
           .then((res) => {
-            if (res.data.message == "Usunięto") {
+            if (res.data.message === "Usunięto") {
                 setSipsKierunkow(
                     sipsKierunkow.filter((val) => {
-                        return val.id != id;
+                        return val.id !== id;
                       })
                   );
             }
@@ -111,10 +111,10 @@ function Form() {
             id: id
           })
           .then((res) => {
-            if (res.data.message == "Efekt został pomyślnie dodany") {
+            if (res.data.message === "Efekt został pomyślnie dodany") {
                 setSipsKierunkow(
                     sipsKierunkow.map((val) => {
-                      return val.id == id
+                      return val.id === id
                         ? {
                             ...val,
                             efektyLista: nazwaEfektu
@@ -146,14 +146,14 @@ function Form() {
           .delete(`${url}delEfekt/${idEfekt}`, {
           })
           .then((res) => {
-            if (res.data.message == "Usunięto") {
+            if (res.data.message === "Usunięto") {
                 setSipsKierunkow(
                 sipsKierunkow.map((val) => {
-                return val.id == id
+                return val.id === id
                     ? {
                         ...val,
                         efektyLista: val.efektyLista.filter((efekt) => {
-                        return efekt.id != idEfekt;
+                        return efekt.id !== idEfekt;
                         }),
                     }
                     : val;
@@ -421,4 +421,4 @@ function Form() {
     
 }
 
-export default Form
+export default EfektyUczeniaSie

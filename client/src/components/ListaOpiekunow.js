@@ -34,6 +34,7 @@ function ListaOpiekunow() {
         axios.get(`${url}getFirma`).then((res)=>{
             setFirma(res.data)
         })
+
     },[]
     )
 
@@ -112,9 +113,9 @@ function ListaOpiekunow() {
         setStudentObject({...studentObject,[id]:value})
       }
 
-    const addStudentFirma = (id, firmaId, idOpiekuna, jakiOpiekun) => {
+    const addStudentFirma = (userId, firmaId, id, idOpiekuna, jakiOpiekun) => {
         axios.put(`${url}addStudentFirma`, {
-          id: id,
+          id: userId,
           firmaId: firmaId,
           idOpiekuna: idOpiekuna,
           jakiOpiekun: jakiOpiekun,
@@ -123,22 +124,45 @@ function ListaOpiekunow() {
             if(jakiOpiekun == 1){
                 setUser(
                     user.map((val) => {
-                        return val.id == id ? { ...val, firmaId: firmaId, id_opiekunZ: idOpiekuna } : val;
+                        return val.id == userId ? { ...val, firmaId: firmaId, id_opiekunZ: idOpiekuna } : val;
                     })
                 );
+                // setDane(
+                //     dane.map((val) => {
+                //         return val.id == id ? { 
+                //             ...val, 
+                //             user:user.map((valUser) => {
+                //                 return valUser.id == userId ? { ...valUser, firmaId: firmaId, id_opiekunZ: idOpiekuna } : valUser;
+                //             })
+                //         } : val;
+                //     })
+                // );
+                // console.log(dane)
             }
             if(jakiOpiekun == 0){
                 setUser(
                     user.map((val) => {
-                        return val.id == id ? { ...val, firmaId: firmaId, id_opiekunU: idOpiekuna } : val;
+                        return val.id == userId ? { ...val, firmaId: firmaId, id_opiekunU: idOpiekuna } : val;
                     })
                 );
+                // setDane(
+                //     dane.map((val) => {
+                //         return val.id == id ? { 
+                //             ...val, 
+                //             user:user.map((valUser) => (
+                //                 valUser.id == userId ? { ...valUser, firmaId: firmaId, id_opiekunU: idOpiekuna } : null
+                //             ))
+                //         } : val;
+                //     })
+                // );
+                // console.log(dane)
             }
         });
+        console.log(dane)
       };
 
 
-      const delStudentFirma = (id, jakiOpiekun) => {
+      const delStudentFirma = (id, userId, jakiOpiekun) => {
         axios.put(`${url}delStudentFirma`, {
             id: id,
             jakiOpiekun: jakiOpiekun,
@@ -150,6 +174,20 @@ function ListaOpiekunow() {
                         return val.id == id ? { ...val, id_opiekunZ: null } : val;
                     })
                 );
+                // setDane(
+                //     dane.map((val) => {
+                //         return val.id == id ? { 
+                //             ...val, 
+                //             user:user?[
+                //                 ...val.user,
+                //                 {
+                //                     id_opiekunZ: null,
+                //                 },
+                //             ]:
+                //             [...val.user]
+                //         } : val;
+                //     })
+                // );
             }
             if(jakiOpiekun == 0){
                 setUser(
@@ -157,6 +195,20 @@ function ListaOpiekunow() {
                         return val.id == id ? { ...val, id_opiekunU: null } : val;
                     })
                 );
+                // setDane(
+                //     dane.map((val) => {
+                //         return val.id == id ? { 
+                //             ...val, 
+                //             user:user?[
+                //                 ...val.user,
+                //                 {
+                //                     id_opiekunU: null,
+                //                 },
+                //             ]:
+                //             [...val.user]
+                //         } : val;
+                //     })
+                // );
             }
           });
       };

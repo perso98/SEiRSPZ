@@ -6,37 +6,19 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
   TableRow,
-  Toolbar,
-  TextField,
 } from "@material-ui/core";
 import { url } from "../services/Url";
 import { Link } from "react-router-dom";
-import { Container, Typography, Grid, Input } from "@mui/material";
+import { Typography, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import AddDayDialog from "../components/AddDayDialog";
 import EditDay from "../components/EditDay";
-
-import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment } from "@mui/material";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import IconButton from "@mui/material/IconButton";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ButtonLink from "../components/Button";
-import { experimentalStyled as styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
-
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { minWidth } from "@mui/system";
+import Helper from "../components/Helper";
+
 
 const useStyles = makeStyles((theme) => ({
   containerMain: {
@@ -109,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 function Dzienniczek() {
   const classes = useStyles();
 
-  const [checkDay, setCheckDay] = useState(null);
+//  const [checkDay, setCheckDay] = useState(null);
 
   const [dziennik, setDziennik] = useState([]);
 
@@ -126,17 +108,15 @@ function Dzienniczek() {
       setDziennikZalaczniki(res.data);
       setLoading(false);
     });
-
-
   }, []);
 
-  const [dayObject, setDayObject] = useState({
-    userId: "",
-    dzien: "",
-    data: "",
-    iloscGodzin: "",
-    opis: "",
-  });
+  // const [dayObject, setDayObject] = useState({
+  //   userId: "",
+  //   dzien: "",
+  //   data: "",
+  //   iloscGodzin: "",
+  //   opis: "",
+  // });
 
   // Edycja  dnia
 
@@ -186,10 +166,10 @@ function Dzienniczek() {
         changeIloscGodzin: changeIloscGodzin,
       })
       .then((res) => {
-        if (res.data.message == "Zmiana przeszła pomyślnie...") {
+        if (res.data.message === "Zmiana przeszła pomyślnie...") {
           setDziennik(
             dziennik.map((val) =>
-              val.id == id
+              val.id === id
                 ? {
                     ...val,
                     opis: res.data.editOpis,
@@ -221,7 +201,7 @@ function Dzienniczek() {
         .then((res) => {
           setDziennik(
             dziennik.filter((val) => {
-              return val.id != id;
+              return val.id !== id;
             })
           );
           setEditOpen(false);
@@ -268,7 +248,7 @@ function Dzienniczek() {
       .then((res) => {
         setDziennikZalaczniki(
           dziennikZalaczniki.filter((val) => {
-            return val.id != id;
+            return val.id !== id;
           })
         );
       });
@@ -276,20 +256,20 @@ function Dzienniczek() {
 
   // dodawanie dnia
 
-  const [addOpen, setAddOpen] = useState(false);
+  // const [addOpen, setAddOpen] = useState(false);
 
-  const handleAddClose = () => {
-    setAddOpen(false);
-  };
+  // const handleAddClose = () => {
+  //   setAddOpen(false);
+  // };
   const handleAddOpen = () => {
     createDay2()
     // setAddOpen(true);
   };
 
-  const onChange = (e) => {
-    const { value, id } = e.target;
-    setDayObject({ ...dayObject, [id]: value });
-  };
+  // const onChange = (e) => {
+  //   const { value, id } = e.target;
+  //   setDayObject({ ...dayObject, [id]: value });
+  // };
 
  
 
@@ -298,7 +278,7 @@ function Dzienniczek() {
       .post(`${url}createDay2`, {
       })
       .then((res) => {
-        if (res.data.message == "Dzień został pomyślnie dodany") {
+        if (res.data.message === "Dzień został pomyślnie dodany") {
           setDziennik([
             ...dziennik,
             {
@@ -327,39 +307,39 @@ function Dzienniczek() {
       })
   };
 
-  const createDay = () => {
-    axios
-      .post(`${url}createDay`, {
-        dayObject: dayObject,
-      })
-      .then((res) => {
-        if (res.data.message == "Dzień został pomyślnie dodany") {
-          setDziennik([
-            ...dziennik,
-            {
-              id: res.data.id,
-              userId: dayObject.login,
-              dzien: dayObject.dzien,
-              data: dayObject.data,
-              ilosc_godzin: dayObject.iloscGodzin,
-              opis: dayObject.opis,
-              statusOpiekunaU: "Oczekiwanie",
-              statusOpiekunaZ: "Oczekiwanie",
-            },
-          ]);
-          setDayObject({
-            ...dayObject,
-            userId: "",
-            dzien: "",
-            data: "",
-            iloscGodzin: "",
-            opis: "",
-          });
-        }
+  // const createDay = () => {
+  //   axios
+  //     .post(`${url}createDay`, {
+  //       dayObject: dayObject,
+  //     })
+  //     .then((res) => {
+  //       if (res.data.message === "Dzień został pomyślnie dodany") {
+  //         setDziennik([
+  //           ...dziennik,
+  //           {
+  //             id: res.data.id,
+  //             userId: dayObject.login,
+  //             dzien: dayObject.dzien,
+  //             data: dayObject.data,
+  //             ilosc_godzin: dayObject.iloscGodzin,
+  //             opis: dayObject.opis,
+  //             statusOpiekunaU: "Oczekiwanie",
+  //             statusOpiekunaZ: "Oczekiwanie",
+  //           },
+  //         ]);
+  //         setDayObject({
+  //           ...dayObject,
+  //           userId: "",
+  //           dzien: "",
+  //           data: "",
+  //           iloscGodzin: "",
+  //           opis: "",
+  //         });
+  //       }
 
-        alert(res.data.message);
-      });
-  };
+  //       alert(res.data.message);
+  //     });
+  // };
 
   const sendDay = (id) => {
     axios
@@ -367,14 +347,18 @@ function Dzienniczek() {
         id: id,
       })
       .then((res) => {
-        if (res.data.message == "Wysłano") {
+        if (res.data.message === "Wysłano") {
           setDziennik(
             dziennik.map((val) =>
-              val.id == id
+              val.id === id
                 ? {
                     ...val,
-                    statusOpiekunaU: "Oczekiwanie",
-                    statusOpiekunaZ: "Oczekiwanie",
+                    statusOpiekunaU: val.statusOpiekunaU === "Zaakceptowano" ? (
+                      "Zaakceptowano"
+                    ) : "Oczekiwanie",
+                    statusOpiekunaZ: val.statusOpiekunaZ === "Zaakceptowano" ? (
+                      "Zaakceptowano"
+                    ) : "Oczekiwanie"
                   }
                 : val
             )
@@ -398,21 +382,28 @@ function Dzienniczek() {
     return string.slice(0, int);
   };
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
+  // const Item = styled(Paper)(({ theme }) => ({
+  //   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  //   ...theme.typography.body2,
+  //   padding: theme.spacing(2),
+  //   textAlign: "center",
+  //   color: theme.palette.text.secondary,
+  // }));
+
+  const infomacja = (
+    <div>
+      Dar
+    </div>
+  );
 
   return (
     <div className={classes.containerMain}>
       <div className={classes.nowyDzienBTN}>
-      <div style={{ justifyContent: "space-between", display: "flex" }}>
-        <Button variant="contained" onClick={handleAddOpen}>
+      <div style={{ justifyContent: "space-between", display: "flex" , alignItems: "center"}}>
+        <Button className={classes.links} style={{height: "52px" }} variant="contained" onClick={handleAddOpen}>
           Dodaj nowy dzień
         </Button>
+        <Helper info={infomacja} title="Dzienniczek" napis={"Pomoc"}/>
         <Button variant="contained">
         <Link to="/efekty" className={classes.links}>
           <div className={classes.item}>
@@ -447,7 +438,7 @@ function Dzienniczek() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {loading == true && <TableRow>Ładowanie...</TableRow>}
+                    {loading === true && <TableRow>Ładowanie...</TableRow>}
                     {dziennik.map((val) => (
                       <TableRow key={val.id}>
                         <TableCell
@@ -468,10 +459,10 @@ function Dzienniczek() {
                         </div>
                         </TableCell>
                         <TableCell style={{ textAlign: "center" }}>
-                        <div>{val.statusOpiekunaU}</div>
+                        <div style={{ color: val.statusOpiekunaU === "Odrzucono" ? ("red"): val.statusOpiekunaU === "Zaakceptowano" ? ("green"):null }}>{val.statusOpiekunaU}</div>
                         </TableCell>
                         <TableCell style={{ textAlign: "center" }}>
-                        <div>{val.statusOpiekunaZ}</div>
+                        <div style={{ color: val.statusOpiekunaZ === "Odrzucono" ? ("red"): val.statusOpiekunaZ === "Zaakceptowano" ? ("green"):null }}>{val.statusOpiekunaZ}</div>
                         </TableCell>
                         <TableCell>
                           <IconButton
@@ -513,7 +504,6 @@ function Dzienniczek() {
         setChangeDzien={setChangeDzien}
         setChangeData={setChangeData}
         setChangeIloscGodzin={setChangeIloscGodzin}
-        dayObject={dayObject}
       />
 
       {/* <AddDayDialog
