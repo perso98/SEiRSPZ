@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { Op } = require("sequelize");
 const {
   user,
   dziennik,
@@ -27,7 +28,28 @@ exports.deleteUser = async (req, res) => {
     res.send({ message2: err.message });
   }
 };
-
+exports.deleteYear = async (req, res) => {
+  const year = req.params.year;
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
+      await user.destroy({
+        where: {
+          createdAt: { [Op.startsWith]: year },
+          isOpiekun: 0,
+          isOpiekunZakl: 0,
+          isDyrektor: 0,
+          isDziekanat: 0,
+          isDyrektor: 0,
+        },
+      });
+    }
+    res.send({ message2: "Usunięto" });
+  } catch (err) {
+    res.send({ message: err.message });
+  }
+};
 exports.changeUserInfo = async (req, res) => {
   const { id, changeLogin } = req.body;
 
@@ -95,7 +117,21 @@ exports.changeRole = async (req, res) => {
     if (!req.session.user)
       res.send({ message: "Sesja utracona, zaloguj się ponownie" });
     else {
-      updatedStudent = await user.update(
+      if (action == "isOpiekunZakl" && type === 0) {
+        await user.update(
+          {
+            id_opiekunZ: null,
+          },
+          { where: { id_opiekunZ: id } }
+        );
+      }
+      if (action == "isOpiekun" && type === 0) {
+        await user.update(
+          { id_opiekunU: null },
+          { where: { id_opiekunU: id } }
+        );
+      }
+      const updatedStudent = await user.update(
         { [action]: type },
         { where: { id: id } }
       );

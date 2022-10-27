@@ -119,8 +119,10 @@ app.post("/api/createForm", form_controller.createForm);
 app.get("/api/getListaOpiekunow", dyrektor_controller.getListaOpiekunow);
 app.get("/api/getListaZastepstw", dyrektor_controller.getListaZastepstw);
 app.put("/api/dodanieZastepstwa/:id", dyrektor_controller.dodanieZastepstwa);
-app.delete("/api/usuwanieZastepstwa/:id", dyrektor_controller.usuwanieZastepstwa);
-
+app.delete(
+  "/api/usuwanieZastepstwa/:id",
+  dyrektor_controller.usuwanieZastepstwa
+);
 
 //Maciek
 //User
@@ -148,6 +150,7 @@ app.get("/api/getUserSesionId", user_controller.getUserSesionId);
 app.get("/api/getStudents", admin_controller.getStudents);
 //Usuwanie w panelu admina użytkowników
 app.delete("/api/deleteUser/:id", admin_controller.deleteUser);
+app.delete("/api/deleteYear/:year", admin_controller.deleteYear);
 //Zmiana informacji o użytkowniku w panelu admina(editButton)
 app.put("/api/changeUserInfo", admin_controller.changeUserInfo);
 //Zmiana ról w panelu administratora

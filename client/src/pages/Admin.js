@@ -9,7 +9,7 @@ import {
   TableRow,
   Toolbar,
   TextField,
-//  Tooltip,
+  //  Tooltip,
 } from "@material-ui/core";
 
 import Button from "@mui/material/Button";
@@ -117,7 +117,7 @@ export default function Admin(props) {
             navigate("/login");
           });
         } else {
-          toast.success(res.data.messag2);
+          toast.success(res.data.message2);
           setStudents(
             students.filter((val) => {
               return val.id !== id;
@@ -230,6 +230,36 @@ export default function Admin(props) {
               return val.id === id ? { ...val, [action]: type } : val;
             })
           );
+        }
+      });
+  };
+
+  const deleteYear = (yearSearch) => {
+    const acceptDelete = window.confirm(
+      `Czy na pewno chcesz usunąć użytkowników z roku ${yearSearch} oraz wszystkich ich połączeniach z bazą danych?`
+    );
+    if (acceptDelete)
+      axios.delete(`${url}deleteYear/${yearSearch}`).then((res) => {
+        if (res.data.message) {
+          props.setStatus();
+          alert(res.data.message).then(() => {
+            navigate("/login");
+          });
+        } else {
+          if (res.data.message2 === "Usunięto")
+            setStudents(
+              students.filter((val) => {
+                return (
+                  (val.createdAt.split("-")[0] !== yearSearch &&
+                    val.isAdmin === 1) ||
+                  val.isDziekanat === 1 ||
+                  val.isOpiekun === 1 ||
+                  val.isOpiekunZakl === 1 ||
+                  val.isDyrektor === 1
+                );
+              })
+            );
+          else alert(res.data.message2);
         }
       });
   };
@@ -423,6 +453,9 @@ export default function Admin(props) {
                 variant="contained"
                 color="error"
                 style={{ margin: "1.5rem" }}
+                onClick={() => {
+                  deleteYear(yearSearch);
+                }}
               >
                 Usuń wszystkich z roku {yearSearch}
               </Button>
