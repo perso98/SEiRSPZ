@@ -299,22 +299,70 @@ exports.upload = async (req, res) => {
 exports.sendDay = async (req, res) => {
   try {
     const { id } = req.body;
-    const zalaczniki = await dziennik.update(
-      {
-        statusOpiekunaU: "Oczekiwanie",
-        statusOpiekunaZ: "Oczekiwanie",
-      },
-      {
-        where: {
-          id: id,
-        },
-      }
-    );
 
-    res.send({
-      message: "Wysłano",
-      zalaczniki,
-    });
+    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQ")
+    const check = await dziennik.findOne({
+      where:{id: id}
+    })
+
+      if(check.statusOpiekunaU === "Zaakceptowano"){
+        await dziennik.update(
+          {
+            statusOpiekunaU: "Zaakceptowano",
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+      }
+      else{
+        await dziennik.update(
+          {
+            statusOpiekunaU: "Oczekiwanie",
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+    
+      }
+
+      if(check.statusOpiekunaZ === "Zaakceptowano"){
+        await dziennik.update(
+          {
+            statusOpiekunaZ: "Zaakceptowano",
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+    
+        
+      }
+      else{
+        await dziennik.update(
+          {
+            statusOpiekunaZ: "Oczekiwanie",
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+    
+        
+      }
+      res.send({
+        message: "Wysłano",
+      });
+
   } catch {
     res.send({
       message: "Błąd",

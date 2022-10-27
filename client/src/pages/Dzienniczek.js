@@ -353,8 +353,12 @@ function Dzienniczek() {
               val.id === id
                 ? {
                     ...val,
-                    statusOpiekunaU: "Oczekiwanie",
-                    statusOpiekunaZ: "Oczekiwanie",
+                    statusOpiekunaU: val.statusOpiekunaU === "Zaakceptowano" ? (
+                      "Zaakceptowano"
+                    ) : "Oczekiwanie",
+                    statusOpiekunaZ: val.statusOpiekunaZ === "Zaakceptowano" ? (
+                      "Zaakceptowano"
+                    ) : "Oczekiwanie"
                   }
                 : val
             )
@@ -455,10 +459,10 @@ function Dzienniczek() {
                         </div>
                         </TableCell>
                         <TableCell style={{ textAlign: "center" }}>
-                        <div>{val.statusOpiekunaU}</div>
+                        <div style={{ color: val.statusOpiekunaU === "Odrzucono" ? ("red"): val.statusOpiekunaU === "Zaakceptowano" ? ("green"):null }}>{val.statusOpiekunaU}</div>
                         </TableCell>
                         <TableCell style={{ textAlign: "center" }}>
-                        <div>{val.statusOpiekunaZ}</div>
+                        <div style={{ color: val.statusOpiekunaZ === "Odrzucono" ? ("red"): val.statusOpiekunaZ === "Zaakceptowano" ? ("green"):null }}>{val.statusOpiekunaZ}</div>
                         </TableCell>
                         <TableCell>
                           <IconButton
