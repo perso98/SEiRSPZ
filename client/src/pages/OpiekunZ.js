@@ -188,6 +188,7 @@ function OpiekunZ(props) {
         changeStatusEdit={changeStatusEdit}
         setOpis={setOpis}
         setKomentarz={setKomentarz}
+        statusOpiekuna={statusOpiekuna}
       />
       <ToastContainer autoClose={1000} />
     </>

@@ -123,27 +123,40 @@ function DialogOpiekunZ(props) {
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 {" "}
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() => {
-                    props.changeStatusEdit(props.checkDay.id, "Zaakceptowano");
+                {props?.checkDay?.[props.statusOpiekuna] === "Odrzucono" ||
+                props?.checkDay?.[props.statusOpiekuna] === "Oczekiwanie" ? (
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => {
+                      props.changeStatusEdit(
+                        props.checkDay.id,
+                        "Zaakceptowano"
+                      );
 
-                    props.handleClose();
-                  }}
-                >
-                  Akceptuj
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => {
-                    props.changeStatusEdit(props.checkDay.id, "Odrzucono");
-                    props.handleClose();
-                  }}
-                >
-                  Odrzuć
-                </Button>
+                      props.handleClose();
+                    }}
+                  >
+                    Akceptuj
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {props?.checkDay?.[props.statusOpiekuna] === "Zaakceptowano" ||
+                props?.checkDay?.[props.statusOpiekuna] === "Oczekiwanie" ? (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                      props.changeStatusEdit(props.checkDay.id, "Odrzucono");
+                      props.handleClose();
+                    }}
+                  >
+                    Odrzuć
+                  </Button>
+                ) : (
+                  <div />
+                )}
               </div>
             </>
           </DialogContent>
