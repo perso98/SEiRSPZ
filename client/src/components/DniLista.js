@@ -5,7 +5,7 @@ import DialogOpiekunZ from "./DialogOpiekunZ";
 import { useState } from "react";
 
 function DzienniczekDni(props) {
-  const count = (userId) => {
+  const OpiekunUcount = (userId) => {
     let za = 0;
     let Od = 0;
     let Oc = 0;
@@ -18,6 +18,40 @@ function DzienniczekDni(props) {
           Od++;
         }
         if (val.statusOpiekunaU === "Oczekiwanie") {
+          Oc++;
+        }
+      }
+    });
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: "1rem",
+        }}
+      >
+        <div style={{ color: "green" }}> Zaakceptowane {za}</div>{" "}
+        <div>Oczekiwane {Oc}</div>
+        <div style={{ color: "red" }}>Odrzucone {Od} </div>
+      </div>
+    );
+  };
+
+  const OpiekunZcount = (userId) => {
+    let za = 0;
+    let Od = 0;
+    let Oc = 0;
+    props.currentItems.map((val) => {
+      if (val.userId === userId) {
+        if (val.statusOpiekunaZ === "Zaakceptowano") {
+          za++;
+        }
+        if (val.statusOpiekunaZ === "Odrzucono") {
+          Od++;
+        }
+        if (val.statusOpiekunaZ === "Oczekiwanie") {
           Oc++;
         }
       }
@@ -141,7 +175,10 @@ function DzienniczekDni(props) {
                     : val.opis}
                 </div>{" "}
                 <div style={{ margin: "0 0 1rem 0" }}>
-                  Student: {val.user.login} {count(val.user.id)}
+                  Student: {val.user.login}{" "}
+                  {props.statusOpiekuna === "statusOpiekunaU"
+                    ? OpiekunUcount(val.user.id)
+                    : OpiekunZcount(val.user.id)}
                 </div>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
