@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
-
 import { makeStyles } from "@mui/styles";
-import { Container, Typography, Button, Menu, MenuItem } from "@mui/material";
+import {  Typography, Button } from "@mui/material";
 import DehazeIcon from "@mui/icons-material/Dehaze";
-import Homeicon from "@mui/icons-material/Home";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import DateRangeIcon from "@mui/icons-material/DateRange";
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 import Dialog from "@mui/material/Dialog";
@@ -110,42 +105,48 @@ function Sidebar(props) {
                 <Button onClick={handleClose}>
                   <DehazeIcon className={classes.sidebarIcon} />
                 </Button>
-                {props.auth?.user.isStudent == 1 && (
+                {props.auth?.user.isStudent === 1 && (
                   <div>
-                  <Link to="/dzienniczek" className={classes.links}>
+                    <Link to="/dzienniczek" className={classes.links}>
+                      <div className={classes.item}>
+                        <NavigateNextIcon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Dzienniczek
+                        </Typography>
+                      </div>
+                    </Link>
+                    <Link to="/efekty" className={classes.links}>
+                      <div className={classes.item}>
+                        <NavigateNextIcon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Efekty
+                        </Typography>
+                      </div>
+                    </Link>
+                  </div>
+                )}
+
+                {props.auth?.user.isDziekanat === 1 && (
+                  <div>
+                    <Link to="/zarzadzaniezakladami" className={classes.links}>
+                      <div className={classes.item}>
+                        <NavigateNextIcon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Zarządzanie zakładami
+                        </Typography>
+                      </div>
+                    </Link>
+
+                    <Link to="/efektyuczeniasie" className={classes.links}>
                     <div className={classes.item}>
                       <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>
-                        Dzienniczek
+                        Efekty uczenia się
                       </Typography>
                     </div>
-                  </Link>
-
-                  <Link to="form" className={classes.links}>
-                  <div className={classes.item}>
-                    <NavigateNextIcon className={classes.icon} />
-                    <Typography className={classes.text}>
-                      Efekty uczenia się
-                    </Typography>
+                    </Link>
                   </div>
-                  
-                </Link>
-                </div>
                 )}
-                {props.auth?.user.isDziekanat == 1 && (
-                  <div>
-                    
-
-                    {props.auth?.user.isDziekanat == 1 && (
-                      <Link to="/dodawanieopiekunow" className={classes.links}>
-                        <div className={classes.item}>
-                          <NavigateNextIcon className={classes.icon} />
-                          <Typography className={classes.text}>
-                            Zarządzanie zakładami
-                          </Typography>
-                        </div>
-                      </Link>
-                    )}
 
                     {/* <Link to="profil/Form" className={classes.links}>
                       <div className={classes.item}>
@@ -153,8 +154,7 @@ function Sidebar(props) {
                         <Typography className={classes.text}>Form</Typography>
                       </div>
                     </Link> */}
-                  </div>
-                )}
+                 
 
                 {/* <div className={classes.item}>
                   <QuestionMarkIcon className={classes.icon} />
@@ -172,7 +172,7 @@ function Sidebar(props) {
                   </Link>
                 </div> */}
 
-                {props.auth?.user.isAdmin == 1 && (
+                {props.auth?.user.isAdmin === 1 && (
                   <div className={classes.item}>
                     <Link to="/admin" className={classes.links}>
                       <div className={classes.item}>
@@ -185,7 +185,7 @@ function Sidebar(props) {
                   </div>
                 )}
 
-                {props.auth?.user.isOpiekunZakl == 1 && (
+                {props.auth?.user.isOpiekunZakl === 1 && (
                   <div className={classes.item}>
                     <Link to="/opiekunz" className={classes.links}>
                       <div className={classes.item}>
@@ -197,7 +197,7 @@ function Sidebar(props) {
                     </Link>
                   </div>
                 )}
-                {props.auth?.user.isOpiekun == 1 && (
+                {props.auth?.user.isOpiekun === 1 && (
                   <Link to="/opiekunu" className={classes.links}>
                     <div className={classes.item}>
                       <NavigateNextIcon className={classes.icon} />
@@ -208,7 +208,7 @@ function Sidebar(props) {
                   </Link>
                 )}
 
-                {props.auth?.user.isOpiekun == 1 && (
+                {props.auth?.user.isOpiekun === 1 && (
                   <Link to="opiekunu/efekty" className={classes.links}>
                     <div className={classes.item}>
                       <NavigateNextIcon className={classes.icon} />
@@ -219,7 +219,7 @@ function Sidebar(props) {
                   </Link>
                 )}
 
-                {props.auth?.user.isDyrektor == 1 && (
+                {props.auth?.user.isDyrektor === 1 && (
                   <div className={classes.item}>
                     <Link to="/zastepstwa" className={classes.links}>
                       <div className={classes.item}>

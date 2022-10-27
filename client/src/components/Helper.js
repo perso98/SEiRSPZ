@@ -23,7 +23,7 @@ function Helper(props) {
     <>
       <div style={{ padding: "1rem" }}>
         <IconButton style={{ color: "#08448c" }} onClick={handleClickOpen}>
-          <QuestionMarkIcon style={{ fontSize: "2rem" }} />
+          <QuestionMarkIcon style={{ fontSize: "2rem" }} />{props.napis}
         </IconButton>
       </div>
       <Dialog open={open} onClose={handleClose}>

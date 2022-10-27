@@ -20,11 +20,11 @@ import EfektyOpiekunU from "./pages/EfektyOpiekunU";
 import OpiekunUHistory from "./pages/OpiekunUHistory";
 import OpiekunU from "./pages/OpiekunU";
 import Dyrektor from "./pages/zastepstwa";
-import Form from "./pages/Form";
+import EfektyUczeniaSie from "./pages/EfektyUczeniaSie";
 import Dzienniczek from "./pages/Dzienniczek";
 import EfektyUzasadnienie from "./pages/EfektyUzasadnienie";
 import Konto from "./pages/Konto";
-import DodawanieOpiekunow from "./pages/DodawanieOpiekunow";
+import ZarzadzanieZakladami from "./pages/ZarzadzanieZakladami";
 import Axios from "axios";
 import { url } from ".//services/Url";
 
@@ -117,15 +117,15 @@ function App() {
                     element={<OpiekunZHistory setStatus={setStatus} />}
                   />
                 </Route>
-                <Route path="form" element={<Form />} />
+                <Route path="efektyuczeniasie" element={<EfektyUczeniaSie />} />
                 <Route path="dzienniczek" element={<Dzienniczek />} />
                 <Route
                     path="efekty"
                     element={<EfektyUzasadnienie />}
                   />
                 <Route
-                  path="dodawanieopiekunow"
-                  element={<DodawanieOpiekunow />}
+                  path="zarzadzaniezakladami"
+                  element={<ZarzadzanieZakladami />}
                 />
                 <Route path="konto" element={<Konto />} />
                 //Routy do opiekuna uczelnianego

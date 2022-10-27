@@ -9,7 +9,7 @@ import {
   TableRow,
   Toolbar,
   TextField,
-  Tooltip,
+//  Tooltip,
 } from "@material-ui/core";
 
 import Button from "@mui/material/Button";
@@ -119,7 +119,7 @@ export default function Admin(props) {
           toast.success(res.data.messag2);
           setStudents(
             students.filter((val) => {
-              return val.id != id;
+              return val.id !== id;
             })
           );
         }
@@ -164,7 +164,7 @@ export default function Admin(props) {
             navigate("/login");
           });
         } else {
-          if (res.data.message2 == "Konto zostało pomyślnie utworzone") {
+          if (res.data.message2 === "Konto zostało pomyślnie utworzone") {
             setStudents([
               ...students,
               {
@@ -176,7 +176,6 @@ export default function Admin(props) {
                 isDyrektor: userObject.dyrektor,
                 isOpiekun: userObject.opiekunU,
                 isDziekanat: userObject.dziekanat,
-                isDyrektor: userObject.dyrektor,
                 isStudent: userObject.student,
               },
             ]);
@@ -199,9 +198,9 @@ export default function Admin(props) {
   const recordsAfterFiltering = students.filter((val) => {
     if (searchLogin === "" && yearSearch === "") {
       return val;
-    } else if (searchLogin != "") {
+    } else if (searchLogin !== "") {
       return val.login.toLowerCase().includes(searchLogin.toLowerCase());
-    } else if (yearSearch != "") {
+    } else if (yearSearch !== "") {
       return val.createdAt.split("-")[0] === yearSearch;
     }
   });
@@ -227,7 +226,7 @@ export default function Admin(props) {
           toast.success("Rola zmieniona");
           setStudents(
             students.map((val) => {
-              return val.id == id ? { ...val, [action]: type } : val;
+              return val.id === id ? { ...val, [action]: type } : val;
             })
           );
         }
@@ -283,14 +282,14 @@ export default function Admin(props) {
           if (changeLogin.length > 0)
             setStudents(
               students.map((val) => {
-                return val.id == id ? { ...val, login: changeLogin } : val;
+                return val.id === id ? { ...val, login: changeLogin } : val;
               })
             );
         }
       });
   };
   const functionToggleSearch = () => {
-    if (toggleSearch == true) {
+    if (toggleSearch === true) {
       setToggleSearch(false);
       setSearchLogin("");
     } else {
@@ -317,7 +316,7 @@ export default function Admin(props) {
         <div />
         <div style={{ overflowX: "auto" }}>
           <Toolbar className={classes.toolbar}>
-            {toggleSearch == true ? (
+            {toggleSearch === true ? (
               <TextField
                 className={classes.searchInp}
                 label="Szukaj po e-mailu"
@@ -386,8 +385,8 @@ export default function Admin(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {loading == true && <TableRow>Ładowanie...</TableRow>}
-              {recordsAfterFiltering.length == 0 && loading == false && (
+              {loading === true && <TableRow>Ładowanie...</TableRow>}
+              {recordsAfterFiltering.length === 0 && loading === false && (
                 <TableRow className={classes.NoData}>Brak danych...</TableRow>
               )}
 
@@ -399,32 +398,32 @@ export default function Admin(props) {
                     {val.login}
                   </TableCell>
                   <TableCell style={{ textAlign: "center" }}>
-                    {val.isStudent == 0
+                    {val.isStudent === 0
                       ? takeButton("isStudent", val.id)
                       : giveButton("isStudent", val.id)}
                   </TableCell>
                   <TableCell style={{ textAlign: "center" }}>
-                    {val.isAdmin == 0
+                    {val.isAdmin === 0
                       ? takeButton("isAdmin", val.id)
                       : giveButton("isAdmin", val.id)}
                   </TableCell>
                   <TableCell style={{ textAlign: "center" }}>
-                    {val.isOpiekunZakl == 0
+                    {val.isOpiekunZakl === 0
                       ? takeButton("isOpiekunZakl", val.id)
                       : giveButton("isOpiekunZakl", val.id)}
                   </TableCell>
                   <TableCell style={{ textAlign: "center" }}>
-                    {val.isOpiekun == 0
+                    {val.isOpiekun === 0
                       ? takeButton("isOpiekun", val.id)
                       : giveButton("isOpiekun", val.id)}
                   </TableCell>
                   <TableCell style={{ textAlign: "center" }}>
-                    {val.isDyrektor == 0
+                    {val.isDyrektor === 0
                       ? takeButton("isDyrektor", val.id)
                       : giveButton("isDyrektor", val.id)}
                   </TableCell>
                   <TableCell style={{ textAlign: "center" }}>
-                    {val.isDziekanat == 0
+                    {val.isDziekanat === 0
                       ? takeButton("isDziekanat", val.id)
                       : giveButton("isDziekanat", val.id)}
                   </TableCell>

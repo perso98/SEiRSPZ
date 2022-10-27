@@ -12,7 +12,6 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import Form from "./Form";
 import { url } from "../services/Url";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -86,7 +85,7 @@ function Konto() {
     }).then((res) => {
       if (res.data.message) {
         setChangePasswordStatus(res.data.message);
-        if (res.data.message == "Pomyślnie zmieniono hasło do konta")
+        if (res.data.message === "Pomyślnie zmieniono hasło do konta")
           setalertSeverity(false);
         else setalertSeverity(true);
         setOpen(true);
@@ -125,7 +124,7 @@ function Konto() {
     }).then((res) => {
       if (res.data.message) {
         setChangeDaneStatus(res.data.message);
-        if (res.data.message == "Pomyślnie zmieniono dane do konta")
+        if (res.data.message === "Pomyślnie zmieniono dane do konta")
           setalertSeverity(false);
         else setalertSeverity(true);
         setOpen(true);
@@ -150,7 +149,7 @@ function Konto() {
             {" "}
             Zmiana hasła
           </Typography>
-          {changePasswordStatus != "" && (
+          {changePasswordStatus !== "" && (
             <Box sx={{ width: "100%" }}>
               <Collapse in={open}>
                 <>
@@ -243,7 +242,7 @@ function Konto() {
             {" "}
             Wprowadź swoje dane
           </Typography>
-          {changeDaneStatus != "" && (
+          {changeDaneStatus !== "" && (
             <Box sx={{ width: "100%" }}>
               <Collapse in={open}>
                 <>

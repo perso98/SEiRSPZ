@@ -65,19 +65,15 @@ exports.changeDaneToAccount = async (req, res) => {
          where: { listaKierunkowId: numerKuerunku} 
 
       })
-      listaEfektow.forEach(element => {
-        console.log(element)
-        // const createEfektyEmpty = await efektyStudent.create({ 
-        //   efektyListumId: element,
-        //   userId: req.session.user.id,
+      listaEfektow.forEach(async element => {
 
-        // })
+        await efektyStudent.create({ 
+          efektyListumId: element.id,
+          userId: req.session.user.id,
+
+        })
       });
-        // const createEfektyEmpty = await efektyStudent.create({ 
-        //   efektyListumId: ,
-        //   userId: req.session.user.id,
 
-        // })
       res.send({ message: "Pomyślnie zmieniono dane do konta" ,
       updateDane: createDane});
     }
@@ -87,12 +83,16 @@ exports.changeDaneToAccount = async (req, res) => {
   }
     else{
       try{
+        let czyNull = null
+        if(specjalnosc != null){
+          czyNull = specjalnosc
+        }
         const updateDane = await dane.update({ 
           imie: imie,
           nazwisko: nazwisko,
           studia: studia,
           kierunek: kierunek, 
-          specjalnosc: specjalnosc, 
+          specjalnosc: czyNull, 
           rok_studiow: rokStudiow, 
           rodzaj_studiow: rodzajStudiow, 
           telefon: telefon, 
@@ -100,25 +100,32 @@ exports.changeDaneToAccount = async (req, res) => {
           { where: { id: foundItem.daneId } }
         );
 
-        const numerKierunku = await listaKierunkow.findOne({ 
-          where: { nazwa: specjalnosc} 
-        })
-        const listaEfektow = await efektyLista.findAll({ 
-          where: { listaKierunkowId: numerKierunku.id} 
-        })
-
-        
-        await efektyStudent.destroy({ 
-          where:{userId: req.session.user.id,}
-        })
-        listaEfektow.forEach(async element => {
-
-          await efektyStudent.create({ 
-            efektyListumId: element.id,
-            userId: req.session.user.id,
-
+        if(specjalnosc != null){
+          const numerKierunku = await listaKierunkow.findOne({ 
+            where: { nazwa: czyNull} 
           })
-        });
+          const listaEfektow = await efektyLista.findAll({ 
+            where: { listaKierunkowId: numerKierunku.id} 
+          })
+          
+          await efektyStudent.destroy({ 
+            where:{userId: req.session.user.id,}
+          })
+          
+          listaEfektow.forEach(async element => {
+            await efektyStudent.create({ 
+              efektyListumId: element.id,
+              userId: req.session.user.id,
+  
+            })
+          });
+        }
+        else{
+          await efektyStudent.destroy({ 
+            where:{userId: req.session.user.id,}
+          })
+        }
+        
         
           // const createEfektyEmpty = await efektyStudent.create({ 
           //   efektyListumId: ,

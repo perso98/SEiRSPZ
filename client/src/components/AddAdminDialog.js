@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  InputAdornment,
+ // InputAdornment,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -75,7 +75,7 @@ function AddAdminDialog({
               >
                 <div style={{ color: "black" }}>Opiekun Z.</div>
                 <div>
-                  {opiekunZ == 1 ? (
+                  {opiekunZ === 1 ? (
                     <IconButton
                       id="opiekunZ"
                       style={{ color: "green" }}
@@ -105,7 +105,7 @@ function AddAdminDialog({
               >
                 <div style={{ color: "black" }}>Student</div>
                 <div>
-                  {student == 1 ? (
+                  {student === 1 ? (
                     <IconButton
                       id="student"
                       style={{ color: "green" }}
@@ -138,7 +138,7 @@ function AddAdminDialog({
               >
                 <div style={{ color: "red" }}>!!Admin!!!</div>
                 <div>
-                  {admin == 1 ? (
+                  {admin === 1 ? (
                     <IconButton
                       id="admin"
                       style={{ color: "green" }}
@@ -180,7 +180,7 @@ function AddAdminDialog({
               >
                 <div style={{ color: "black" }}>Opiekun U.</div>
                 <div>
-                  {opiekunU == 1 ? (
+                  {opiekunU === 1 ? (
                     <IconButton
                       id="opiekunU"
                       style={{ color: "green" }}
@@ -214,7 +214,7 @@ function AddAdminDialog({
               >
                 <div style={{ color: "black" }}>Dyrektor</div>
                 <div>
-                  {dyrektor == 1 ? (
+                  {dyrektor === 1 ? (
                     <IconButton
                       id="dyrektor"
                       style={{ color: "green" }}
@@ -247,7 +247,7 @@ function AddAdminDialog({
               >
                 <div style={{ color: "black" }}>Dziekanat</div>
                 <div>
-                  {dziekanat == 1 ? (
+                  {dziekanat === 1 ? (
                     <IconButton
                       id="dziekanat"
                       style={{ color: "green" }}

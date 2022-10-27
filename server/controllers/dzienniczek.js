@@ -157,8 +157,7 @@ exports.getEfektUczenia = async (req, res) => {
         id: userId.daneId,
       },
     })
-
-    if(specjalnosc !== null){
+    if(specjalnosc.specjalnosc !== null){
       const idSpecjalnosc = await listaKierunkow.findOne({
         attributes: ['id'],
         where: {

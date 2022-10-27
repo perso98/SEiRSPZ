@@ -17,8 +17,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-
+import Helper from "../components/Helper";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -109,17 +108,15 @@ function Dzienniczek() {
       setDziennikZalaczniki(res.data);
       setLoading(false);
     });
-
-
   }, []);
 
-  const [dayObject, setDayObject] = useState({
-    userId: "",
-    dzien: "",
-    data: "",
-    iloscGodzin: "",
-    opis: "",
-  });
+  // const [dayObject, setDayObject] = useState({
+  //   userId: "",
+  //   dzien: "",
+  //   data: "",
+  //   iloscGodzin: "",
+  //   opis: "",
+  // });
 
   // Edycja  dnia
 
@@ -269,10 +266,10 @@ function Dzienniczek() {
     // setAddOpen(true);
   };
 
-  const onChange = (e) => {
-    const { value, id } = e.target;
-    setDayObject({ ...dayObject, [id]: value });
-  };
+  // const onChange = (e) => {
+  //   const { value, id } = e.target;
+  //   setDayObject({ ...dayObject, [id]: value });
+  // };
 
  
 
@@ -389,7 +386,7 @@ function Dzienniczek() {
   //   color: theme.palette.text.secondary,
   // }));
 
-  const icon = (
+  const infomacja = (
     <div>
       Dar
     </div>
@@ -398,10 +395,11 @@ function Dzienniczek() {
   return (
     <div className={classes.containerMain}>
       <div className={classes.nowyDzienBTN}>
-      <div style={{ justifyContent: "space-between", display: "flex" }}>
-        <Button variant="contained" onClick={handleAddOpen}>
+      <div style={{ justifyContent: "space-between", display: "flex" , alignItems: "center"}}>
+        <Button className={classes.links} style={{height: "52px" }} variant="contained" onClick={handleAddOpen}>
           Dodaj nowy dzień
         </Button>
+        <Helper info={infomacja} title="Dzienniczek" napis={"Pomoc"}/>
         <Button variant="contained">
         <Link to="/efekty" className={classes.links}>
           <div className={classes.item}>
@@ -502,7 +500,6 @@ function Dzienniczek() {
         setChangeDzien={setChangeDzien}
         setChangeData={setChangeData}
         setChangeIloscGodzin={setChangeIloscGodzin}
-        dayObject={dayObject}
       />
 
       {/* <AddDayDialog

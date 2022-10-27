@@ -6,38 +6,15 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
   TableRow,
-  Toolbar,
-  TextField,
 } from "@material-ui/core";
 import { url } from "../services/Url";
 import { Link } from "react-router-dom";
-import { Container, Typography, Grid, Input } from "@mui/material";
+import { Typography, Grid} from "@mui/material";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import AddDayDialog from "../components/AddDayDialog";
-import EditDay from "../components/EditDay";
-import EfektyUczeniaSie from "../components/EfektyUczeniaSie";
-import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment } from "@mui/material";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import IconButton from "@mui/material/IconButton";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ButtonLink from "../components/Button";
-import { experimentalStyled as styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
 import EfektUzasadnienie from "../components/EfektUzasadnienie";
-
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { minWidth } from "@mui/system";
+import Helper from "../components/Helper";
 
 const useStyles = makeStyles((theme) => ({
   containerMain: {
@@ -113,7 +90,7 @@ function EfektyUzasadnienie() {
   const [listaEfektyow, setListaEfektyow] = useState([]);
   const [idUser, setIdUser] = useState([]);
 
-  const [listEfektyStudent, setListEfektyStudent] = useState([]);
+  // const [listEfektyStudent, setListEfektyStudent] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -130,18 +107,18 @@ function EfektyUzasadnienie() {
 
 
 
-  const [efektId, setEfektId] = useState();
+  // const [efektId, setEfektId] = useState();
 
   const [efekt, setEfekt] = useState([]);
 
   const[komentarz, setKomentarz] = useState([]);
 
-  const hoverClose = () => {
-      setEfektId()
-  };
-  const hoverOpen = (val) => {
-      setEfektId(val.id)
-  };
+  // const hoverClose = () => {
+  //     setEfektId()
+  // };
+  // const hoverOpen = (val) => {
+  //     setEfektId(val.id)
+  // };
 
   const [open, setOpen] = useState(false);
 
@@ -165,13 +142,17 @@ function EfektyUzasadnienie() {
       komentarz: komentarz,
       })
   };
-
+  const infomacja = (
+    <div>
+      Dar
+    </div>
+  );
 
   return (
     <div className={classes.containerMain}>
       
       <div className={classes.nowyDzienBTN}>
-        <div style={{ justifyContent: "space-between", display: "flex" }}>
+        <div style={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
             <Button variant="contained">
             <Link to="/dzienniczek" className={classes.links}>
             <div className={classes.item}>
@@ -181,6 +162,7 @@ function EfektyUzasadnienie() {
             </div>
             </Link>
             </Button>
+            <Helper info={infomacja} title="Efekty Uczenia się" napis={"Pomoc"}/>
         </div>
       </div>
 
