@@ -20,6 +20,7 @@ function Studenci(props) {
                   borderRadius: "25px",
                   boxShadow: " 0 0 5px black",
                   height: "10rem",
+                  marginTop: "2rem",
                 }}
               >
                 Login : {val.login}

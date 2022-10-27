@@ -21,6 +21,7 @@ function DzienniczekDni(props) {
                   flexDirection: "column",
                   borderRadius: "25px",
                   boxShadow: " 0 0 5px black",
+                  marginTop: "2rem",
                 }}
               >
                 <div

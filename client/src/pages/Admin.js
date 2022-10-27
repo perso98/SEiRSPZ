@@ -29,6 +29,7 @@ import { url } from "../services/Url";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Helper from "../components/Helper";
+import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -299,7 +300,46 @@ export default function Admin(props) {
   };
   const info = (
     <div>
-      <InfoOutlinedIcon /> Dzięki temu przyciskowi możesz dodać użytkownika
+      Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać
+      użytkowników po e-mailu. <br />
+      Jeśli chcesz wyszukać po roku utworzenia, wystarczy zmienić opcje
+      szukania, za które odpowiada przycisk "ZMIEŃ OPCJE SZUKANIA". <br />{" "}
+      Jeżeli twoim celem jest archiwizacja jakiegoś roku wystarczy wpisać rok a
+      następnie nacisnąć przycisk "USUŃ WSZYSTKICH Z ROKU *"
+      <br /> *UWAGA TA OPCJA USUWA UŻYTKOWNIKÓW, KTÓRZY NIE MAJĄ INNEJ ROLI NIŻ
+      STUDENT* (Możesz usunąc tylko lata wcześniejsze o 3 od dzisiejszego roku).{" "}
+      <br />
+      Po prawej od przycisku <HelpOutlineOutlined /> możesz dodać nowego
+      użytkownika wraz z nadaniem mu ról.
+      <br />
+      <HighlightOffIcon /> Ta ikona zwiastuje iż nie ma tej roli, <br />
+      <CheckCircleOutlineIcon /> natomiast ta, że ją ma. <br />
+      Możesz także zmienić role poniżej w tabelce już utworzonych użytkowników,
+      aby tego dokonać, należy podwójnie kliknąć na ikonkę <HighlightOffIcon />{" "}
+      (aby nadać rolę) lub <CheckCircleOutlineIcon />
+      (aby odebrać rolę). <br />
+      <br /> Rola Student = student ma tylko możliwość do prowadzenia
+      dzienniczka praktyk oraz uczenia się.
+      <br /> Rola Admin = admin ma możliwość dostępu do panelu admina (czyli tej
+      strony).
+      <br /> Rola Opiekun U. = opiekun uczelniany ma możliwość oceniania
+      dzienniczka przypisanych studentów oraz ich efektów uczenia się.
+      <br /> Rola Opiekun Z. = opiekun zakładowy ma możliwość oceniania
+      dzienniczka przypisanych studentów.
+      <br />
+      Rola Dyrektor = dyrektor ma możliwość udzielenia zastępsta za opiekuna
+      uczelnianego.
+      <br />
+      Rola Dziekanat = dziekanat ma możliwość przypisawania studentów do
+      opiekunów w zakładach.
+      <br />
+      <br />
+      Akcje w tabelce pozwalają na edycję użytkownika <EditIcon /> <br />
+      oraz za usunięcie jego <DeleteIcon /> (jeżeli ten przycisk jest czerwony,
+      to możesz usunąc użytkownika, w innym razie musisz odebrać mu role).{" "}
+      <br />
+      *UWAGA TA OPCJA USUWA UŻYTKOWNIKÓW, KTÓRZY NIE MAJĄ INNEJ ROLI NIŻ
+      STUDENT*
     </div>
   );
 
@@ -355,7 +395,7 @@ export default function Admin(props) {
                 }}
               />
             )}
-            <Helper info={info} title="Admin" />
+            <Helper info={info} title="Pomoc admin" />
             <Button
               variant="contained"
               onClick={handleAddOpen}

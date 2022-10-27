@@ -12,7 +12,8 @@ import Button from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-
+import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
+import Helper from "../components/Helper";
 function OpiekunStatus(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -167,18 +168,46 @@ function OpiekunStatus(props) {
       return val;
     }
   });
-
+  const info = (
+    <div>
+      Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
+      studenta po jego e-mailu. <br />
+      Przycisk "Akceptuj" akceptuje dzień studenta.
+      <br />
+      Przycisk "Odrzuć" odrzuca dzień studenta.
+      <br />
+      Widzisz także w tym panelu status pozostałego opiekuna.
+      <br />
+      Możesz także przejść do dokładniejszej edycji dnia klikając przycisk
+      "Edycja".
+      <br />W dokładniejszej edycji dnia, możesz zmienić opis dnia, dodać
+      komentarz, a także jak w przypadku wcześniej zaakceptować, lub odrzucić
+      dzień studenta.
+      <br />
+      Po prawej od przycisku <HelpOutlineOutlined /> znajduje się przycisk
+      "Nowe", a w niej znajdują się nowe dni do oceny, jeśli odrzuciłeś dzień,
+      to student może ci przesłać poprawiony dzień, który znajdzie się własnie w
+      tamtym panelu.
+    </div>
+  );
   return (
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
         {loading && <h5>Ładowanie...</h5>}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
               setItemOffset={setItemOffset}
             />
           )}
+          <Helper info={info} title="Pomoc opiekun zakładowy historia" />
           <Button linkTo="/opiekunz" text="Nowe" />
         </div>
         {recordsAfterFiltering.length === 0 && !loading && (
