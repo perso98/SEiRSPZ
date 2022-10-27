@@ -34,7 +34,7 @@ function DzienniczekDni(props) {
       >
         <div style={{ color: "green" }}> Zaakceptowane {za}</div>{" "}
         <div>Oczekiwane {Oc}</div>
-        <div style={{ color: "red" }}>Odrzucone {Od} </div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone {Od} </div>
       </div>
     );
   };
@@ -68,7 +68,7 @@ function DzienniczekDni(props) {
       >
         <div style={{ color: "green" }}> Zaakceptowane {za}</div>{" "}
         <div>Oczekiwane {Oc}</div>
-        <div style={{ color: "red" }}>Odrzucone {Od} </div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone {Od} </div>
       </div>
     );
   };
@@ -106,66 +106,31 @@ function DzienniczekDni(props) {
                     Edycja
                   </Button>
                 </div>{" "}
-                {props.status &&
-                  (val.statusOpiekunaZ == "Zaakceptowano" ? (
-                    <div
-                      style={{
-                        color: "green",
-                        display: "flex",
-                        gap: "0.4rem",
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <h6 style={{ color: "white" }}>
-                        Status opiekuna zakładowego:
-                      </h6>
-                      <h6>{val.statusOpiekunaZ}</h6>
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        color: "#A52A2A",
-                        display: "flex",
-                        gap: "0.4rem",
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <h6 style={{ color: "white" }}>
-                        Status opiekuna zakładowego:
-                      </h6>
-                      <h6>{val.statusOpiekunaZ}</h6>
-                    </div>
-                  ))}
-                {props.status &&
-                  (val.statusOpiekunaU == "Zaakceptowano" ? (
-                    <div
-                      style={{
-                        color: "green",
-                        display: "flex",
-                        gap: "0.4rem",
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <h6 style={{ color: "white" }}>
+                {props.status ? (
+                  <div
+                    style={{
+                      color: "green",
+                      display: "flex",
+
+                      marginTop: "1rem",
+                    }}
+                  >
+                    {props.statusOpiekuna == "statusOpiekunaU" ? (
+                      <h6 style={{ color: "white", marginRight: "1rem" }}>
                         Status opiekuna uczelnianego:
                       </h6>
-                      <h6>{val.statusOpiekunaU}</h6>
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        color: "#A52A2A",
-                        display: "flex",
-                        gap: "0.4rem",
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <h6 style={{ color: "white" }}>
-                        Status opiekuna uczelnianego:
+                    ) : (
+                      <h6 style={{ color: "white", marginRight: "1rem" }}>
+                        Status opiekuna zakładowego:
                       </h6>
-                      <h6>{val?.statusOpiekunaU}</h6>
-                    </div>
-                  ))}
+                    )}{" "}
+                    {val?.[props?.statusOpiekuna] === "Zaakceptowano" ? (
+                      <h6> Zaakceptowano</h6>
+                    ) : (
+                      <h6 style={{ color: "#A52A2A" }}> Odrzucono</h6>
+                    )}
+                  </div>
+                ) : null}
                 <div
                   style={{ margin: "1rem 0 1rem 0", wordWrap: "break-word" }}
                 >
