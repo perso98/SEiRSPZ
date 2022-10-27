@@ -96,7 +96,7 @@ function DzienniczekDni(props) {
                       <h6 style={{ color: "white" }}>
                         Status opiekuna uczelnianego:
                       </h6>
-                      <h6>{val.statusOpiekunaU}</h6>
+                      <h6>{val?.statusOpiekunaU}</h6>
                     </div>
                   ))}
                 <div
@@ -113,24 +113,33 @@ function DzienniczekDni(props) {
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => {
-                      props.changeStatus(val.id, "Zaakceptowano");
-                    }}
-                  >
-                    Akceptuj
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => {
-                      props.changeStatus(val.id, "Odrzucono");
-                    }}
-                  >
-                    Odrzuć
-                  </Button>
+                  {val?.[props?.statusOpiekuna] === "Odrzucono" ? (
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => {
+                        props.changeStatus(val.id, "Zaakceptowano");
+                      }}
+                    >
+                      Akceptuj
+                    </Button>
+                  ) : (
+                    <div />
+                  )}
+
+                  {val?.[props?.statusOpiekuna] === "Zaakceptowano" ? (
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => {
+                        props.changeStatus(val.id, "Odrzucono");
+                      }}
+                    >
+                      Odrzuć
+                    </Button>
+                  ) : (
+                    <div />
+                  )}
                 </div>
               </div>
             </Grid>

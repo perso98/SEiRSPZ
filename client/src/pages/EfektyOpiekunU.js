@@ -162,7 +162,7 @@ function EfektyOpiekunU(props) {
         efektId={efektId}
         setEfektId={setEfektId}
       />
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </>
   );
 }

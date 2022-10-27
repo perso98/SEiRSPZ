@@ -227,6 +227,7 @@ function OpiekunUHistory(props) {
           itemOffset={itemOffset}
           setItemOffset={setItemOffset}
           status={status}
+          statusOpiekuna={statusOpiekuna}
         />
       </Container>
       <DialogOpiekunZ
@@ -239,7 +240,7 @@ function OpiekunUHistory(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
       />
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </>
   );
 }

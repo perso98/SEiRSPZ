@@ -577,7 +577,7 @@ export default function Admin(props) {
         setChangeLogin={setChangeLogin}
       />
 
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </>
   );
 }

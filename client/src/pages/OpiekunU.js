@@ -173,6 +173,7 @@ function OpiekunU(props) {
           open={open}
           itemOffset={itemOffset}
           setItemOffset={setItemOffset}
+          statusOpiekuna={statusOpiekuna}
         />
       </Container>
       <DialogOpiekunZ
@@ -184,7 +185,7 @@ function OpiekunU(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
       />
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </>
   );
 }

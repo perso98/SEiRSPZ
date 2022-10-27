@@ -188,7 +188,7 @@ function OpiekunZ(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
       />
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </>
   );
 }
