@@ -24,7 +24,7 @@ exports.getEffectsOpiekunU = async (req, res) => {
         },
       },
     });
-    console.log(getEffects)
+
     res.send(getEffects);
   } catch (err) {
     console.log(err);

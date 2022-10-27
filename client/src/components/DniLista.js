@@ -5,6 +5,39 @@ import DialogOpiekunZ from "./DialogOpiekunZ";
 import { useState } from "react";
 
 function DzienniczekDni(props) {
+  const count = (userId) => {
+    let za = 0;
+    let Od = 0;
+    let Oc = 0;
+    props.currentItems.map((val) => {
+      if (val.userId === userId) {
+        if (val.statusOpiekunaU === "Zaakceptowano") {
+          za++;
+        }
+        if (val.statusOpiekunaU === "Odrzucono") {
+          Od++;
+        }
+        if (val.statusOpiekunaU === "Oczekiwanie") {
+          Oc++;
+        }
+      }
+    });
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: "1rem",
+        }}
+      >
+        <div style={{ color: "green" }}> Zaakceptowane {za}</div>{" "}
+        <div>Oczekiwane {Oc}</div>
+        <div style={{ color: "red" }}>Odrzucone {Od} </div>
+      </div>
+    );
+  };
   return (
     <div>
       <Grid container spacing={3}>
@@ -108,7 +141,7 @@ function DzienniczekDni(props) {
                     : val.opis}
                 </div>{" "}
                 <div style={{ margin: "0 0 1rem 0" }}>
-                  Student: {val.user.login}
+                  Student: {val.user.login} {count(val.user.id)}
                 </div>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
