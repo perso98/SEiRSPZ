@@ -237,7 +237,7 @@ export default function Admin(props) {
   const giveButton = (action, id) => {
     return (
       <IconButton
-        onClick={() => {
+        onDoubleClick={() => {
           updateRole(action, 0, id);
         }}
       >
@@ -249,7 +249,7 @@ export default function Admin(props) {
   const takeButton = (action, id) => {
     return (
       <IconButton
-        onClick={() => {
+        onDoubleClick={() => {
           updateRole(action, 1, id);
         }}
       >
@@ -290,7 +290,7 @@ export default function Admin(props) {
       });
   };
   const functionToggleSearch = () => {
-    if (toggleSearch == true) {
+    if (toggleSearch === true) {
       setToggleSearch(false);
       setSearchLogin("");
     } else {
@@ -322,6 +322,7 @@ export default function Admin(props) {
                 className={classes.searchInp}
                 label="Szukaj po e-mailu"
                 variant="outlined"
+                value={searchLogin}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -338,6 +339,7 @@ export default function Admin(props) {
               <TextField
                 className={classes.searchInp}
                 type="number"
+                value={yearSearch}
                 label="Szukaj po roku utworzenia"
                 variant="outlined"
                 InputProps={{
@@ -363,18 +365,30 @@ export default function Admin(props) {
               Dodaj użytkownika
             </Button>
           </Toolbar>
-
-          <Button
-            variant="contained"
-            onClick={() => {
-              functionToggleSearch();
-            }}
-            style={{ padding: "1rem", margin: "1.5rem" }}
-          >
-            {" "}
-            Zmień opcje szukania
-          </Button>
-
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                functionToggleSearch();
+              }}
+              style={{ margin: "1.5rem" }}
+            >
+              {" "}
+              Zmień opcje szukania
+            </Button>
+            {yearSearch > 2000 &&
+            yearSearch < 3000 &&
+            yearSearch < new Date().getFullYear() - 3 &&
+            recordsAfterFiltering.length > 0 ? (
+              <Button
+                variant="contained"
+                color="error"
+                style={{ margin: "1.5rem" }}
+              >
+                Usuń wszystkich z roku {yearSearch}
+              </Button>
+            ) : null}
+          </div>
           <Table className={classes.table}>
             <TableHead className={classes.tableHead}>
               <TableRow>
@@ -442,7 +456,11 @@ export default function Admin(props) {
                       <EditIcon style={{ color: "#FF8C00" }} />
                     </IconButton>
                     <IconButton>
-                      {val.isOpiekun || val.isOpiekunZakl || val.isAdmin ? (
+                      {val.isOpiekun ||
+                      val.isOpiekunZakl ||
+                      val.isAdmin ||
+                      val.isDziekanat ||
+                      val.isDyrektor ? (
                         <DeleteIcon style={{ color: "gray" }} disabled="true" />
                       ) : (
                         <DeleteIcon
