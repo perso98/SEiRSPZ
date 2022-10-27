@@ -125,7 +125,13 @@ function DzienniczekDni(props) {
                       Akceptuj
                     </Button>
                   ) : (
-                    <div />
+                    <Button
+                      variant="contained"
+                      style={{ color: "gray" }}
+                      disabled="true"
+                    >
+                      Akceptuj{" "}
+                    </Button>
                   )}
 
                   {val?.[props?.statusOpiekuna] === "Zaakceptowano" ||
@@ -140,7 +146,13 @@ function DzienniczekDni(props) {
                       Odrzuć
                     </Button>
                   ) : (
-                    <div />
+                    <Button
+                      variant="contained"
+                      style={{ color: "gray" }}
+                      disabled="true"
+                    >
+                      Odrzuć{" "}
+                    </Button>
                   )}
                 </div>
               </div>

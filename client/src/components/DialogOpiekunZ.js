@@ -140,7 +140,13 @@ function DialogOpiekunZ(props) {
                     Akceptuj
                   </Button>
                 ) : (
-                  <div />
+                  <Button
+                    variant="contained"
+                    style={{ color: "gray" }}
+                    disabled="true"
+                  >
+                    Akceptuj{" "}
+                  </Button>
                 )}
                 {props?.checkDay?.[props.statusOpiekuna] === "Zaakceptowano" ||
                 props?.checkDay?.[props.statusOpiekuna] === "Oczekiwanie" ? (
@@ -155,7 +161,13 @@ function DialogOpiekunZ(props) {
                     Odrzuć
                   </Button>
                 ) : (
-                  <div />
+                  <Button
+                    variant="contained"
+                    style={{ color: "gray" }}
+                    disabled="true"
+                  >
+                    Odrzuć{" "}
+                  </Button>
                 )}
               </div>
             </>
