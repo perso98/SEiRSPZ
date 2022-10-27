@@ -113,7 +113,8 @@ function DzienniczekDni(props) {
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  {val?.[props?.statusOpiekuna] === "Odrzucono" ? (
+                  {val?.[props?.statusOpiekuna] === "Odrzucono" ||
+                  val?.[props?.statusOpiekuna] === "Oczekiwanie" ? (
                     <Button
                       variant="contained"
                       color="success"
@@ -127,7 +128,8 @@ function DzienniczekDni(props) {
                     <div />
                   )}
 
-                  {val?.[props?.statusOpiekuna] === "Zaakceptowano" ? (
+                  {val?.[props?.statusOpiekuna] === "Zaakceptowano" ||
+                  val?.[props?.statusOpiekuna] === "Oczekiwanie" ? (
                     <Button
                       variant="contained"
                       color="error"

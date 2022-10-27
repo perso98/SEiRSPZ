@@ -177,6 +177,7 @@ function OpiekunZ(props) {
           open={open}
           itemOffset={itemOffset}
           setItemOffset={setItemOffset}
+          statusOpiekuna={statusOpiekuna}
         />
       </Container>
       <DialogOpiekunZ
