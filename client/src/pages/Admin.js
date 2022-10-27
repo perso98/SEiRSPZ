@@ -211,27 +211,32 @@ export default function Admin(props) {
   };
 
   const updateRole = (action, type, id) => {
-    axios
-      .put(`${url}changeRole`, {
-        action: action,
-        type: type,
-        id: id,
-      })
-      .then((res) => {
-        if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
-        } else {
-          toast.success("Rola zmieniona");
-          setStudents(
-            students.map((val) => {
-              return val.id === id ? { ...val, [action]: type } : val;
-            })
-          );
-        }
-      });
+    const windowConfirm = window.confirm(
+      `Czy na pewno chcesz zmienić użytkownikowi rolę ${action}?`
+    );
+
+    if (windowConfirm)
+      axios
+        .put(`${url}changeRole`, {
+          action: action,
+          type: type,
+          id: id,
+        })
+        .then((res) => {
+          if (res.data.message) {
+            props.setStatus();
+            alert(res.data.message).then(() => {
+              navigate("/login");
+            });
+          } else {
+            toast.success("Rola zmieniona");
+            setStudents(
+              students.map((val) => {
+                return val.id === id ? { ...val, [action]: type } : val;
+              })
+            );
+          }
+        });
   };
 
   const deleteYear = (yearSearch) => {
