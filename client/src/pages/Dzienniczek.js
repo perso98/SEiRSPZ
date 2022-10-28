@@ -392,30 +392,50 @@ function Dzienniczek() {
 
   const infomacja = (
     <div>
-      Dar
+      <div>
+        Przycisk "DODAJ NOWY DZIEŃ" dodaje nam dzień w którym wprowadzamy informację o dniu.
+      </div>
+      <div>
+        Przycisk "ZMIEŃ" zapisuje informację danego dnia, lecz ich nie wysyła. 
+      </div>
+      <div>
+        Przycisk "WYŚLIJ" wysyła zapisany dzień do oceny, zmienia się wtedy status na "Oczekiwanie" i Twój Opiekun może ocenić ten dzień.
+      </div>
+      <div>
+        Przycisk "USUŃ" usuwa bezpowrotnie wszystkie informację o daym dniu oraz status jego akceptacji.
+      </div>
+      <div>
+        Przycisk <EditIcon style={{ color: "#FF8C00" }}/> Przycisk edycji pozawla na edycję danego dnia. 
+      </div>
+      <div>
+      Przycisk "EFEKTY UCZENIA SIĘ" przekierowuje nas do efektów. 
+      </div>
     </div>
   );
 
+
+  const count = () => {
+    let za = 0
+    let Od = 0
+    let Oc = 0
+    dziennik.map((val) => {
+      if( val.statusOpiekunaU === "Zaakceptowano" ){
+        za++
+      }
+      if( val.statusOpiekunaU === "Odrzucono" ){
+        Od++
+      }
+      if( val.statusOpiekunaU === "Oczekiwanie" ){
+        Oc++
+      }
+    })
+
+    return <div>Dar {za} {Od} {Oc}</div>
+  };
+
+
   return (
     <div className={classes.containerMain}>
-      <div className={classes.nowyDzienBTN}>
-      <div style={{ justifyContent: "space-between", display: "flex" , alignItems: "center"}}>
-        <Button className={classes.links} style={{height: "52px" }} variant="contained" onClick={handleAddOpen}>
-          Dodaj nowy dzień
-        </Button>
-        <Helper info={infomacja} title="Dzienniczek" napis={"Pomoc"}/>
-        <Button variant="contained">
-        <Link to="/efekty" className={classes.links}>
-          <div className={classes.item}>
-            <Typography className={classes.text}>
-            Efekty Uczenia się
-            </Typography>
-          </div>
-        </Link>
-        </Button>
-        </div>
-      </div>
-
       <Grid container>
         <Grid xs={12} md={12}>
           <div>
@@ -427,6 +447,22 @@ function Dzienniczek() {
               }}
             >
               <div style={{ overflowX: "auto" }}>
+              <div style={{ justifyContent: "space-between", display: "flex" , alignItems: "center"}}>
+                <Button className={classes.links} style={{height: "52px" }} variant="contained" onClick={handleAddOpen}>
+                  Dodaj nowy dzień
+                </Button>
+                {count()}
+                <Helper info={infomacja} title="Dzienniczek" napis={""}/>
+                <Button variant="contained">
+                <Link to="/efekty" className={classes.links}>
+                  <div className={classes.item}>
+                    <Typography className={classes.text}>
+                    Efekty Uczenia się
+                    </Typography>
+                  </div>
+                </Link>
+                </Button>
+              </div>
                 <Table className={classes.table}>
                   <TableHead className={classes.tableHead}>
                     <TableRow>

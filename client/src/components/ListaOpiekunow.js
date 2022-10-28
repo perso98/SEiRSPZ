@@ -13,6 +13,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { url } from "../services/Url";
+import Helper from "../components/Helper";
 function ListaOpiekunow() {
 
     const [dane,setDane]=useState([])
@@ -347,18 +348,40 @@ function ListaOpiekunow() {
           });
       };
 
-
+      const infomacja = (
+        <div>
+          <div>
+            Przycisk "DODAJ ZAKŁAD" dodaje nam nowy zakład
+          </div>
+          <div>
+            Przycisk "ZMIEŃ" zapisuje informację danego dnia, lecz ich nie wysyła. 
+          </div>
+          <div>
+          </div>
+          <div>
+          </div>
+          <div>
+          </div>
+        </div>
+      );
 
       
 
   return (
     <div>
-        
         <Container style={{ paddingTop: "3rem", paddingBottom: "3rem", marginBottom: "50px"}}>
-            <Button  variant="contained" onClick={handleAddOpen} style={{marginBottom: "20px"}}>
-                Dodaj Zakład
-            </Button>
+            <div style={{ 
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                }}>
+                <Button  variant="contained" onClick={handleAddOpen} style={{marginBottom: "10px"}}>
+                    Dodaj Zakład
+                </Button>
+                <Helper info={infomacja} title="Zarządanie Zakładami" napis={""}/>
 
+            </div>
             <AddOpiekun
                 idFirma={firmaIdO}
                 user={user}

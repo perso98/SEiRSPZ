@@ -21,6 +21,7 @@ const efektyLista=sequelize.define("efektyLista",
     });
   };
 
+  
 
 
 return efektyLista

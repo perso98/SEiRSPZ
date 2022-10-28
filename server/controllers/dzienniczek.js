@@ -13,6 +13,7 @@ const { Op } = require("sequelize");
 const multer = require("multer");
 
 exports.getDziennik = async (req, res) => {
+
   const listDziennik = await dziennik.findAll({
     where: { userId: req.session.user.id },
     // include: {
@@ -185,41 +186,44 @@ exports.getEfektUczenia = async (req, res) => {
 
 exports.listEfektyStudent = async (req, res) => {
   const id = req.params.id;
-  const listEfektyStudent = await efektyStudent.findOne({
+  const listaEfektyStudent = await efektyStudent.findOne({
     where: {
       [Op.and]: [{ userId: req.session.user.id }, { efektyListumId: id }],
     },
   });
-  if (listEfektyStudent == null) {
-    res.send(listEfektyStudent);
+  if (listaEfektyStudent == null) {
   } else {
-    res.send(listEfektyStudent.komentarz);
+    res.send(listaEfektyStudent);
   }
 };
 
 exports.updateUzasadnienieEfektu = async (req, res) => {
   const { id, komentarz } = req.body;
   const checkEfekt = await efektyStudent.findOne({
-    where: { efektyListumId: id },
+    where: { id: id },
   });
-  if (checkEfekt == null) {
-    const uzasadnienieEfektu = await efektyStudent.create({
-      komentarz: komentarz,
-      efektyListumId: id,
-      userId: req.session.user.id,
-    });
-    res.send(uzasadnienieEfektu);
-  } else {
-    const uzasadnienieEfektu = await efektyStudent.update(
-      {
+
+  if(komentarz !== null){
+    if (checkEfekt == null) {
+      const uzasadnienieEfektu = await efektyStudent.create({
         komentarz: komentarz,
-      },
-      {
-        where: { id: checkEfekt.id },
-      }
-    );
-    res.send(uzasadnienieEfektu);
+        efektyListumId: id,
+        userId: req.session.user.id,
+      });
+      res.send(uzasadnienieEfektu);
+    } else {
+      const uzasadnienieEfektu = await efektyStudent.update(
+        {
+          komentarz: komentarz,
+        },
+        {
+          where: { id: checkEfekt.id },
+        }
+      );
+      res.send(uzasadnienieEfektu);
+    }
   }
+  
 };
 
 exports.IdUser = async (req, res) => {

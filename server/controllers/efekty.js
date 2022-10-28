@@ -7,13 +7,17 @@ const {
   firma,
   komentarze,
   listaKierunkow,
+  listaSpecjalnosci,
 } = require("../models");
 
 
 exports.getEfektyKierunki = async (req, res) => {
     const listEfektyKierunki = await listaKierunkow.findAll({
       include: {
-        model: efektyLista,
+        model: listaSpecjalnosci,
+        include: {
+          model: efektyLista,
+        },
       },
     });
   
@@ -49,6 +53,23 @@ exports.getEfektyKierunki = async (req, res) => {
       res.send({ message: err.message });
     }
   };
+
+  exports.dodanieSpecjalnosci = async (req, res) => {
+    const { nazwaSpecjalnosci, id } = req.body;
+   try {
+       const newSpecjalnosc = await listaSpecjalnosci.create({
+         nazwa: nazwaSpecjalnosci,
+         listaKierunkowId: id
+       });
+       res.send({
+         message: "Specjalność została pomyślnie dodana",
+         id: newSpecjalnosc.id,
+       });
+
+   } catch (err) {
+     res.send({ message: err.message });
+   }
+ };
 
   exports.addEfekt = async (req, res) => {
     const { nazwaEfektu, opisEfektu, id } = req.body;

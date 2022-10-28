@@ -1,6 +1,6 @@
 module.exports=(sequelize,DataTypes)=>
 {
-const listaKierunkow=sequelize.define("listaKierunkow",
+const listaSpecjalnosci=sequelize.define("listaSpecjalnosci",
 {
     nazwa:{
         type:DataTypes.STRING,
@@ -11,13 +11,13 @@ const listaKierunkow=sequelize.define("listaKierunkow",
     collate: 'utf8_general_ci',
   })
 
-  listaKierunkow.associate = (models) => {
-    listaKierunkow.hasMany(models.listaSpecjalnosci, {
+  listaSpecjalnosci.associate = (models) => {
+    listaSpecjalnosci.hasMany(models.efektyLista, {
       onDelete: "cascade",
     });
   };
 
 
 
-return listaKierunkow
+return listaSpecjalnosci
 }

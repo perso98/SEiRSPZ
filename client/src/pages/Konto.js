@@ -26,7 +26,9 @@ function Konto() {
     changePasswordForm: {
       display: "flex",
       flexDirection: "column",
-      padding: "5%",
+      paddingLeft: "5%",
+      paddingRight: "5%",
+      paddingBottom: "5%",
       minWidth: "600px",
       textAlign: "center",
       [theme.breakpoints.down("md")]: {
@@ -36,9 +38,7 @@ function Konto() {
     daneForm: {
       display: "flex",
       flexDirection: "column",
-      paddingBottom: "5%",
-      paddingLeft: "5%",
-      paddingRight: "5%",
+      padding: "5%",
       minWidth: "600px",
       textAlign: "center",
       [theme.breakpoints.down("md")]: {
@@ -137,6 +137,170 @@ function Konto() {
   const classes = useStyles();
   return (
     <Grid>
+      {loading === false ? (
+        
+        <Grid container sm={12} className={classes.center}>
+          <div className={classes.daneForm}>
+            <Typography
+              variant="h4"
+              color="initial"
+            >
+              {" "}
+              Wprowadź swoje dane
+            </Typography>
+            {changeDaneStatus !== "" && (
+              <Box sx={{ width: "100%" }}>
+                <Collapse in={open}>
+                  <>
+                    {alertSeverity ? (
+                      <Alert
+                        severity="error"
+                        variant="filled"
+                        action={
+                          <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="medium"
+                            onClick={() => {
+                              setOpen(false);
+                            }}
+                          >
+                            <CloseIcon fontSize="inherit" />
+                          </IconButton>
+                        }
+                        sx={{ mb: 2 }}
+                      >
+                        {changeDaneStatus}
+                      </Alert>
+                    ) : (
+                      <Alert
+                        severity="success"
+                        variant="filled"
+                        action={
+                          <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="medium"
+                            onClick={() => {
+                              setOpen(false);
+                            }}
+                          >
+                            <CloseIcon fontSize="inherit" />
+                          </IconButton>
+                        }
+                        sx={{ mb: 2 }}
+                      >
+                        {changeDaneStatus}
+                      </Alert>
+                    )}
+                  </>
+                </Collapse>
+              </Box>
+            )}
+
+            
+
+            <TextField
+              className={classes.TextField}
+              label="Imie"
+              id="imie"
+              defaultValue={user.imie}
+              margin="normal"
+              onChange={(e) => {
+                setImie(e.target.value);
+              }}
+            />
+
+            <TextField
+              className={classes.TextField}
+              label="Nazwisko"
+              id="nazwisko"
+              defaultValue={user.nazwisko}
+              margin="normal"
+              onChange={(e) => {
+                setNazwisko(e.target.value);
+              }}
+            />
+            <TextField
+              className={classes.TextField}
+              label="Studia"
+              id="studia"
+              defaultValue={user.studia}
+              onChange={(e) => {
+                setStudia(e.target.value);
+              }}
+              margin="normal"
+            />
+            <TextField
+              className={classes.TextField}
+              label="Kierunek"
+              id="kierunek"
+              defaultValue={user.kierunek}
+              margin="normal"
+              onChange={(e) => {
+                setKierunek(e.target.value);
+              }}
+            />
+            <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Specjalność</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue={user.specjalnosc}
+                  label="specjalnosc"
+                  onChange={handleChange}
+                >
+                  <MenuItem>-</MenuItem>
+                  {listaKierunkow.map((val)=> (
+                    <MenuItem value={val.nazwa}>{val.nazwa}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <TextField
+              className={classes.TextField}
+              label="Rok studiow"
+              id="rok_studiow"
+              defaultValue={user.rok_studiow}
+              margin="normal"
+              onChange={(e) => {
+                setRokStudiow(e.target.value);
+              }}
+            />
+            <TextField
+              className={classes.TextField}
+              label="Rodzaj studiow"
+              id="rodzaj_studiow"
+              defaultValue={user.rodzaj_studiow}
+              margin="normal"
+              onChange={(e) => {
+                setRodzajStudiow(e.target.value);
+              }}
+            />
+            <TextField
+              className={classes.TextField}
+              label="Telefon"
+              id="telefon"
+              defaultValue={user.telefon}
+              margin="normal"
+              onChange={(e) => {
+                setTelefon(e.target.value);
+              }}
+            />
+
+            <Button
+              variant="contained"
+              style={{ marginTop: "20px", minHeight: "50px", fontSize: "15px" }}
+              onClick={changeDaneToAccount}
+            >
+              Zapisz
+            </Button>
+          </div>
+        </Grid>
+        ):null
+        }
+
       <Grid container sm={12} className={classes.center}>
         <div />
 
@@ -144,7 +308,6 @@ function Konto() {
           <Typography
             variant="h4"
             color="initial"
-            style={{ paddingBottom: "5%" }}
           >
             {" "}
             Zmiana hasła
@@ -230,170 +393,7 @@ function Konto() {
 
         <div />
       </Grid>
-      {loading === false ? (
-           
-      <Grid container sm={12} className={classes.center}>
-        <div className={classes.daneForm}>
-          <Typography
-            variant="h4"
-            color="initial"
-            style={{ paddingBottom: "5%" }}
-          >
-            {" "}
-            Wprowadź swoje dane
-          </Typography>
-          {changeDaneStatus !== "" && (
-            <Box sx={{ width: "100%" }}>
-              <Collapse in={open}>
-                <>
-                  {alertSeverity ? (
-                    <Alert
-                      severity="error"
-                      variant="filled"
-                      action={
-                        <IconButton
-                          aria-label="close"
-                          color="inherit"
-                          size="medium"
-                          onClick={() => {
-                            setOpen(false);
-                          }}
-                        >
-                          <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                      }
-                      sx={{ mb: 2 }}
-                    >
-                      {changeDaneStatus}
-                    </Alert>
-                  ) : (
-                    <Alert
-                      severity="success"
-                      variant="filled"
-                      action={
-                        <IconButton
-                          aria-label="close"
-                          color="inherit"
-                          size="medium"
-                          onClick={() => {
-                            setOpen(false);
-                          }}
-                        >
-                          <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                      }
-                      sx={{ mb: 2 }}
-                    >
-                      {changeDaneStatus}
-                    </Alert>
-                  )}
-                </>
-              </Collapse>
-            </Box>
-          )}
-
-          
-
-          <TextField
-            className={classes.TextField}
-            label="Imie"
-            id="imie"
-            defaultValue={user.imie}
-            margin="normal"
-            onChange={(e) => {
-              setImie(e.target.value);
-            }}
-          />
-
-          <TextField
-            className={classes.TextField}
-            label="Nazwisko"
-            id="nazwisko"
-            defaultValue={user.nazwisko}
-            margin="normal"
-            onChange={(e) => {
-              setNazwisko(e.target.value);
-            }}
-          />
-          <TextField
-            className={classes.TextField}
-            label="Studia"
-            id="studia"
-            defaultValue={user.studia}
-            onChange={(e) => {
-              setStudia(e.target.value);
-            }}
-            margin="normal"
-          />
-          <TextField
-            className={classes.TextField}
-            label="Kierunek"
-            id="kierunek"
-            defaultValue={user.kierunek}
-            margin="normal"
-            onChange={(e) => {
-              setKierunek(e.target.value);
-            }}
-          />
-          <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Specjalność</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                defaultValue={user.specjalnosc}
-                label="specjalnosc"
-                onChange={handleChange}
-              >
-                <MenuItem>-</MenuItem>
-                {listaKierunkow.map((val)=> (
-                  <MenuItem value={val.nazwa}>{val.nazwa}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <TextField
-            className={classes.TextField}
-            label="Rok studiow"
-            id="rok_studiow"
-            defaultValue={user.rok_studiow}
-            margin="normal"
-            onChange={(e) => {
-              setRokStudiow(e.target.value);
-            }}
-          />
-          <TextField
-            className={classes.TextField}
-            label="Rodzaj studiow"
-            id="rodzaj_studiow"
-            defaultValue={user.rodzaj_studiow}
-            margin="normal"
-            onChange={(e) => {
-              setRodzajStudiow(e.target.value);
-            }}
-          />
-          <TextField
-            className={classes.TextField}
-            label="Telefon"
-            id="telefon"
-            defaultValue={user.telefon}
-            margin="normal"
-            onChange={(e) => {
-              setTelefon(e.target.value);
-            }}
-          />
-
-          <Button
-            variant="contained"
-            style={{ marginTop: "20px", minHeight: "50px", fontSize: "15px" }}
-            onClick={changeDaneToAccount}
-          >
-            Zapisz
-          </Button>
-        </div>
-      </Grid>
-       ):null
-       }
+      
     </Grid>
   );
 }

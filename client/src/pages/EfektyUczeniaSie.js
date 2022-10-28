@@ -7,6 +7,7 @@ import { Button, Grid, TextField,TableRow, TableCell, Table,
   TableHead,IconButton, Typography } from '@mui/material';
 import { url } from "../services/Url";
 import ClearIcon from '@mui/icons-material/Clear';
+import Helper from "../components/Helper";
 
 const useStyles = makeStyles(theme => ({
     container:{
@@ -14,7 +15,6 @@ const useStyles = makeStyles(theme => ({
     },
     center : {
         justifyContent:'space-around',
-     
       },
       changePasswordForm : {
         display:'flex',
@@ -52,6 +52,7 @@ function EfektyUczeniaSie() {
     useEffect(() => {
       axios.get(`${url}getEfektyKierunki`).then((res) => {
         setSipsKierunkow(res.data);
+        console.log(res.data)
       });
   
     }, []);
@@ -70,7 +71,6 @@ function EfektyUczeniaSie() {
                     {
                         id: res.data.id,
                         nazwa: nazwaKierunku,
-                        efektyLista: []
                     },
                   ])
               .then(() => {
@@ -97,6 +97,40 @@ function EfektyUczeniaSie() {
             }
           })
     }
+
+    const [nazwaSpecjalnosci, setNazwaSpecjalnosci] = useState();
+    const [skrotSpecjalnosci, setSkrotSpecjalnosci] = useState();
+
+    const dodanieSpecjalnosci = (id) => {
+      console.log(nazwaSpecjalnosci)
+      axios
+        .put(`${url}dodanieSpecjalnosci`, {
+          id: id,
+          nazwaSpecjalnosci: nazwaSpecjalnosci,
+        })
+        .then((res) => {
+            setSipsKierunkow(
+              sipsKierunkow.map((val) => {
+                return val.id === id
+                  ? {
+                      ...val,
+                      listaSpecjalnoscis: nazwaSpecjalnosci
+                        ? [
+                            ...val.listaSpecjalnoscis,
+                            {
+                              id: res.data.id,
+                              nazwa: nazwaSpecjalnosci,
+                              opis: skrotSpecjalnosci,
+                            },
+                          ]
+                        : [...val.listaSpecjalnoscis],
+                    }
+                  : val;
+              })
+            )
+        })
+  }
+
 
     const [nazwaEfektu, setNazwaEfektu] = useState();
     const [opisEfektu, setOpisEfektu] = useState();
@@ -163,41 +197,65 @@ function EfektyUczeniaSie() {
           })
     }
 
+    const infomacja = (
+      <div>
+        <div>
+          Tutaj znajdziesz informację o przypisanych efektach uczenia się do konkternych Specjalności w Kierunkach.
+        </div>
+        <div>
+          Przycisk Dodaj Kierunek dodaje nowy Kierunek i w którym dodajemy Specjalności a w nich efekty uczenia się.
+        </div>
+        <div>
+          Przycisk EDYCJA przełącza nam na możliwość usuwania  Kierunków Specjalności oraz Efektów.
+        </div>
+        
+      </div>
+    );
+
     return (
     <Grid>
         <Grid container  xs={12} className={classes.center}  >
-            <div/>
+          <div/>
+          <div className={classes.changePasswordForm}>
 
-            <div className={classes.changePasswordForm}>
-
-                <Typography variant="h4" color="initial" style={{paddingBottom: '5%'}}> 
-                    Dodawanie efektów uczenia się
-                </Typography> 
-                <Typography variant="h5" color="initial"> 
-                    Dodaj kierunek
-                </Typography> 
-                    <TextField
-                    required
-                    type="text"
-                    label="Kierunek:"
-                    margin='normal'
-                    onChange={(e) => {
-                        setNazwaKierunku(e.target.value);
-                    }}
-                    />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        style={{  }}
-                        onClick={() => {
-                            dodanieKierunku();
-                        }}
-                    >
-                        Dodaj 
-                    </Button>
-            </div>
-            <div/>
+              <Typography 
+              variant="h4" 
+              color="initial" 
+              style={{
+                paddingBottom: '5%', 
+                display:"flex", 
+                alignItems: "center"
+                }}> 
+                  Dodawanie efektów uczenia się 
+              <Helper info={infomacja} title="Pomoc Efekty Uczenia Się" napis={""}/>
+              </Typography> 
+              
+              <Typography variant="h5" color="initial"> 
+                  Dodaj Kierunek
+              </Typography> 
+                  <TextField
+                  required
+                  type="text"
+                  label="Kierunek:"
+                  margin='normal'
+                  onChange={(e) => {
+                      setNazwaKierunku(e.target.value);
+                  }}
+                  />
+                  <Button
+                      type="submit"
+                      variant="contained"
+                      style={{  }}
+                      onClick={() => {
+                          dodanieKierunku();
+                      }}
+                  >
+                      Dodaj 
+                  </Button>
+          </div>
+          <div/>
         </Grid>
+
         <div style={{ marginLeft: "25px" }}>
           { edit === 0 ? (
             <Button
@@ -223,7 +281,7 @@ function EfektyUczeniaSie() {
         </div>
                       
         <Grid >
-          { sipsKierunkow.length > 0 ? (
+          { sipsKierunkow?.length > 0 ? (
             <Grid container >
               {sipsKierunkow.map((val) => (
                 <Grid item xs={12} sm={12} md={4} style={{padding: "15px"}} >
@@ -236,44 +294,92 @@ function EfektyUczeniaSie() {
                       <Typography color="initial" style={{fontSize: '26px'}}> 
                       <div style={{display: 'flex', justifyContent: "space-between"}}>
                         Kierunek:
-                        
                       </div>
-                          
-                            <p style={{fontSize: '20px'}}>{val.nazwa}</p>
+                        <p style={{fontSize: '20px'}}>{val.nazwa}</p>
                       </Typography> 
+
+                      {console.log("val.listaSpecjalnosci?.length" + val.listaSpecjalnoscis?.length)}
+
+                        <div>
+                          <div>
+                              <TextField
+                                  label="Specjalności"
+                                  id="specjalności"
+                                  margin="normal"
+                                  multiline
+                                  onChange={(e) => {
+                                    setNazwaSpecjalnosci(e.target.value);
+                                  }}
+                              />
+                              <TextField
+                                  label="Skrót"
+                                  id="Ssrot"
+                                  margin="normal"
+                                  multiline
+                                  onChange={(e) => {
+                                    setSkrotSpecjalnosci(e.target.value);
+                                  }}
+                              />
+                          </div> 
+                          <Button 
+                            variant="contained" 
+                            onClick={() => {
+                                dodanieSpecjalnosci(val.id);
+                                }} 
+                            style={{marginTop:'20px',minHeight:'50px',fontSize:'15px'}}
+                          >
+                              Zapisz
+                          </Button>
+                        </div>
+
+                      {val.listaSpecjalnoscis?.length !== 0 ? (
+                        <div>
+                        {val.listaSpecjalnoscis?.map((valSpecjalnosc) => (
+                          <div>
+                            <div>
+                              {valSpecjalnosc.nazwa}
+                            </div>
+
+                            Efekty uczenia się:
+
+                            <Grid>
+                              <Table>
+                                <TableHead >
+                                  <TableRow>
+                                      <TableCell >
+                                        Efekt
+                                      </TableCell>
+                                      <TableCell  >
+                                        Opis
+                                      </TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {val?.efektyLista?.map((efekt) => (
+                                  <TableRow>
+                                      <TableCell >
+                                      {efekt.nazwa}
+                                      </TableCell>
+                                      <TableCell >
+                                      {efekt.opis}
+                                      </TableCell>
+                                  </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </Grid>
+
+                          </div>
+                        ))}
+                        </div>
+                      ):<div>
+                          Brak Specjalności
+
+                          
+                        </div>
+                      }
                       
-                      
-                      Efekty uczenia się:
-                      <Grid>
-                        <Table>
-                          <TableHead >
-                            <TableRow>
-                                <TableCell >
-                                  Efekt
-                                </TableCell>
-                                <TableCell  >
-                                  Opis
-                                </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                          {
-                              val.efektyLista.map((efekt) => (
-                                    <TableRow>
-                                        <TableCell >
-                                        {efekt.nazwa}
-                                        </TableCell>
-                                        <TableCell >
-                                        {efekt.opis}
-                                        </TableCell>
-                                    </TableRow>
-                              ))
-                              
-                          }
-                          </TableBody>
-                        </Table>
-                      </Grid>
-                      { sipsKierunkow.length > 0 ? (
+                      {/* { sipsKierunkow.length > 0 ? (
                       <div>
                           <div>
                               <TextField
@@ -306,12 +412,13 @@ function EfektyUczeniaSie() {
                               </Button>
                       </div>
                       
-                      ): <div>Brak kierunków</div>}
-                  </div></div>
+                      ): <div>Brak kierunków</div>} */}
+                  </div>
+                  </div>
 
                     ):
                     <div id={val.id} style={{wordWrap: "break-word", minWidth: "200px", display: "flex",  alignItems: "center", alignContent: "space-around", justifyContent: "center"}}>
-                      <div style={{width:"400px"}}>
+                      {/* <div style={{width:"400px"}}>
                      
                       <Typography color="initial" style={{fontSize: '26px'}}> 
                       <div style={{display: 'flex', justifyContent: "space-between"}}>
@@ -373,40 +480,7 @@ function EfektyUczeniaSie() {
                           </TableBody>
                         </Table>
                       </Grid>
-                      { sipsKierunkow.length > 0 ? (
-                      <div>
-                          <div>
-                              <TextField
-                                  label="Efekt"
-                                  id="efekt"
-                                  margin="normal"
-                                  multiline
-                                  onChange={(e) => {
-                                      setNazwaEfektu(e.target.value);
-                                  }}
-                              />
-                              <TextField
-                                  label="Opis"
-                                  id="opis"
-                                  margin="normal"
-                                  multiline
-                                  onChange={(e) => {
-                                      setOpisEfektu(e.target.value);
-                                  }}
-                              />
-                          </div> 
-                          <Button 
-                                  variant="contained" 
-                                  onClick={() => {
-                                      dodanieEfektu(val.id, val.nazwa);
-                                      }} 
-                                  style={{marginTop:'20px',minHeight:'50px',fontSize:'15px'}}
-                              >
-                                  Zapisz
-                              </Button>
-                      </div>
-                      ): <div>Brak kierunków</div>}
-                      </div>
+                      </div> */}
                     </div>
 
                   } 

@@ -72,12 +72,10 @@ function EfektUzasadnienie(
             Opis: {info.opis}
             </div>
           </DialogTitle>
-          
           <DialogContent>
             
             <div>
                 <div>
-                  
                   <TextField className={classes.TextField}
                   label="Opis"
                   id="opis"
@@ -95,7 +93,7 @@ function EfektUzasadnienie(
                     <Button
                     variant="contained"
                     onClick={() => {
-                        operacja(info.id);
+                        operacja();
                     }}
                     >
                         Zapisz 
@@ -103,14 +101,6 @@ function EfektUzasadnienie(
 
                 </div>
             </div>
-
-                
-
-            
-
-            
-            
-            
 
           </DialogContent>
         </Dialog>

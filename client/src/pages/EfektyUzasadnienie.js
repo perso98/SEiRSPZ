@@ -112,7 +112,7 @@ function EfektyUzasadnienie() {
   const [efekt, setEfekt] = useState([]);
 
   const[komentarz, setKomentarz] = useState([]);
-
+  const[infoEfekt, setInfoEfekt] = useState([]);
   // const hoverClose = () => {
   //     setEfektId()
   // };
@@ -129,50 +129,43 @@ function EfektyUzasadnienie() {
   const handleOpen = (val) => {
       axios.get(`${url}listEfektyStudent/${val.id}`,{
       }).then((res) => {
-        setKomentarz(res.data);
+        setKomentarz(res.data.komentarz);
+        setInfoEfekt(res.data);
         console.log(res.data)
     });
       setOpen(true)
       setEfekt(val)
   };
 
-  const updateUzasadnienieEfektu = (id) => {
-  axios.put(`${url}updateUzasadnienieEfektu`, {
-      id: id,
+  const updateUzasadnienieEfektu = () => {
+    console.log("Komentarz  id" + infoEfekt.id)
+    axios.put(`${url}updateUzasadnienieEfektu`, {
+      id: infoEfekt.id,
       komentarz: komentarz,
       })
   };
   const infomacja = (
     <div>
-      Dar
+      <div>
+        W tym panleu widzisz wszystkie swoje efekty uczenia się, jeśli ich nie widzisz to musisz wybrać swój Kierunek oraz Specjalność w panelu "Konto".
+      </div>
+      <div>
+        Każdy efekt opisuje czego dotyczy oraz informuje w jaki sposób można go spełnić.
+      </div>
+      <div>
+        Efekty uczenia się to Twój sposób zaliczenia praktyk, musisz w nich uzasadnić w jaki sposób podczas praktyk osiągnołeś/ełaś dany efekt.
+      </div>
     </div>
   );
 
   return (
-    <div className={classes.containerMain}>
-      
-      <div className={classes.nowyDzienBTN}>
-        <div style={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
-            <Button variant="contained">
-            <Link to="/dzienniczek" className={classes.links}>
-            <div className={classes.item}>
-                <Typography className={classes.text}>
-                Dzienniczek
-                </Typography>
-            </div>
-            </Link>
-            </Button>
-            <Helper info={infomacja} title="Efekty Uczenia się" napis={"Pomoc"}/>
-        </div>
-      </div>
-
-      <Grid container style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-around",
-              }}>
-        
-        
+    <div style={{
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      }}>
+      <div/>
+      <Grid>
         <div className={classes.containerMain}>
             <EfektUzasadnienie
                 open={open}
@@ -183,6 +176,24 @@ function EfektyUzasadnienie() {
                 set={setKomentarz}
                 komentarze={komentarz}
             />
+            <div style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              }}
+              className={classes.nowyDzienBTN}>
+                <Button variant="contained">
+                <Link to="/dzienniczek" className={classes.links}>
+                <div className={classes.item}>
+                    <Typography className={classes.text}>
+                    Dzienniczek
+                    </Typography>
+                </div>
+                </Link>
+                </Button>
+                <Helper info={infomacja} title="Pomoc Efekty Uczenia się" napis={""}/>
+            </div>
             <Table className={classes.table}>
                   <TableHead className={classes.tableHead}>
                     <TableRow>
@@ -201,8 +212,8 @@ function EfektyUzasadnienie() {
                       ): 
                         listaEfektyow.map((val) => (
                             <TableRow >
-                              <TableCell style={{ textAlign: "center" }}>
-                                {val.nazwa}
+                              <TableCell style={{ wordWrap: "break-word", maxWidth: "500px", textAlign: "center" }}>
+                                {val.opis}
                               </TableCell>
     
                               <TableCell style={{ textAlign: "center" }}>
@@ -221,6 +232,7 @@ function EfektyUzasadnienie() {
                 </Table>
             </div>
       </Grid>
+      <div/>
     </div>
   );
 }

@@ -112,6 +112,8 @@ app.put("/api/addKierunek", efekty_controller.addKierunek);
 app.delete("/api/delKierunek/:id", efekty_controller.delKierunek);
 app.put("/api/addEfekt", efekty_controller.addEfekt);
 app.delete("/api/delEfekt/:id", efekty_controller.delEfekt);
+app.put("/api/dodanieSpecjalnosci", efekty_controller.dodanieSpecjalnosci);
+
 //        Form
 //Wprowadzanie danych
 app.post("/api/createForm", form_controller.createForm);
