@@ -164,7 +164,16 @@ function OpiekunU(props) {
           <ButtonLink linkTo="/opiekunu/historia" text="Historia" />
         </div>
         {recordsAfterFiltering.length === 0 && !loading && (
-          <h6>Nie znaleziono wyniku</h6>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h6>Nie odnaleziono wyniku, którego szukasz... </h6>
+            <div />
+          </div>
         )}
         <Pagination
           data={recordsAfterFiltering}

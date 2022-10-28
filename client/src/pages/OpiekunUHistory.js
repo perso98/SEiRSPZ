@@ -7,6 +7,7 @@ import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 import ButtonLink from "../components/Button";
+import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { url } from "../services/Url";
@@ -23,6 +24,9 @@ function OpiekunUHistory(props) {
   const [itemOffset, setItemOffset] = useState(0);
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
+  const [accepted, setAccepted] = useState(false);
+  const [declined, setDeclined] = useState(false);
+  const [all, setAll] = useState(true);
   const statusOpiekuna = "statusOpiekunaU";
   const navigate = useNavigate();
 
@@ -166,14 +170,40 @@ function OpiekunUHistory(props) {
   };
 
   const recordsAfterFiltering = dzienniczek.filter((val) => {
-    if (searchLogin == "") {
-      return val;
-    } else if (
-      val.user.login.toLowerCase().includes(searchLogin.toLowerCase())
-    ) {
-      return val;
+    if (accepted == true && all == false && declined == false) {
+      if (val?.statusOpiekunaU === "Zaakceptowano" && searchLogin == "") {
+        return val;
+      } else if (
+        val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
+        val?.statusOpiekunaU === "Zaakceptowano" &&
+        searchLogin !== ""
+      ) {
+        return val;
+      }
+    }
+    if (all == true && accepted == false && declined == false) {
+      if (searchLogin == "") {
+        return val;
+      } else if (
+        val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
+        searchLogin !== ""
+      ) {
+        return val;
+      }
+    }
+    if (declined == true && all == false && accepted == false) {
+      if (val?.statusOpiekunaU === "Odrzucono" && searchLogin == "") {
+        return val;
+      } else if (
+        val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
+        val?.statusOpiekunaU === "Odrzucono" &&
+        searchLogin !== ""
+      ) {
+        return val;
+      }
     }
   });
+
   const info = (
     <div>
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
@@ -216,8 +246,78 @@ function OpiekunUHistory(props) {
           <Helper info={info} title="Pomoc opiekun uczelniany historia" />
           <ButtonLink linkTo="/opiekunu" text="Nowe" />
         </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            margin: "1rem",
+          }}
+        >
+          {accepted ? (
+            <Button variant="outlined" disabled>
+              Zaakceptowane
+            </Button>
+          ) : (
+            <Button
+              color="success"
+              variant="contained"
+              onClick={() => {
+                setAccepted(true);
+                setAll(false);
+                setDeclined(false);
+                setItemOffset(0);
+              }}
+            >
+              Zaakceptowane
+            </Button>
+          )}
+          {all ? (
+            <Button variant="outlined" disabled>
+              Wszystkie
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              onClick={() => {
+                setAll(true);
+                setAccepted(false);
+                setDeclined(false);
+                setItemOffset(0);
+              }}
+            >
+              Wszystkie
+            </Button>
+          )}
+          {declined ? (
+            <Button variant="outlined" disabled>
+              Odrzucone
+            </Button>
+          ) : (
+            <Button
+              color="error"
+              variant="contained"
+              onClick={() => {
+                setDeclined(true);
+                setAll(false);
+                setAccepted(false);
+                setItemOffset(0);
+              }}
+            >
+              Odrzucone
+            </Button>
+          )}
+        </div>
         {recordsAfterFiltering.length === 0 && !loading && (
-          <h6>Nie znaleziono wyniku</h6>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h6>Nie odnaleziono wyniku, którego szukasz... </h6>
+            <div />
+          </div>
         )}
         <Pagination
           data={recordsAfterFiltering}
