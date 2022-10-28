@@ -46,7 +46,7 @@ function OpiekunStatus(props) {
       if (res.data.message) {
         props.setStatus();
         alert(res.data.message).then(() => {
-          navigate("/login");
+          window.location.reload(false);
         });
       } else {
         setDzienniczek(res.data);

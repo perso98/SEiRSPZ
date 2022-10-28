@@ -7,19 +7,14 @@ import "../App.css";
 
 function DzienniczekDni(props) {
   const OpiekunUcount = (userId) => {
-    let za = 0;
+    let Za = 0;
     let Od = 0;
-    let Oc = 0;
     props.dzienniczek.map((val) => {
       if (val.userId === userId) {
         if (val.statusOpiekunaU === "Zaakceptowano") {
-          za++;
-        }
-        if (val.statusOpiekunaU === "Odrzucono") {
+          Za++;
+        } else {
           Od++;
-        }
-        if (val.statusOpiekunaU === "Oczekiwanie") {
-          Oc++;
         }
       }
     });
@@ -33,55 +28,22 @@ function DzienniczekDni(props) {
           marginTop: "1rem",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            color: "green",
-            marginRight: "0.5rem",
-          }}
-        >
-          {" "}
-          <div>
-            Zatwierdzone<div style={{ textAlign: "center" }}> {za}</div>
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginRight: "0.5rem",
-          }}
-        >
-          {" "}
-          <div>
-            Oczekiwane<div style={{ textAlign: "center" }}> {Oc}</div>
-          </div>
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          {" "}
-          <div style={{ color: "#A52A2A" }}>
-            Odrzucone<div style={{ textAlign: "center" }}> {Od}</div>
-          </div>
-        </div>
+        {" "}
+        <div style={{ color: "green" }}>Zatwierdzone: {Za}</div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od}</div>
       </div>
     );
   };
 
   const OpiekunZcount = (userId) => {
-    let za = 0;
+    let Za = 0;
     let Od = 0;
-    let Oc = 0;
     props.dzienniczek.map((val) => {
       if (val.userId === userId) {
         if (val.statusOpiekunaZ === "Zaakceptowano") {
-          za++;
-        }
-        if (val.statusOpiekunaZ === "Odrzucono") {
+          Za++;
+        } else {
           Od++;
-        }
-        if (val.statusOpiekunaZ === "Oczekiwanie") {
-          Oc++;
         }
       }
     });
@@ -95,37 +57,9 @@ function DzienniczekDni(props) {
           marginTop: "1rem",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            color: "green",
-            marginRight: "0.5rem",
-          }}
-        >
-          {" "}
-          <div>
-            Zatwierdzone<div style={{ textAlign: "center" }}> {za}</div>
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginRight: "0.5rem",
-          }}
-        >
-          {" "}
-          <div>
-            Oczekiwane<div style={{ textAlign: "center" }}> {Oc}</div>
-          </div>
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          {" "}
-          <div style={{ color: "#A52A2A" }}>
-            Odrzucone<div style={{ textAlign: "center" }}> {Od}</div>
-          </div>
-        </div>
+        {" "}
+        <div style={{ color: "green" }}>Zatwierdzone: {Za}</div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od}</div>
       </div>
     );
   };
@@ -198,9 +132,11 @@ function DzienniczekDni(props) {
                 </div>{" "}
                 <div style={{ margin: "0 0 1rem 0" }}>
                   Student: {val.user.login}{" "}
-                  {props.statusOpiekuna === "statusOpiekunaU"
-                    ? OpiekunUcount(val.user.id)
-                    : OpiekunZcount(val.user.id)}
+                  {props.status
+                    ? props.statusOpiekuna === "statusOpiekunaU"
+                      ? OpiekunUcount(val.user.id)
+                      : OpiekunZcount(val.user.id)
+                    : null}
                 </div>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
