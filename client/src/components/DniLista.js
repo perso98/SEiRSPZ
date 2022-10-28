@@ -29,7 +29,7 @@ function DzienniczekDni(props) {
         }}
       >
         {" "}
-        <div style={{ color: "green" }}>Zatwierdzone: {Za}</div>
+        <div style={{ color: "green" }}>Zaakceptowane: {Za}</div>
         <div style={{ color: "#A52A2A" }}>Odrzucone: {Od}</div>
       </div>
     );
@@ -58,7 +58,7 @@ function DzienniczekDni(props) {
         }}
       >
         {" "}
-        <div style={{ color: "green" }}>Zatwierdzone: {Za}</div>
+        <div style={{ color: "green" }}>Zaakceptowane: {Za}</div>
         <div style={{ color: "#A52A2A" }}>Odrzucone: {Od}</div>
       </div>
     );
