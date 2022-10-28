@@ -32,9 +32,9 @@ function DzienniczekDni(props) {
           marginTop: "1rem",
         }}
       >
-        <div style={{ color: "green" }}> Zaakceptowane {za}</div>{" "}
-        <div>Oczekiwane {Oc}</div>
-        <div style={{ color: "#A52A2A" }}>Odrzucone {Od} </div>
+        <div style={{ color: "green" }}> Zaakceptowane: {za}</div>{" "}
+        <div>Oczekiwane: {Oc}</div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od} </div>
       </div>
     );
   };
@@ -66,9 +66,9 @@ function DzienniczekDni(props) {
           marginTop: "1rem",
         }}
       >
-        <div style={{ color: "green" }}> Zaakceptowane {za}</div>{" "}
-        <div>Oczekiwane {Oc}</div>
-        <div style={{ color: "#A52A2A" }}>Odrzucone {Od} </div>
+        <div style={{ color: "green" }}> Zaakceptowane: {za}</div>{" "}
+        <div>Oczekiwane: {Oc}</div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od} </div>
       </div>
     );
   };
