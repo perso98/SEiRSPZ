@@ -29,7 +29,7 @@ function OpiekunUHistory(props) {
   const [all, setAll] = useState(true);
   const statusOpiekuna = "statusOpiekunaU";
   const navigate = useNavigate();
-
+  const [forcePage, setForcePage] = useState(null);
   const status = true;
   const handleClose = () => {
     setKomentarz();
@@ -52,6 +52,7 @@ function OpiekunUHistory(props) {
       } else {
         setDzienniczek(res.data);
         setLoading(false);
+        setForcePage(0);
       }
     });
   }, []);
@@ -250,15 +251,21 @@ function OpiekunUHistory(props) {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            margin: "1rem",
+            marginTop: "1rem",
+            marginBottom: "1rem",
           }}
         >
           {accepted ? (
-            <Button variant="outlined" disabled>
-              Zaakceptowane
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
+              Zatwierdzone
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               color="success"
               variant="contained"
               onClick={() => {
@@ -266,34 +273,46 @@ function OpiekunUHistory(props) {
                 setAll(false);
                 setDeclined(false);
                 setItemOffset(0);
+                setForcePage(0);
               }}
             >
-              Zaakceptowane
+              Zatwierdzone
             </Button>
           )}
           {all ? (
-            <Button variant="outlined" disabled>
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
               Wszystkie
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               variant="contained"
               onClick={() => {
                 setAll(true);
                 setAccepted(false);
                 setDeclined(false);
                 setItemOffset(0);
+                setForcePage(0);
               }}
             >
               Wszystkie
             </Button>
           )}
           {declined ? (
-            <Button variant="outlined" disabled>
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
               Odrzucone
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               color="error"
               variant="contained"
               onClick={() => {
@@ -301,6 +320,7 @@ function OpiekunUHistory(props) {
                 setAll(false);
                 setAccepted(false);
                 setItemOffset(0);
+                setForcePage(0);
               }}
             >
               Odrzucone
@@ -328,6 +348,8 @@ function OpiekunUHistory(props) {
           setItemOffset={setItemOffset}
           status={status}
           statusOpiekuna={statusOpiekuna}
+          forcePage={forcePage}
+          dzienniczek={dzienniczek}
         />
       </Container>
       <DialogOpiekunZ

@@ -3,13 +3,14 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import DialogOpiekunZ from "./DialogOpiekunZ";
 import { useState } from "react";
+import "../App.css";
 
 function DzienniczekDni(props) {
   const OpiekunUcount = (userId) => {
     let za = 0;
     let Od = 0;
     let Oc = 0;
-    props.currentItems.map((val) => {
+    props.dzienniczek.map((val) => {
       if (val.userId === userId) {
         if (val.statusOpiekunaU === "Zaakceptowano") {
           za++;
@@ -32,9 +33,37 @@ function DzienniczekDni(props) {
           marginTop: "1rem",
         }}
       >
-        <div style={{ color: "green" }}> Zaakceptowane: {za}</div>{" "}
-        <div>Oczekiwane: {Oc}</div>
-        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od} </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            color: "green",
+            marginRight: "0.5rem",
+          }}
+        >
+          {" "}
+          <div>
+            Zatwierdzone<div style={{ textAlign: "center" }}> {za}</div>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            marginRight: "0.5rem",
+          }}
+        >
+          {" "}
+          <div>
+            Oczekiwane<div style={{ textAlign: "center" }}> {Oc}</div>
+          </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          {" "}
+          <div style={{ color: "#A52A2A" }}>
+            Odrzucone<div style={{ textAlign: "center" }}> {Od}</div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -43,7 +72,7 @@ function DzienniczekDni(props) {
     let za = 0;
     let Od = 0;
     let Oc = 0;
-    props.currentItems.map((val) => {
+    props.dzienniczek.map((val) => {
       if (val.userId === userId) {
         if (val.statusOpiekunaZ === "Zaakceptowano") {
           za++;
@@ -66,9 +95,37 @@ function DzienniczekDni(props) {
           marginTop: "1rem",
         }}
       >
-        <div style={{ color: "green" }}> Zaakceptowane: {za}</div>{" "}
-        <div>Oczekiwane: {Oc}</div>
-        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od} </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            color: "green",
+            marginRight: "0.5rem",
+          }}
+        >
+          {" "}
+          <div>
+            Zatwierdzone<div style={{ textAlign: "center" }}> {za}</div>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            marginRight: "0.5rem",
+          }}
+        >
+          {" "}
+          <div>
+            Oczekiwane<div style={{ textAlign: "center" }}> {Oc}</div>
+          </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          {" "}
+          <div style={{ color: "#A52A2A" }}>
+            Odrzucone<div style={{ textAlign: "center" }}> {Od}</div>
+          </div>
+        </div>
       </div>
     );
   };

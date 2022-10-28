@@ -243,15 +243,21 @@ function OpiekunStatus(props) {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            margin: "1rem",
+            marginTop: "1rem",
+            marginBottom: "1rem",
           }}
         >
           {accepted ? (
-            <Button variant="outlined" disabled>
-              Zaakceptowane
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
+              Zatwierdzone
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               color="success"
               variant="contained"
               onClick={() => {
@@ -261,15 +267,20 @@ function OpiekunStatus(props) {
                 setItemOffset(0);
               }}
             >
-              Zaakceptowane
+              Zatwierdzone
             </Button>
           )}
           {all ? (
-            <Button variant="outlined" disabled>
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
               Wszystkie
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               variant="contained"
               onClick={() => {
                 setAll(true);
@@ -282,11 +293,16 @@ function OpiekunStatus(props) {
             </Button>
           )}
           {declined ? (
-            <Button variant="outlined" disabled>
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
               Odrzucone
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               color="error"
               variant="contained"
               onClick={() => {
