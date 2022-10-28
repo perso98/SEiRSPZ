@@ -21,15 +21,14 @@ function OpiekunUHistory(props) {
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
-  const [itemOffset, setItemOffset] = useState(0);
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const [accepted, setAccepted] = useState(false);
   const [declined, setDeclined] = useState(false);
+  const [remountComponent, setRemountComponent] = useState(0);
   const [all, setAll] = useState(true);
   const statusOpiekuna = "statusOpiekunaU";
   const navigate = useNavigate();
-  const [forcePage, setForcePage] = useState(null);
   const status = true;
   const handleClose = () => {
     setKomentarz();
@@ -52,7 +51,6 @@ function OpiekunUHistory(props) {
       } else {
         setDzienniczek(res.data);
         setLoading(false);
-        setForcePage(0);
       }
     });
   }, []);
@@ -241,7 +239,7 @@ function OpiekunUHistory(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
-              setItemOffset={setItemOffset}
+              setRemountComponent={setRemountComponent}
             />
           )}
           <Helper info={info} title="Pomoc opiekun uczelniany historia" />
@@ -272,8 +270,8 @@ function OpiekunUHistory(props) {
                 setAccepted(true);
                 setAll(false);
                 setDeclined(false);
-                setItemOffset(0);
-                setForcePage(0);
+
+                setRemountComponent(Math.random());
               }}
             >
               Zatwierdzone
@@ -295,8 +293,8 @@ function OpiekunUHistory(props) {
                 setAll(true);
                 setAccepted(false);
                 setDeclined(false);
-                setItemOffset(0);
-                setForcePage(0);
+
+                setRemountComponent(Math.random());
               }}
             >
               Wszystkie
@@ -319,8 +317,8 @@ function OpiekunUHistory(props) {
                 setDeclined(true);
                 setAll(false);
                 setAccepted(false);
-                setItemOffset(0);
-                setForcePage(0);
+
+                setRemountComponent(Math.random());
               }}
             >
               Odrzucone
@@ -339,18 +337,19 @@ function OpiekunUHistory(props) {
             <div />
           </div>
         )}
-        <Pagination
-          data={recordsAfterFiltering}
-          changeStatus={changeStatus}
-          handleOpen={handleOpen}
-          open={open}
-          itemOffset={itemOffset}
-          setItemOffset={setItemOffset}
-          status={status}
-          statusOpiekuna={statusOpiekuna}
-          forcePage={forcePage}
-          dzienniczek={dzienniczek}
-        />
+        {recordsAfterFiltering.length > 0 ? (
+          <div key={remountComponent}>
+            <Pagination
+              data={recordsAfterFiltering}
+              changeStatus={changeStatus}
+              handleOpen={handleOpen}
+              open={open}
+              status={status}
+              statusOpiekuna={statusOpiekuna}
+              dzienniczek={dzienniczek}
+            />
+          </div>
+        ) : null}
       </Container>
       <DialogOpiekunZ
         downloadFile={downloadFile}

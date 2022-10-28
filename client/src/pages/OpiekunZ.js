@@ -22,7 +22,7 @@ function OpiekunZ(props) {
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
-  const [itemOffset, setItemOffset] = useState(0);
+  const [remountComponent, setRemountComponent] = useState(0);
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
@@ -160,7 +160,7 @@ function OpiekunZ(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
-              setItemOffset={setItemOffset}
+              setRemountComponent={setRemountComponent}
             />
           )}
           <Helper info={info} title="Pomoc opiekun zakładowy" />
@@ -179,16 +179,18 @@ function OpiekunZ(props) {
             <div />
           </div>
         )}
-        <Pagination
-          data={recordsAfterFiltering}
-          changeStatus={changeStatus}
-          handleOpen={handleOpen}
-          open={open}
-          itemOffset={itemOffset}
-          setItemOffset={setItemOffset}
-          statusOpiekuna={statusOpiekuna}
-          dzienniczek={dzienniczek}
-        />
+        {recordsAfterFiltering.length > 0 ? (
+          <div key={remountComponent}>
+            <Pagination
+              data={recordsAfterFiltering}
+              changeStatus={changeStatus}
+              handleOpen={handleOpen}
+              open={open}
+              statusOpiekuna={statusOpiekuna}
+              dzienniczek={dzienniczek}
+            />
+          </div>
+        ) : null}
       </Container>
       <DialogOpiekunZ
         downloadFile={downloadFile}

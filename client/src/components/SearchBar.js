@@ -18,6 +18,7 @@ function SearchBar(props) {
       }}
       onChange={(e) => {
         props.setSearchLogin(e.target.value);
+        props.setRemountComponent(Math.random());
       }}
     />
   );

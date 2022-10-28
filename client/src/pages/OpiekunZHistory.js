@@ -21,7 +21,7 @@ function OpiekunStatus(props) {
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
-
+  const [remountComponent, setRemountComponent] = useState(0);
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
@@ -259,6 +259,7 @@ function OpiekunStatus(props) {
                 setAccepted(true);
                 setAll(false);
                 setDeclined(false);
+                setRemountComponent(Math.random());
               }}
             >
               Zatwierdzone
@@ -280,6 +281,7 @@ function OpiekunStatus(props) {
                 setAll(true);
                 setAccepted(false);
                 setDeclined(false);
+                setRemountComponent(Math.random());
               }}
             >
               Wszystkie
@@ -302,6 +304,7 @@ function OpiekunStatus(props) {
                 setDeclined(true);
                 setAll(false);
                 setAccepted(false);
+                setRemountComponent(Math.random());
               }}
             >
               Odrzucone
@@ -320,15 +323,19 @@ function OpiekunStatus(props) {
             <div />
           </div>
         )}
-        <Pagination
-          data={recordsAfterFiltering}
-          changeStatus={changeStatus}
-          handleOpen={handleOpen}
-          open={open}
-          status={status}
-          statusOpiekuna={statusOpiekuna}
-          dzienniczek={dzienniczek}
-        />
+        {recordsAfterFiltering.length > 0 ? (
+          <div key={remountComponent}>
+            <Pagination
+              data={recordsAfterFiltering}
+              changeStatus={changeStatus}
+              handleOpen={handleOpen}
+              open={open}
+              status={status}
+              statusOpiekuna={statusOpiekuna}
+              dzienniczek={dzienniczek}
+            />
+          </div>
+        ) : null}
       </Container>
       <DialogOpiekunZ
         downloadFile={downloadFile}
