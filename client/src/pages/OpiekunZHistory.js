@@ -21,7 +21,7 @@ function OpiekunStatus(props) {
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
-  const [itemOffset, setItemOffset] = useState(0);
+
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
@@ -230,12 +230,7 @@ function OpiekunStatus(props) {
             alignItems: "center",
           }}
         >
-          {!loading && (
-            <SearchBar
-              setSearchLogin={setSearchLogin}
-              setItemOffset={setItemOffset}
-            />
-          )}
+          {!loading && <SearchBar setSearchLogin={setSearchLogin} />}
           <Helper info={info} title="Pomoc opiekun zakładowy historia" />
           <ButtonLink linkTo="/opiekunz" text="Nowe" />
         </div>
@@ -264,7 +259,6 @@ function OpiekunStatus(props) {
                 setAccepted(true);
                 setAll(false);
                 setDeclined(false);
-                setItemOffset(0);
               }}
             >
               Zatwierdzone
@@ -286,7 +280,6 @@ function OpiekunStatus(props) {
                 setAll(true);
                 setAccepted(false);
                 setDeclined(false);
-                setItemOffset(0);
               }}
             >
               Wszystkie
@@ -309,7 +302,6 @@ function OpiekunStatus(props) {
                 setDeclined(true);
                 setAll(false);
                 setAccepted(false);
-                setItemOffset(0);
               }}
             >
               Odrzucone
@@ -333,10 +325,9 @@ function OpiekunStatus(props) {
           changeStatus={changeStatus}
           handleOpen={handleOpen}
           open={open}
-          itemOffset={itemOffset}
-          setItemOffset={setItemOffset}
           status={status}
           statusOpiekuna={statusOpiekuna}
+          dzienniczek={dzienniczek}
         />
       </Container>
       <DialogOpiekunZ

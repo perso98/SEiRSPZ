@@ -183,6 +183,7 @@ function OpiekunU(props) {
           itemOffset={itemOffset}
           setItemOffset={setItemOffset}
           statusOpiekuna={statusOpiekuna}
+          dzienniczek={dzienniczek}
         />
       </Container>
       <DialogOpiekunZ
