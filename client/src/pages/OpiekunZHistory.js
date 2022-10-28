@@ -68,7 +68,7 @@ function OpiekunStatus(props) {
         } else {
           setDzienniczek(
             dzienniczek.map((val) => {
-              return val.id == day.id
+              return val.id === day.id
                 ? {
                     ...val,
                     komentarzes: val.komentarzes.filter((com) => {
@@ -98,7 +98,9 @@ function OpiekunStatus(props) {
           toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
             dzienniczek.map((val) => {
-              return val.id == id ? { ...val, [res.data.status]: status } : val;
+              return val.id === id
+                ? { ...val, [res.data.status]: status }
+                : val;
             })
           );
         }
@@ -141,7 +143,7 @@ function OpiekunStatus(props) {
 
           setDzienniczek(
             dzienniczek.map((val) => {
-              return val.id == id
+              return val.id === id
                 ? {
                     ...val,
                     [res.data.status]: status,
@@ -164,8 +166,8 @@ function OpiekunStatus(props) {
   };
 
   const recordsAfterFiltering = dzienniczek.filter((val) => {
-    if (accepted == true && all == false && declined == false) {
-      if (val?.statusOpiekunaZ === "Zaakceptowano" && searchLogin == "") {
+    if (accepted === true && all === false && declined === false) {
+      if (val?.statusOpiekunaZ === "Zaakceptowano" && searchLogin === "") {
         return val;
       } else if (
         val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
@@ -175,8 +177,8 @@ function OpiekunStatus(props) {
         return val;
       }
     }
-    if (all == true && accepted == false && declined == false) {
-      if (searchLogin == "") {
+    if (all === true && accepted === false && declined === false) {
+      if (searchLogin === "") {
         return val;
       } else if (
         val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
@@ -185,8 +187,8 @@ function OpiekunStatus(props) {
         return val;
       }
     }
-    if (declined == true && all == false && accepted == false) {
-      if (val?.statusOpiekunaZ === "Odrzucono" && searchLogin == "") {
+    if (declined === true && all === false && accepted === false) {
+      if (val?.statusOpiekunaZ === "Odrzucono" && searchLogin === "") {
         return val;
       } else if (
         val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
