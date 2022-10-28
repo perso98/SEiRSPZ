@@ -9,7 +9,7 @@ import {
   TableRow,
   Toolbar,
   TextField,
-//  Tooltip,
+  //  Tooltip,
 } from "@material-ui/core";
 
 import Button from "@mui/material/Button";
@@ -29,6 +29,7 @@ import { url } from "../services/Url";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Helper from "../components/Helper";
+import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -116,7 +117,7 @@ export default function Admin(props) {
             navigate("/login");
           });
         } else {
-          toast.success(res.data.messag2);
+          toast.success(res.data.message2);
           setStudents(
             students.filter((val) => {
               return val.id !== id;
@@ -210,25 +211,60 @@ export default function Admin(props) {
   };
 
   const updateRole = (action, type, id) => {
-    axios
-      .put(`${url}changeRole`, {
-        action: action,
-        type: type,
-        id: id,
-      })
-      .then((res) => {
+    const windowConfirm = window.confirm(
+      `Czy na pewno chcesz zmienić użytkownikowi rolę ${action}?`
+    );
+
+    if (windowConfirm)
+      axios
+        .put(`${url}changeRole`, {
+          action: action,
+          type: type,
+          id: id,
+        })
+        .then((res) => {
+          if (res.data.message) {
+            props.setStatus();
+            alert(res.data.message).then(() => {
+              navigate("/login");
+            });
+          } else {
+            toast.success("Rola zmieniona");
+            setStudents(
+              students.map((val) => {
+                return val.id === id ? { ...val, [action]: type } : val;
+              })
+            );
+          }
+        });
+  };
+
+  const deleteYear = (yearSearch) => {
+    const acceptDelete = window.confirm(
+      `Czy na pewno chcesz usunąć użytkowników z roku ${yearSearch} oraz wszystkich ich połączeniach z bazą danych?`
+    );
+    if (acceptDelete)
+      axios.delete(`${url}deleteYear/${yearSearch}`).then((res) => {
         if (res.data.message) {
           props.setStatus();
           alert(res.data.message).then(() => {
             navigate("/login");
           });
         } else {
-          toast.success("Rola zmieniona");
-          setStudents(
-            students.map((val) => {
-              return val.id === id ? { ...val, [action]: type } : val;
-            })
-          );
+          if (res.data.message2 === "Usunięto")
+            setStudents(
+              students.filter((val) => {
+                return (
+                  (val.createdAt.split("-")[0] !== yearSearch &&
+                    val.isAdmin === 1) ||
+                  val.isDziekanat === 1 ||
+                  val.isOpiekun === 1 ||
+                  val.isOpiekunZakl === 1 ||
+                  val.isDyrektor === 1
+                );
+              })
+            );
+          else alert(res.data.message2);
         }
       });
   };
@@ -236,7 +272,7 @@ export default function Admin(props) {
   const giveButton = (action, id) => {
     return (
       <IconButton
-        onClick={() => {
+        onDoubleClick={() => {
           updateRole(action, 0, id);
         }}
       >
@@ -248,7 +284,7 @@ export default function Admin(props) {
   const takeButton = (action, id) => {
     return (
       <IconButton
-        onClick={() => {
+        onDoubleClick={() => {
           updateRole(action, 1, id);
         }}
       >
@@ -299,7 +335,46 @@ export default function Admin(props) {
   };
   const info = (
     <div>
-      <InfoOutlinedIcon /> Dzięki temu przyciskowi możesz dodać użytkownika
+      Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać
+      użytkowników po e-mailu. <br />
+      Jeśli chcesz wyszukać po roku utworzenia, wystarczy zmienić opcje
+      szukania, za które odpowiada przycisk "ZMIEŃ OPCJE SZUKANIA". <br />{" "}
+      Jeżeli twoim celem jest archiwizacja jakiegoś roku wystarczy wpisać rok a
+      następnie nacisnąć przycisk "USUŃ WSZYSTKICH Z ROKU *"
+      <br /> *UWAGA TA OPCJA USUWA UŻYTKOWNIKÓW, KTÓRZY NIE MAJĄ INNEJ ROLI NIŻ
+      STUDENT* (Możesz usunąc tylko lata wcześniejsze o 3 od dzisiejszego roku).{" "}
+      <br />
+      Po prawej od przycisku <HelpOutlineOutlined /> możesz dodać nowego
+      użytkownika wraz z nadaniem mu ról.
+      <br />
+      <HighlightOffIcon /> Ta ikona zwiastuje iż nie ma tej roli, <br />
+      <CheckCircleOutlineIcon /> natomiast ta, że ją ma. <br />
+      Możesz także zmienić role poniżej w tabelce już utworzonych użytkowników,
+      aby tego dokonać, należy podwójnie kliknąć na ikonkę <HighlightOffIcon />{" "}
+      (aby nadać rolę) lub <CheckCircleOutlineIcon />
+      (aby odebrać rolę). <br />
+      <br /> Rola Student = student ma tylko możliwość do prowadzenia
+      dzienniczka praktyk oraz uczenia się.
+      <br /> Rola Admin = admin ma możliwość dostępu do panelu admina (czyli tej
+      strony).
+      <br /> Rola Opiekun U. = opiekun uczelniany ma możliwość oceniania
+      dzienniczka przypisanych studentów oraz ich efektów uczenia się.
+      <br /> Rola Opiekun Z. = opiekun zakładowy ma możliwość oceniania
+      dzienniczka przypisanych studentów.
+      <br />
+      Rola Dyrektor = dyrektor ma możliwość udzielenia zastępsta za opiekuna
+      uczelnianego.
+      <br />
+      Rola Dziekanat = dziekanat ma możliwość przypisawania studentów do
+      opiekunów w zakładach.
+      <br />
+      <br />
+      Akcje w tabelce pozwalają na edycję użytkownika <EditIcon /> <br />
+      oraz za usunięcie jego <DeleteIcon /> (jeżeli ten przycisk jest czerwony,
+      to możesz usunąc użytkownika, w innym razie musisz odebrać mu role).{" "}
+      <br />
+      *UWAGA TA OPCJA USUWA UŻYTKOWNIKÓW, KTÓRZY NIE MAJĄ INNEJ ROLI NIŻ
+      STUDENT*
     </div>
   );
 
@@ -321,6 +396,7 @@ export default function Admin(props) {
                 className={classes.searchInp}
                 label="Szukaj po e-mailu"
                 variant="outlined"
+                value={searchLogin}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -337,6 +413,7 @@ export default function Admin(props) {
               <TextField
                 className={classes.searchInp}
                 type="number"
+                value={yearSearch}
                 label="Szukaj po roku utworzenia"
                 variant="outlined"
                 InputProps={{
@@ -353,7 +430,7 @@ export default function Admin(props) {
                 }}
               />
             )}
-            <Helper info={info} title="Admin" />
+            <Helper info={info} title="Pomoc admin" />
             <Button
               variant="contained"
               onClick={handleAddOpen}
@@ -362,18 +439,33 @@ export default function Admin(props) {
               Dodaj użytkownika
             </Button>
           </Toolbar>
-
-          <Button
-            variant="contained"
-            onClick={() => {
-              functionToggleSearch();
-            }}
-            style={{ padding: "1rem", margin: "1.5rem" }}
-          >
-            {" "}
-            Zmień opcje szukania
-          </Button>
-
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                functionToggleSearch();
+              }}
+              style={{ margin: "1.5rem" }}
+            >
+              {" "}
+              Zmień opcje szukania
+            </Button>
+            {yearSearch > 2000 &&
+            yearSearch < 3000 &&
+            yearSearch < new Date().getFullYear() - 3 &&
+            recordsAfterFiltering.length > 0 ? (
+              <Button
+                variant="contained"
+                color="error"
+                style={{ margin: "1.5rem" }}
+                onClick={() => {
+                  deleteYear(yearSearch);
+                }}
+              >
+                Usuń wszystkich z roku {yearSearch}
+              </Button>
+            ) : null}
+          </div>
           <Table className={classes.table}>
             <TableHead className={classes.tableHead}>
               <TableRow>
@@ -441,7 +533,11 @@ export default function Admin(props) {
                       <EditIcon style={{ color: "#FF8C00" }} />
                     </IconButton>
                     <IconButton>
-                      {val.isOpiekun || val.isOpiekunZakl || val.isAdmin ? (
+                      {val.isOpiekun ||
+                      val.isOpiekunZakl ||
+                      val.isAdmin ||
+                      val.isDziekanat ||
+                      val.isDyrektor ? (
                         <DeleteIcon style={{ color: "gray" }} disabled="true" />
                       ) : (
                         <DeleteIcon
@@ -486,7 +582,7 @@ export default function Admin(props) {
         setChangeLogin={setChangeLogin}
       />
 
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </>
   );
 }

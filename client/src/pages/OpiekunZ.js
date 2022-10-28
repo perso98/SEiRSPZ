@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import FileDownload from "js-file-download";
 import { url } from "../services/Url";
 import { useNavigate } from "react-router-dom";
+import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
+import Helper from "../components/Helper";
 
 function OpiekunZ(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -123,23 +125,59 @@ function OpiekunZ(props) {
       return val;
     }
   });
-
+  const info = (
+    <div>
+      Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
+      studenta po jego e-mailu. <br />
+      Przycisk "Akceptuj" akceptuje dzień studenta.
+      <br />
+      Przycisk "Odrzuć" odrzuca dzień studenta.
+      <br />
+      Możesz także przejść do dokładniejszej edycji dnia klikając przycisk
+      "Edycja".
+      <br />W dokładniejszej edycji dnia, możesz zmienić opis dnia, dodać
+      komentarz, a także jak w przypadku wcześniej zaakceptować, lub odrzucić
+      dzień studenta.
+      <br />
+      Po prawej od przycisku <HelpOutlineOutlined /> znajduje się przycisk
+      "Historia", a w niej znajdują się już ocenione przez ciebie dni,
+      <br />
+      Jeśli odrzuciłeś dzień, to student może ci przesłać poprawiony dzień,
+      który znajdzie się tutaj.
+    </div>
+  );
   return (
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
         {loading && <h5>Ładowanie...</h5>}
-        <div style={{ justifyContent: "space-between", display: "flex" }}>
+        <div
+          style={{
+            justifyContent: "space-between",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
               setItemOffset={setItemOffset}
             />
           )}
+          <Helper info={info} title="Pomoc opiekun zakładowy" />
 
           <ButtonLink linkTo="/opiekunz/historia" text="Historia" />
         </div>
         {recordsAfterFiltering.length === 0 && !loading && (
-          <h6>Nie znaleziono wyniku</h6>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h6>Nie odnaleziono wyniku, którego szukasz... </h6>
+            <div />
+          </div>
         )}
         <Pagination
           data={recordsAfterFiltering}
@@ -148,6 +186,7 @@ function OpiekunZ(props) {
           open={open}
           itemOffset={itemOffset}
           setItemOffset={setItemOffset}
+          statusOpiekuna={statusOpiekuna}
         />
       </Container>
       <DialogOpiekunZ
@@ -158,8 +197,9 @@ function OpiekunZ(props) {
         changeStatusEdit={changeStatusEdit}
         setOpis={setOpis}
         setKomentarz={setKomentarz}
+        statusOpiekuna={statusOpiekuna}
       />
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </>
   );
 }

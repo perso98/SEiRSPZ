@@ -5,6 +5,73 @@ import DialogOpiekunZ from "./DialogOpiekunZ";
 import { useState } from "react";
 
 function DzienniczekDni(props) {
+  const OpiekunUcount = (userId) => {
+    let za = 0;
+    let Od = 0;
+    let Oc = 0;
+    props.currentItems.map((val) => {
+      if (val.userId === userId) {
+        if (val.statusOpiekunaU === "Zaakceptowano") {
+          za++;
+        }
+        if (val.statusOpiekunaU === "Odrzucono") {
+          Od++;
+        }
+        if (val.statusOpiekunaU === "Oczekiwanie") {
+          Oc++;
+        }
+      }
+    });
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: "1rem",
+        }}
+      >
+        <div style={{ color: "green" }}> Zaakceptowane: {za}</div>{" "}
+        <div>Oczekiwane: {Oc}</div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od} </div>
+      </div>
+    );
+  };
+
+  const OpiekunZcount = (userId) => {
+    let za = 0;
+    let Od = 0;
+    let Oc = 0;
+    props.currentItems.map((val) => {
+      if (val.userId === userId) {
+        if (val.statusOpiekunaZ === "Zaakceptowano") {
+          za++;
+        }
+        if (val.statusOpiekunaZ === "Odrzucono") {
+          Od++;
+        }
+        if (val.statusOpiekunaZ === "Oczekiwanie") {
+          Oc++;
+        }
+      }
+    });
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: "1rem",
+        }}
+      >
+        <div style={{ color: "green" }}> Zaakceptowane: {za}</div>{" "}
+        <div>Oczekiwane: {Oc}</div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od} </div>
+      </div>
+    );
+  };
   return (
     <div>
       <Grid container spacing={3}>
@@ -21,6 +88,7 @@ function DzienniczekDni(props) {
                   flexDirection: "column",
                   borderRadius: "25px",
                   boxShadow: " 0 0 5px black",
+                  marginTop: "2rem",
                 }}
               >
                 <div
@@ -38,66 +106,31 @@ function DzienniczekDni(props) {
                     Edycja
                   </Button>
                 </div>{" "}
-                {props.status &&
-                  (val.statusOpiekunaZ == "Zaakceptowano" ? (
-                    <div
-                      style={{
-                        color: "green",
-                        display: "flex",
-                        gap: "0.4rem",
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <h6 style={{ color: "white" }}>
-                        Status opiekuna zakładowego:
-                      </h6>
-                      <h6>{val.statusOpiekunaZ}</h6>
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        color: "#A52A2A",
-                        display: "flex",
-                        gap: "0.4rem",
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <h6 style={{ color: "white" }}>
-                        Status opiekuna zakładowego:
-                      </h6>
-                      <h6>{val.statusOpiekunaZ}</h6>
-                    </div>
-                  ))}
-                {props.status &&
-                  (val.statusOpiekunaU == "Zaakceptowano" ? (
-                    <div
-                      style={{
-                        color: "green",
-                        display: "flex",
-                        gap: "0.4rem",
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <h6 style={{ color: "white" }}>
+                {props.status ? (
+                  <div
+                    style={{
+                      color: "green",
+                      display: "flex",
+
+                      marginTop: "1rem",
+                    }}
+                  >
+                    {props.statusOpiekuna == "statusOpiekunaU" ? (
+                      <h6 style={{ color: "white", marginRight: "1rem" }}>
                         Status opiekuna uczelnianego:
                       </h6>
-                      <h6>{val.statusOpiekunaU}</h6>
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        color: "#A52A2A",
-                        display: "flex",
-                        gap: "0.4rem",
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <h6 style={{ color: "white" }}>
-                        Status opiekuna uczelnianego:
+                    ) : (
+                      <h6 style={{ color: "white", marginRight: "1rem" }}>
+                        Status opiekuna zakładowego:
                       </h6>
-                      <h6>{val.statusOpiekunaU}</h6>
-                    </div>
-                  ))}
+                    )}{" "}
+                    {val?.[props?.statusOpiekuna] === "Zaakceptowano" ? (
+                      <h6> Zaakceptowano</h6>
+                    ) : (
+                      <h6 style={{ color: "#A52A2A" }}> Odrzucono</h6>
+                    )}
+                  </div>
+                ) : null}
                 <div
                   style={{ margin: "1rem 0 1rem 0", wordWrap: "break-word" }}
                 >
@@ -107,29 +140,55 @@ function DzienniczekDni(props) {
                     : val.opis}
                 </div>{" "}
                 <div style={{ margin: "0 0 1rem 0" }}>
-                  Student: {val.user.login}
+                  Student: {val.user.login}{" "}
+                  {props.statusOpiekuna === "statusOpiekunaU"
+                    ? OpiekunUcount(val.user.id)
+                    : OpiekunZcount(val.user.id)}
                 </div>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => {
-                      props.changeStatus(val.id, "Zaakceptowano");
-                    }}
-                  >
-                    Akceptuj
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => {
-                      props.changeStatus(val.id, "Odrzucono");
-                    }}
-                  >
-                    Odrzuć
-                  </Button>
+                  {val?.[props?.statusOpiekuna] === "Odrzucono" ||
+                  val?.[props?.statusOpiekuna] === "Oczekiwanie" ? (
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => {
+                        props.changeStatus(val.id, "Zaakceptowano");
+                      }}
+                    >
+                      Akceptuj
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      style={{ color: "gray" }}
+                      disabled="true"
+                    >
+                      Akceptuj{" "}
+                    </Button>
+                  )}
+
+                  {val?.[props?.statusOpiekuna] === "Zaakceptowano" ||
+                  val?.[props?.statusOpiekuna] === "Oczekiwanie" ? (
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => {
+                        props.changeStatus(val.id, "Odrzucono");
+                      }}
+                    >
+                      Odrzuć
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      style={{ color: "gray" }}
+                      disabled="true"
+                    >
+                      Odrzuć{" "}
+                    </Button>
+                  )}
                 </div>
               </div>
             </Grid>

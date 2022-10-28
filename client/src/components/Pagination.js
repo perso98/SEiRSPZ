@@ -27,6 +27,7 @@ export default function Pagination(props) {
         open={props.open}
         handleOpen={props.handleOpen}
         status={props.status}
+        statusOpiekuna={props.statusOpiekuna}
       />
       <ReactPaginate
         breakLabel="..."

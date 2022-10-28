@@ -1,4 +1,4 @@
-import { React} from "react";
+import { React } from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -30,10 +30,6 @@ function Nav(props) {
       display: "flex",
 
       justifyContent: "space-between",
-      // justifyContent: "space-around",
-      // [theme.breakpoints.down("md")]: {
-      //   justifyContent: "space-between",
-      // },
     },
 
     login: {
@@ -124,6 +120,7 @@ function Nav(props) {
     return (
       <AppBar position="fixed">
         <Toolbar className={classes.toolbar}>
+          <div />
           <Typography variant="h5" className={classes.logoBig}>
             <Link to="/" className={classes.links}>
               Akademia Nauk Stosowanych
@@ -148,6 +145,7 @@ function Nav(props) {
               </div>
             </Link>
           </div>
+          <div />
         </Toolbar>
       </AppBar>
     );

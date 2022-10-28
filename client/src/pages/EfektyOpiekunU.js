@@ -7,6 +7,8 @@ import EfektyDialog from "../components/EfektyDialog";
 import { ToastContainer, toast } from "react-toastify";
 import { url } from "../services/Url";
 import { useNavigate } from "react-router-dom";
+import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
+import Helper from "../components/Helper";
 function EfektyOpiekunU(props) {
   const [opis, setOpis] = useState("");
   const [studenci, setStudenci] = useState([]);
@@ -82,20 +84,59 @@ function EfektyOpiekunU(props) {
       return val;
     }
   });
+  const info = (
+    <div>
+      W tym panelu oceniasz efekty uczenia się przypisanych do ciebie studentów.
+      <br />
+      Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
+      studenta po jego e-mailu. <br />
+      Jeśli student nie ma żadnych efektów studenta, to znaczy, że ich nie
+      wybrał na swoim koncie.
+      <br />
+      Przycisk "SPRAWDŹ", pozwala ci na sprawdzenia efektów uczenia się danego
+      studenta.
+      <br />
+      Po wciśnięciu przycisku "SPRAWDŹ", możesz akceptować dany efekt albo go
+      odrzucić.
+      <br />
+      Efekty uczenia się wybierasz z listy rozwijanej, po wybraniu efektu, opis
+      efektu powinien się ukazać, a wraz z nim opis efektu studenta (możesz
+      eedytować opis), co zrobił, aby osiągnął ten efekt.
+      <br />
+      Przy efekcie status "Niezatwierdzone", oznacza iż nie zatwierdziłeś
+      efektu.
+      <br />
+      Przy efekcie status "Zatwierdzone", oznacza iż zatwierdziłeś efekt.
+      efektu.
+      <br />
+      Masz dostęp od razu do edycji opisu tego efektu, więc w łatwy sposób
+      możesz go zedytować i przesłać do studenta.
+      <br />
+    </div>
+  );
   return (
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
         {loading && <h5>Ładowanie...</h5>}
 
-        {!loading && (
-          <SearchBar
-            setSearchLogin={setSearchLogin}
-            setItemOffset={setItemOffset}
-          />
-        )}
-        {recordsAfterFiltering.length === 0 && !loading && (
-          <h6>Nie znaleziono wyniku</h6>
-        )}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {!loading && (
+            <SearchBar
+              setSearchLogin={setSearchLogin}
+              setItemOffset={setItemOffset}
+            />
+          )}
+          <Helper info={info} title="Pomoc opiekun uczelniany efekty" />
+          {recordsAfterFiltering.length === 0 && !loading && (
+            <h6>Nie znaleziono wyniku</h6>
+          )}
+        </div>
         <PaginationForEffects
           data={recordsAfterFiltering}
           open={open}
@@ -121,7 +162,7 @@ function EfektyOpiekunU(props) {
         efektId={efektId}
         setEfektId={setEfektId}
       />
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </>
   );
 }
