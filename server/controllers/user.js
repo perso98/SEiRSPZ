@@ -1,14 +1,23 @@
 const bcrypt = require("bcrypt");
 const {
   user,
-  dziennik,
   efektyLista,
   efektyStudent,
   dane,
-  firma,
-  komentarze,
   listaKierunkow,
 } = require("../models");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "testmailerxx12345@gmail.com",
+    pass: "swgptddnhsclpbjk",
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
 
 exports.changePasswordToAccount = async (req, res) => {
   const { changePassword, changePassword2 } = req.body;
@@ -34,112 +43,111 @@ exports.changeDaneToAccount = async (req, res) => {
     telefon,
   } = req.body;
 
-    // First try to find the record
+  // First try to find the record
 
-   const foundItem = await user.findOne({
-    where: {login: req.session.user.login}})
+  const foundItem = await user.findOne({
+    where: { login: req.session.user.login },
+  });
 
   if (foundItem.daneId == null) {
-    try{
-      const createDane = await dane.create({ 
+    try {
+      const createDane = await dane.create({
         imie: imie,
         nazwisko: nazwisko,
         studia: studia,
-        kierunek: kierunek, 
-        specjalnosc: specjalnosc, 
-        rok_studiow: rokStudiow, 
-        rodzaj_studiow: rodzajStudiow, 
-        telefon: telefon, 
-      })
-      
-      await user.update({ 
-        daneId: createDane.id,
-      },{ 
-        where: { id: foundItem.id} 
-      })
-
-      const numerKuerunku = await listaKierunkow.findOne({ 
-        where: { nazwa: specjalnosc} 
-     })
-      const listaEfektow = await efektyLista.findAll({ 
-         where: { listaKierunkowId: numerKuerunku} 
-
-      })
-      listaEfektow.forEach(async element => {
-
-        await efektyStudent.create({ 
-          efektyListumId: element.id,
-          userId: req.session.user.id,
-
-        })
+        kierunek: kierunek,
+        specjalnosc: specjalnosc,
+        rok_studiow: rokStudiow,
+        rodzaj_studiow: rodzajStudiow,
+        telefon: telefon,
       });
 
-      res.send({ message: "Pomyślnie zmieniono dane do konta" ,
-      updateDane: createDane});
-    }
-    catch (err) {
+      await user.update(
+        {
+          daneId: createDane.id,
+        },
+        {
+          where: { id: foundItem.id },
+        }
+      );
+
+      const numerKuerunku = await listaKierunkow.findOne({
+        where: { nazwa: specjalnosc },
+      });
+      const listaEfektow = await efektyLista.findAll({
+        where: { listaKierunkowId: numerKuerunku },
+      });
+      listaEfektow.forEach(async (element) => {
+        await efektyStudent.create({
+          efektyListumId: element.id,
+          userId: req.session.user.id,
+        });
+      });
+
+      res.send({
+        message: "Pomyślnie zmieniono dane do konta",
+        updateDane: createDane,
+      });
+    } catch (err) {
       res.send({ message: err.message });
     }
-  }
-    else{
-      try{
-        let czyNull = null
-        if(specjalnosc != null){
-          czyNull = specjalnosc
-        }
-        const updateDane = await dane.update({ 
+  } else {
+    try {
+      let czyNull = null;
+      if (specjalnosc != null) {
+        czyNull = specjalnosc;
+      }
+      const updateDane = await dane.update(
+        {
           imie: imie,
           nazwisko: nazwisko,
           studia: studia,
-          kierunek: kierunek, 
-          specjalnosc: czyNull, 
-          rok_studiow: rokStudiow, 
-          rodzaj_studiow: rodzajStudiow, 
-          telefon: telefon, 
-          },
-          { where: { id: foundItem.daneId } }
-        );
+          kierunek: kierunek,
+          specjalnosc: czyNull,
+          rok_studiow: rokStudiow,
+          rodzaj_studiow: rodzajStudiow,
+          telefon: telefon,
+        },
+        { where: { id: foundItem.daneId } }
+      );
 
-        if(specjalnosc != null){
-          const numerKierunku = await listaKierunkow.findOne({ 
-            where: { nazwa: czyNull} 
-          })
-          const listaEfektow = await efektyLista.findAll({ 
-            where: { listaKierunkowId: numerKierunku.id} 
-          })
-          
-          await efektyStudent.destroy({ 
-            where:{userId: req.session.user.id,}
-          })
-          
-          listaEfektow.forEach(async element => {
-            await efektyStudent.create({ 
-              efektyListumId: element.id,
-              userId: req.session.user.id,
-  
-            })
+      if (specjalnosc != null) {
+        const numerKierunku = await listaKierunkow.findOne({
+          where: { nazwa: czyNull },
+        });
+        const listaEfektow = await efektyLista.findAll({
+          where: { listaKierunkowId: numerKierunku.id },
+        });
+
+        await efektyStudent.destroy({
+          where: { userId: req.session.user.id },
+        });
+
+        listaEfektow.forEach(async (element) => {
+          await efektyStudent.create({
+            efektyListumId: element.id,
+            userId: req.session.user.id,
           });
-        }
-        else{
-          await efektyStudent.destroy({ 
-            where:{userId: req.session.user.id,}
-          })
-        }
-        
-        
-          // const createEfektyEmpty = await efektyStudent.create({ 
-          //   efektyListumId: ,
-          //   userId: req.session.user.id,
+        });
+      } else {
+        await efektyStudent.destroy({
+          where: { userId: req.session.user.id },
+        });
+      }
 
-          // })
-        res.send({ message: "Pomyślnie zmieniono dane do konta",
-        updateDane: updateDane });
-      }
-      catch (err) {
-        res.send({ message: err.message });
-      }
+      // const createEfektyEmpty = await efektyStudent.create({
+      //   efektyListumId: ,
+      //   userId: req.session.user.id,
+
+      // })
+      res.send({
+        message: "Pomyślnie zmieniono dane do konta",
+        updateDane: updateDane,
+      });
+    } catch (err) {
+      res.send({ message: err.message });
     }
-    
+  }
 };
 
 exports.getloginToAccount = async (req, res) => {
@@ -205,7 +213,19 @@ exports.createAccount = async (req, res) => {
         login: login,
         haslo: hashedPassword,
       });
-
+      const options = {
+        from: "testmailerxx12345@gmail.com",
+        to: login,
+        subject: "Potwierdź swój mail, aby korzystać z aplikacji SEiRSPZ",
+        text: `Witaj ${login}, oto twój link do aktywacji konta, aby móć korzystać z aplikacji 'SEiRSPZ' wspomagającej praktyki dla ANS Elbląg `,
+      };
+      transporter.sendMail(options, function (err, info) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(info.response);
+        }
+      });
       res.send({
         message: "Konto zostało pomyślnie utworzone",
         register: true,
