@@ -172,6 +172,11 @@ exports.loginToAccount = async (req, res) => {
       message: "Błędny login lub hasło",
     });
   }
+  if (!checkLogin.confirmation) {
+    res.send({
+      message: "Musisz najpierw potwierdzić konto na swoim mailu",
+    });
+  }
   if (checkLogin) {
     if (await bcrypt.compare(password, checkLogin.haslo)) {
       req.session.user = checkLogin;
@@ -353,8 +358,6 @@ exports.createAccount = async (req, res) => {
           transporter.sendMail(options, function (err, info) {
             if (err) {
               console.log(err);
-            } else {
-              console.log(info);
             }
           });
         }
