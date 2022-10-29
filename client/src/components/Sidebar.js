@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import {  Typography, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import CloseIcon from "@mui/icons-material/Close";
 
 import Dialog from "@mui/material/Dialog";
 
@@ -15,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     left: 0,
     height: "100vh",
+
     // width: "20vh",
     // maxWidth: " 15vh",
     color: "white",
@@ -22,18 +24,17 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(3),
     [theme.breakpoints.down("sm")]: {
       alignItems: "center",
-      paddingRight: theme.spacing(0),
-      paddingLeft: theme.spacing(2),
-      marginTop: theme.spacing(-1),
+      width: "100%",
     },
   },
   item: {
     display: "flex",
     alignItems: "center",
-    marginBottom: theme.spacing(4),
-    marginTop: theme.spacing(4),
+    padding: "0.5rem",
+    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(3),
     [theme.breakpoints.up("sm")]: {
-      marginBottom: theme.spacing(3),
+      marginBottom: theme.spacing(2),
       cursor: "pointer",
     },
   },
@@ -103,7 +104,11 @@ function Sidebar(props) {
             <div className={classes.menu}>
               <div className={classes.container}>
                 <Button onClick={handleClose}>
-                  <DehazeIcon className={classes.sidebarIcon} />
+                  {open ? (
+                    <CloseIcon className={classes.sidebarIcon} />
+                  ) : (
+                    <DehazeIcon className={classes.sidebarIcon} />
+                  )}
                 </Button>
                 {props.auth?.user.isStudent === 1 && (
                   <div>
@@ -118,9 +123,7 @@ function Sidebar(props) {
                     <Link to="/efekty" className={classes.links}>
                       <div className={classes.item}>
                         <NavigateNextIcon className={classes.icon} />
-                        <Typography className={classes.text}>
-                          Efekty
-                        </Typography>
+                        <Typography className={classes.text}>Efekty</Typography>
                       </div>
                     </Link>
                   </div>
@@ -138,23 +141,22 @@ function Sidebar(props) {
                     </Link>
 
                     <Link to="/efektyuczeniasie" className={classes.links}>
-                    <div className={classes.item}>
-                      <NavigateNextIcon className={classes.icon} />
-                      <Typography className={classes.text}>
-                        Efekty uczenia się
-                      </Typography>
-                    </div>
+                      <div className={classes.item}>
+                        <NavigateNextIcon className={classes.icon} />
+                        <Typography className={classes.text}>
+                          Efekty uczenia się
+                        </Typography>
+                      </div>
                     </Link>
                   </div>
                 )}
 
-                    {/* <Link to="profil/Form" className={classes.links}>
+                {/* <Link to="profil/Form" className={classes.links}>
                       <div className={classes.item}>
                         <AssignmentIcon className={classes.icon} />
                         <Typography className={classes.text}>Form</Typography>
                       </div>
                     </Link> */}
-                 
 
                 {/* <div className={classes.item}>
                   <QuestionMarkIcon className={classes.icon} />
@@ -173,29 +175,25 @@ function Sidebar(props) {
                 </div> */}
 
                 {props.auth?.user.isAdmin === 1 && (
-                  <div className={classes.item}>
-                    <Link to="/admin" className={classes.links}>
-                      <div className={classes.item}>
-                        <NavigateNextIcon className={classes.icon} />
-                        <Typography className={classes.text}>
-                          Panel Admina
-                        </Typography>
-                      </div>
-                    </Link>
-                  </div>
+                  <Link to="/admin" className={classes.links}>
+                    <div className={classes.item}>
+                      <NavigateNextIcon className={classes.icon} />
+                      <Typography className={classes.text}>
+                        Panel Admina
+                      </Typography>
+                    </div>
+                  </Link>
                 )}
 
                 {props.auth?.user.isOpiekunZakl === 1 && (
-                  <div className={classes.item}>
-                    <Link to="/opiekunz" className={classes.links}>
-                      <div className={classes.item}>
-                        <NavigateNextIcon className={classes.icon} />
-                        <Typography className={classes.text}>
-                          Opiekun Zakładowy
-                        </Typography>
-                      </div>
-                    </Link>
-                  </div>
+                  <Link to="/opiekunz" className={classes.links}>
+                    <div className={classes.item}>
+                      <NavigateNextIcon className={classes.icon} />
+                      <Typography className={classes.text}>
+                        Opiekun Zakładowy
+                      </Typography>
+                    </div>
+                  </Link>
                 )}
                 {props.auth?.user.isOpiekun === 1 && (
                   <Link to="/opiekunu" className={classes.links}>
@@ -220,16 +218,14 @@ function Sidebar(props) {
                 )}
 
                 {props.auth?.user.isDyrektor === 1 && (
-                  <div className={classes.item}>
-                    <Link to="/zastepstwa" className={classes.links}>
-                      <div className={classes.item}>
-                        <NavigateNextIcon className={classes.icon} />
-                        <Typography className={classes.text}>
-                          Zastepstwa
-                        </Typography>
-                      </div>
-                    </Link>
-                  </div>
+                  <Link to="/zastepstwa" className={classes.links}>
+                    <div className={classes.item}>
+                      <NavigateNextIcon className={classes.icon} />
+                      <Typography className={classes.text}>
+                        Zastepstwa
+                      </Typography>
+                    </div>
+                  </Link>
                 )}
               </div>
             </div>

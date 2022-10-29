@@ -96,16 +96,26 @@ function Register() {
         />
 
         {loading == false ? (
-          <Button
-            variant="contained"
-            style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
-            onClick={() => {
-              setLoading(true);
-              createAccount();
-            }}
-          >
-            Utwórz konto
-          </Button>
+          login && password && password2 ? (
+            <Button
+              variant="contained"
+              style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+              onClick={() => {
+                setLoading(true);
+                createAccount();
+              }}
+            >
+              Utwórz konto
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+              disabled="true"
+            >
+              Utwórz konto
+            </Button>
+          )
         ) : (
           <Button
             variant="contained"

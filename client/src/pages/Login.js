@@ -78,16 +78,25 @@ function Login(props) {
           margin="normal"
           type="password"
         />
-
-        <Button
-          variant="contained"
-          style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
-          onClick={() => {
-            loginToAccount();
-          }}
-        >
-          Zaloguj się
-        </Button>
+        {login && password ? (
+          <Button
+            variant="contained"
+            style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+            onClick={() => {
+              loginToAccount();
+            }}
+          >
+            Zaloguj się
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+            disabled="true"
+          >
+            Zaloguj się
+          </Button>
+        )}
       </div>
       <div />
     </Grid>
