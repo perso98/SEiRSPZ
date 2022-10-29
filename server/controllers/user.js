@@ -200,19 +200,26 @@ exports.logoutFromAccount = async (req, res) => {
 exports.confirmMail = async (req, res) => {
   try {
     const { userId: id } = jwt.verify(req.params.token, "SECRETKEY");
-    console.log(id);
+    const userConfirm = await user.findOne({ where: { id: id } });
+    if (userConfirm.confirmation)
+      res.send({
+        message: "Te konto już zostało zweryfikowane",
+        info: true,
+      });
 
     await user.update({ confirmation: 1 }, { where: { id: id } });
-    res.send("Weryfikacja przeszła pomyślnie, zaloguj się teraz do konta");
+    res.send({
+      message: "Weryfikacja przeszła pomyślnie, zaloguj się teraz do konta",
+      info: true,
+    });
   } catch (err) {
-    res.send("Błąd w weryfikacji...");
+    res.send({ message: "Błąd w weryfikacji...", info: false });
   }
-  return res.redirect("http://localhost:3000/login");
 };
 
 exports.resetPasswordForUser = async (req, res) => {
   const { password, password2 } = req.body;
-  console.log("Token z resetu hasła", req.params.token);
+
   if (password != password2)
     res.send({ message: "Hasła sie nie zgadzają", info: false });
   try {
@@ -257,7 +264,7 @@ exports.resetPassword = async (req, res) => {
           html: `Witaj ${email}, oto twój link do aktywacji zrestartowania hasła, do aplikacji 'SEiRSPZ' wspomagającej praktyki dla ANS Elbląg:
         <a href="${url}">${url}</a> (czas wygaśnięcia : 3dni)`,
         };
-        console.log("Wysyłam ten token do resetu hasła:", token);
+
         transporter.sendMail(options, function (err, info) {
           if (err) {
             console.log(err);
@@ -288,18 +295,18 @@ exports.resendMail = async (req, res) => {
       { userId: userId.id },
       "SECRETKEY",
       {
-        expiresIn: "7d",
+        expiresIn: "3d",
       },
       (err, token) => {
-        const url = `http://localhost:5000/api/confirmMail/${token}`;
+        const url = `http://localhost:3000/confirm/${token}`;
         const options = {
           from: "testmailerxx12345@gmail.com",
           to: email,
           subject: "Potwierdź swój mail, aby korzystać z aplikacji SEiRSPZ",
           html: `Witaj ${email}, oto twój link do aktywacji konta, aby móć korzystać z aplikacji 'SEiRSPZ' wspomagającej praktyki dla ANS Elbląg:
-        <a href="${url}">${url}</a> (czas wygaśnięcia : 7dni)`,
+        <a href="${url}">${url}</a> (czas wygaśnięcia : 3dni)`,
         };
-        console.log("To jest token weryfikujący z postu", token);
+
         transporter.sendMail(options, function (err, info) {
           if (err) {
             console.log(err);
@@ -332,16 +339,16 @@ exports.createAccount = async (req, res) => {
         { userId: newUser.id },
         "SECRETKEY",
         {
-          expiresIn: "7d",
+          expiresIn: "3d",
         },
         (err, token) => {
-          const url = `http://localhost:5000/api/confirmMail/${token}`;
+          const url = `http://localhost:3000/confirm/${token}`;
           const options = {
             from: "testmailerxx12345@gmail.com",
             to: login,
             subject: "Potwierdź swój mail, aby korzystać z aplikacji SEiRSPZ",
             html: `Witaj ${login}, oto twój link do aktywacji konta, aby móć korzystać z aplikacji 'SEiRSPZ' wspomagającej praktyki dla ANS Elbląg:
-            <a href="${url}">${url}</a> (czas wygaśnięcia : 7dni)`,
+            <a href="${url}">${url}</a> (czas wygaśnięcia : 3dni)`,
           };
           transporter.sendMail(options, function (err, info) {
             if (err) {

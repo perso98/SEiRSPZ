@@ -53,7 +53,9 @@ function EmailPasswordReset() {
         style={{ display: "flex", flexDirection: "column", minWidth: "250px" }}
       >
         <img src={logo} alt="Logo" style={{ marginBottom: "5%" }} />
-
+        <div style={{ textAlign: "center", margin: "1rem" }}>
+          Wpisz swój e-mail, aby zrestartować hasło
+        </div>
         <Box sx={{ width: "100%" }}>
           <Collapse in={open}>
             <>
@@ -102,9 +104,6 @@ function EmailPasswordReset() {
           </Collapse>
         </Box>
 
-        <div style={{ textAlign: "center" }}>
-          Wpisz swój e-mail, aby zrestartować hasło
-        </div>
         <TextField
           required
           name="email"

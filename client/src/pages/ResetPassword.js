@@ -2,13 +2,14 @@ import { Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import logo from "../img/ans.png";
 import { makeStyles } from "@mui/styles";
+import { useParams } from "react-router-dom";
 import { url } from "../services/Url";
+import { Link } from "react-router-dom";
 import Axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Collapse, Alert, IconButton } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+
 function ResetPassword() {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
@@ -26,7 +27,7 @@ function ResetPassword() {
   const [loginStatus, setLoginStatus] = useState("");
   const [type, setType] = useState();
   const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState(params.token);
+  const token = params.token;
   const restartPassword = async () => {
     setLoading(true);
     await Axios.post(`${url}resetPasswordForUser/${token}`, {
@@ -57,7 +58,9 @@ function ResetPassword() {
         style={{ display: "flex", flexDirection: "column", minWidth: "250px" }}
       >
         <img src={logo} alt="Logo" style={{ marginBottom: "5%" }} />
-
+        <div style={{ textAlign: "center", margin: "1rem" }}>
+          Resetowanie hasła
+        </div>
         <Box sx={{ width: "100%" }}>
           <Collapse in={open}>
             <>
@@ -106,7 +109,6 @@ function ResetPassword() {
           </Collapse>
         </Box>
 
-        <div style={{ textAlign: "center" }}>Resetowanie hasła</div>
         <TextField
           required
           name="password"

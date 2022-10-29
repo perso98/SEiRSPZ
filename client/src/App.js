@@ -30,6 +30,7 @@ import { url } from ".//services/Url";
 import ResendEmail from "./pages/ResendEmail";
 import ResetPassword from "./pages/ResetPassword";
 import EmailPasswordReset from "./pages/EmailPasswordReset";
+import ConfirmEmail from "./pages/ConfirmEmail";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -80,6 +81,7 @@ function App() {
                       </div>
                     }
                   />
+                  <Route path="confirm/:token" element={<ConfirmEmail />} />
                   <Route
                     path="resendemail"
                     element={
@@ -92,6 +94,7 @@ function App() {
                     path="restartpassword/:token"
                     element={<ResetPassword />}
                   />
+
                   <Route
                     path="restartpassword"
                     element={
