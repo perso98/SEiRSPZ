@@ -5,6 +5,7 @@ import { makeStyles } from "@mui/styles";
 import AlertComponent from "../components/AlertComponent";
 import { url } from "../services/Url";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 
@@ -78,6 +79,17 @@ function Login(props) {
           margin="normal"
           type="password"
         />
+        <div
+          style={{
+            marginTop: "0.5rem",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Link to="/resendemail">prześlij ponownie link aktywacyjny</Link>
+          <Link to="/restartpassword">zrestartuj hasło</Link>
+        </div>
+
         {login && password ? (
           <Button
             variant="contained"

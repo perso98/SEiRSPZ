@@ -5,6 +5,7 @@ import { makeStyles } from "@mui/styles";
 import RegisterAlertComponent from "../components/RegisterAlertComponent";
 import { url } from "../services/Url";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Link } from "react-router-dom";
 import Axios from "axios";
 import Box from "@mui/material/Box";
 function Register() {
@@ -94,7 +95,16 @@ function Register() {
           margin="normal"
           type="password"
         />
-
+        <div
+          style={{
+            marginTop: "0.5rem",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Link to="/login">zaloguj się</Link>
+          <Link to="/restartpassword">zrestartuj hasło</Link>
+        </div>
         {loading == false ? (
           login && password && password2 ? (
             <Button

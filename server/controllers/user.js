@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const {
   user,
   efektyLista,
@@ -196,7 +197,120 @@ exports.logoutFromAccount = async (req, res) => {
     res.end();
   }
 };
+exports.confirmMail = async (req, res) => {
+  try {
+    const { userId: id } = jwt.verify(req.params.token, "SECRETKEY");
+    console.log(id);
 
+    await user.update({ confirmation: 1 }, { where: { id: id } });
+    res.send("Weryfikacja przeszła pomyślnie, zaloguj się teraz do konta");
+  } catch (err) {
+    res.send("Błąd w weryfikacji...");
+  }
+  return res.redirect("http://localhost:3000/login");
+};
+
+exports.resetPasswordForUser = async (req, res) => {
+  const { password, password2 } = req.body;
+  console.log("Token z resetu hasła", req.params.token);
+  if (password != password2)
+    res.send({ message: "Hasła sie nie zgadzają", info: false });
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const { userId: id } = jwt.verify(req.params.token, "SECRETKEY");
+
+    await user.update({ haslo: hashedPassword }, { where: { id: id } });
+    res.send({ message: "Hasło zrestartowane", info: true });
+  } catch (err) {
+    console.log(err);
+    res.send({ message: "Błąd w restartowaniu hasła", info: false });
+  }
+};
+exports.resetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  const userId = await user.findOne({ where: { login: email } });
+  if (!userId) {
+    res.send({
+      message: "Nie ma takiego użytkownika w bazie danych",
+      info: false,
+    });
+  }
+  if (!userId.confirmation) {
+    res.send({
+      message: "Najpierw potwierdź konto",
+      info: false,
+    });
+  } else {
+    jwt.sign(
+      { userId: userId.id },
+      "SECRETKEY",
+      {
+        expiresIn: "3d",
+      },
+      (err, token) => {
+        const url = `http://localhost:3000/restartpassword/${token}`;
+        const options = {
+          from: "testmailerxx12345@gmail.com",
+          to: email,
+          subject: "Reset hasła do aplikacji SEiRSPZ",
+          html: `Witaj ${email}, oto twój link do aktywacji zrestartowania hasła, do aplikacji 'SEiRSPZ' wspomagającej praktyki dla ANS Elbląg:
+        <a href="${url}">${url}</a> (czas wygaśnięcia : 3dni)`,
+        };
+        console.log("Wysyłam ten token do resetu hasła:", token);
+        transporter.sendMail(options, function (err, info) {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+    );
+
+    res.send({ message: "Link do resetowania hasła przesłany", info: true });
+  }
+};
+exports.resendMail = async (req, res) => {
+  const { email } = req.body;
+
+  const userId = await user.findOne({ where: { login: email } });
+  if (!userId) {
+    res.send({
+      message: "Nie ma takiego użytkownika w bazie danych",
+      info: false,
+    });
+  } else if (userId.confirmation == 1) {
+    res.send({
+      message: "Ten użytkownik ma już potwierdzone konto",
+      info: false,
+    });
+  } else {
+    jwt.sign(
+      { userId: userId.id },
+      "SECRETKEY",
+      {
+        expiresIn: "7d",
+      },
+      (err, token) => {
+        const url = `http://localhost:5000/api/confirmMail/${token}`;
+        const options = {
+          from: "testmailerxx12345@gmail.com",
+          to: email,
+          subject: "Potwierdź swój mail, aby korzystać z aplikacji SEiRSPZ",
+          html: `Witaj ${email}, oto twój link do aktywacji konta, aby móć korzystać z aplikacji 'SEiRSPZ' wspomagającej praktyki dla ANS Elbląg:
+        <a href="${url}">${url}</a> (czas wygaśnięcia : 7dni)`,
+        };
+        console.log("To jest token weryfikujący z postu", token);
+        transporter.sendMail(options, function (err, info) {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+    );
+
+    res.send({ message: "Link do ponownej aktywacji przesłany", info: true });
+  }
+};
 exports.createAccount = async (req, res) => {
   const { login, password, password2 } = req.body;
   const loginChecker = await user.findOne({
@@ -209,23 +323,36 @@ exports.createAccount = async (req, res) => {
     if (password == password2) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      await user.create({
+      const newUser = await user.create({
         login: login,
         haslo: hashedPassword,
       });
-      const options = {
-        from: "testmailerxx12345@gmail.com",
-        to: login,
-        subject: "Potwierdź swój mail, aby korzystać z aplikacji SEiRSPZ",
-        text: `Witaj ${login}, oto twój link do aktywacji konta, aby móć korzystać z aplikacji 'SEiRSPZ' wspomagającej praktyki dla ANS Elbląg `,
-      };
-      transporter.sendMail(options, function (err, info) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log(info.response);
+
+      jwt.sign(
+        { userId: newUser.id },
+        "SECRETKEY",
+        {
+          expiresIn: "7d",
+        },
+        (err, token) => {
+          const url = `http://localhost:5000/api/confirmMail/${token}`;
+          const options = {
+            from: "testmailerxx12345@gmail.com",
+            to: login,
+            subject: "Potwierdź swój mail, aby korzystać z aplikacji SEiRSPZ",
+            html: `Witaj ${login}, oto twój link do aktywacji konta, aby móć korzystać z aplikacji 'SEiRSPZ' wspomagającej praktyki dla ANS Elbląg:
+            <a href="${url}">${url}</a> (czas wygaśnięcia : 7dni)`,
+          };
+          transporter.sendMail(options, function (err, info) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(info);
+            }
+          });
         }
-      });
+      );
+
       res.send({
         message: "Konto zostało pomyślnie utworzone",
         register: true,

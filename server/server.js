@@ -130,6 +130,13 @@ app.delete(
 //User
 //pobranie danych o sesji uzytkownika jesli jest zalogowany
 app.get("/api/loginToAccount", user_controller.getloginToAccount);
+app.post("/api/resendMail", user_controller.resendMail);
+app.post("/api/resetPassword", user_controller.resetPassword);
+app.get("/api/confirmMail/:token", user_controller.confirmMail);
+app.post(
+  "/api/resetPasswordForUser/:token",
+  user_controller.resetPasswordForUser
+);
 //zmiana hasla do konta wlasciciela
 app.post(
   "/api/changePasswordToAccount",

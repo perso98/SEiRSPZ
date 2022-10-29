@@ -27,6 +27,9 @@ import Konto from "./pages/Konto";
 import ZarzadzanieZakladami from "./pages/ZarzadzanieZakladami";
 import Axios from "axios";
 import { url } from ".//services/Url";
+import ResendEmail from "./pages/ResendEmail";
+import ResetPassword from "./pages/ResetPassword";
+import EmailPasswordReset from "./pages/EmailPasswordReset";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -78,6 +81,26 @@ function App() {
                     }
                   />
                   <Route
+                    path="resendemail"
+                    element={
+                      <div className={classes.margingora}>
+                        <ResendEmail />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="restartpassword/:token"
+                    element={<ResetPassword />}
+                  />
+                  <Route
+                    path="restartpassword"
+                    element={
+                      <div className={classes.margingora}>
+                        <EmailPasswordReset />
+                      </div>
+                    }
+                  />
+                  <Route
                     path="register"
                     element={
                       <div className={classes.margingora}>
@@ -119,10 +142,7 @@ function App() {
                 </Route>
                 <Route path="efektyuczeniasie" element={<EfektyUczeniaSie />} />
                 <Route path="dzienniczek" element={<Dzienniczek />} />
-                <Route
-                    path="efekty"
-                    element={<EfektyUzasadnienie />}
-                  />
+                <Route path="efekty" element={<EfektyUzasadnienie />} />
                 <Route
                   path="zarzadzaniezakladami"
                   element={<ZarzadzanieZakladami />}
@@ -163,7 +183,6 @@ function App() {
                     element={<Dyrektor setStatus={setStatus} />}
                   />
                 </Route>
-
                 <Route path="*" element={<NoPage />} />
               </Route>
             </Routes>
