@@ -267,7 +267,11 @@ function OpiekunUHistory(props) {
               darkMode={props.darkMode}
             />
           )}
-          <Helper info={info} title="Pomoc opiekun uczelniany historia" />
+          <Helper
+            info={info}
+            title="Pomoc opiekun uczelniany historia"
+            darkMode={props.darkMode}
+          />
           <ButtonLink linkTo="/opiekunu" text="Nowe" />
         </div>
         <div

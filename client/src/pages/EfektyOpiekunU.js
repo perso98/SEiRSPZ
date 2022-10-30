@@ -130,13 +130,33 @@ function EfektyOpiekunU(props) {
             <SearchBar
               setSearchLogin={setSearchLogin}
               setItemOffset={setItemOffset}
+              darkMode={props.darkMode}
             />
           )}
-          <Helper info={info} title="Pomoc opiekun uczelniany efekty" />
-          {recordsAfterFiltering.length === 0 && !loading && (
-            <h6>Nie znaleziono wyniku</h6>
-          )}
+          <Helper
+            info={info}
+            title="Pomoc opiekun uczelniany efekty"
+            darkMode={props.darkMode}
+          />
         </div>
+        {recordsAfterFiltering.length === 0 && !loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h6
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Nie odnaleziono wyniku, którego szukasz...{" "}
+            </h6>
+            <div />
+          </div>
+        )}
         <PaginationForEffects
           data={recordsAfterFiltering}
           open={open}
@@ -161,6 +181,7 @@ function EfektyOpiekunU(props) {
         updateDzienniczek={updateDzienniczek}
         efektId={efektId}
         setEfektId={setEfektId}
+        darkMode={props.darkMode}
       />
       <ToastContainer autoClose={1000} />
     </>

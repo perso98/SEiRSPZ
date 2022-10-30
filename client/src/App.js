@@ -187,7 +187,7 @@ function App() {
                   }
                 >
                   <Route
-                    path="opiekunu/efekty"
+                    path="opiekunuefekty"
                     element={
                       <EfektyOpiekunU
                         setStatus={setStatus}

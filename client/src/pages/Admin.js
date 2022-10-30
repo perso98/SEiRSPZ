@@ -482,7 +482,7 @@ export default function Admin(props) {
                 }}
               />
             )}
-            <Helper info={info} title="Pomoc admin" />
+            <Helper info={info} title="Pomoc admin" darkMode={props.darkMode} />
             <Button
               variant="contained"
               onClick={handleAddOpen}

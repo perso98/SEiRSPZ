@@ -210,7 +210,7 @@ function Sidebar(props) {
                 )}
 
                 {props.auth?.user.isOpiekun === 1 && (
-                  <NavLink to="opiekunu/efekty" className={classes.links}>
+                  <NavLink to="opiekunuefekty" className={classes.links}>
                     <div className={classes.item}>
                       <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>

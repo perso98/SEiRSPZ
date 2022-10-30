@@ -187,7 +187,11 @@ function OpiekunZ(props) {
               setRemountComponent={setRemountComponent}
             />
           )}
-          <Helper info={info} title="Pomoc opiekun zakładowy" />
+          <Helper
+            info={info}
+            title="Pomoc opiekun zakładowy"
+            darkMode={props.darkMode}
+          />
 
           <ButtonLink linkTo="/opiekunz/historia" text="Historia" />
         </div>
