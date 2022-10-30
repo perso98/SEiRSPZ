@@ -13,12 +13,12 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { url } from "../services/Url";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
-function Konto() {
+function Konto(props) {
   const useStyles = makeStyles((theme) => ({
     center: {
       justifyContent: "space-around",
@@ -45,6 +45,10 @@ function Konto() {
         minWidth: "400px",
       },
     },
+    notchedOutline: {
+      borderWidth: "1px",
+      borderColor: "white !important",
+    },
   }));
 
   const [listaKierunkow, setListaKierunkow] = useState([]);
@@ -57,7 +61,7 @@ function Konto() {
     });
     Axios.get(`${url}getUserSesionId`).then((res) => {
       setUser(res.data);
-      setLoading(false)
+      setLoading(false);
       setImie(res.data.imie);
       setNazwisko(res.data.nazwisko);
       setStudia(res.data.studia);
@@ -66,9 +70,7 @@ function Konto() {
       setRokStudiow(res.data.rok_studiow);
       setRodzajStudiow(res.data.rodzaj_studiow);
       setTelefon(res.data.telefon);
-    
     });
-
   }, []);
 
   Axios.defaults.withCredentials = true;
@@ -115,12 +117,11 @@ function Konto() {
       imie: imie,
       nazwisko: nazwisko,
       studia: studia,
-      kierunek: kierunek, 
-      specjalnosc: specjalnosc, 
-      rokStudiow: rokStudiow, 
-      rodzajStudiow: rodzajStudiow, 
-      telefon: telefon, 
-
+      kierunek: kierunek,
+      specjalnosc: specjalnosc,
+      rokStudiow: rokStudiow,
+      rodzajStudiow: rodzajStudiow,
+      telefon: telefon,
     }).then((res) => {
       if (res.data.message) {
         setChangeDaneStatus(res.data.message);
@@ -132,18 +133,20 @@ function Konto() {
     });
   };
 
-
-
   const classes = useStyles();
   return (
-    <Grid>
+    <Grid
+      style={{
+        backgroundColor: props.darkMode == "white" ? "white" : "#242424",
+      }}
+    >
       {loading === false ? (
-        
         <Grid container sm={12} className={classes.center}>
           <div className={classes.daneForm}>
             <Typography
               variant="h4"
               color="initial"
+              style={{ color: props.darkMode == "white" ? "black" : "white" }}
             >
               {" "}
               Wprowadź swoje dane
@@ -198,14 +201,32 @@ function Konto() {
               </Box>
             )}
 
-            
-
             <TextField
               className={classes.TextField}
               label="Imie"
               id="imie"
               defaultValue={user.imie}
               margin="normal"
+              inputProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    props.darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
               onChange={(e) => {
                 setImie(e.target.value);
               }}
@@ -217,6 +238,26 @@ function Konto() {
               id="nazwisko"
               defaultValue={user.nazwisko}
               margin="normal"
+              inputProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    props.darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
               onChange={(e) => {
                 setNazwisko(e.target.value);
               }}
@@ -226,6 +267,26 @@ function Konto() {
               label="Studia"
               id="studia"
               defaultValue={user.studia}
+              inputProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    props.darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
               onChange={(e) => {
                 setStudia(e.target.value);
               }}
@@ -237,13 +298,35 @@ function Konto() {
               id="kierunek"
               defaultValue={user.kierunek}
               margin="normal"
+              inputProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    props.darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
               onChange={(e) => {
                 setKierunek(e.target.value);
               }}
             />
-            <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
+            <Box style={{ paddingTop: "3%", paddingBottom: " 1%" }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Specjalność</InputLabel>
+                <InputLabel id="demo-simple-select-label">
+                  Specjalność
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -252,7 +335,7 @@ function Konto() {
                   onChange={handleChange}
                 >
                   <MenuItem>-</MenuItem>
-                  {listaKierunkow.map((val)=> (
+                  {listaKierunkow.map((val) => (
                     <MenuItem value={val.nazwa}>{val.nazwa}</MenuItem>
                   ))}
                 </Select>
@@ -264,6 +347,26 @@ function Konto() {
               id="rok_studiow"
               defaultValue={user.rok_studiow}
               margin="normal"
+              inputProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    props.darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
               onChange={(e) => {
                 setRokStudiow(e.target.value);
               }}
@@ -274,6 +377,26 @@ function Konto() {
               id="rodzaj_studiow"
               defaultValue={user.rodzaj_studiow}
               margin="normal"
+              inputProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    props.darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
               onChange={(e) => {
                 setRodzajStudiow(e.target.value);
               }}
@@ -284,6 +407,26 @@ function Konto() {
               id="telefon"
               defaultValue={user.telefon}
               margin="normal"
+              inputProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: props.darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    props.darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
               onChange={(e) => {
                 setTelefon(e.target.value);
               }}
@@ -298,8 +441,7 @@ function Konto() {
             </Button>
           </div>
         </Grid>
-        ):null
-        }
+      ) : null}
 
       <Grid container sm={12} className={classes.center}>
         <div />
@@ -308,6 +450,7 @@ function Konto() {
           <Typography
             variant="h4"
             color="initial"
+            style={{ color: props.darkMode == "white" ? "black" : "white" }}
           >
             {" "}
             Zmiana hasła
@@ -368,6 +511,26 @@ function Konto() {
             label="Podaj hasło:"
             margin="normal"
             type="password"
+            inputProps={{
+              style: {
+                color: props.darkMode == "white" ? "black" : "white",
+                classes: {
+                  notchedOutline:
+                    props.darkMode == "white" ? null : classes.notchedOutline,
+                },
+              },
+            }}
+            InputLabelProps={{
+              style: {
+                color: props.darkMode == "white" ? "black" : "white",
+              },
+            }}
+            InputProps={{
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            }}
             onChange={(e) => {
               getChangePassword(e.target.value);
             }}
@@ -378,6 +541,26 @@ function Konto() {
             id="changePassword2"
             label="Powtórz hasło:"
             margin="normal"
+            inputProps={{
+              style: {
+                color: props.darkMode == "white" ? "black" : "white",
+                classes: {
+                  notchedOutline:
+                    props.darkMode == "white" ? null : classes.notchedOutline,
+                },
+              },
+            }}
+            InputLabelProps={{
+              style: {
+                color: props.darkMode == "white" ? "black" : "white",
+              },
+            }}
+            InputProps={{
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            }}
             onChange={(e) => {
               getChangePassword2(e.target.value);
             }}
@@ -393,7 +576,6 @@ function Konto() {
 
         <div />
       </Grid>
-      
     </Grid>
   );
 }

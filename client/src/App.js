@@ -176,7 +176,16 @@ function App() {
                   path="zarzadzaniezakladami"
                   element={<ZarzadzanieZakladami />}
                 />
-                <Route path="konto" element={<Konto darkMode={darkMode} />} />
+                <Route
+                  element={
+                    <RoleRoute
+                      role={auth?.user?.isStudent}
+                      logged={auth?.logged}
+                    />
+                  }
+                >
+                  <Route path="konto" element={<Konto darkMode={darkMode} />} />
+                </Route>
                 //Routy do opiekuna uczelnianego
                 <Route
                   element={
