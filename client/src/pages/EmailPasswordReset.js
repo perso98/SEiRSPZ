@@ -9,7 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Box, Collapse, Alert, IconButton } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
-function EmailPasswordReset() {
+function EmailPasswordReset(props) {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
       marginTop: "10%",
@@ -17,6 +17,10 @@ function EmailPasswordReset() {
       [theme.breakpoints.down("md")]: {
         marginTop: "20%",
       },
+    },
+    notchedOutline: {
+      borderWidth: "1px",
+      borderColor: "white !important",
     },
   }));
   const classes = useStyles();
@@ -53,7 +57,13 @@ function EmailPasswordReset() {
         style={{ display: "flex", flexDirection: "column", minWidth: "250px" }}
       >
         <img src={logo} alt="Logo" style={{ marginBottom: "5%" }} />
-        <div style={{ textAlign: "center", margin: "1rem" }}>
+        <div
+          style={{
+            textAlign: "center",
+            margin: "1rem",
+            color: props.darkMode == "white" ? "black" : "white",
+          }}
+        >
           Wpisz swój e-mail, aby zrestartować hasło
         </div>
         <Box sx={{ width: "100%" }}>
@@ -113,6 +123,26 @@ function EmailPasswordReset() {
           }}
           margin="normal"
           type="email"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <div
           style={{

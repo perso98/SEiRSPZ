@@ -18,6 +18,10 @@ function Login(props) {
         marginTop: "20%",
       },
     },
+    notchedOutline: {
+      borderWidth: "1px",
+      borderColor: "white !important",
+    },
   }));
 
   const [login, setLogin] = useState("");
@@ -68,6 +72,26 @@ function Login(props) {
             setLogin(e.target.value);
           }}
           margin="normal"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <TextField
           required
@@ -78,6 +102,26 @@ function Login(props) {
           }}
           margin="normal"
           type="password"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <div
           style={{

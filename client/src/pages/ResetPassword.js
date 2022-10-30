@@ -10,7 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Box, Collapse, Alert, IconButton } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
-function ResetPassword() {
+function ResetPassword(props) {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
       marginTop: "10%",
@@ -18,6 +18,10 @@ function ResetPassword() {
       [theme.breakpoints.down("md")]: {
         marginTop: "20%",
       },
+    },
+    notchedOutline: {
+      borderWidth: "1px",
+      borderColor: "white !important",
     },
   }));
   const classes = useStyles();
@@ -118,6 +122,26 @@ function ResetPassword() {
           }}
           margin="normal"
           type="password"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <TextField
           required
@@ -128,6 +152,26 @@ function ResetPassword() {
           }}
           margin="normal"
           type="password"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <div
           style={{

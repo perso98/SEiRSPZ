@@ -6,13 +6,19 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { Icon, TextField } from "@mui/material";
+import { TextField, makeStyles } from "@material-ui/core";
 import ClearIcon from "@mui/icons-material/Clear";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import "../App.css";
-
+const useStyles = makeStyles((theme) => ({
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
+}));
 function DialogOpiekunZ(props) {
   const [comments, setComments] = useState(props?.checkDay?.komentarzes);
+  const classes = useStyles();
   useEffect(() => {
     setComments(props?.checkDay?.komentarzes);
   }, [props?.checkDay?.komentarzes]);
@@ -32,6 +38,12 @@ function DialogOpiekunZ(props) {
           onClose={props.handleClose}
           fullWidth="40%"
           style={{ fontSize: "1.2rem", color: "#403c3c" }}
+          PaperProps={{
+            style: {
+              backgroundColor: props.darkMode == "white" ? "white" : "#242424",
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
         >
           <DialogTitle
             style={{ justifyContent: "space-between", display: "flex" }}
@@ -41,13 +53,16 @@ function DialogOpiekunZ(props) {
             </h6>{" "}
             <h6 style={{ textAlign: "center" }}>Data: {props.checkDay.data}</h6>
             <IconButton onClick={props.handleClose}>
-              <CloseIcon />
+              <CloseIcon
+                style={{ color: props.darkMode == "white" ? "black" : "white" }}
+              />
             </IconButton>
           </DialogTitle>
           <DialogContent>
             <>
               <div>
                 <TextField
+                  variant="outlined"
                   multiline
                   rows={10}
                   margin="normal"
@@ -55,6 +70,24 @@ function DialogOpiekunZ(props) {
                   style={{ width: "100%" }}
                   defaultValue={props.checkDay.opis}
                   onChange={(e) => props.setOpis(e.target.value)}
+                  inputProps={{
+                    style: {
+                      color: props.darkMode == "white" ? "black" : "white",
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      color: props.darkMode == "white" ? "black" : "white",
+                    },
+                  }}
+                  InputProps={{
+                    classes: {
+                      notchedOutline:
+                        props.darkMode == "white"
+                          ? null
+                          : classes.notchedOutline,
+                    },
+                  }}
                 />
               </div>
 
@@ -113,12 +146,31 @@ function DialogOpiekunZ(props) {
               </div>
               <div>
                 <TextField
+                  variant="outlined"
                   multiline
                   rows={2}
                   margin="normal"
                   label="Dodaj komentarz"
                   style={{ width: "100%" }}
                   onChange={(e) => props.setKomentarz(e.target.value)}
+                  inputProps={{
+                    style: {
+                      color: props.darkMode == "white" ? "black" : "white",
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      color: props.darkMode == "white" ? "black" : "white",
+                    },
+                  }}
+                  InputProps={{
+                    classes: {
+                      notchedOutline:
+                        props.darkMode == "white"
+                          ? null
+                          : classes.notchedOutline,
+                    },
+                  }}
                 />
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>

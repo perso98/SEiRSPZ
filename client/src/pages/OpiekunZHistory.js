@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
+
 function OpiekunStatus(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -223,8 +224,31 @@ function OpiekunStatus(props) {
   );
   return (
     <>
-      <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        {loading && <h5>Ładowanie...</h5>}
+      <Container
+        style={{
+          paddingTop: "3rem",
+          paddingBottom: "3rem",
+          background: props.darkMode == "white" ? "white" : "#242424",
+        }}
+      >
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h5
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Ładowanie...
+            </h5>
+            <div />
+          </div>
+        )}
         <div
           style={{
             display: "flex",
@@ -232,7 +256,13 @@ function OpiekunStatus(props) {
             alignItems: "center",
           }}
         >
-          {!loading && <SearchBar setSearchLogin={setSearchLogin} />}
+          {!loading && (
+            <SearchBar
+              setSearchLogin={setSearchLogin}
+              darkMode={props.darkMode}
+              setRemountComponent={setRemountComponent}
+            />
+          )}
           <Helper info={info} title="Pomoc opiekun zakładowy historia" />
           <ButtonLink linkTo="/opiekunz" text="Nowe" />
         </div>
@@ -321,7 +351,13 @@ function OpiekunStatus(props) {
             }}
           >
             <div />
-            <h6>Nie odnaleziono wyniku, którego szukasz... </h6>
+            <h6
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Nie odnaleziono wyniku, którego szukasz...{" "}
+            </h6>
             <div />
           </div>
         )}
@@ -335,6 +371,7 @@ function OpiekunStatus(props) {
               status={status}
               statusOpiekuna={statusOpiekuna}
               dzienniczek={dzienniczek}
+              darkMode={props.darkMode}
             />
           </div>
         ) : null}
@@ -349,6 +386,7 @@ function OpiekunStatus(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
         statusOpiekuna={statusOpiekuna}
+        darkMode={props.darkMode}
       />
       <ToastContainer autoClose={1000} />
     </>

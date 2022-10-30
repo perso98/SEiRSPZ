@@ -9,7 +9,7 @@ import logo from "../img/ans.png";
 import { makeStyles } from "@mui/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
-function ConfirmEmail() {
+function ConfirmEmail(props) {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
       marginTop: "10%",
@@ -17,6 +17,10 @@ function ConfirmEmail() {
       [theme.breakpoints.down("md")]: {
         marginTop: "20%",
       },
+    },
+    notchedOutline: {
+      borderWidth: "1px",
+      borderColor: "white !important",
     },
   }));
   const classes = useStyles();
@@ -45,7 +49,13 @@ function ConfirmEmail() {
         style={{ display: "flex", flexDirection: "column", minWidth: "250px" }}
       >
         <img src={logo} alt="Logo" style={{ marginBottom: "5%" }} />
-        <div style={{ textAlign: "center", margin: "1rem" }}>
+        <div
+          style={{
+            textAlign: "center",
+            margin: "1rem",
+            color: props.darkMode == "white" ? "black" : "white",
+          }}
+        >
           Potwierdzenie konta
         </div>
         <Box sx={{ width: "100%" }}>

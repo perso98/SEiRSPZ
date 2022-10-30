@@ -8,7 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import Box from "@mui/material/Box";
-function Register() {
+function Register(props) {
   const useStyles = makeStyles((theme) => ({
     registerForm: {
       marginTop: "10%",
@@ -16,6 +16,10 @@ function Register() {
       [theme.breakpoints.down("md")]: {
         marginTop: "20%",
       },
+    },
+    notchedOutline: {
+      borderWidth: "1px",
+      borderColor: "white !important",
     },
   }));
 
@@ -74,6 +78,26 @@ function Register() {
             setLogin(e.target.value);
           }}
           margin="normal"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <TextField
           required
@@ -84,6 +108,26 @@ function Register() {
           }}
           margin="normal"
           type="password"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <TextField
           required
@@ -94,6 +138,26 @@ function Register() {
           }}
           margin="normal"
           type="password"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <div
           style={{

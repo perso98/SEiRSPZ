@@ -15,6 +15,7 @@ import FileDownload from "js-file-download";
 import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
+
 function OpiekunUHistory(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -227,8 +228,31 @@ function OpiekunUHistory(props) {
   );
   return (
     <>
-      <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        {loading && <h5>Ładowanie...</h5>}
+      <Container
+        style={{
+          paddingTop: "3rem",
+          paddingBottom: "3rem",
+          background: props.darkMode == "white" ? "white" : "#242424",
+        }}
+      >
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h5
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Ładowanie...
+            </h5>
+            <div />
+          </div>
+        )}
         <div
           style={{
             justifyContent: "space-between",
@@ -240,6 +264,7 @@ function OpiekunUHistory(props) {
             <SearchBar
               setSearchLogin={setSearchLogin}
               setRemountComponent={setRemountComponent}
+              darkMode={props.darkMode}
             />
           )}
           <Helper info={info} title="Pomoc opiekun uczelniany historia" />
@@ -333,7 +358,13 @@ function OpiekunUHistory(props) {
             }}
           >
             <div />
-            <h6>Nie odnaleziono wyniku, którego szukasz... </h6>
+            <h6
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Nie odnaleziono wyniku, którego szukasz...{" "}
+            </h6>
             <div />
           </div>
         )}
@@ -347,6 +378,7 @@ function OpiekunUHistory(props) {
               status={status}
               statusOpiekuna={statusOpiekuna}
               dzienniczek={dzienniczek}
+              darkMode={props.darkMode}
             />
           </div>
         ) : null}
@@ -361,6 +393,7 @@ function OpiekunUHistory(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
         statusOpiekuna={statusOpiekuna}
+        darkMode={props.darkMode}
       />
       <ToastContainer autoClose={1000} />
     </>

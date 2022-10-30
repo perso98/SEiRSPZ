@@ -148,8 +148,31 @@ function OpiekunZ(props) {
   );
   return (
     <>
-      <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        {loading && <h5>Ładowanie...</h5>}
+      <Container
+        style={{
+          paddingTop: "3rem",
+          paddingBottom: "3rem",
+          background: props.darkMode == "white" ? "white" : "#242424",
+        }}
+      >
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h5
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Ładowanie...
+            </h5>
+            <div />
+          </div>
+        )}
         <div
           style={{
             justifyContent: "space-between",
@@ -159,6 +182,7 @@ function OpiekunZ(props) {
         >
           {!loading && (
             <SearchBar
+              darkMode={props.darkMode}
               setSearchLogin={setSearchLogin}
               setRemountComponent={setRemountComponent}
             />
@@ -175,7 +199,13 @@ function OpiekunZ(props) {
             }}
           >
             <div />
-            <h6>Nie odnaleziono wyniku, którego szukasz... </h6>
+            <h6
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Nie odnaleziono wyniku, którego szukasz...{" "}
+            </h6>
             <div />
           </div>
         )}
@@ -188,6 +218,7 @@ function OpiekunZ(props) {
               open={open}
               statusOpiekuna={statusOpiekuna}
               dzienniczek={dzienniczek}
+              darkMode={props.darkMode}
             />
           </div>
         ) : null}
@@ -201,6 +232,7 @@ function OpiekunZ(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
         statusOpiekuna={statusOpiekuna}
+        darkMode={props.darkMode}
       />
       <ToastContainer autoClose={1000} />
     </>

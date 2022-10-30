@@ -9,7 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Box, Collapse, Alert, IconButton } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
-function ResendEmail() {
+function ResendEmail(props) {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
       marginTop: "10%",
@@ -17,6 +17,10 @@ function ResendEmail() {
       [theme.breakpoints.down("md")]: {
         marginTop: "20%",
       },
+    },
+    notchedOutline: {
+      borderWidth: "1px",
+      borderColor: "white !important",
     },
   }));
   const classes = useStyles();
@@ -102,7 +106,12 @@ function ResendEmail() {
           </Collapse>
         </Box>
 
-        <div style={{ textAlign: "center" }}>
+        <div
+          style={{
+            textAlign: "center",
+            color: props.darkMode == "white" ? "black" : "white",
+          }}
+        >
           Wpisz swój e-mail, aby przesłać ponownie link aktywacyjny
         </div>
         <TextField
@@ -114,6 +123,26 @@ function ResendEmail() {
           }}
           margin="normal"
           type="email"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <div
           style={{

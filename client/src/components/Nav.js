@@ -139,6 +139,33 @@ function Nav(props) {
               ANS
             </NavLink>
           </Typography>
+          <div>
+            {props.darkMode == null ? (
+              <IconButton
+                onClick={() => {
+                  props.setDarkmode("#242424");
+                }}
+              >
+                <Brightness7Icon style={{ color: "white" }} />
+              </IconButton>
+            ) : props.darkMode == "white" ? (
+              <IconButton
+                onClick={() => {
+                  props.setDarkmode("#242424");
+                }}
+              >
+                <Brightness7Icon style={{ color: "white" }} />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  props.setDarkmode("white");
+                }}
+              >
+                <Brightness4Icon style={{ color: "white" }} />
+              </IconButton>
+            )}
+          </div>
           <div className={classes.menu}>
             <NavLink to="login" className={classes.links}>
               <div className={classes.login}>
@@ -213,6 +240,7 @@ function Nav(props) {
               onClick={() => {
                 props.setStatus();
                 logout();
+                window.location.reload(false);
               }}
               className={classes.links}
             >
