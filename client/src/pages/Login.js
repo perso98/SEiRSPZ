@@ -84,6 +84,7 @@ function Login(props) {
             marginTop: "0.5rem",
             display: "flex",
             justifyContent: "space-between",
+            fontWeight: "600",
           }}
         >
           <Link to="/resendemail">prześlij ponownie link aktywacyjny</Link>

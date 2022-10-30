@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { Typography, Button } from "@mui/material";
 import DehazeIcon from "@mui/icons-material/Dehaze";
@@ -112,42 +112,45 @@ function Sidebar(props) {
                 </Button>
                 {props.auth?.user.isStudent === 1 && (
                   <div>
-                    <Link to="/dzienniczek" className={classes.links}>
+                    <NavLink to="/dzienniczek" className={classes.links}>
                       <div className={classes.item}>
                         <NavigateNextIcon className={classes.icon} />
                         <Typography className={classes.text}>
                           Dzienniczek
                         </Typography>
                       </div>
-                    </Link>
-                    <Link to="/efekty" className={classes.links}>
+                    </NavLink>
+                    <NavLink to="/efekty" className={classes.links}>
                       <div className={classes.item}>
                         <NavigateNextIcon className={classes.icon} />
                         <Typography className={classes.text}>Efekty</Typography>
                       </div>
-                    </Link>
+                    </NavLink>
                   </div>
                 )}
 
                 {props.auth?.user.isDziekanat === 1 && (
                   <div>
-                    <Link to="/zarzadzaniezakladami" className={classes.links}>
+                    <NavLink
+                      to="/zarzadzaniezakladami"
+                      className={classes.links}
+                    >
                       <div className={classes.item}>
                         <NavigateNextIcon className={classes.icon} />
                         <Typography className={classes.text}>
                           Zarządzanie zakładami
                         </Typography>
                       </div>
-                    </Link>
+                    </NavLink>
 
-                    <Link to="/efektyuczeniasie" className={classes.links}>
+                    <NavLink to="/efektyuczeniasie" className={classes.links}>
                       <div className={classes.item}>
                         <NavigateNextIcon className={classes.icon} />
                         <Typography className={classes.text}>
                           Efekty uczenia się
                         </Typography>
                       </div>
-                    </Link>
+                    </NavLink>
                   </div>
                 )}
 
@@ -175,57 +178,57 @@ function Sidebar(props) {
                 </div> */}
 
                 {props.auth?.user.isAdmin === 1 && (
-                  <Link to="/admin" className={classes.links}>
+                  <NavLink to="/admin" className={classes.links}>
                     <div className={classes.item}>
                       <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>
                         Panel Admina
                       </Typography>
                     </div>
-                  </Link>
+                  </NavLink>
                 )}
 
                 {props.auth?.user.isOpiekunZakl === 1 && (
-                  <Link to="/opiekunz" className={classes.links}>
+                  <NavLink to="/opiekunz" className={classes.links}>
                     <div className={classes.item}>
                       <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>
                         Opiekun Zakładowy
                       </Typography>
                     </div>
-                  </Link>
+                  </NavLink>
                 )}
                 {props.auth?.user.isOpiekun === 1 && (
-                  <Link to="/opiekunu" className={classes.links}>
+                  <NavLink to="/opiekunu" className={classes.links}>
                     <div className={classes.item}>
                       <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>
                         Opiekun Uczelniany
                       </Typography>
                     </div>
-                  </Link>
+                  </NavLink>
                 )}
 
                 {props.auth?.user.isOpiekun === 1 && (
-                  <Link to="opiekunu/efekty" className={classes.links}>
+                  <NavLink to="opiekunu/efekty" className={classes.links}>
                     <div className={classes.item}>
                       <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>
                         Opiekun Ucz. Efekty
                       </Typography>
                     </div>
-                  </Link>
+                  </NavLink>
                 )}
 
                 {props.auth?.user.isDyrektor === 1 && (
-                  <Link to="/zastepstwa" className={classes.links}>
+                  <NavLink to="/zastepstwa" className={classes.links}>
                     <div className={classes.item}>
                       <NavigateNextIcon className={classes.icon} />
                       <Typography className={classes.text}>
                         Zastepstwa
                       </Typography>
                     </div>
-                  </Link>
+                  </NavLink>
                 )}
               </div>
             </div>

@@ -100,6 +100,7 @@ function ConfirmEmail() {
             marginTop: "0.5rem",
             display: "flex",
             justifyContent: "space-between",
+            fontWeight: "600",
           }}
         >
           <Button variant="contained" style={{ marginRight: "1rem" }}>

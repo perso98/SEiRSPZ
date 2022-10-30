@@ -272,7 +272,7 @@ export default function Admin(props) {
   const giveButton = (action, id) => {
     return (
       <IconButton
-        onDoubleClick={() => {
+        onClick={() => {
           updateRole(action, 0, id);
         }}
       >
@@ -284,7 +284,7 @@ export default function Admin(props) {
   const takeButton = (action, id) => {
     return (
       <IconButton
-        onDoubleClick={() => {
+        onClick={() => {
           updateRole(action, 1, id);
         }}
       >

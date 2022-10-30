@@ -120,6 +120,7 @@ function ResendEmail() {
             marginTop: "0.5rem",
             display: "flex",
             justifyContent: "space-between",
+            fontWeight: "600",
           }}
         >
           <Link to="/login">zaloguj się</Link>

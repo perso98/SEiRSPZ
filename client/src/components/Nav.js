@@ -1,5 +1,5 @@
 import { React } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
@@ -122,28 +122,28 @@ function Nav(props) {
         <Toolbar className={classes.toolbar}>
           <div />
           <Typography variant="h5" className={classes.logoBig}>
-            <Link to="/" className={classes.links}>
+            <NavLink to="/" className={classes.links}>
               Akademia Nauk Stosowanych
-            </Link>
+            </NavLink>
           </Typography>
           <Typography variant="h5" className={classes.logoLit}>
-            <Link to="/" className={classes.links}>
+            <NavLink to="/" className={classes.links}>
               ANS
-            </Link>
+            </NavLink>
           </Typography>
           <div className={classes.menu}>
-            <Link to="login" className={classes.links}>
+            <NavLink to="login" className={classes.links}>
               <div className={classes.login}>
                 <Person style={{ marginRight: "0.2rem" }} />
                 Logowanie
               </div>
-            </Link>
-            <Link to="register" className={classes.links}>
+            </NavLink>
+            <NavLink to="register" className={classes.links}>
               <div className={classes.register}>
                 <Person2 style={{ marginRight: "0.3rem" }} />
                 Rejestracja
               </div>
-            </Link>
+            </NavLink>
           </div>
           <div />
         </Toolbar>
@@ -157,22 +157,22 @@ function Nav(props) {
         <Toolbar className={classes.toolbar}>
           <Sidebar auth={props.auth} />
           <Typography variant="h5" className={classes.logoBig}>
-            <Link to="/" className={classes.links}>
+            <NavLink to="/" className={classes.links}>
               Akademia Nauk Stosowanych
-            </Link>
+            </NavLink>
           </Typography>
           <Typography variant="h5" className={classes.logoLit}>
-            <Link to="/" className={classes.linksLogoLitSM}>
+            <NavLink to="/" className={classes.linksLogoLitSM}>
               ANS
-            </Link>
+            </NavLink>
           </Typography>
           <div className={classes.menu}>
-            <Link to="/konto" className={classes.links}>
+            <NavLink to="/konto" className={classes.links}>
               <div className={classes.login}>
                 <ProfilImg style={{ marginRight: "0.2rem" }} />
                 Konto
               </div>
-            </Link>
+            </NavLink>
             <Link
               to="/"
               onClick={() => {
