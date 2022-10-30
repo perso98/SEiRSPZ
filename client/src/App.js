@@ -6,7 +6,7 @@ import Home from "./components/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 
-import { Grid } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import UnLoggedRoute from "./protectedRoutes/UnLoggedRoute";
 
@@ -55,10 +55,19 @@ function App() {
     });
   }, [status]);
   const classes = useStyles();
+  const [darkMode, setDarkmode] = useState(localStorage.getItem("theme"));
+  useEffect(() => {
+    localStorage.setItem("theme", darkMode);
+  }, [darkMode]);
   return (
-    <div className="App">
+    <Paper style={{ height: "100vh", backgroundColor: darkMode }}>
       <BrowserRouter>
-        <Nav auth={auth} setStatus={setStatus} />
+        <Nav
+          auth={auth}
+          setStatus={setStatus}
+          setDarkmode={setDarkmode}
+          darkMode={darkMode}
+        />
         <Grid container>
           <Grid item xs className={classes.content}>
             <Routes>
@@ -123,7 +132,9 @@ function App() {
                 >
                   <Route
                     path="admin"
-                    element={<Admin setStatus={setStatus} />}
+                    element={
+                      <Admin setStatus={setStatus} darkMode={darkMode} />
+                    }
                   />
                 </Route>
                 <Route
@@ -192,7 +203,7 @@ function App() {
           </Grid>
         </Grid>
       </BrowserRouter>
-    </div>
+    </Paper>
   );
 }
 

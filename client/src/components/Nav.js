@@ -3,13 +3,21 @@ import { Link, NavLink } from "react-router-dom";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  IconButton,
+  popoverClasses,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import Person from "@mui/icons-material/Person";
 import Person2 from "@mui/icons-material/PersonAddAlt1";
 import ProfilImg from "@mui/icons-material/AccountCircleOutlined";
 import LogoutImg from "@mui/icons-material/LogoutOutlined";
 import Sidebar from "../components/Sidebar";
 import { url } from "../services/Url";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 function Nav(props) {
   const useStyles = makeStyles((theme) => ({
@@ -166,6 +174,33 @@ function Nav(props) {
               ANS
             </NavLink>
           </Typography>
+          <div>
+            {props.darkMode == null ? (
+              <IconButton
+                onClick={() => {
+                  props.setDarkmode("rgba(0, 0, 0, 0.87)");
+                }}
+              >
+                <Brightness7Icon style={{ color: "white" }} />
+              </IconButton>
+            ) : props.darkMode == "white" ? (
+              <IconButton
+                onClick={() => {
+                  props.setDarkmode("rgba(0, 0, 0, 0.87)");
+                }}
+              >
+                <Brightness7Icon style={{ color: "white" }} />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  props.setDarkmode("white");
+                }}
+              >
+                <Brightness4Icon style={{ color: "white" }} />
+              </IconButton>
+            )}
+          </div>
           <div className={classes.menu}>
             <NavLink to="/konto" className={classes.links}>
               <div className={classes.login}>

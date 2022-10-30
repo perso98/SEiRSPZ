@@ -397,10 +397,27 @@ export default function Admin(props) {
                 label="Szukaj po e-mailu"
                 variant="outlined"
                 value={searchLogin}
+                style={{
+                  fieldset: { borderColor: "red" },
+                }}
+                inputProps={{
+                  style: {
+                    color: props.darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: props.darkMode == "white" ? "black" : "white",
+                  },
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon />
+                      <SearchIcon
+                        style={{
+                          color: props.darkMode == "white" ? "black" : "white",
+                        }}
+                      />
                     </InputAdornment>
                   ),
                 }}
@@ -477,15 +494,36 @@ export default function Admin(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {loading === true && <TableRow>Ładowanie...</TableRow>}
+              {loading === true && (
+                <TableRow
+                  style={{
+                    color: props.darkMode == "white" ? "black" : "white",
+                  }}
+                >
+                  Ładowanie...
+                </TableRow>
+              )}
               {recordsAfterFiltering.length === 0 && loading === false && (
-                <TableRow className={classes.NoData}>Brak danych...</TableRow>
+                <TableRow
+                  className={classes.NoData}
+                  style={{
+                    margin: "1rem",
+                    color: props.darkMode === "white" ? "black" : "white",
+                  }}
+                >
+                  Brak danych...
+                </TableRow>
               )}
 
               {recordsAfter().map((val) => (
                 <TableRow key={val.id}>
                   <TableCell
-                    style={{ maxWidth: "100px", wordWrap: "break-word" }}
+                    style={{
+                      maxWidth: "100px",
+                      wordWrap: "break-word",
+
+                      color: props.darkMode == "white" ? "black" : "white",
+                    }}
                   >
                     {val.login}
                   </TableCell>
@@ -520,7 +558,11 @@ export default function Admin(props) {
                       : giveButton("isDziekanat", val.id)}
                   </TableCell>
                   <TableCell
-                    style={{ textAlign: "center", fontWeight: "bold" }}
+                    style={{
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      color: props.darkMode == "white" ? "black" : "white",
+                    }}
                   >
                     {val.createdAt.split("-")[0]}
                   </TableCell>
@@ -554,6 +596,9 @@ export default function Admin(props) {
             </TableBody>
 
             <TablePagination
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
               component="div"
               page={page}
               rowsPerPageOptions={pages}
