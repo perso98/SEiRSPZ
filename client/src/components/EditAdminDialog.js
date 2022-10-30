@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
   },
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
 }));
 
 function EditAdminDialog({
@@ -23,41 +27,76 @@ function EditAdminDialog({
   editStudent,
   changeUserInfo,
   setChangeLogin,
+  darkMode,
 }) {
   const classes = useStyles();
 
   return (
     <>
-    {editStudent && (
-    <Dialog open={editOpen} onClose={handleEditClose} fullWidth="40%">
-      <DialogTitle className={classes.DialogTitleClass}>
-        Edycja użytkownika : {editStudent.login}
-        <IconButton aria-label="close" onClick={handleEditClose}>
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent
-        style={{ display: "flex", flexDirection: "column", margin: "5%" }}
-      >
-        <TextField
-          label="Zmiana loginu"
-          defaultValue={editStudent.login}
-          onChange={(e) => {
-            setChangeLogin(e.target.value);
-          }}
-        />
-        <Button
-          variant="contained"
-          style={{ marginTop: "5vh" }}
-          onClick={() => {
-            changeUserInfo(editStudent.id);
+      {editStudent && (
+        <Dialog
+          open={editOpen}
+          onClose={handleEditClose}
+          fullWidth="40%"
+          PaperProps={{
+            style: {
+              backgroundColor: darkMode == "white" ? "white" : "#242424",
+              color: darkMode == "white" ? "black" : "white",
+            },
           }}
         >
-          Zmień
-        </Button>
-      </DialogContent>
-    </Dialog>
-)}
+          <DialogTitle className={classes.DialogTitleClass}>
+            Edycja użytkownika : {editStudent.login}
+            <IconButton aria-label="close" onClick={handleEditClose}>
+              <CloseIcon
+                style={{ color: darkMode == "white" ? "black" : "white" }}
+              />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent
+            style={{ display: "flex", flexDirection: "column", margin: "5%" }}
+          >
+            <TextField
+              label="Zmiana loginu"
+              defaultValue={editStudent.login}
+              variant="outlined"
+              style={{ marginTop: "1rem" }}
+              inputProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
+              onChange={(e) => {
+                setChangeLogin(e.target.value);
+              }}
+            />
+            <Button
+              variant="contained"
+              style={{ marginTop: "1rem" }}
+              onClick={() => {
+                changeUserInfo(editStudent.id);
+              }}
+            >
+              Zmień
+            </Button>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }

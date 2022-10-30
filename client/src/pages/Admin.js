@@ -395,7 +395,6 @@ export default function Admin(props) {
       >
         <div />
         <div style={{ overflowX: "auto" }}>
-          {console.log(props.darkMode)}
           <Toolbar className={classes.toolbar}>
             {toggleSearch === true ? (
               <TextField
@@ -403,12 +402,15 @@ export default function Admin(props) {
                 label="Szukaj po e-mailu"
                 variant="outlined"
                 value={searchLogin}
-                style={{
-                  fieldset: { borderColor: "red" },
-                }}
                 inputProps={{
                   style: {
                     color: props.darkMode == "white" ? "black" : "white",
+                    classes: {
+                      notchedOutline:
+                        props.darkMode == "white"
+                          ? null
+                          : classes.notchedOutline,
+                    },
                   },
                 }}
                 InputLabelProps={{
@@ -443,11 +445,34 @@ export default function Admin(props) {
                 value={yearSearch}
                 label="Szukaj po roku utworzenia"
                 variant="outlined"
+                inputProps={{
+                  style: {
+                    color: props.darkMode == "white" ? "black" : "white",
+                    classes: {
+                      notchedOutline:
+                        props.darkMode == "white"
+                          ? null
+                          : classes.notchedOutline,
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: props.darkMode == "white" ? "black" : "white",
+                  },
+                }}
                 InputProps={{
-                  inputProps: { min: 2022, max: 3000 },
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon />
+                      <SearchIcon
+                        style={{
+                          color: props.darkMode == "white" ? "black" : "white",
+                        }}
+                      />
                     </InputAdornment>
                   ),
                 }}
@@ -608,7 +633,7 @@ export default function Admin(props) {
             <TablePagination
               style={{
                 color: props.darkMode == "white" ? "black" : "white",
-                overflowX: "none",
+                overflowX: "auto",
               }}
               component="div"
               page={page}

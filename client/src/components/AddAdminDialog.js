@@ -9,12 +9,18 @@ import {
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { Paper, TextField } from "@material-ui/core";
+import { TextField, makeStyles } from "@material-ui/core";
 import Button from "@mui/material/Button";
 
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
+const useStyles = makeStyles((theme) => ({
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
+}));
 function AddAdminDialog({
   addOpen,
   handleAddClose,
@@ -34,6 +40,7 @@ function AddAdminDialog({
     dziekanat,
     dyrektor,
   } = userObject;
+  const classes = useStyles();
   return (
     <Dialog
       open={addOpen}
@@ -69,16 +76,50 @@ function AddAdminDialog({
             <TextField
               id="login"
               value={login}
+              variant="outlined"
               label="Login:"
               onChange={(e) => onChange(e)}
               style={{ marginBottom: "5%" }}
+              inputProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
             />
 
             <TextField
               id="password"
               value={password}
+              variant="outlined"
               label="Hasło:"
               onChange={(e) => onChange(e)}
+              inputProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
             />
             <div
               style={{
