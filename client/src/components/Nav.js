@@ -178,7 +178,7 @@ function Nav(props) {
             {props.darkMode == null ? (
               <IconButton
                 onClick={() => {
-                  props.setDarkmode("rgba(0, 0, 0, 0.87)");
+                  props.setDarkmode("#242424");
                 }}
               >
                 <Brightness7Icon style={{ color: "white" }} />
@@ -186,7 +186,7 @@ function Nav(props) {
             ) : props.darkMode == "white" ? (
               <IconButton
                 onClick={() => {
-                  props.setDarkmode("rgba(0, 0, 0, 0.87)");
+                  props.setDarkmode("#242424");
                 }}
               >
                 <Brightness7Icon style={{ color: "white" }} />

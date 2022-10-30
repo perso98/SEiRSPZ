@@ -63,6 +63,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     fontWeight: "600",
   },
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
 }));
 export default function Admin(props) {
   const classes = useStyles();
@@ -386,10 +390,12 @@ export default function Admin(props) {
           flexDirection: "row",
           justifyContent: "space-between",
           marginTop: "2rem",
+          background: props.darkMode == "white" ? "white" : "#242424",
         }}
       >
         <div />
         <div style={{ overflowX: "auto" }}>
+          {console.log(props.darkMode)}
           <Toolbar className={classes.toolbar}>
             {toggleSearch === true ? (
               <TextField
@@ -411,6 +417,10 @@ export default function Admin(props) {
                   },
                 }}
                 InputProps={{
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
                   startAdornment: (
                     <InputAdornment position="start">
                       <SearchIcon
@@ -598,6 +608,7 @@ export default function Admin(props) {
             <TablePagination
               style={{
                 color: props.darkMode == "white" ? "black" : "white",
+                overflowX: "none",
               }}
               component="div"
               page={page}
@@ -618,6 +629,7 @@ export default function Admin(props) {
         userObject={userObject}
         createAcc={createAcc}
         onClick={onClick}
+        darkMode={props.darkMode}
       />
       <EditAdminDialog
         editOpen={editOpen}
@@ -625,6 +637,7 @@ export default function Admin(props) {
         editStudent={editStudent}
         changeUserInfo={changeUserInfo}
         setChangeLogin={setChangeLogin}
+        darkMode={props.darkMode}
       />
 
       <ToastContainer autoClose={1000} />

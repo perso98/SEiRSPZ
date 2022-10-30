@@ -60,7 +60,12 @@ function App() {
     localStorage.setItem("theme", darkMode);
   }, [darkMode]);
   return (
-    <Paper style={{ height: "100vh", backgroundColor: darkMode }}>
+    <Paper
+      style={{
+        minHeight: "100vh",
+        backgroundColor: darkMode,
+      }}
+    >
       <BrowserRouter>
         <Nav
           auth={auth}
