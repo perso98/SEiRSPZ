@@ -149,7 +149,9 @@ function OpiekunU(props) {
     </div>
   );
   return (
-    <>
+    <div
+      style={{ background: props.darkMode == "white" ? "white" : "#242424" }}
+    >
       <Container
         style={{
           paddingTop: "3rem",
@@ -236,7 +238,7 @@ function OpiekunU(props) {
         darkMode={props.darkMode}
       />
       <ToastContainer autoClose={1000} />
-    </>
+    </div>
   );
 }
 

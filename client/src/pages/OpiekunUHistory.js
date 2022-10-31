@@ -227,12 +227,13 @@ function OpiekunUHistory(props) {
     </div>
   );
   return (
-    <>
+    <div
+      style={{ background: props.darkMode == "white" ? "white" : "#242424" }}
+    >
       <Container
         style={{
           paddingTop: "3rem",
           paddingBottom: "3rem",
-          background: props.darkMode == "white" ? "white" : "#242424",
         }}
       >
         {loading && (
@@ -400,7 +401,7 @@ function OpiekunUHistory(props) {
         darkMode={props.darkMode}
       />
       <ToastContainer autoClose={1000} />
-    </>
+    </div>
   );
 }
 
