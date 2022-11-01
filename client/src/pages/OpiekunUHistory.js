@@ -26,8 +26,9 @@ function OpiekunUHistory(props) {
   const [opis, setOpis] = useState();
   const [accepted, setAccepted] = useState(false);
   const [declined, setDeclined] = useState(false);
-  const [remountComponent, setRemountComponent] = useState(0);
   const [all, setAll] = useState(true);
+  const [remountComponent, setRemountComponent] = useState(0);
+
   const statusOpiekuna = "statusOpiekunaU";
   const navigate = useNavigate();
   const status = true;

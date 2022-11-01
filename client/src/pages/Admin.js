@@ -70,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Admin(props) {
   const classes = useStyles();
+  const [confirmed, setConfirmed] = useState(false);
+  const [notConfirmed, setNotConfirmed] = useState(false);
+  const [all, setAll] = useState(true);
   const [changeLogin, setChangeLogin] = useState();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -201,12 +204,32 @@ export default function Admin(props) {
     setPage(0);
   };
   const recordsAfterFiltering = students.filter((val) => {
-    if (searchLogin === "" && yearSearch === "") {
-      return val;
-    } else if (searchLogin !== "") {
-      return val.login.toLowerCase().includes(searchLogin.toLowerCase());
-    } else if (yearSearch !== "") {
-      return val.createdAt.split("-")[0] === yearSearch;
+    if (all == true && confirmed == false && notConfirmed == false) {
+      if (searchLogin === "" && yearSearch === "") {
+        return val;
+      } else if (searchLogin !== "") {
+        return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+      } else if (yearSearch !== "") {
+        return val.createdAt.split("-")[0] === yearSearch;
+      }
+    }
+    if (all == false && confirmed == true && notConfirmed == false) {
+      if (searchLogin === "" && yearSearch === "" && val.confirmation == 1) {
+        return val;
+      } else if (searchLogin !== "" && val.confirmation == 1) {
+        return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+      } else if (yearSearch !== "" && val.confirmation == 1) {
+        return val.createdAt.split("-")[0] === yearSearch;
+      }
+    }
+    if (all == false && confirmed == false && notConfirmed == true) {
+      if (searchLogin === "" && yearSearch === "" && val.confirmation == 0) {
+        return val;
+      } else if (searchLogin !== "" && val.confirmation == 0) {
+        return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+      } else if (yearSearch !== "" && val.confirmation == 0) {
+        return val.createdAt.split("-")[0] === yearSearch;
+      }
     }
   });
 
@@ -529,6 +552,84 @@ export default function Admin(props) {
                 Usuń wszystkich z roku {yearSearch}
               </Button>
             ) : null}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            {confirmed ? (
+              <Button
+                variant="outlined"
+                disabled
+                style={{ marginRight: "0.5rem" }}
+              >
+                Zatwierdzone
+              </Button>
+            ) : (
+              <Button
+                style={{ marginRight: "0.5rem" }}
+                color="success"
+                variant="contained"
+                onClick={() => {
+                  setConfirmed(true);
+                  setAll(false);
+                  setNotConfirmed(false);
+
+                  setPage(0);
+                }}
+              >
+                Zatwierdzone
+              </Button>
+            )}
+            {all ? (
+              <Button
+                variant="outlined"
+                disabled
+                style={{ marginRight: "0.5rem" }}
+              >
+                Wszystkie
+              </Button>
+            ) : (
+              <Button
+                style={{ marginRight: "0.5rem" }}
+                variant="contained"
+                onClick={() => {
+                  setAll(true);
+                  setConfirmed(false);
+                  setNotConfirmed(false);
+                  setPage(0);
+                }}
+              >
+                Wszystkie
+              </Button>
+            )}
+            {notConfirmed ? (
+              <Button
+                variant="outlined"
+                disabled
+                style={{ marginRight: "0.5rem" }}
+              >
+                Nie zatwierdzone
+              </Button>
+            ) : (
+              <Button
+                style={{ marginRight: "0.5rem" }}
+                color="error"
+                variant="contained"
+                onClick={() => {
+                  setNotConfirmed(true);
+                  setAll(false);
+                  setConfirmed(false);
+                  setPage(0);
+                }}
+              >
+                Nie zatwierdzone
+              </Button>
+            )}
           </div>
           <Table className={classes.table}>
             <TableHead className={classes.tableHead}>
