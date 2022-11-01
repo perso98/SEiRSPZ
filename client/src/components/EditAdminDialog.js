@@ -70,6 +70,10 @@ function EditAdminDialog({
                 color: darkMode == "white" ? "black" : "white",
               }}
             >
+              <div>
+                Data utworzenia konta:{" "}
+                {editStudent.createdAt.match(/.{1,10}/g)[0]}
+              </div>
               Weryfikacja konta:
               {confirm ? (
                 <IconButton
@@ -95,7 +99,7 @@ function EditAdminDialog({
               label="Zmiana loginu"
               defaultValue={editStudent.login}
               variant="outlined"
-              style={{ marginTop: "1rem" }}
+              style={{ marginTop: "1rem", marginBottom: "1rem" }}
               inputProps={{
                 style: {
                   color: darkMode == "white" ? "black" : "white",

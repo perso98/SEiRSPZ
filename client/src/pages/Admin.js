@@ -323,18 +323,20 @@ export default function Admin(props) {
         changeLogin: changeLogin,
       })
       .then((res) => {
-        if (res.data.message) {
+        if (res.data.message2) {
           props.setStatus();
-          alert(res.data.message).then(() => {
+          alert(res.data.message2).then(() => {
             navigate("/login");
           });
         } else {
-          if (changeLogin.length > 0)
+          if (changeLogin.length > 0) {
             setStudents(
               students.map((val) => {
                 return val.id === id ? { ...val, login: changeLogin } : val;
               })
             );
+            toast.success(res.data.message1);
+          }
         }
       });
   };

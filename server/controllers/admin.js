@@ -55,7 +55,7 @@ exports.changeUserInfo = async (req, res) => {
 
   try {
     if (!req.session.user)
-      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      res.send({ message2: "Sesja utracona, zaloguj się ponownie" });
     else {
       await user.update(
         {
@@ -67,10 +67,10 @@ exports.changeUserInfo = async (req, res) => {
           },
         }
       );
-      res.send({ message: "Zmiana przeszła pomyślnie..." });
+      res.send({ message1: "Zmiana przeszła pomyślnie..." });
     }
   } catch (err) {
-    res.send({ message: err.message });
+    res.send({ message2: err.message });
   }
 };
 
