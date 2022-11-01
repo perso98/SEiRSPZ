@@ -214,6 +214,16 @@ export default function Admin(props) {
     return recordsAfterFiltering.slice(page * pageRows, (page + 1) * pageRows);
   };
 
+  const changeConfirmation = (id, confirmation) => {
+    axios
+      .put(`${url}changeConfirmation`, { id: id, confirmation: confirmation })
+      .then((res) => {
+        if (res.data.session) window.location.reload(false);
+        if (res.data.message) {
+          toast.success(res.data.message);
+        }
+      });
+  };
   const updateRole = (action, type, id) => {
     const windowConfirm = window.confirm(
       `Czy na pewno chcesz zmienić użytkownikowi rolę ${action}?`
@@ -663,6 +673,7 @@ export default function Admin(props) {
         changeUserInfo={changeUserInfo}
         setChangeLogin={setChangeLogin}
         darkMode={props.darkMode}
+        changeConfirmation={changeConfirmation}
       />
 
       <ToastContainer autoClose={1000} />

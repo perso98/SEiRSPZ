@@ -111,6 +111,15 @@ exports.createAccount = async (req, res) => {
   }
 };
 
+exports.changeConfirmation = async (req, res) => {
+  const { id, confirmation } = req.body;
+  if (!req.session.user) res.send({ session: "Sesja nie dostępna" });
+  else {
+    await user.update({ confirmation: confirmation }, { where: { id: id } });
+
+    res.send({ message: "Pomyślnie zmieniono status weryfikacji" });
+  }
+};
 exports.changeRole = async (req, res) => {
   const { action, type, id } = req.body;
   try {

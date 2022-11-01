@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -9,6 +9,8 @@ import { TextField, makeStyles } from "@material-ui/core";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const useStyles = makeStyles((theme) => ({
   DialogTitleClass: {
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function EditAdminDialog({
+  changeConfirmation,
   editOpen,
   handleEditClose,
   editStudent,
@@ -30,7 +33,11 @@ function EditAdminDialog({
   darkMode,
 }) {
   const classes = useStyles();
+  const [confirm, setConfirm] = useState(editStudent?.confirmation);
 
+  useEffect(() => {
+    setConfirm(editStudent?.confirmation);
+  }, [editStudent?.confirmation]);
   return (
     <>
       {editStudent && (
@@ -56,6 +63,34 @@ function EditAdminDialog({
           <DialogContent
             style={{ display: "flex", flexDirection: "column", margin: "5%" }}
           >
+            <div
+              style={{
+                margin: "1rem",
+                textAlign: "center",
+                color: darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Weryfikacja konta:
+              {confirm ? (
+                <IconButton
+                  onClick={() => {
+                    changeConfirmation(editStudent.id, 0);
+                    setConfirm(0);
+                  }}
+                >
+                  <CheckCircleOutlineIcon style={{ color: "green" }} />
+                </IconButton>
+              ) : (
+                <IconButton
+                  onClick={() => {
+                    changeConfirmation(editStudent.id, 1);
+                    setConfirm(1);
+                  }}
+                >
+                  <HighlightOffIcon style={{ color: "red" }} />
+                </IconButton>
+              )}
+            </div>
             <TextField
               label="Zmiana loginu"
               defaultValue={editStudent.login}

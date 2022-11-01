@@ -162,6 +162,8 @@ app.delete("/api/deleteUser/:id", admin_controller.deleteUser);
 app.delete("/api/deleteYear/:year", admin_controller.deleteYear);
 //Zmiana informacji o użytkowniku w panelu admina(editButton)
 app.put("/api/changeUserInfo", admin_controller.changeUserInfo);
+
+app.put("/api/changeConfirmation", admin_controller.changeConfirmation);
 //Zmiana ról w panelu administratora
 app.put("/api/changeRole", admin_controller.changeRole);
 //Utworzenie konta w admin panelu
