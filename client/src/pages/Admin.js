@@ -302,7 +302,7 @@ export default function Admin(props) {
           updateRole(action, 1, id);
         }}
       >
-        <HighlightOffIcon style={{ color: "red" }} />
+        <HighlightOffIcon style={{ color: "#ff4d4d" }} />
       </IconButton>
     );
   };

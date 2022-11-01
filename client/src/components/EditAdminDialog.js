@@ -91,26 +91,27 @@ function EditAdminDialog({
                     setConfirm(1);
                   }}
                 >
-                  <HighlightOffIcon style={{ color: "red" }} />
+                  <HighlightOffIcon style={{ color: "#ff4d4d" }} />
                 </IconButton>
               )}
+              {confirm ? null : (
+                <div
+                  style={{
+                    margin: "1rem",
+                    textAlign: "center",
+                    color: darkMode == "white" ? "black" : "white",
+                  }}
+                >
+                  Dni bez weryfikacji:{" "}
+                  {Math.ceil(
+                    (Date.parse(new Date().toJSON().slice(0, 10)) -
+                      Date.parse(editStudent.createdAt.match(/.{1,10}/g)[0])) /
+                      86400000
+                  )}
+                </div>
+              )}
             </div>
-            {editStudent.confirmation ? null : (
-              <div
-                style={{
-                  marginBottom: "1rem",
-                  textAlign: "center",
-                  color: darkMode == "white" ? "black" : "white",
-                }}
-              >
-                Dni bez weryfikacji:{" "}
-                {Math.ceil(
-                  (Date.parse(new Date().toJSON().slice(0, 10)) -
-                    Date.parse(editStudent.createdAt.match(/.{1,10}/g)[0])) /
-                    86400000
-                )}
-              </div>
-            )}
+
             <TextField
               label="Zmiana loginu"
               defaultValue={editStudent.login}
