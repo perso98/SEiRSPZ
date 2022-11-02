@@ -8,6 +8,24 @@ import { Button, Grid, TextField,TableRow, TableCell, Table,
 import { url } from "../services/Url";
 import ClearIcon from '@mui/icons-material/Clear';
 import Helper from "../components/Helper";
+import AddIcon from '@mui/icons-material/Add';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ListSubheader from '@mui/material/ListSubheader';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Collapse from '@mui/material/Collapse';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import SendIcon from '@mui/icons-material/Send';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import StarBorder from '@mui/icons-material/StarBorder';
+import Box from '@mui/material/Box';
+import DodanieSpecjalnosci from "../components/DodanieSpecjalnosci";
+import DodanieEfektuDialog from "../components/DodanieEfektuDialog";
 
 const useStyles = makeStyles(theme => ({
     container:{
@@ -101,6 +119,7 @@ function EfektyUczeniaSie() {
     const [nazwaSpecjalnosci, setNazwaSpecjalnosci] = useState();
     const [skrotSpecjalnosci, setSkrotSpecjalnosci] = useState();
 
+
     const dodanieSpecjalnosci = (id) => {
       console.log(nazwaSpecjalnosci)
       axios
@@ -110,26 +129,48 @@ function EfektyUczeniaSie() {
         })
         .then((res) => {
             setSipsKierunkow(
-              sipsKierunkow.map((val) => {
-                return val.id === id
-                  ? {
-                      ...val,
-                      listaSpecjalnoscis: nazwaSpecjalnosci
-                        ? [
-                            ...val.listaSpecjalnoscis,
-                            {
-                              id: res.data.id,
-                              nazwa: nazwaSpecjalnosci,
-                              opis: skrotSpecjalnosci,
-                            },
-                          ]
-                        : [...val.listaSpecjalnoscis],
-                    }
-                  : val;
-              })
+              res.data.lista
+              // sipsKierunkow.map((val) => {
+              //   return val.id === id
+              //     ? {
+              //         ...val,
+              //         listaSpecjalnoscis: nazwaSpecjalnosci
+              //           ? [
+              //               ...val.listaSpecjalnoscis,
+              //               {
+              //                 id: res.data.id,
+              //                 nazwa: nazwaSpecjalnosci,
+              //                 opis: skrotSpecjalnosci,
+              //               },
+              //             ]
+              //           : [...val.listaSpecjalnoscis],
+              //       }
+              //     : val;
+              // })
             )
         })
   }
+
+  
+  const usuwanieSpecjalnosci = (id) => {
+    const acceptDelete = window.confirm(`Czy pewno chcesz usunąć ?`);
+    if (acceptDelete)
+      axios
+        .delete(`${url}delSpecjalnosc/${id}`, {
+        })
+        .then((res) => {
+          if (res.data.message === "Usunięto") {
+              setSipsKierunkow(
+                res.data.lista
+                  // sipsKierunkow.filter((val) => {
+                  //     return val.id !== id;
+                  //   })
+                );
+          }
+        })
+  }
+
+
 
 
     const [nazwaEfektu, setNazwaEfektu] = useState();
@@ -137,7 +178,6 @@ function EfektyUczeniaSie() {
     
 
     const dodanieEfektu = (id) => {
-        console.log(nazwaKierunku)
         axios
           .put(`${url}addEfekt`, {
             nazwaEfektu: nazwaEfektu,
@@ -147,29 +187,30 @@ function EfektyUczeniaSie() {
           .then((res) => {
             if (res.data.message === "Efekt został pomyślnie dodany") {
                 setSipsKierunkow(
-                    sipsKierunkow.map((val) => {
-                      return val.id === id
-                        ? {
-                            ...val,
-                            efektyLista: nazwaEfektu
-                              ? [
-                                  ...val.efektyLista,
-                                  {
-                                    nazwa: nazwaEfektu,
-                                    opis: opisEfektu,
-                                  },
-                                ]
-                              : [...val.efektyLista],
-                          }
-                        : val;
-                    })
-                  )
-              .then(() => {
-                setNazwaEfektu();
-                setOpisEfektu();
-              });
+                  res.data.lista
+                )
+                // setSipsKierunkow(
+                //   sipsKierunkow.map((valKierunek) => {
+                //     valKierunek.listaSpecjalnoscis.map((val) => {
+                //       return val.id === id
+                //         ? {
+                //             ...val,
+                //             efektyLista: nazwaEfektu
+                //               ? [
+                //                   ...val.efektyLista,
+                //                   {
+                //                     id: res.data.id,
+                //                     nazwa: nazwaEfektu,
+                //                     opis: opisEfektu,
+                //                   },
+                //                 ]
+                //               : [...val.efektyLista],
+                //           }
+                //         : val;
+                //     })
+                //   })
+                // )
             }
-            alert(res.data.message)
           })
     }
 
@@ -182,20 +223,51 @@ function EfektyUczeniaSie() {
           .then((res) => {
             if (res.data.message === "Usunięto") {
                 setSipsKierunkow(
-                sipsKierunkow.map((val) => {
-                return val.id === id
-                    ? {
-                        ...val,
-                        efektyLista: val.efektyLista.filter((efekt) => {
-                        return efekt.id !== idEfekt;
-                        }),
-                    }
-                    : val;
-                })
+                  res.data.lista
+                // sipsKierunkow.map((val) => {
+                // return val.id === id
+                //     ? {
+                //         ...val,
+                //         efektyLista: val.efektyLista.filter((efekt) => {
+                //         return efekt.id !== idEfekt;
+                //         }),
+                //     }
+                //     : val;
+                // })
             );
             }
           })
     }
+    const [open, setOpen] = useState(true);
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    const handleOpen = () => {
+      setOpen(true);
+    };
+
+
+    const [openSpecjalnosc, setOpenSpecjalnosc] = useState(true);
+
+    const handleCloseSpecjalnosc = () => {
+      setOpenSpecjalnosc(false);
+    };
+
+    const handleOpenSpecjalnosc = () => {
+      setOpenSpecjalnosc(true);
+    };
+
+    
+
+    const commonStyles = {
+      bgcolor: 'background.paper',
+      m: 1,
+      border: 1,
+      padding: "10px",
+    };
+
 
     const infomacja = (
       <div>
@@ -214,6 +286,7 @@ function EfektyUczeniaSie() {
 
     return (
     <Grid>
+        
         <Grid container  xs={12} className={classes.center}  >
           <div/>
           <div className={classes.changePasswordForm}>
@@ -279,33 +352,265 @@ function EfektyUczeniaSie() {
               </Button>
           }
         </div>
+
+        <div 
+          style={{
+            display: "flex",  
+            justifyContent: "center",
+            }}
+        >
+          <div/>
+            <Grid>
+              { sipsKierunkow?.length > 0 ? (
+                <Grid container style={{
+                  display: "flex",  
+                  justifyContent: "center",
+                  }}>
+                  {sipsKierunkow.map((val) => (
+                    <Grid item xs={12} sm={12} md={4} 
+                    sx={{ ...commonStyles, borderColor: 'primary.main', borderRadius: '16px' }}
+                    
+                    >
+                       { edit === 0 ? (
+                        <div id={val?.id} 
+                          
+                          >
+
+                            <Typography color="initial" style={{fontSize: '26px'}}> 
+                              <div>
+                                Kierunek: <p style={{fontSize: '20px'}}>{val.nazwa}</p>
+                              </div>
+                            </Typography> 
+
+                            <DodanieSpecjalnosci
+                              open = { open }
+                              handleClose = { handleClose }
+                              setNazwaSpecjalnosci = { setNazwaSpecjalnosci }
+                              setSkrotSpecjalnosci = { setSkrotSpecjalnosci }
+                              dodanieSpecjalnosci = { dodanieSpecjalnosci }
+                              info = { val }
+                              val = { val }
+                            />
+
+                            <IconButton 
+                              style={{ color: "Green"}}
+                              onClick={handleOpen} 
+                              >
+                                <AddIcon> 
+                                </AddIcon>
+                            </IconButton>
+                            Dodaj Specjalność do Kierunku {val.nazwa}
+
+                            {val.listaSpecjalnoscis?.length !== 0 ? 
+                              (
+                                <div>
+                                  {val.listaSpecjalnoscis?.map((valSpecjalnosc) => (
+                                    <div>
+                                      <DodanieEfektuDialog
+                                          open = { openSpecjalnosc }
+                                          handleClose = { handleCloseSpecjalnosc }
+                                          setNazwaSpecjalnosci = { setNazwaSpecjalnosci }
+                                          setSkrotSpecjalnosci = { setSkrotSpecjalnosci }
+                                          dodanieSpecjalnosci = { dodanieSpecjalnosci }
+                                          info = { valSpecjalnosc }
+                                          val = { valSpecjalnosc }
+                                        />
+                                      <div style={{fontSize: "18px", marginTop: "10px", marginBottom: "10px"}}>
+                                        <b>Specjalność: {valSpecjalnosc.nazwa}</b>
+                                          {/* <IconButton 
+                                            style={{ color: "Blue"}}
+                                            >
+                                              <ArrowDropDownIcon/>
+                                          </IconButton>
+
+                                          <IconButton 
+                                            style={{ color: "Blue"}}
+                                            >
+                                              <ArrowDropUpIcon/>
+                                          </IconButton> */}
+                                          
+                                      </div>
+                                      Efekty uczenia się:
+                                      
+                                      <Grid>
+                                        <Table>
+                                          <TableHead >
+                                            <TableRow>
+                                                <TableCell >
+                                                  Efekt
+                                                </TableCell>
+                                                <TableCell  >
+                                                  Opis
+                                                </TableCell>
+                                            </TableRow>
+                                          </TableHead>
+                                          <TableBody>
+                                          {valSpecjalnosc?.efektyLista?.map((efekt) => (
+                                            <TableRow>
+                                                <TableCell >
+                                                {efekt.nazwa}
+                                                </TableCell>
+                                                <TableCell >
+                                                {efekt.opis}
+                                                </TableCell>
+                                            </TableRow>
+                                          ))}
+                                          </TableBody>
+                                        </Table>
+                                        <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                          <div/>
+
+                                          
+                                          <IconButton 
+                                            style={{ color: "Green"}}
+                                            onClick={handleOpenSpecjalnosc} 
+                                            >
+                                              <AddIcon> 
+                                              </AddIcon>
+                                          </IconButton>
+                                          Dodaj Efekt do Specjalności {valSpecjalnosc.nazwa}
+
+                                          <div/>
+                                        </div>
+                                      </Grid>
+                                    </div>
+                                  ))}
+                                </div>
+                              ):
+                                <div>
+                                  Brak Specjalności
+                                </div>
+                            }
+                        </div>
+                       ) : 
+                       <div id={val?.id}>
+
+                          <Typography color="initial" style={{fontSize: '26px'}}> 
+                            <div>
+                              Kierunek: 
+                              <p style={{fontSize: '20px'}}>{val.nazwa} 
+                                <IconButton 
+                                  style={{ color: "red"}}
+                                  onClick={() => {
+                                    usuwanieKierunku(val.id);
+                                    }} 
+                                  >
+                                    <ClearIcon>
+                                    </ClearIcon>
+                                </IconButton>
+                              </p>
+                            </div>
+                          </Typography> 
+
+                          {val.listaSpecjalnoscis?.length !== 0 ? 
+                              (
+                                <div>
+                                  {val.listaSpecjalnoscis?.map((valSpecjalnosc) => (
+                                    <div>
+                                      <div style={{fontSize: "18px", marginTop: "10px", marginBottom: "10px"}}>
+                                        <b>Specjalność: {valSpecjalnosc.nazwa}</b>
+                                        <IconButton 
+                                          style={{ color: "red"}}
+                                          onClick={() => {
+                                            usuwanieSpecjalnosci(valSpecjalnosc.id);
+                                            }} 
+                                          >
+                                            <ClearIcon>
+                                            </ClearIcon>
+                                        </IconButton>
+                                      </div>
+                                      Efekty uczenia się:
+                                      <Grid>
+                                        <Table>
+                                          <TableHead >
+                                            <TableRow>
+                                                <TableCell >
+                                                  Efekt
+                                                </TableCell>
+                                                <TableCell  >
+                                                  Opis
+                                                </TableCell>
+                                            </TableRow>
+                                          </TableHead>
+                                          <TableBody>
+                                          {valSpecjalnosc?.efektyLista?.map((efekt) => (
+                                            <TableRow>
+                                                <TableCell >
+                                                {efekt.nazwa}
+                                                </TableCell>
+                                                <TableCell >
+                                                {efekt.opis}
+                                                </TableCell>
+                                                <TableCell >
+                                                <IconButton 
+                                                  style={{ color: "red"}}
+                                                  onClick={() => {
+                                                    usuwanieEfektu(efekt.id);
+                                                    }} 
+                                                  >
+                                                    <ClearIcon>
+                                                    </ClearIcon>
+                                                </IconButton>
+                                                </TableCell>
+                                            </TableRow>
+                                            ))}
+                                          </TableBody>
+                                        </Table>
+                                      </Grid>
+                                    </div>
+                                  ))}
+                                </div>
+                              ):
+                                <div>
+                                  Brak Specjalności
+                                </div>
+                            }
+
+                        </div>
+                      }
+                    </Grid>
+                  ))}
+                </Grid>
+              ):<div></div>
+              }
+            </Grid>
+          <div/>
+        </div>
                       
-        <Grid >
+        {/* <Grid >
           { sipsKierunkow?.length > 0 ? (
             <Grid container >
               {sipsKierunkow.map((val) => (
                 <Grid item xs={12} sm={12} md={4} style={{padding: "15px"}} >
                   
                   { edit === 0 ? (
-                  <div id={val.id} style={{wordWrap: "break-word", minWidth: "200px", display: "flex",  alignItems: "center", alignContent: "space-around", justifyContent: "center"}}>
+                  <div id={val?.id} 
+                  // style={{
+                  //   wordWrap: "break-word", 
+                  //   minWidth: "200px", 
+                  //   display: "flex",  
+                  //   alignItems: "center", 
+                  //   alignContent: "space-around", 
+                  //   justifyContent: "center"
+                  //   }}
+                    >
                     <div style={{width:"400px"}}>
 
 
                       <Typography color="initial" style={{fontSize: '26px'}}> 
-                      <div style={{display: 'flex', justifyContent: "space-between"}}>
+                      <div 
+                      //style={{display: 'flex', justifyContent: "space-between"}}
+                      >
                         Kierunek:
                       </div>
                         <p style={{fontSize: '20px'}}>{val.nazwa}</p>
                       </Typography> 
-
-                      {console.log("val.listaSpecjalnosci?.length" + val.listaSpecjalnoscis?.length)}
 
                         <div>
                           <div>
                               <TextField
                                   label="Specjalności"
                                   id="specjalności"
-                                  margin="normal"
                                   multiline
                                   onChange={(e) => {
                                     setNazwaSpecjalnosci(e.target.value);
@@ -314,7 +619,6 @@ function EfektyUczeniaSie() {
                               <TextField
                                   label="Skrót"
                                   id="Ssrot"
-                                  margin="normal"
                                   multiline
                                   onChange={(e) => {
                                     setSkrotSpecjalnosci(e.target.value);
@@ -326,7 +630,6 @@ function EfektyUczeniaSie() {
                             onClick={() => {
                                 dodanieSpecjalnosci(val.id);
                                 }} 
-                            style={{marginTop:'20px',minHeight:'50px',fontSize:'15px'}}
                           >
                               Zapisz
                           </Button>
@@ -337,11 +640,9 @@ function EfektyUczeniaSie() {
                         {val.listaSpecjalnoscis?.map((valSpecjalnosc) => (
                           <div>
                             <div>
-                              {valSpecjalnosc.nazwa}
+                              Specjalność: {valSpecjalnosc.nazwa}
                             </div>
-
                             Efekty uczenia się:
-
                             <Grid>
                               <Table>
                                 <TableHead >
@@ -355,7 +656,7 @@ function EfektyUczeniaSie() {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                {val?.efektyLista?.map((efekt) => (
+                                {valSpecjalnosc?.efektyLista?.map((efekt) => (
                                   <TableRow>
                                       <TableCell >
                                       {efekt.nazwa}
@@ -369,6 +670,34 @@ function EfektyUczeniaSie() {
                               </Table>
                             </Grid>
 
+                            <div>
+                              <div>
+                                  <TextField
+                                      label="Nazwa Efektu"
+                                      id="nazwaEfektu"
+                                      multiline
+                                      onChange={(e) => {
+                                        setNazwaEfektu(e.target.value);
+                                      }}
+                                  />
+                                  <TextField
+                                      label="Opis Efektu"
+                                      id="opisEfektu"
+                                      multiline
+                                      onChange={(e) => {
+                                        setOpisEfektu(e.target.value);
+                                      }}
+                                  />
+                              </div> 
+                              <Button 
+                                variant="contained" 
+                                onClick={() => {
+                                      dodanieEfektu(valSpecjalnosc.id);
+                                    }} 
+                              >
+                                  Zapisz
+                              </Button>
+                            </div>
                           </div>
                         ))}
                         </div>
@@ -412,13 +741,13 @@ function EfektyUczeniaSie() {
                               </Button>
                       </div>
                       
-                      ): <div>Brak kierunków</div>} */}
+                      ): <div>Brak kierunków</div>} 
                   </div>
                   </div>
 
                     ):
                     <div id={val.id} style={{wordWrap: "break-word", minWidth: "200px", display: "flex",  alignItems: "center", alignContent: "space-around", justifyContent: "center"}}>
-                      {/* <div style={{width:"400px"}}>
+                      {/* <div style={{width:"400px"}}> 
                      
                       <Typography color="initial" style={{fontSize: '26px'}}> 
                       <div style={{display: 'flex', justifyContent: "space-between"}}>
@@ -480,7 +809,7 @@ function EfektyUczeniaSie() {
                           </TableBody>
                         </Table>
                       </Grid>
-                      </div> */}
+                      </div> 
                     </div>
 
                   } 
@@ -489,7 +818,7 @@ function EfektyUczeniaSie() {
               ))}
             </Grid>
           ): <div>Brak kierunków</div>}
-        </Grid>
+        </Grid> */}
     </Grid>
     )
     

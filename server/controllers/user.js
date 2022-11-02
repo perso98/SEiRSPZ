@@ -6,6 +6,7 @@ const {
   efektyStudent,
   dane,
   listaKierunkow,
+  listaSpecjalnosci,
 } = require("../models");
 const nodemailer = require("nodemailer");
 
@@ -44,7 +45,7 @@ exports.changeDaneToAccount = async (req, res) => {
     telefon,
   } = req.body;
 
-  // First try to find the record
+    // First try to find the record
 
   const foundItem = await user.findOne({
     where: { login: req.session.user.login },
@@ -92,64 +93,87 @@ exports.changeDaneToAccount = async (req, res) => {
     } catch (err) {
       res.send({ message: err.message });
     }
-  } else {
-    try {
-      let czyNull = null;
-      if (specjalnosc != null) {
-        czyNull = specjalnosc;
-      }
-      const updateDane = await dane.update(
-        {
+  }
+    else{
+      try{
+        let czyNull = null
+        let czyKierunekNull = null
+        if(specjalnosc != null){
+          czyNull = specjalnosc
+        }
+        if(kierunek != null){
+          czyKierunekNull = kierunek
+        }
+        console.log(1)
+        
+        console.log(czyNull)
+
+        let numerSpecjalnosci = czyNull
+        if(specjalnosc != null){
+        numerSpecjalnosci = await listaSpecjalnosci.findOne({ 
+          attributes: ["nazwa"],
+          where: { id: czyNull} 
+        })
+        }
+
+        console.log(1.1)
+        console.log(numerSpecjalnosci)
+
+        const updateDane = await dane.update({ 
           imie: imie,
           nazwisko: nazwisko,
           studia: studia,
-          kierunek: kierunek,
-          specjalnosc: czyNull,
-          rok_studiow: rokStudiow,
-          rodzaj_studiow: rodzajStudiow,
-          telefon: telefon,
-        },
-        { where: { id: foundItem.daneId } }
-      );
+          kierunek: czyKierunekNull, 
+          specjalnosc: numerSpecjalnosci.nazwa, 
+          rok_studiow: rokStudiow, 
+          rodzaj_studiow: rodzajStudiow, 
+          telefon: telefon, 
+          },
+          { where: { id: foundItem.daneId } }
+        );
+        console.log(2)
+       
+        if(specjalnosc != null){
+          const numerSpecjalnosci = await listaSpecjalnosci.findOne({ 
+            where: { id: czyNull} 
+          })
+          console.log(3)
+          
+          const listaEfektow = await efektyLista.findAll({ 
+            where: { listaSpecjalnosciId: numerSpecjalnosci.id} 
+          })
+          
+          await efektyStudent.destroy({ 
+            where:{userId: req.session.user.id,}
+          })
 
-      if (specjalnosc != null) {
-        const numerKierunku = await listaKierunkow.findOne({
-          where: { nazwa: czyNull },
-        });
-        const listaEfektow = await efektyLista.findAll({
-          where: { listaKierunkowId: numerKierunku.id },
-        });
-
-        await efektyStudent.destroy({
-          where: { userId: req.session.user.id },
-        });
-
-        listaEfektow.forEach(async (element) => {
-          await efektyStudent.create({
-            efektyListumId: element.id,
-            userId: req.session.user.id,
+          console.log(4)
+          listaEfektow.forEach(async element => {
+            await efektyStudent.create({ 
+              efektyListumId: element.id,
+              userId: req.session.user.id,
+            })
           });
-        });
-      } else {
-        await efektyStudent.destroy({
-          where: { userId: req.session.user.id },
-        });
+        }
+        else{
+          await efektyStudent.destroy({ 
+            where:{userId: req.session.user.id,}
+          })
+        }
+          // const createEfektyEmpty = await efektyStudent.create({ 
+          //   efektyListumId: ,
+          //   userId: req.session.user.id,
+
+          // })
+        res.send({ message: "Pomyślnie zmieniono dane do konta",
+        updateDane: updateDane });
       }
-
-      // const createEfektyEmpty = await efektyStudent.create({
-      //   efektyListumId: ,
-      //   userId: req.session.user.id,
-
-      // })
-      res.send({
-        message: "Pomyślnie zmieniono dane do konta",
-        updateDane: updateDane,
-      });
-    } catch (err) {
-      res.send({ message: err.message });
+      catch (err) {
+        res.send({ message: "Wybierz Kierunek oraz Specjalność" });
+      }
     }
   }
-};
+
 
 exports.getloginToAccount = async (req, res) => {
   if (req.session.user) {
@@ -378,9 +402,19 @@ exports.createAccount = async (req, res) => {
 };
 
 exports.getListaKierunkow = async (req, res) => {
-  const lista = await listaKierunkow.findAll();
+
+  const lista = await listaKierunkow.findAll({
+    include: {
+      model: listaSpecjalnosci,
+    },
+  });
+
   res.send(lista);
 };
+
+
+
+
 
 exports.getUserSesionId = async (req, res) => {
   const lista = await user.findOne({ where: { id: req.session.user.id } });
