@@ -15,13 +15,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
+
 function OpiekunStatus(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
-  const [itemOffset, setItemOffset] = useState(0);
+  const [remountComponent, setRemountComponent] = useState(0);
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
@@ -46,7 +47,7 @@ function OpiekunStatus(props) {
       if (res.data.message) {
         props.setStatus();
         alert(res.data.message).then(() => {
-          navigate("/login");
+          window.location.reload(false);
         });
       } else {
         setDzienniczek(res.data);
@@ -68,7 +69,7 @@ function OpiekunStatus(props) {
         } else {
           setDzienniczek(
             dzienniczek.map((val) => {
-              return val.id == day.id
+              return val.id === day.id
                 ? {
                     ...val,
                     komentarzes: val.komentarzes.filter((com) => {
@@ -98,7 +99,9 @@ function OpiekunStatus(props) {
           toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
             dzienniczek.map((val) => {
-              return val.id == id ? { ...val, [res.data.status]: status } : val;
+              return val.id === id
+                ? { ...val, [res.data.status]: status }
+                : val;
             })
           );
         }
@@ -141,7 +144,7 @@ function OpiekunStatus(props) {
 
           setDzienniczek(
             dzienniczek.map((val) => {
-              return val.id == id
+              return val.id === id
                 ? {
                     ...val,
                     [res.data.status]: status,
@@ -164,8 +167,8 @@ function OpiekunStatus(props) {
   };
 
   const recordsAfterFiltering = dzienniczek.filter((val) => {
-    if (accepted == true && all == false && declined == false) {
-      if (val?.statusOpiekunaZ === "Zaakceptowano" && searchLogin == "") {
+    if (accepted === true && all === false && declined === false) {
+      if (val?.statusOpiekunaZ === "Zaakceptowano" && searchLogin === "") {
         return val;
       } else if (
         val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
@@ -175,8 +178,8 @@ function OpiekunStatus(props) {
         return val;
       }
     }
-    if (all == true && accepted == false && declined == false) {
-      if (searchLogin == "") {
+    if (all === true && accepted === false && declined === false) {
+      if (searchLogin === "") {
         return val;
       } else if (
         val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
@@ -185,8 +188,8 @@ function OpiekunStatus(props) {
         return val;
       }
     }
-    if (declined == true && all == false && accepted == false) {
-      if (val?.statusOpiekunaZ === "Odrzucono" && searchLogin == "") {
+    if (declined === true && all === false && accepted === false) {
+      if (val?.statusOpiekunaZ === "Odrzucono" && searchLogin === "") {
         return val;
       } else if (
         val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
@@ -220,9 +223,34 @@ function OpiekunStatus(props) {
     </div>
   );
   return (
-    <>
-      <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        {loading && <h5>Ładowanie...</h5>}
+    <div
+      style={{ background: props.darkMode == "white" ? "white" : "#242424" }}
+    >
+      <Container
+        style={{
+          paddingTop: "3rem",
+          paddingBottom: "3rem",
+          background: props.darkMode == "white" ? "white" : "#242424",
+        }}
+      >
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h5
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Ładowanie...
+            </h5>
+            <div />
+          </div>
+        )}
         <div
           style={{
             display: "flex",
@@ -233,67 +261,88 @@ function OpiekunStatus(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
-              setItemOffset={setItemOffset}
+              darkMode={props.darkMode}
+              setRemountComponent={setRemountComponent}
             />
           )}
-          <Helper info={info} title="Pomoc opiekun zakładowy historia" />
+          <Helper
+            info={info}
+            title="Pomoc opiekun zakładowy historia"
+            darkMode={props.darkMode}
+          />
           <ButtonLink linkTo="/opiekunz" text="Nowe" />
         </div>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            margin: "1rem",
+            marginTop: "1rem",
+            marginBottom: "1rem",
           }}
         >
           {accepted ? (
-            <Button variant="outlined" disabled>
-              Zaakceptowane
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
+              Zatwierdzone
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               color="success"
               variant="contained"
               onClick={() => {
                 setAccepted(true);
                 setAll(false);
                 setDeclined(false);
-                setItemOffset(0);
+                setRemountComponent(Math.random());
               }}
             >
-              Zaakceptowane
+              Zatwierdzone
             </Button>
           )}
           {all ? (
-            <Button variant="outlined" disabled>
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
               Wszystkie
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               variant="contained"
               onClick={() => {
                 setAll(true);
                 setAccepted(false);
                 setDeclined(false);
-                setItemOffset(0);
+                setRemountComponent(Math.random());
               }}
             >
               Wszystkie
             </Button>
           )}
           {declined ? (
-            <Button variant="outlined" disabled>
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
               Odrzucone
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               color="error"
               variant="contained"
               onClick={() => {
                 setDeclined(true);
                 setAll(false);
                 setAccepted(false);
-                setItemOffset(0);
+                setRemountComponent(Math.random());
               }}
             >
               Odrzucone
@@ -308,20 +357,30 @@ function OpiekunStatus(props) {
             }}
           >
             <div />
-            <h6>Nie odnaleziono wyniku, którego szukasz... </h6>
+            <h6
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Nie odnaleziono wyniku, którego szukasz...{" "}
+            </h6>
             <div />
           </div>
         )}
-        <Pagination
-          data={recordsAfterFiltering}
-          changeStatus={changeStatus}
-          handleOpen={handleOpen}
-          open={open}
-          itemOffset={itemOffset}
-          setItemOffset={setItemOffset}
-          status={status}
-          statusOpiekuna={statusOpiekuna}
-        />
+        {recordsAfterFiltering.length > 0 ? (
+          <div key={remountComponent}>
+            <Pagination
+              data={recordsAfterFiltering}
+              changeStatus={changeStatus}
+              handleOpen={handleOpen}
+              open={open}
+              status={status}
+              statusOpiekuna={statusOpiekuna}
+              dzienniczek={dzienniczek}
+              darkMode={props.darkMode}
+            />
+          </div>
+        ) : null}
       </Container>
       <DialogOpiekunZ
         downloadFile={downloadFile}
@@ -333,9 +392,10 @@ function OpiekunStatus(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
         statusOpiekuna={statusOpiekuna}
+        darkMode={props.darkMode}
       />
       <ToastContainer autoClose={1000} />
-    </>
+    </div>
   );
 }
 

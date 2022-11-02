@@ -63,9 +63,16 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     fontWeight: "600",
   },
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
 }));
 export default function Admin(props) {
   const classes = useStyles();
+  const [confirmed, setConfirmed] = useState(false);
+  const [notConfirmed, setNotConfirmed] = useState(false);
+  const [all, setAll] = useState(true);
   const [changeLogin, setChangeLogin] = useState();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -197,12 +204,32 @@ export default function Admin(props) {
     setPage(0);
   };
   const recordsAfterFiltering = students.filter((val) => {
-    if (searchLogin === "" && yearSearch === "") {
-      return val;
-    } else if (searchLogin !== "") {
-      return val.login.toLowerCase().includes(searchLogin.toLowerCase());
-    } else if (yearSearch !== "") {
-      return val.createdAt.split("-")[0] === yearSearch;
+    if (all == true && confirmed == false && notConfirmed == false) {
+      if (searchLogin === "" && yearSearch === "") {
+        return val;
+      } else if (searchLogin !== "") {
+        return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+      } else if (yearSearch !== "") {
+        return val.createdAt.split("-")[0] === yearSearch;
+      }
+    }
+    if (all == false && confirmed == true && notConfirmed == false) {
+      if (searchLogin === "" && yearSearch === "" && val.confirmation == 1) {
+        return val;
+      } else if (searchLogin !== "" && val.confirmation == 1) {
+        return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+      } else if (yearSearch !== "" && val.confirmation == 1) {
+        return val.createdAt.split("-")[0] === yearSearch;
+      }
+    }
+    if (all == false && confirmed == false && notConfirmed == true) {
+      if (searchLogin === "" && yearSearch === "" && val.confirmation == 0) {
+        return val;
+      } else if (searchLogin !== "" && val.confirmation == 0) {
+        return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+      } else if (yearSearch !== "" && val.confirmation == 0) {
+        return val.createdAt.split("-")[0] === yearSearch;
+      }
     }
   });
 
@@ -210,6 +237,16 @@ export default function Admin(props) {
     return recordsAfterFiltering.slice(page * pageRows, (page + 1) * pageRows);
   };
 
+  const changeConfirmation = (id, confirmation) => {
+    axios
+      .put(`${url}changeConfirmation`, { id: id, confirmation: confirmation })
+      .then((res) => {
+        if (res.data.session) window.location.reload(false);
+        if (res.data.message) {
+          toast.success(res.data.message);
+        }
+      });
+  };
   const updateRole = (action, type, id) => {
     const windowConfirm = window.confirm(
       `Czy na pewno chcesz zmienić użytkownikowi rolę ${action}?`
@@ -272,7 +309,7 @@ export default function Admin(props) {
   const giveButton = (action, id) => {
     return (
       <IconButton
-        onDoubleClick={() => {
+        onClick={() => {
           updateRole(action, 0, id);
         }}
       >
@@ -284,11 +321,11 @@ export default function Admin(props) {
   const takeButton = (action, id) => {
     return (
       <IconButton
-        onDoubleClick={() => {
+        onClick={() => {
           updateRole(action, 1, id);
         }}
       >
-        <HighlightOffIcon style={{ color: "red" }} />
+        <HighlightOffIcon style={{ color: "#ff4d4d" }} />
       </IconButton>
     );
   };
@@ -309,18 +346,20 @@ export default function Admin(props) {
         changeLogin: changeLogin,
       })
       .then((res) => {
-        if (res.data.message) {
+        if (res.data.message2) {
           props.setStatus();
-          alert(res.data.message).then(() => {
+          alert(res.data.message2).then(() => {
             navigate("/login");
           });
         } else {
-          if (changeLogin.length > 0)
+          if (changeLogin.length > 0) {
             setStudents(
               students.map((val) => {
                 return val.id === id ? { ...val, login: changeLogin } : val;
               })
             );
+            toast.success(res.data.message1);
+          }
         }
       });
   };
@@ -386,6 +425,7 @@ export default function Admin(props) {
           flexDirection: "row",
           justifyContent: "space-between",
           marginTop: "2rem",
+          background: props.darkMode == "white" ? "white" : "#242424",
         }}
       >
         <div />
@@ -397,10 +437,34 @@ export default function Admin(props) {
                 label="Szukaj po e-mailu"
                 variant="outlined"
                 value={searchLogin}
+                inputProps={{
+                  style: {
+                    color: props.darkMode == "white" ? "black" : "white",
+                    classes: {
+                      notchedOutline:
+                        props.darkMode == "white"
+                          ? null
+                          : classes.notchedOutline,
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: props.darkMode == "white" ? "black" : "white",
+                  },
+                }}
                 InputProps={{
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon />
+                      <SearchIcon
+                        style={{
+                          color: props.darkMode == "white" ? "black" : "white",
+                        }}
+                      />
                     </InputAdornment>
                   ),
                 }}
@@ -416,11 +480,34 @@ export default function Admin(props) {
                 value={yearSearch}
                 label="Szukaj po roku utworzenia"
                 variant="outlined"
+                inputProps={{
+                  style: {
+                    color: props.darkMode == "white" ? "black" : "white",
+                    classes: {
+                      notchedOutline:
+                        props.darkMode == "white"
+                          ? null
+                          : classes.notchedOutline,
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: props.darkMode == "white" ? "black" : "white",
+                  },
+                }}
                 InputProps={{
-                  inputProps: { min: 2022, max: 3000 },
+                  classes: {
+                    notchedOutline:
+                      props.darkMode == "white" ? null : classes.notchedOutline,
+                  },
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon />
+                      <SearchIcon
+                        style={{
+                          color: props.darkMode == "white" ? "black" : "white",
+                        }}
+                      />
                     </InputAdornment>
                   ),
                 }}
@@ -430,7 +517,7 @@ export default function Admin(props) {
                 }}
               />
             )}
-            <Helper info={info} title="Pomoc admin" />
+            <Helper info={info} title="Pomoc admin" darkMode={props.darkMode} />
             <Button
               variant="contained"
               onClick={handleAddOpen}
@@ -466,6 +553,84 @@ export default function Admin(props) {
               </Button>
             ) : null}
           </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            {confirmed ? (
+              <Button
+                variant="outlined"
+                disabled
+                style={{ marginRight: "0.5rem" }}
+              >
+                Zatwierdzone
+              </Button>
+            ) : (
+              <Button
+                style={{ marginRight: "0.5rem" }}
+                color="success"
+                variant="contained"
+                onClick={() => {
+                  setConfirmed(true);
+                  setAll(false);
+                  setNotConfirmed(false);
+
+                  setPage(0);
+                }}
+              >
+                Zatwierdzone
+              </Button>
+            )}
+            {all ? (
+              <Button
+                variant="outlined"
+                disabled
+                style={{ marginRight: "0.5rem" }}
+              >
+                Wszystkie
+              </Button>
+            ) : (
+              <Button
+                style={{ marginRight: "0.5rem" }}
+                variant="contained"
+                onClick={() => {
+                  setAll(true);
+                  setConfirmed(false);
+                  setNotConfirmed(false);
+                  setPage(0);
+                }}
+              >
+                Wszystkie
+              </Button>
+            )}
+            {notConfirmed ? (
+              <Button
+                variant="outlined"
+                disabled
+                style={{ marginRight: "0.5rem" }}
+              >
+                Nie zatwierdzone
+              </Button>
+            ) : (
+              <Button
+                style={{ marginRight: "0.5rem" }}
+                color="error"
+                variant="contained"
+                onClick={() => {
+                  setNotConfirmed(true);
+                  setAll(false);
+                  setConfirmed(false);
+                  setPage(0);
+                }}
+              >
+                Nie zatwierdzone
+              </Button>
+            )}
+          </div>
           <Table className={classes.table}>
             <TableHead className={classes.tableHead}>
               <TableRow>
@@ -477,15 +642,36 @@ export default function Admin(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {loading === true && <TableRow>Ładowanie...</TableRow>}
+              {loading === true && (
+                <TableRow
+                  style={{
+                    color: props.darkMode == "white" ? "black" : "white",
+                  }}
+                >
+                  Ładowanie...
+                </TableRow>
+              )}
               {recordsAfterFiltering.length === 0 && loading === false && (
-                <TableRow className={classes.NoData}>Brak danych...</TableRow>
+                <TableRow
+                  className={classes.NoData}
+                  style={{
+                    margin: "1rem",
+                    color: props.darkMode === "white" ? "black" : "white",
+                  }}
+                >
+                  Brak danych...
+                </TableRow>
               )}
 
               {recordsAfter().map((val) => (
                 <TableRow key={val.id}>
                   <TableCell
-                    style={{ maxWidth: "100px", wordWrap: "break-word" }}
+                    style={{
+                      maxWidth: "100px",
+                      wordWrap: "break-word",
+
+                      color: props.darkMode == "white" ? "black" : "white",
+                    }}
                   >
                     {val.login}
                   </TableCell>
@@ -520,7 +706,11 @@ export default function Admin(props) {
                       : giveButton("isDziekanat", val.id)}
                   </TableCell>
                   <TableCell
-                    style={{ textAlign: "center", fontWeight: "bold" }}
+                    style={{
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      color: props.darkMode == "white" ? "black" : "white",
+                    }}
                   >
                     {val.createdAt.split("-")[0]}
                   </TableCell>
@@ -554,6 +744,10 @@ export default function Admin(props) {
             </TableBody>
 
             <TablePagination
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+                overflowX: "auto",
+              }}
               component="div"
               page={page}
               rowsPerPageOptions={pages}
@@ -573,6 +767,7 @@ export default function Admin(props) {
         userObject={userObject}
         createAcc={createAcc}
         onClick={onClick}
+        darkMode={props.darkMode}
       />
       <EditAdminDialog
         editOpen={editOpen}
@@ -580,6 +775,8 @@ export default function Admin(props) {
         editStudent={editStudent}
         changeUserInfo={changeUserInfo}
         setChangeLogin={setChangeLogin}
+        darkMode={props.darkMode}
+        changeConfirmation={changeConfirmation}
       />
 
       <ToastContainer autoClose={1000} />

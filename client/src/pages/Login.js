@@ -5,6 +5,7 @@ import { makeStyles } from "@mui/styles";
 import AlertComponent from "../components/AlertComponent";
 import { url } from "../services/Url";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +17,10 @@ function Login(props) {
       [theme.breakpoints.down("md")]: {
         marginTop: "20%",
       },
+    },
+    notchedOutline: {
+      borderWidth: "1px",
+      borderColor: "white !important",
     },
   }));
 
@@ -67,6 +72,26 @@ function Login(props) {
             setLogin(e.target.value);
           }}
           margin="normal"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
         <TextField
           required
@@ -77,17 +102,58 @@ function Login(props) {
           }}
           margin="normal"
           type="password"
+          inputProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+              classes: {
+                notchedOutline:
+                  props.darkMode == "white" ? null : classes.notchedOutline,
+              },
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
+          InputProps={{
+            classes: {
+              notchedOutline:
+                props.darkMode == "white" ? null : classes.notchedOutline,
+            },
+          }}
         />
-
-        <Button
-          variant="contained"
-          style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
-          onClick={() => {
-            loginToAccount();
+        <div
+          style={{
+            marginTop: "0.5rem",
+            display: "flex",
+            justifyContent: "space-between",
+            fontWeight: "600",
           }}
         >
-          Zaloguj się
-        </Button>
+          <Link to="/resendemail">prześlij ponownie link aktywacyjny</Link>
+          <Link to="/restartpassword">zrestartuj hasło</Link>
+        </div>
+
+        {login && password ? (
+          <Button
+            variant="contained"
+            style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+            onClick={() => {
+              loginToAccount();
+            }}
+          >
+            Zaloguj się
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+            disabled="true"
+          >
+            Zaloguj się
+          </Button>
+        )}
       </div>
       <div />
     </Grid>

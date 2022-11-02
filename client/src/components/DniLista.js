@@ -3,22 +3,18 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import DialogOpiekunZ from "./DialogOpiekunZ";
 import { useState } from "react";
+import "../App.css";
 
 function DzienniczekDni(props) {
   const OpiekunUcount = (userId) => {
-    let za = 0;
+    let Za = 0;
     let Od = 0;
-    let Oc = 0;
-    props.currentItems.map((val) => {
+    props.dzienniczek.map((val) => {
       if (val.userId === userId) {
         if (val.statusOpiekunaU === "Zaakceptowano") {
-          za++;
-        }
-        if (val.statusOpiekunaU === "Odrzucono") {
+          Za++;
+        } else {
           Od++;
-        }
-        if (val.statusOpiekunaU === "Oczekiwanie") {
-          Oc++;
         }
       }
     });
@@ -32,27 +28,22 @@ function DzienniczekDni(props) {
           marginTop: "1rem",
         }}
       >
-        <div style={{ color: "green" }}> Zaakceptowane: {za}</div>{" "}
-        <div>Oczekiwane: {Oc}</div>
-        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od} </div>
+        {" "}
+        <div style={{ color: "green" }}>Zaakceptowane: {Za}</div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od}</div>
       </div>
     );
   };
 
   const OpiekunZcount = (userId) => {
-    let za = 0;
+    let Za = 0;
     let Od = 0;
-    let Oc = 0;
-    props.currentItems.map((val) => {
+    props.dzienniczek.map((val) => {
       if (val.userId === userId) {
         if (val.statusOpiekunaZ === "Zaakceptowano") {
-          za++;
-        }
-        if (val.statusOpiekunaZ === "Odrzucono") {
+          Za++;
+        } else {
           Od++;
-        }
-        if (val.statusOpiekunaZ === "Oczekiwanie") {
-          Oc++;
         }
       }
     });
@@ -66,9 +57,9 @@ function DzienniczekDni(props) {
           marginTop: "1rem",
         }}
       >
-        <div style={{ color: "green" }}> Zaakceptowane: {za}</div>{" "}
-        <div>Oczekiwane: {Oc}</div>
-        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od} </div>
+        {" "}
+        <div style={{ color: "green" }}>Zaakceptowane: {Za}</div>
+        <div style={{ color: "#A52A2A" }}>Odrzucone: {Od}</div>
       </div>
     );
   };
@@ -141,9 +132,11 @@ function DzienniczekDni(props) {
                 </div>{" "}
                 <div style={{ margin: "0 0 1rem 0" }}>
                   Student: {val.user.login}{" "}
-                  {props.statusOpiekuna === "statusOpiekunaU"
-                    ? OpiekunUcount(val.user.id)
-                    : OpiekunZcount(val.user.id)}
+                  {props.status
+                    ? props.statusOpiekuna === "statusOpiekunaU"
+                      ? OpiekunUcount(val.user.id)
+                      : OpiekunZcount(val.user.id)
+                    : null}
                 </div>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}

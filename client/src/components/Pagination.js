@@ -7,16 +7,17 @@ export default function Pagination(props) {
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const itemsPerPage = 4;
+  const [itemOffset, setItemOffset] = useState(0);
   const { data } = props;
   useEffect(() => {
-    const endOffset = props.itemOffset + itemsPerPage;
-    setCurrentItems(data.slice(props.itemOffset, endOffset));
+    const endOffset = itemOffset + itemsPerPage;
+    setCurrentItems(data.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(data.length / itemsPerPage));
-  }, [props.itemOffset, itemsPerPage, data]);
+  }, [itemOffset, itemsPerPage, data]);
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % data.length;
-    props.setItemOffset(newOffset);
+    setItemOffset(newOffset);
   };
 
   return (
@@ -28,6 +29,7 @@ export default function Pagination(props) {
         handleOpen={props.handleOpen}
         status={props.status}
         statusOpiekuna={props.statusOpiekuna}
+        dzienniczek={props.dzienniczek}
       />
       <ReactPaginate
         breakLabel="..."

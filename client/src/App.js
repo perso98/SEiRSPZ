@@ -6,7 +6,7 @@ import Home from "./components/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 
-import { Grid } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import UnLoggedRoute from "./protectedRoutes/UnLoggedRoute";
 
@@ -27,6 +27,10 @@ import Konto from "./pages/Konto";
 import ZarzadzanieZakladami from "./pages/ZarzadzanieZakladami";
 import Axios from "axios";
 import { url } from ".//services/Url";
+import ResendEmail from "./pages/ResendEmail";
+import ResetPassword from "./pages/ResetPassword";
+import EmailPasswordReset from "./pages/EmailPasswordReset";
+import ConfirmEmail from "./pages/ConfirmEmail";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -51,10 +55,24 @@ function App() {
     });
   }, [status]);
   const classes = useStyles();
+  const [darkMode, setDarkmode] = useState(localStorage.getItem("theme"));
+  useEffect(() => {
+    localStorage.setItem("theme", darkMode);
+  }, [darkMode]);
   return (
-    <div className="App">
+    <Paper
+      style={{
+        minHeight: "100vh",
+        backgroundColor: darkMode,
+      }}
+    >
       <BrowserRouter>
-        <Nav auth={auth} setStatus={setStatus} />
+        <Nav
+          auth={auth}
+          setStatus={setStatus}
+          setDarkmode={setDarkmode}
+          darkMode={darkMode}
+        />
         <Grid container>
           <Grid item xs className={classes.content}>
             <Routes>
@@ -73,7 +91,32 @@ function App() {
                     path="login"
                     element={
                       <div className={classes.margingora}>
-                        <Login setStatus={setStatus} />
+                        <Login setStatus={setStatus} darkMode={darkMode} />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="confirm/:token"
+                    element={<ConfirmEmail darkMode={darkMode} />}
+                  />
+                  <Route
+                    path="resendemail"
+                    element={
+                      <div className={classes.margingora}>
+                        <ResendEmail darkMode={darkMode} />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="restartpassword/:token"
+                    element={<ResetPassword darkMode={darkMode} />}
+                  />
+
+                  <Route
+                    path="restartpassword"
+                    element={
+                      <div className={classes.margingora}>
+                        <EmailPasswordReset darkMode={darkMode} />
                       </div>
                     }
                   />
@@ -81,7 +124,7 @@ function App() {
                     path="register"
                     element={
                       <div className={classes.margingora}>
-                        <Register />
+                        <Register darkMode={darkMode} />
                       </div>
                     }
                   />
@@ -97,7 +140,9 @@ function App() {
                 >
                   <Route
                     path="admin"
-                    element={<Admin setStatus={setStatus} />}
+                    element={
+                      <Admin setStatus={setStatus} darkMode={darkMode} />
+                    }
                   />
                 </Route>
                 <Route
@@ -110,24 +155,37 @@ function App() {
                 >
                   <Route
                     path="opiekunz"
-                    element={<OpiekunZ setStatus={setStatus} />}
+                    element={
+                      <OpiekunZ setStatus={setStatus} darkMode={darkMode} />
+                    }
                   />
                   <Route
                     path="opiekunz/historia"
-                    element={<OpiekunZHistory setStatus={setStatus} />}
+                    element={
+                      <OpiekunZHistory
+                        setStatus={setStatus}
+                        darkMode={darkMode}
+                      />
+                    }
                   />
                 </Route>
                 <Route path="efektyuczeniasie" element={<EfektyUczeniaSie />} />
                 <Route path="dzienniczek" element={<Dzienniczek />} />
-                <Route
-                    path="efekty"
-                    element={<EfektyUzasadnienie />}
-                  />
+                <Route path="efekty" element={<EfektyUzasadnienie />} />
                 <Route
                   path="zarzadzaniezakladami"
                   element={<ZarzadzanieZakladami />}
                 />
-                <Route path="konto" element={<Konto />} />
+                <Route
+                  element={
+                    <RoleRoute
+                      role={auth?.user?.isStudent}
+                      logged={auth?.logged}
+                    />
+                  }
+                >
+                  <Route path="konto" element={<Konto darkMode={darkMode} />} />
+                </Route>
                 //Routy do opiekuna uczelnianego
                 <Route
                   element={
@@ -138,16 +196,28 @@ function App() {
                   }
                 >
                   <Route
-                    path="opiekunu/efekty"
-                    element={<EfektyOpiekunU setStatus={setStatus} />}
+                    path="opiekunuefekty"
+                    element={
+                      <EfektyOpiekunU
+                        setStatus={setStatus}
+                        darkMode={darkMode}
+                      />
+                    }
                   />
                   <Route
                     path="opiekunu/historia"
-                    element={<OpiekunUHistory setStatus={setStatus} />}
+                    element={
+                      <OpiekunUHistory
+                        setStatus={setStatus}
+                        darkMode={darkMode}
+                      />
+                    }
                   />
                   <Route
                     path="opiekunu"
-                    element={<OpiekunU setStatus={setStatus} />}
+                    element={
+                      <OpiekunU setStatus={setStatus} darkMode={darkMode} />
+                    }
                   />
                 </Route>
                 <Route
@@ -163,14 +233,13 @@ function App() {
                     element={<Dyrektor setStatus={setStatus} />}
                   />
                 </Route>
-
                 <Route path="*" element={<NoPage />} />
               </Route>
             </Routes>
           </Grid>
         </Grid>
       </BrowserRouter>
-    </div>
+    </Paper>
   );
 }
 

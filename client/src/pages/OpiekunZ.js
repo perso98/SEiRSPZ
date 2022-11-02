@@ -22,7 +22,7 @@ function OpiekunZ(props) {
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
-  const [itemOffset, setItemOffset] = useState(0);
+  const [remountComponent, setRemountComponent] = useState(0);
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
@@ -147,9 +147,34 @@ function OpiekunZ(props) {
     </div>
   );
   return (
-    <>
-      <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        {loading && <h5>Ładowanie...</h5>}
+    <div
+      style={{ background: props.darkMode == "white" ? "white" : "#242424" }}
+    >
+      <Container
+        style={{
+          paddingTop: "3rem",
+          paddingBottom: "3rem",
+          background: props.darkMode == "white" ? "white" : "#242424",
+        }}
+      >
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h5
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Ładowanie...
+            </h5>
+            <div />
+          </div>
+        )}
         <div
           style={{
             justifyContent: "space-between",
@@ -159,11 +184,16 @@ function OpiekunZ(props) {
         >
           {!loading && (
             <SearchBar
+              darkMode={props.darkMode}
               setSearchLogin={setSearchLogin}
-              setItemOffset={setItemOffset}
+              setRemountComponent={setRemountComponent}
             />
           )}
-          <Helper info={info} title="Pomoc opiekun zakładowy" />
+          <Helper
+            info={info}
+            title="Pomoc opiekun zakładowy"
+            darkMode={props.darkMode}
+          />
 
           <ButtonLink linkTo="/opiekunz/historia" text="Historia" />
         </div>
@@ -175,19 +205,29 @@ function OpiekunZ(props) {
             }}
           >
             <div />
-            <h6>Nie odnaleziono wyniku, którego szukasz... </h6>
+            <h6
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Nie odnaleziono wyniku, którego szukasz...{" "}
+            </h6>
             <div />
           </div>
         )}
-        <Pagination
-          data={recordsAfterFiltering}
-          changeStatus={changeStatus}
-          handleOpen={handleOpen}
-          open={open}
-          itemOffset={itemOffset}
-          setItemOffset={setItemOffset}
-          statusOpiekuna={statusOpiekuna}
-        />
+        {recordsAfterFiltering.length > 0 ? (
+          <div key={remountComponent}>
+            <Pagination
+              data={recordsAfterFiltering}
+              changeStatus={changeStatus}
+              handleOpen={handleOpen}
+              open={open}
+              statusOpiekuna={statusOpiekuna}
+              dzienniczek={dzienniczek}
+              darkMode={props.darkMode}
+            />
+          </div>
+        ) : null}
       </Container>
       <DialogOpiekunZ
         downloadFile={downloadFile}
@@ -198,9 +238,10 @@ function OpiekunZ(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
         statusOpiekuna={statusOpiekuna}
+        darkMode={props.darkMode}
       />
       <ToastContainer autoClose={1000} />
-    </>
+    </div>
   );
 }
 

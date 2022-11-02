@@ -1,6 +1,6 @@
 import React from "react";
 import {
- // InputAdornment,
+  // InputAdornment,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -9,12 +9,18 @@ import {
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { TextField } from "@material-ui/core";
+import { TextField, makeStyles } from "@material-ui/core";
 import Button from "@mui/material/Button";
 
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
+const useStyles = makeStyles((theme) => ({
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
+}));
 function AddAdminDialog({
   addOpen,
   handleAddClose,
@@ -22,6 +28,7 @@ function AddAdminDialog({
   onChange,
   userObject,
   onClick,
+  darkMode,
 }) {
   const {
     login,
@@ -33,33 +40,90 @@ function AddAdminDialog({
     dziekanat,
     dyrektor,
   } = userObject;
+  const classes = useStyles();
   return (
-    <Dialog open={addOpen} onClose={handleAddClose} fullWidth="60%">
+    <Dialog
+      open={addOpen}
+      onClose={handleAddClose}
+      fullWidth="60%"
+      PaperProps={{
+        style: {
+          backgroundColor: darkMode == "white" ? "white" : "#242424",
+          color: darkMode == "white" ? "black" : "white",
+        },
+      }}
+    >
       <DialogTitle style={{ display: "flex", justifyContent: "space-between" }}>
         Dodawanie nowego użytkownika
         <IconButton aria-label="close" onClick={handleAddClose}>
-          <CloseIcon />
+          <CloseIcon
+            style={{ color: darkMode == "white" ? "black" : "white" }}
+          />
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <DialogContentText style={{ marginTop: "2%" }}>
-          <div style={{ display: "flex", flexDirection: "column" }}>
+        <DialogContentText
+          style={{
+            marginTop: "2%",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <TextField
               id="login"
               value={login}
+              variant="outlined"
               label="Login:"
               onChange={(e) => onChange(e)}
               style={{ marginBottom: "5%" }}
+              inputProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
             />
 
             <TextField
               id="password"
               value={password}
+              variant="outlined"
               label="Hasło:"
               onChange={(e) => onChange(e)}
+              inputProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
             />
             <div
               style={{
+                color: darkMode == "white" ? "black" : "white",
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-around",
@@ -73,7 +137,7 @@ function AddAdminDialog({
                   textAlign: "center",
                 }}
               >
-                <div style={{ color: "black" }}>Opiekun Z.</div>
+                <div>Opiekun Z.</div>
                 <div>
                   {opiekunZ === 1 ? (
                     <IconButton
@@ -103,7 +167,7 @@ function AddAdminDialog({
                   textAlign: "center",
                 }}
               >
-                <div style={{ color: "black" }}>Student</div>
+                <div>Student</div>
                 <div>
                   {student === 1 ? (
                     <IconButton
@@ -136,7 +200,7 @@ function AddAdminDialog({
                   textAlign: "center",
                 }}
               >
-                <div style={{ color: "red" }}>!!Admin!!!</div>
+                <div>!!Admin!!!</div>
                 <div>
                   {admin === 1 ? (
                     <IconButton
@@ -168,6 +232,7 @@ function AddAdminDialog({
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-around",
+                color: darkMode == "white" ? "black" : "white",
               }}
             >
               <div
@@ -178,7 +243,7 @@ function AddAdminDialog({
                   textAlign: "center",
                 }}
               >
-                <div style={{ color: "black" }}>Opiekun U.</div>
+                <div>Opiekun U.</div>
                 <div>
                   {opiekunU === 1 ? (
                     <IconButton
@@ -212,7 +277,7 @@ function AddAdminDialog({
                   textAlign: "center",
                 }}
               >
-                <div style={{ color: "black" }}>Dyrektor</div>
+                <div>Dyrektor</div>
                 <div>
                   {dyrektor === 1 ? (
                     <IconButton
@@ -245,7 +310,7 @@ function AddAdminDialog({
                   textAlign: "center",
                 }}
               >
-                <div style={{ color: "black" }}>Dziekanat</div>
+                <div>Dziekanat</div>
                 <div>
                   {dziekanat === 1 ? (
                     <IconButton

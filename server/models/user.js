@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TINYINT(1),
         defaultValue: 0,
       },
+      confirmation: {
+        type: DataTypes.TINYINT(1),
+        defaultValue: 0,
+      },
       id_opiekunU: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -53,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       charset: "utf8",
       collate: "utf8_general_ci",
     }
-  )
+  );
 
   user.associate = (models) => {
     user.belongsTo(models.dane, {
@@ -74,15 +78,14 @@ module.exports = (sequelize, DataTypes) => {
     });
     user.hasMany(models.komentarze, {
       onDelete: "cascade",
-    })
+    });
     user.hasMany(models.efektyStudent, {
       onDelete: "cascade",
     });
     user.hasMany(models.zastepstwa, {
       onDelete: "cascade",
     });
-  }
-
+  };
 
   return user;
 };

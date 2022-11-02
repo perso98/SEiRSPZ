@@ -15,21 +15,22 @@ import FileDownload from "js-file-download";
 import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
+
 function OpiekunUHistory(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
-  const [itemOffset, setItemOffset] = useState(0);
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const [accepted, setAccepted] = useState(false);
   const [declined, setDeclined] = useState(false);
   const [all, setAll] = useState(true);
+  const [remountComponent, setRemountComponent] = useState(0);
+
   const statusOpiekuna = "statusOpiekunaU";
   const navigate = useNavigate();
-
   const status = true;
   const handleClose = () => {
     setKomentarz();
@@ -227,9 +228,33 @@ function OpiekunUHistory(props) {
     </div>
   );
   return (
-    <>
-      <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        {loading && <h5>Ładowanie...</h5>}
+    <div
+      style={{ background: props.darkMode == "white" ? "white" : "#242424" }}
+    >
+      <Container
+        style={{
+          paddingTop: "3rem",
+          paddingBottom: "3rem",
+        }}
+      >
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div />
+            <h5
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Ładowanie...
+            </h5>
+            <div />
+          </div>
+        )}
         <div
           style={{
             justifyContent: "space-between",
@@ -240,67 +265,91 @@ function OpiekunUHistory(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
-              setItemOffset={setItemOffset}
+              setRemountComponent={setRemountComponent}
+              darkMode={props.darkMode}
             />
           )}
-          <Helper info={info} title="Pomoc opiekun uczelniany historia" />
+          <Helper
+            info={info}
+            title="Pomoc opiekun uczelniany historia"
+            darkMode={props.darkMode}
+          />
           <ButtonLink linkTo="/opiekunu" text="Nowe" />
         </div>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            margin: "1rem",
+            marginTop: "1rem",
+            marginBottom: "1rem",
           }}
         >
           {accepted ? (
-            <Button variant="outlined" disabled>
-              Zaakceptowane
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
+              Zatwierdzone
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               color="success"
               variant="contained"
               onClick={() => {
                 setAccepted(true);
                 setAll(false);
                 setDeclined(false);
-                setItemOffset(0);
+
+                setRemountComponent(Math.random());
               }}
             >
-              Zaakceptowane
+              Zatwierdzone
             </Button>
           )}
           {all ? (
-            <Button variant="outlined" disabled>
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
               Wszystkie
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               variant="contained"
               onClick={() => {
                 setAll(true);
                 setAccepted(false);
                 setDeclined(false);
-                setItemOffset(0);
+
+                setRemountComponent(Math.random());
               }}
             >
               Wszystkie
             </Button>
           )}
           {declined ? (
-            <Button variant="outlined" disabled>
+            <Button
+              variant="outlined"
+              disabled
+              style={{ marginRight: "0.5rem" }}
+            >
               Odrzucone
             </Button>
           ) : (
             <Button
+              style={{ marginRight: "0.5rem" }}
               color="error"
               variant="contained"
               onClick={() => {
                 setDeclined(true);
                 setAll(false);
                 setAccepted(false);
-                setItemOffset(0);
+
+                setRemountComponent(Math.random());
               }}
             >
               Odrzucone
@@ -315,20 +364,30 @@ function OpiekunUHistory(props) {
             }}
           >
             <div />
-            <h6>Nie odnaleziono wyniku, którego szukasz... </h6>
+            <h6
+              style={{
+                color: props.darkMode == "white" ? "black" : "white",
+              }}
+            >
+              Nie odnaleziono wyniku, którego szukasz...{" "}
+            </h6>
             <div />
           </div>
         )}
-        <Pagination
-          data={recordsAfterFiltering}
-          changeStatus={changeStatus}
-          handleOpen={handleOpen}
-          open={open}
-          itemOffset={itemOffset}
-          setItemOffset={setItemOffset}
-          status={status}
-          statusOpiekuna={statusOpiekuna}
-        />
+        {recordsAfterFiltering.length > 0 ? (
+          <div key={remountComponent}>
+            <Pagination
+              data={recordsAfterFiltering}
+              changeStatus={changeStatus}
+              handleOpen={handleOpen}
+              open={open}
+              status={status}
+              statusOpiekuna={statusOpiekuna}
+              dzienniczek={dzienniczek}
+              darkMode={props.darkMode}
+            />
+          </div>
+        ) : null}
       </Container>
       <DialogOpiekunZ
         downloadFile={downloadFile}
@@ -340,9 +399,10 @@ function OpiekunUHistory(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
         statusOpiekuna={statusOpiekuna}
+        darkMode={props.darkMode}
       />
       <ToastContainer autoClose={1000} />
-    </>
+    </div>
   );
 }
 

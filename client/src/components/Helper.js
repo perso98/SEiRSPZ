@@ -22,22 +22,42 @@ function Helper(props) {
   return (
     <>
       <div style={{ padding: "1rem" }}>
-        <IconButton style={{ color: "#08448c" }} onClick={handleClickOpen}>
-          <QuestionMarkIcon style={{ fontSize: "2rem" }} />{props.napis}
+        <IconButton
+          style={{ color: props.darkMode == "white" ? "#08448c" : "white" }}
+          onClick={handleClickOpen}
+        >
+          <QuestionMarkIcon style={{ fontSize: "2rem" }} />
+          {props.napis}
         </IconButton>
       </div>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          style: {
+            backgroundColor: props.darkMode == "white" ? "white" : "#242424",
+            color: props.darkMode == "white" ? "black" : "white",
+          },
+        }}
+      >
         <DialogTitle
           style={{ display: "flex", justifyContent: "space-between" }}
         >
           {props.title}
           <IconButton aria-label="close" onClick={handleClose}>
-            <CloseIcon />
+            <CloseIcon
+              style={{ color: props.darkMode == "white" ? "black" : "white" }}
+            />
           </IconButton>
         </DialogTitle>
 
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText
+            id="alert-dialog-description"
+            style={{
+              color: props.darkMode == "white" ? "black" : "white",
+            }}
+          >
             {props.info}
           </DialogContentText>
         </DialogContent>

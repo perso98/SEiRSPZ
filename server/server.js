@@ -131,6 +131,13 @@ app.delete(
 //User
 //pobranie danych o sesji uzytkownika jesli jest zalogowany
 app.get("/api/loginToAccount", user_controller.getloginToAccount);
+app.post("/api/resendMail", user_controller.resendMail);
+app.post("/api/resetPassword", user_controller.resetPassword);
+app.get("/api/confirmMail/:token", user_controller.confirmMail);
+app.post(
+  "/api/resetPasswordForUser/:token",
+  user_controller.resetPasswordForUser
+);
 //zmiana hasla do konta wlasciciela
 app.post(
   "/api/changePasswordToAccount",
@@ -156,6 +163,8 @@ app.delete("/api/deleteUser/:id", admin_controller.deleteUser);
 app.delete("/api/deleteYear/:year", admin_controller.deleteYear);
 //Zmiana informacji o użytkowniku w panelu admina(editButton)
 app.put("/api/changeUserInfo", admin_controller.changeUserInfo);
+
+app.put("/api/changeConfirmation", admin_controller.changeConfirmation);
 //Zmiana ról w panelu administratora
 app.put("/api/changeRole", admin_controller.changeRole);
 //Utworzenie konta w admin panelu
