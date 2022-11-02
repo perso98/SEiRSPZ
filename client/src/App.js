@@ -74,33 +74,15 @@ function App() {
             <Grid item xs className={classes.content}>
               <Routes>
                 <Route path="/">
-                  <Route
-                    index
-                    element={
-                      <div className={classes.marginHome}>
-                        <Home />
-                      </div>
-                    }
-                  />
+                  <Route index element={<Home />} />
                   <Route path="noauth" element={<NoAuth />} />
                   <Route element={<UnLoggedRoute auth={auth} />}>
                     <Route
                       path="login"
-                      element={
-                        <div className={classes.margingora}>
-                          <Login setStatus={setStatus} />
-                        </div>
-                      }
+                      element={<Login setStatus={setStatus} />}
                     />
                     <Route path="confirm/:token" element={<ConfirmEmail />} />
-                    <Route
-                      path="resendemail"
-                      element={
-                        <div className={classes.margingora}>
-                          <ResendEmail />
-                        </div>
-                      }
-                    />
+                    <Route path="resendemail" element={<ResendEmail />} />
                     <Route
                       path="restartpassword/:token"
                       element={<ResetPassword />}
@@ -108,11 +90,7 @@ function App() {
 
                     <Route
                       path="restartpassword"
-                      element={
-                        <div className={classes.margingora}>
-                          <EmailPasswordReset />
-                        </div>
-                      }
+                      element={<EmailPasswordReset />}
                     />
                     <Route
                       path="register"
@@ -123,7 +101,6 @@ function App() {
                       }
                     />
                   </Route>
-                  //admin route
                   <Route
                     element={
                       <RoleRoute
