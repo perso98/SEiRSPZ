@@ -7,7 +7,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 
 import { Grid, Paper } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+
 import UnLoggedRoute from "./protectedRoutes/UnLoggedRoute";
 
 import NoPage from "./pages/NoPage";
@@ -32,20 +32,6 @@ import ResetPassword from "./pages/ResetPassword";
 import EmailPasswordReset from "./pages/EmailPasswordReset";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import { ThemeContext } from "./context/ThemeContext";
-
-const useStyles = makeStyles((theme) => ({
-  content: {
-    paddingTop: theme.spacing(0),
-    height: "90vh",
-  },
-  margingora: {
-    paddingTop: theme.spacing(2),
-  },
-
-  marginHome: {
-    paddingTop: theme.spacing(10),
-  },
-}));
 
 function App() {
   const [auth, setAuth] = useState();
@@ -92,14 +78,7 @@ function App() {
                       path="restartpassword"
                       element={<EmailPasswordReset />}
                     />
-                    <Route
-                      path="register"
-                      element={
-                        <div className={classes.margingora}>
-                          <Register />
-                        </div>
-                      }
-                    />
+                    <Route path="register" element={<Register />} />
                   </Route>
                   <Route
                     element={
