@@ -41,7 +41,7 @@ function App() {
       setAuth(res.data);
     });
   }, [status]);
-  const classes = useStyles();
+
   const [darkMode, setDarkMode] = useState(localStorage.getItem("theme"));
   useEffect(() => {
     localStorage.setItem("theme", darkMode);
