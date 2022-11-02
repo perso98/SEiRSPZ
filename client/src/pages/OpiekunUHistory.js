@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import Container from "@material-ui/core/Container";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import DialogOpiekunZ from "../components/DialogOpiekunZ";
 import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
@@ -15,7 +15,7 @@ import FileDownload from "js-file-download";
 import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
-
+import { ThemeContext } from "../context/ThemeContext";
 function OpiekunUHistory(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +28,7 @@ function OpiekunUHistory(props) {
   const [declined, setDeclined] = useState(false);
   const [all, setAll] = useState(true);
   const [remountComponent, setRemountComponent] = useState(0);
-
+  const [darkMode] = useContext(ThemeContext);
   const statusOpiekuna = "statusOpiekunaU";
   const navigate = useNavigate();
   const status = true;
@@ -171,7 +171,7 @@ function OpiekunUHistory(props) {
   };
 
   const recordsAfterFiltering = dzienniczek.filter((val) => {
-    if (accepted == true && all == false && declined == false) {
+    if (accepted) {
       if (val?.statusOpiekunaU === "Zaakceptowano" && searchLogin == "") {
         return val;
       } else if (
@@ -182,7 +182,7 @@ function OpiekunUHistory(props) {
         return val;
       }
     }
-    if (all == true && accepted == false && declined == false) {
+    if (all) {
       if (searchLogin == "") {
         return val;
       } else if (
@@ -192,7 +192,7 @@ function OpiekunUHistory(props) {
         return val;
       }
     }
-    if (declined == true && all == false && accepted == false) {
+    if (declined) {
       if (val?.statusOpiekunaU === "Odrzucono" && searchLogin == "") {
         return val;
       } else if (
@@ -228,9 +228,7 @@ function OpiekunUHistory(props) {
     </div>
   );
   return (
-    <div
-      style={{ background: props.darkMode == "white" ? "white" : "#242424" }}
-    >
+    <div style={{ background: darkMode == "white" ? "white" : "#242424" }}>
       <Container
         style={{
           paddingTop: "3rem",
@@ -247,7 +245,7 @@ function OpiekunUHistory(props) {
             <div />
             <h5
               style={{
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
               }}
             >
               Ładowanie...
@@ -266,13 +264,13 @@ function OpiekunUHistory(props) {
             <SearchBar
               setSearchLogin={setSearchLogin}
               setRemountComponent={setRemountComponent}
-              darkMode={props.darkMode}
+              darkMode={darkMode}
             />
           )}
           <Helper
             info={info}
             title="Pomoc opiekun uczelniany historia"
-            darkMode={props.darkMode}
+            darkMode={darkMode}
           />
           <ButtonLink linkTo="/opiekunu" text="Nowe" />
         </div>
@@ -366,7 +364,7 @@ function OpiekunUHistory(props) {
             <div />
             <h6
               style={{
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
               }}
             >
               Nie odnaleziono wyniku, którego szukasz...{" "}
@@ -384,7 +382,7 @@ function OpiekunUHistory(props) {
               status={status}
               statusOpiekuna={statusOpiekuna}
               dzienniczek={dzienniczek}
-              darkMode={props.darkMode}
+              darkMode={darkMode}
             />
           </div>
         ) : null}
@@ -399,7 +397,7 @@ function OpiekunUHistory(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
         statusOpiekuna={statusOpiekuna}
-        darkMode={props.darkMode}
+        darkMode={darkMode}
       />
       <ToastContainer autoClose={1000} />
     </div>

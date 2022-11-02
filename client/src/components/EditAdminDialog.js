@@ -37,7 +37,7 @@ function EditAdminDialog({
 
   useEffect(() => {
     setConfirm(editStudent?.confirmation);
-  }, [editStudent?.confirmation]);
+  }, [editStudent]);
   return (
     <>
       {editStudent && (

@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 
 import Button from "@mui/material/Button";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { InputAdornment } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -30,7 +30,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Helper from "../components/Helper";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
-
+import { ThemeContext } from "../context/ThemeContext";
 const useStyles = makeStyles((theme) => ({
   table: {
     marginTop: theme.spacing(2),
@@ -99,7 +99,7 @@ export default function Admin(props) {
   const [page, setPage] = useState(0);
   const [pageRows, setpageRows] = useState(pages[page]);
   const [searchLogin, setSearchLogin] = useState("");
-
+  const [darkMode] = useContext(ThemeContext);
   const HeadCells = [
     { id: "login", label: "E-mail" },
     { id: "isStudent", label: "Student" },
@@ -204,7 +204,7 @@ export default function Admin(props) {
     setPage(0);
   };
   const recordsAfterFiltering = students.filter((val) => {
-    if (all == true && confirmed == false && notConfirmed == false) {
+    if (all) {
       if (searchLogin === "" && yearSearch === "") {
         return val;
       } else if (searchLogin !== "") {
@@ -213,7 +213,7 @@ export default function Admin(props) {
         return val.createdAt.split("-")[0] === yearSearch;
       }
     }
-    if (all == false && confirmed == true && notConfirmed == false) {
+    if (confirmed) {
       if (searchLogin === "" && yearSearch === "" && val.confirmation == 1) {
         return val;
       } else if (searchLogin !== "" && val.confirmation == 1) {
@@ -222,7 +222,7 @@ export default function Admin(props) {
         return val.createdAt.split("-")[0] === yearSearch;
       }
     }
-    if (all == false && confirmed == false && notConfirmed == true) {
+    if (notConfirmed) {
       if (searchLogin === "" && yearSearch === "" && val.confirmation == 0) {
         return val;
       } else if (searchLogin !== "" && val.confirmation == 0) {
@@ -243,6 +243,13 @@ export default function Admin(props) {
       .then((res) => {
         if (res.data.session) window.location.reload(false);
         if (res.data.message) {
+          setStudents(
+            students.map((val) => {
+              return val.id === id
+                ? { ...val, confirmation: confirmation }
+                : val;
+            })
+          );
           toast.success(res.data.message);
         }
       });
@@ -425,7 +432,7 @@ export default function Admin(props) {
           flexDirection: "row",
           justifyContent: "space-between",
           marginTop: "2rem",
-          background: props.darkMode == "white" ? "white" : "#242424",
+          background: darkMode == "white" ? "white" : "#242424",
         }}
       >
         <div />
@@ -439,30 +446,28 @@ export default function Admin(props) {
                 value={searchLogin}
                 inputProps={{
                   style: {
-                    color: props.darkMode == "white" ? "black" : "white",
+                    color: darkMode == "white" ? "black" : "white",
                     classes: {
                       notchedOutline:
-                        props.darkMode == "white"
-                          ? null
-                          : classes.notchedOutline,
+                        darkMode == "white" ? null : classes.notchedOutline,
                     },
                   },
                 }}
                 InputLabelProps={{
                   style: {
-                    color: props.darkMode == "white" ? "black" : "white",
+                    color: darkMode == "white" ? "black" : "white",
                   },
                 }}
                 InputProps={{
                   classes: {
                     notchedOutline:
-                      props.darkMode == "white" ? null : classes.notchedOutline,
+                      darkMode == "white" ? null : classes.notchedOutline,
                   },
                   startAdornment: (
                     <InputAdornment position="start">
                       <SearchIcon
                         style={{
-                          color: props.darkMode == "white" ? "black" : "white",
+                          color: darkMode == "white" ? "black" : "white",
                         }}
                       />
                     </InputAdornment>
@@ -482,30 +487,28 @@ export default function Admin(props) {
                 variant="outlined"
                 inputProps={{
                   style: {
-                    color: props.darkMode == "white" ? "black" : "white",
+                    color: darkMode == "white" ? "black" : "white",
                     classes: {
                       notchedOutline:
-                        props.darkMode == "white"
-                          ? null
-                          : classes.notchedOutline,
+                        darkMode == "white" ? null : classes.notchedOutline,
                     },
                   },
                 }}
                 InputLabelProps={{
                   style: {
-                    color: props.darkMode == "white" ? "black" : "white",
+                    color: darkMode == "white" ? "black" : "white",
                   },
                 }}
                 InputProps={{
                   classes: {
                     notchedOutline:
-                      props.darkMode == "white" ? null : classes.notchedOutline,
+                      darkMode == "white" ? null : classes.notchedOutline,
                   },
                   startAdornment: (
                     <InputAdornment position="start">
                       <SearchIcon
                         style={{
-                          color: props.darkMode == "white" ? "black" : "white",
+                          color: darkMode == "white" ? "black" : "white",
                         }}
                       />
                     </InputAdornment>
@@ -517,7 +520,7 @@ export default function Admin(props) {
                 }}
               />
             )}
-            <Helper info={info} title="Pomoc admin" darkMode={props.darkMode} />
+            <Helper info={info} title="Pomoc admin" darkMode={darkMode} />
             <Button
               variant="contained"
               onClick={handleAddOpen}
@@ -645,7 +648,7 @@ export default function Admin(props) {
               {loading === true && (
                 <TableRow
                   style={{
-                    color: props.darkMode == "white" ? "black" : "white",
+                    color: darkMode == "white" ? "black" : "white",
                   }}
                 >
                   Ładowanie...
@@ -656,7 +659,7 @@ export default function Admin(props) {
                   className={classes.NoData}
                   style={{
                     margin: "1rem",
-                    color: props.darkMode === "white" ? "black" : "white",
+                    color: darkMode === "white" ? "black" : "white",
                   }}
                 >
                   Brak danych...
@@ -670,7 +673,7 @@ export default function Admin(props) {
                       maxWidth: "100px",
                       wordWrap: "break-word",
 
-                      color: props.darkMode == "white" ? "black" : "white",
+                      color: darkMode == "white" ? "black" : "white",
                     }}
                   >
                     {val.login}
@@ -709,7 +712,7 @@ export default function Admin(props) {
                     style={{
                       textAlign: "center",
                       fontWeight: "bold",
-                      color: props.darkMode == "white" ? "black" : "white",
+                      color: darkMode == "white" ? "black" : "white",
                     }}
                   >
                     {val.createdAt.split("-")[0]}
@@ -745,7 +748,7 @@ export default function Admin(props) {
 
             <TablePagination
               style={{
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
                 overflowX: "auto",
               }}
               component="div"
@@ -767,7 +770,7 @@ export default function Admin(props) {
         userObject={userObject}
         createAcc={createAcc}
         onClick={onClick}
-        darkMode={props.darkMode}
+        darkMode={darkMode}
       />
       <EditAdminDialog
         editOpen={editOpen}
@@ -775,7 +778,7 @@ export default function Admin(props) {
         editStudent={editStudent}
         changeUserInfo={changeUserInfo}
         setChangeLogin={setChangeLogin}
-        darkMode={props.darkMode}
+        darkMode={darkMode}
         changeConfirmation={changeConfirmation}
       />
 

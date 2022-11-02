@@ -1,5 +1,5 @@
 import { Button, Grid, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "../img/ans.png";
 import { makeStyles } from "@mui/styles";
 import { useParams } from "react-router-dom";
@@ -9,8 +9,8 @@ import Axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Collapse, Alert, IconButton } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-
-function ResetPassword(props) {
+import { ThemeContext } from "../context/ThemeContext";
+function ResetPassword() {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
       marginTop: "10%",
@@ -31,6 +31,7 @@ function ResetPassword(props) {
   const [loginStatus, setLoginStatus] = useState("");
   const [type, setType] = useState();
   const [loading, setLoading] = useState(false);
+  const [darkMode] = useContext(ThemeContext);
   const token = params.token;
   const restartPassword = async () => {
     setLoading(true);
@@ -62,7 +63,13 @@ function ResetPassword(props) {
         style={{ display: "flex", flexDirection: "column", minWidth: "250px" }}
       >
         <img src={logo} alt="Logo" style={{ marginBottom: "5%" }} />
-        <div style={{ textAlign: "center", margin: "1rem" }}>
+        <div
+          style={{
+            textAlign: "center",
+            margin: "1rem",
+            color: darkMode == "white" ? "black" : "white",
+          }}
+        >
           Resetowanie hasła
         </div>
         <Box sx={{ width: "100%" }}>
@@ -124,22 +131,22 @@ function ResetPassword(props) {
           type="password"
           inputProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             },
           }}
           InputLabelProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
             },
           }}
           InputProps={{
             classes: {
               notchedOutline:
-                props.darkMode == "white" ? null : classes.notchedOutline,
+                darkMode == "white" ? null : classes.notchedOutline,
             },
           }}
         />
@@ -154,22 +161,22 @@ function ResetPassword(props) {
           type="password"
           inputProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             },
           }}
           InputLabelProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
             },
           }}
           InputProps={{
             classes: {
               notchedOutline:
-                props.darkMode == "white" ? null : classes.notchedOutline,
+                darkMode == "white" ? null : classes.notchedOutline,
             },
           }}
         />

@@ -1,15 +1,9 @@
-import { React } from "react";
+import { React, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import {
-  AppBar,
-  IconButton,
-  popoverClasses,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import Person from "@mui/icons-material/Person";
 import Person2 from "@mui/icons-material/PersonAddAlt1";
 import ProfilImg from "@mui/icons-material/AccountCircleOutlined";
@@ -18,6 +12,7 @@ import Sidebar from "../components/Sidebar";
 import { url } from "../services/Url";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { ThemeContext } from "../context/ThemeContext";
 
 function Nav(props) {
   const useStyles = makeStyles((theme) => ({
@@ -112,6 +107,7 @@ function Nav(props) {
 
   const navigate = useNavigate();
   const classes = useStyles();
+  const [darkMode, setDarkMode] = useContext(ThemeContext);
   Axios.defaults.withCredentials = true;
   const logout = async () => {
     await Axios.post(`${url}logoutFromAccount`).then((res) => {
@@ -140,18 +136,18 @@ function Nav(props) {
             </NavLink>
           </Typography>
           <div>
-            {props.darkMode == null ? (
+            {darkMode == null ? (
               <IconButton
                 onClick={() => {
-                  props.setDarkmode("#242424");
+                  setDarkMode("#242424");
                 }}
               >
                 <Brightness7Icon style={{ color: "white" }} />
               </IconButton>
-            ) : props.darkMode == "white" ? (
+            ) : darkMode == "white" ? (
               <IconButton
                 onClick={() => {
-                  props.setDarkmode("#242424");
+                  setDarkMode("#242424");
                 }}
               >
                 <Brightness7Icon style={{ color: "white" }} />
@@ -159,7 +155,7 @@ function Nav(props) {
             ) : (
               <IconButton
                 onClick={() => {
-                  props.setDarkmode("white");
+                  setDarkMode("white");
                 }}
               >
                 <Brightness4Icon style={{ color: "white" }} />
@@ -202,18 +198,18 @@ function Nav(props) {
             </NavLink>
           </Typography>
           <div>
-            {props.darkMode == null ? (
+            {darkMode == null ? (
               <IconButton
                 onClick={() => {
-                  props.setDarkmode("#242424");
+                  setDarkMode("#242424");
                 }}
               >
                 <Brightness7Icon style={{ color: "white" }} />
               </IconButton>
-            ) : props.darkMode == "white" ? (
+            ) : darkMode == "white" ? (
               <IconButton
                 onClick={() => {
-                  props.setDarkmode("#242424");
+                  setDarkMode("#242424");
                 }}
               >
                 <Brightness7Icon style={{ color: "white" }} />
@@ -221,7 +217,7 @@ function Nav(props) {
             ) : (
               <IconButton
                 onClick={() => {
-                  props.setDarkmode("white");
+                  setDarkMode("white");
                 }}
               >
                 <Brightness4Icon style={{ color: "white" }} />

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { url } from "../services/Url";
 import { Button, Grid, TextField } from "@mui/material";
 import { Box, Collapse, Alert, IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import logo from "../img/ans.png";
-
+import { ThemeContext } from "../context/ThemeContext";
 import { makeStyles } from "@mui/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
-function ConfirmEmail(props) {
+function ConfirmEmail() {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
       marginTop: "10%",
@@ -30,6 +30,7 @@ function ConfirmEmail(props) {
   const [info, setInfo] = useState();
   const [message, setMessage] = useState();
   const [open, setOpen] = useState(false);
+  const [darkMode] = useContext(ThemeContext);
   useEffect(() => {
     axios.get(`${url}confirmMail/${token}`).then((res) => {
       setMessage(res.data.message);
@@ -53,7 +54,7 @@ function ConfirmEmail(props) {
           style={{
             textAlign: "center",
             margin: "1rem",
-            color: props.darkMode == "white" ? "black" : "white",
+            color: darkMode == "white" ? "black" : "white",
           }}
         >
           Potwierdzenie konta
