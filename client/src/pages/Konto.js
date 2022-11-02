@@ -296,6 +296,10 @@ function Konto(props) {
               }}
               margin="normal"
             />
+
+            {/* <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
+              <FormControl fullWidth>
+                <InputLabel id="select-Kierunek-label">Kierunek</InputLabel>
             <TextField
               className={classes.TextField}
               label="Kierunek"
@@ -325,7 +329,7 @@ function Konto(props) {
               onChange={(e) => {
                 setKierunek(e.target.value);
               }}
-            />
+            /> */}
             <Box style={{ paddingTop: "3%", paddingBottom: " 1%" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
