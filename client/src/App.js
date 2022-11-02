@@ -57,7 +57,7 @@ function App() {
         <ThemeContext.Provider value={[darkMode, setDarkMode]}>
           <Nav auth={auth} setStatus={setStatus} />
           <Grid container>
-            <Grid item xs className={classes.content}>
+            <Grid item xs>
               <Routes>
                 <Route path="/">
                   <Route index element={<Home />} />
