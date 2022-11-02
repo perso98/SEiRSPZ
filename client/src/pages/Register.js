@@ -12,10 +12,10 @@ import { ThemeContext } from "../context/ThemeContext";
 function Register() {
   const useStyles = makeStyles((theme) => ({
     registerForm: {
-      marginTop: "10%",
+      paddingTop: "10%",
       padding: "20px",
       [theme.breakpoints.down("md")]: {
-        marginTop: "20%",
+        paddingTop: "20%",
       },
     },
     notchedOutline: {

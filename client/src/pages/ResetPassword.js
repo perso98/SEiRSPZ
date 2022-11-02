@@ -13,10 +13,10 @@ import { ThemeContext } from "../context/ThemeContext";
 function ResetPassword() {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
-      marginTop: "10%",
+      paddingTop: "10%",
       padding: "20px",
       [theme.breakpoints.down("md")]: {
-        marginTop: "20%",
+        paddingTop: "20%",
       },
     },
     notchedOutline: {
