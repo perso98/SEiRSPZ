@@ -55,6 +55,7 @@ function Konto() {
     Axios.get(`${url}getListaKierunkow`).then((res) => {
       setListaKierunkow(res.data);
     });
+
     Axios.get(`${url}getUserSesionId`).then((res) => {
       setUser(res.data);
       setLoading(false)
@@ -96,18 +97,21 @@ function Konto() {
   const [imie, setImie] = useState(null);
   const [nazwisko, setNazwisko] = useState(null);
   const [studia, setStudia] = useState(null);
-  // const [kierunek, setKierunek] = useState(null);
   const [specjalnosc, setSpecjalnosc] = useState(null);
   const [rokStudiow, setRokStudiow] = useState(null);
   const [rodzajStudiow, setRodzajStudiow] = useState(null);
   const [telefon, setTelefon] = useState(null);
-
   const [kierunek, setKierunek] = useState(null);
 
   const [changeDaneStatus, setChangeDaneStatus] = useState("");
 
-  const handleChange = (event) => {
+  const handleChangeSpecjalnosc = (event) => {
     setSpecjalnosc(event.target.value);
+  };
+
+  const handleChangeKierunek = (event) => {
+    setKierunek(event.target.value);
+    setSpecjalnosc()
   };
 
   const changeDaneToAccount = () => {
@@ -231,25 +235,16 @@ function Konto() {
               }}
               margin="normal"
             />
-            <TextField
-              className={classes.TextField}
-              label="Kierunek"
-              id="kierunek"
-              defaultValue={user.kierunek}
-              margin="normal"
-              onChange={(e) => {
-                setKierunek(e.target.value);
-              }}
-            />
+
             <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Specjalność</InputLabel>
+                <InputLabel id="select-Kierunek-label">Kierunek</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue={user.specjalnosc}
-                  label="specjalnosc"
-                  onChange={handleChange}
+                  labelId="select-Kierunek-label"
+                  id="select-Kierunek"
+                  defaultValue={user.kierunek}
+                  label="Kierunek"
+                  onChange={handleChangeKierunek}
                 >
                   <MenuItem>-</MenuItem>
                   {listaKierunkow.map((val)=> (
@@ -258,6 +253,29 @@ function Konto() {
                 </Select>
               </FormControl>
             </Box>
+
+            <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Specjalność</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue={user.specjalnosc}
+                  label="specjalnosc"
+                  onChange={handleChangeSpecjalnosc}
+                >
+                  <MenuItem>-</MenuItem>
+                  {listaKierunkow.map((valKierunek)=> (
+                      valKierunek.nazwa === kierunek ? (  
+                          valKierunek.listaSpecjalnoscis.map((val)=> ( 
+                            <MenuItem value={val.id}>{val.nazwa}</MenuItem>
+                          ))
+                      ): null
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+
             <TextField
               className={classes.TextField}
               label="Rok studiow"

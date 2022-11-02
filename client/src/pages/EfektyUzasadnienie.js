@@ -94,10 +94,10 @@ function EfektyUzasadnienie() {
 
   const [loading, setLoading] = useState(true);
 
-
     useEffect(() => {
       axios.get(`${url}getEfektUczenia`).then((res) => {
         setListaEfektyow(res.data);
+        console.log(res.data)
     })
       axios.get(`${url}IdUser`).then((res) => {
         setIdUser(res.data);
@@ -210,10 +210,10 @@ function EfektyUzasadnienie() {
                       listaEfektyow.message === "Wybierz specjalność" ?(
                         <div>Wybierz specjalność w panelu Konto aby pojawiły się efekty uczenia się</div>
                       ): 
-                        listaEfektyow.map((val) => (
+                        listaEfektyow?.map((val) => (
                             <TableRow >
                               <TableCell style={{ wordWrap: "break-word", maxWidth: "500px", textAlign: "center" }}>
-                                {val.opis}
+                                {val.opis} {val.nazwa}
                               </TableCell>
     
                               <TableCell style={{ textAlign: "center" }}>

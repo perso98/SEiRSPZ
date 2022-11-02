@@ -8,6 +8,7 @@ const {
   komentarze,
   dzienZalaczniki,
   listaKierunkow,
+  listaSpecjalnosci,
 } = require("../models");
 const { Op } = require("sequelize");
 const multer = require("multer");
@@ -153,34 +154,64 @@ exports.getEfektUczenia = async (req, res) => {
 
     
     const specjalnosc = await dane.findOne({
-      attributes: ['specjalnosc'],
+      attributes: [
+        'specjalnosc', 
+        'kierunek'
+      ],
       where: {
         id: userId.daneId,
       },
     })
-    if(specjalnosc.specjalnosc !== null){
-      const idSpecjalnosc = await listaKierunkow.findOne({
+
+    console.log(specjalnosc.kierunek)
+
+    if(specjalnosc.kierunek !== null){
+      const idKierunek = await listaKierunkow.findOne({
         attributes: ['id'],
         where: {
-          nazwa: specjalnosc.specjalnosc,
+          nazwa: specjalnosc.kierunek,
         },
       })
-      
-      const listaEfektow = await efektyLista.findAll({
-        where: {
-        listaKierunkowId: idSpecjalnosc.id,
-      },});
-    
-      res.send(listaEfektow);
+
+      console.log(idKierunek.id)
+      console.log(specjalnosc.specjalnosc)
+      if(specjalnosc.specjalnosc !== null){
+        const idSpecjalnosc = await listaSpecjalnosci.findOne({
+          attributes: ['id'],
+          where: {
+            [Op.and]: [
+              { nazwa: specjalnosc.specjalnosc },
+              { listaKierunkowId: idKierunek.id }
+            ]
+           ,
+          },
+        })
+
+        console.log(idSpecjalnosc)
+        const listaEfektow = await efektyLista.findAll({
+          where: {
+          listaSpecjalnosciId: idSpecjalnosc.id,
+          },
+        });
+        console.log(listaEfektow)
+        res.send(listaEfektow);
+      }
+      else{
+        res.send({
+          message: "Wybierz Specjalność",
+        });
+      }
     }
     else{
       res.send({
-        message: "Wybierz specjalność",
+        message: "Wybierz Kierunek i Specjalność",
       });
     }
     
+    
   } 
   catch (err) {
+    console.log(err)
   }
   };
 

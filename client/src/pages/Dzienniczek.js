@@ -430,7 +430,7 @@ function Dzienniczek() {
       }
     })
 
-    return <div>Dar {za} {Od} {Oc}</div>
+    return <div>{za} {Od} {Oc}</div>
   };
 
 

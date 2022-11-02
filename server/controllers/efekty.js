@@ -48,7 +48,20 @@ exports.getEfektyKierunki = async (req, res) => {
           id: id,
         },
       });
-      res.send({ message: "Usunięto" });
+
+      const listEfektyKierunki = await listaKierunkow.findAll({
+        include: {
+          model: listaSpecjalnosci,
+          include: {
+            model: efektyLista,
+          },
+        },
+      });
+
+      res.send({ 
+        message: "Usunięto",
+        lista: listEfektyKierunki,
+      });
     } catch (err) {
       res.send({ message: err.message });
     }
@@ -61,9 +74,20 @@ exports.getEfektyKierunki = async (req, res) => {
          nazwa: nazwaSpecjalnosci,
          listaKierunkowId: id
        });
+
+       const listEfektyKierunki = await listaKierunkow.findAll({
+        include: {
+          model: listaSpecjalnosci,
+          include: {
+            model: efektyLista,
+          },
+        },
+      });
+
        res.send({
          message: "Specjalność została pomyślnie dodana",
          id: newSpecjalnosc.id,
+         lista: listEfektyKierunki
        });
 
    } catch (err) {
@@ -71,33 +95,89 @@ exports.getEfektyKierunki = async (req, res) => {
    }
  };
 
+ exports.delSpecjalnosc = async (req, res) => {
+  const id = req.params.id;
+  console.log(id)
+  try {
+    await listaSpecjalnosci.destroy({
+      where: {
+        id: id,
+      },
+    });
+    console.log("QQQQQQQQQQQQQQQ")
+    const listEfektyKierunki = await listaKierunkow.findAll({
+      include: {
+        model: listaSpecjalnosci,
+        include: {
+          model: efektyLista,
+        },
+      },
+    });
+
+    res.send({ 
+      message: "Usunięto",
+      lista: listEfektyKierunki,
+    });
+  } catch (err) {
+    res.send({ message: err.message });
+  }
+};
+
+
+
   exports.addEfekt = async (req, res) => {
     const { nazwaEfektu, opisEfektu, id } = req.body;
    try {
-       const newEfekt = await efektyLista.create({
+      const efektId = await efektyLista.create({
          nazwa: nazwaEfektu,
          opis: opisEfektu,
-         listaKierunkowId: id
+         listaSpecjalnosciId: id
        });
+
+       const listEfektyKierunki = await listaKierunkow.findAll({
+        include: {
+          model: listaSpecjalnosci,
+          include: {
+            model: efektyLista,
+          },
+        },
+      });
+    
        res.send({
          message: "Efekt został pomyślnie dodany",
-         id: newEfekt.id,
+         lista: listEfektyKierunki,
+         id: efektId.id,
        });
 
    } catch (err) {
      res.send({ message: err.message });
    }
+
  };
 
  exports.delEfekt = async (req, res) => {
    const id = req.params.id;
    try {
-     await efektyLista.destroy({
+    await efektyLista.destroy({
        where: {
          id: id,
        },
      });
-     res.send({ message: "Usunięto" });
+
+    const listEfektyKierunki = await listaKierunkow.findAll({
+      include: {
+        model: listaSpecjalnosci,
+        include: {
+          model: efektyLista,
+        },
+      },
+    });
+
+
+    res.send({ 
+      message: "Usunięto",
+      lista: listEfektyKierunki, 
+    });
    } catch (err) {
      res.send({ message: err.message });
    }
