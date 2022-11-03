@@ -136,15 +136,7 @@ function Nav(props) {
             </NavLink>
           </Typography>
           <div>
-            {darkMode == null ? (
-              <IconButton
-                onClick={() => {
-                  setDarkMode("#242424");
-                }}
-              >
-                <Brightness7Icon style={{ color: "white" }} />
-              </IconButton>
-            ) : darkMode == "white" ? (
+            {!darkMode || darkMode == "white" ? (
               <IconButton
                 onClick={() => {
                   setDarkMode("#242424");
@@ -198,15 +190,7 @@ function Nav(props) {
             </NavLink>
           </Typography>
           <div>
-            {darkMode == null ? (
-              <IconButton
-                onClick={() => {
-                  setDarkMode("#242424");
-                }}
-              >
-                <Brightness7Icon style={{ color: "white" }} />
-              </IconButton>
-            ) : darkMode == "white" ? (
+            {!darkMode || darkMode == "white" ? (
               <IconButton
                 onClick={() => {
                   setDarkMode("#242424");
