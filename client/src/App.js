@@ -7,7 +7,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 
 import { Grid, Paper } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+
 import UnLoggedRoute from "./protectedRoutes/UnLoggedRoute";
 
 import NoPage from "./pages/NoPage";
@@ -31,20 +31,7 @@ import ResendEmail from "./pages/ResendEmail";
 import ResetPassword from "./pages/ResetPassword";
 import EmailPasswordReset from "./pages/EmailPasswordReset";
 import ConfirmEmail from "./pages/ConfirmEmail";
-
-const useStyles = makeStyles((theme) => ({
-  content: {
-    paddingTop: theme.spacing(0),
-    height: "90vh",
-  },
-  margingora: {
-    paddingTop: theme.spacing(2),
-  },
-
-  marginHome: {
-    paddingTop: theme.spacing(10),
-  },
-}));
+import { ThemeContext } from "./context/ThemeContext";
 
 function App() {
   const [auth, setAuth] = useState();
@@ -54,8 +41,8 @@ function App() {
       setAuth(res.data);
     });
   }, [status]);
-  const classes = useStyles();
-  const [darkMode, setDarkmode] = useState(localStorage.getItem("theme"));
+
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("theme"));
   useEffect(() => {
     localStorage.setItem("theme", darkMode);
   }, [darkMode]);
@@ -67,177 +54,104 @@ function App() {
       }}
     >
       <BrowserRouter>
-        <Nav
-          auth={auth}
-          setStatus={setStatus}
-          setDarkmode={setDarkmode}
-          darkMode={darkMode}
-        />
-        <Grid container>
-          <Grid item xs className={classes.content}>
-            <Routes>
-              <Route path="/">
+        <ThemeContext.Provider value={[darkMode, setDarkMode]}>
+          <Nav auth={auth} setStatus={setStatus} />
+          <Routes>
+            <Route path="/">
+              <Route index element={<Home />} />
+              <Route path="noauth" element={<NoAuth />} />
+              <Route element={<UnLoggedRoute auth={auth} />}>
+                <Route path="login" element={<Login setStatus={setStatus} />} />
+                <Route path="confirm/:token" element={<ConfirmEmail />} />
+                <Route path="resendemail" element={<ResendEmail />} />
                 <Route
-                  index
-                  element={
-                    <div className={classes.marginHome}>
-                      <Home />
-                    </div>
-                  }
+                  path="restartpassword/:token"
+                  element={<ResetPassword />}
                 />
-                <Route path="noauth" element={<NoAuth />} />
-                <Route element={<UnLoggedRoute auth={auth} />}>
-                  <Route
-                    path="login"
-                    element={
-                      <div className={classes.margingora}>
-                        <Login setStatus={setStatus} darkMode={darkMode} />
-                      </div>
-                    }
-                  />
-                  <Route
-                    path="confirm/:token"
-                    element={<ConfirmEmail darkMode={darkMode} />}
-                  />
-                  <Route
-                    path="resendemail"
-                    element={
-                      <div className={classes.margingora}>
-                        <ResendEmail darkMode={darkMode} />
-                      </div>
-                    }
-                  />
-                  <Route
-                    path="restartpassword/:token"
-                    element={<ResetPassword darkMode={darkMode} />}
-                  />
 
-                  <Route
-                    path="restartpassword"
-                    element={
-                      <div className={classes.margingora}>
-                        <EmailPasswordReset darkMode={darkMode} />
-                      </div>
-                    }
-                  />
-                  <Route
-                    path="register"
-                    element={
-                      <div className={classes.margingora}>
-                        <Register darkMode={darkMode} />
-                      </div>
-                    }
-                  />
-                </Route>
-                //admin route
                 <Route
-                  element={
-                    <RoleRoute
-                      role={auth?.user?.isAdmin}
-                      logged={auth?.logged}
-                    />
-                  }
-                >
-                  <Route
-                    path="admin"
-                    element={
-                      <Admin setStatus={setStatus} darkMode={darkMode} />
-                    }
+                  path="restartpassword"
+                  element={<EmailPasswordReset />}
+                />
+                <Route path="register" element={<Register />} />
+              </Route>
+              <Route
+                element={
+                  <RoleRoute role={auth?.user?.isAdmin} logged={auth?.logged} />
+                }
+              >
+                <Route path="admin" element={<Admin setStatus={setStatus} />} />
+              </Route>
+              <Route
+                element={
+                  <RoleRoute
+                    role={auth?.user?.isOpiekunZakl}
+                    logged={auth?.logged}
                   />
-                </Route>
+                }
+              >
                 <Route
-                  element={
-                    <RoleRoute
-                      role={auth?.user?.isOpiekunZakl}
-                      logged={auth?.logged}
-                    />
-                  }
-                >
-                  <Route
-                    path="opiekunz"
-                    element={
-                      <OpiekunZ setStatus={setStatus} darkMode={darkMode} />
-                    }
-                  />
-                  <Route
-                    path="opiekunz/historia"
-                    element={
-                      <OpiekunZHistory
-                        setStatus={setStatus}
-                        darkMode={darkMode}
-                      />
-                    }
-                  />
-                </Route>
-                <Route path="efektyuczeniasie" element={<EfektyUczeniaSie />} />
-                <Route path="dzienniczek" element={<Dzienniczek />} />
-                <Route path="efekty" element={<EfektyUzasadnienie />} />
-                <Route
-                  path="zarzadzaniezakladami"
-                  element={<ZarzadzanieZakladami />}
+                  path="opiekunz"
+                  element={<OpiekunZ setStatus={setStatus} />}
                 />
                 <Route
-                  element={
-                    <RoleRoute
-                      role={auth?.user?.isStudent}
-                      logged={auth?.logged}
-                    />
-                  }
-                >
-                  <Route path="konto" element={<Konto darkMode={darkMode} />} />
-                </Route>
-                //Routy do opiekuna uczelnianego
-                <Route
-                  element={
-                    <RoleRoute
-                      role={auth?.user?.isOpiekun}
-                      logged={auth?.logged}
-                    />
-                  }
-                >
-                  <Route
-                    path="opiekunuefekty"
-                    element={
-                      <EfektyOpiekunU
-                        setStatus={setStatus}
-                        darkMode={darkMode}
-                      />
-                    }
-                  />
-                  <Route
-                    path="opiekunu/historia"
-                    element={
-                      <OpiekunUHistory
-                        setStatus={setStatus}
-                        darkMode={darkMode}
-                      />
-                    }
-                  />
-                  <Route
-                    path="opiekunu"
-                    element={
-                      <OpiekunU setStatus={setStatus} darkMode={darkMode} />
-                    }
-                  />
-                </Route>
-                <Route
-                  element={
-                    <RoleRoute
-                      role={auth?.user?.isAdmin}
-                      logged={auth?.logged}
-                    />
-                  }
-                >
-                  <Route
-                    path="zastepstwa"
-                    element={<Dyrektor setStatus={setStatus} />}
-                  />
-                </Route>
-                <Route path="*" element={<NoPage />} />
+                  path="opiekunz/historia"
+                  element={<OpiekunZHistory setStatus={setStatus} />}
+                />
               </Route>
-            </Routes>
-          </Grid>
-        </Grid>
+              <Route path="efektyuczeniasie" element={<EfektyUczeniaSie />} />
+              <Route path="dzienniczek" element={<Dzienniczek />} />
+              <Route path="efekty" element={<EfektyUzasadnienie />} />
+              <Route
+                path="zarzadzaniezakladami"
+                element={<ZarzadzanieZakladami />}
+              />
+              <Route
+                element={
+                  <RoleRoute
+                    role={auth?.user?.isStudent}
+                    logged={auth?.logged}
+                  />
+                }
+              >
+                <Route path="konto" element={<Konto />} />
+              </Route>
+              //Routy do opiekuna uczelnianego
+              <Route
+                element={
+                  <RoleRoute
+                    role={auth?.user?.isOpiekun}
+                    logged={auth?.logged}
+                  />
+                }
+              >
+                <Route
+                  path="opiekunuefekty"
+                  element={<EfektyOpiekunU setStatus={setStatus} />}
+                />
+                <Route
+                  path="opiekunu/historia"
+                  element={<OpiekunUHistory setStatus={setStatus} />}
+                />
+                <Route
+                  path="opiekunu"
+                  element={<OpiekunU setStatus={setStatus} />}
+                />
+              </Route>
+              <Route
+                element={
+                  <RoleRoute role={auth?.user?.isAdmin} logged={auth?.logged} />
+                }
+              >
+                <Route
+                  path="zastepstwa"
+                  element={<Dyrektor setStatus={setStatus} />}
+                />
+              </Route>
+              <Route path="*" element={<NoPage />} />
+            </Route>
+          </Routes>
+        </ThemeContext.Provider>
       </BrowserRouter>
     </Paper>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import * as axios from "axios";
 import Container from "@material-ui/core/Container";
 import SearchBar from "../components/SearchBar";
@@ -9,6 +9,7 @@ import { url } from "../services/Url";
 import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
+import { ThemeContext } from "../context/ThemeContext";
 function EfektyOpiekunU(props) {
   const [opis, setOpis] = useState("");
   const [studenci, setStudenci] = useState([]);
@@ -30,6 +31,7 @@ function EfektyOpiekunU(props) {
     setCheckStudent(val);
     setOpen(true);
   };
+  const [darkMode] = useContext(ThemeContext);
   useEffect(() => {
     axios.get(`${url}getEffectsOpiekunU`).then((res) => {
       if (res.data.message) {
@@ -130,13 +132,13 @@ function EfektyOpiekunU(props) {
             <SearchBar
               setSearchLogin={setSearchLogin}
               setItemOffset={setItemOffset}
-              darkMode={props.darkMode}
+              darkMode={darkMode}
             />
           )}
           <Helper
             info={info}
             title="Pomoc opiekun uczelniany efekty"
-            darkMode={props.darkMode}
+            darkMode={darkMode}
           />
         </div>
         {recordsAfterFiltering.length === 0 && !loading && (
@@ -149,7 +151,7 @@ function EfektyOpiekunU(props) {
             <div />
             <h6
               style={{
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
               }}
             >
               Nie odnaleziono wyniku, którego szukasz...{" "}
@@ -181,7 +183,7 @@ function EfektyOpiekunU(props) {
         updateDzienniczek={updateDzienniczek}
         efektId={efektId}
         setEfektId={setEfektId}
-        darkMode={props.darkMode}
+        darkMode={darkMode}
       />
       <ToastContainer autoClose={1000} />
     </>

@@ -1,21 +1,21 @@
 import { Button, Grid, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import logo from "../img/ans.png";
 import { makeStyles } from "@mui/styles";
 import AlertComponent from "../components/AlertComponent";
 import { url } from "../services/Url";
 import Axios from "axios";
 import { Link } from "react-router-dom";
-
+import { ThemeContext } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 function Login(props) {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
-      marginTop: "10%",
+      paddingTop: "10%",
       padding: "20px",
       [theme.breakpoints.down("md")]: {
-        marginTop: "20%",
+        paddingTop: "20%",
       },
     },
     notchedOutline: {
@@ -23,7 +23,7 @@ function Login(props) {
       borderColor: "white !important",
     },
   }));
-
+  const [darkMode] = useContext(ThemeContext);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
@@ -74,22 +74,22 @@ function Login(props) {
           margin="normal"
           inputProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             },
           }}
           InputLabelProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
             },
           }}
           InputProps={{
             classes: {
               notchedOutline:
-                props.darkMode == "white" ? null : classes.notchedOutline,
+                darkMode == "white" ? null : classes.notchedOutline,
             },
           }}
         />
@@ -104,22 +104,22 @@ function Login(props) {
           type="password"
           inputProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             },
           }}
           InputLabelProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
             },
           }}
           InputProps={{
             classes: {
               notchedOutline:
-                props.darkMode == "white" ? null : classes.notchedOutline,
+                darkMode == "white" ? null : classes.notchedOutline,
             },
           }}
         />

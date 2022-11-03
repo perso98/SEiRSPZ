@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 
 import Container from "@material-ui/core/Container";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import DialogOpiekunZ from "../components/DialogOpiekunZ";
 import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
-import Button from "@mui/material/Button";
+
 import ButtonLink from "../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,7 +15,7 @@ import { url } from "../services/Url";
 import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
-
+import { ThemeContext } from "../context/ThemeContext";
 function OpiekunZ(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ function OpiekunZ(props) {
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
   const navigate = useNavigate();
-
+  const [darkMode] = useContext(ThemeContext);
   const handleClose = () => {
     setOpis();
     setKomentarz();
@@ -147,14 +147,12 @@ function OpiekunZ(props) {
     </div>
   );
   return (
-    <div
-      style={{ background: props.darkMode == "white" ? "white" : "#242424" }}
-    >
+    <div style={{ background: darkMode == "white" ? "white" : "#242424" }}>
       <Container
         style={{
           paddingTop: "3rem",
           paddingBottom: "3rem",
-          background: props.darkMode == "white" ? "white" : "#242424",
+          background: darkMode == "white" ? "white" : "#242424",
         }}
       >
         {loading && (
@@ -167,7 +165,7 @@ function OpiekunZ(props) {
             <div />
             <h5
               style={{
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
               }}
             >
               Ładowanie...
@@ -184,7 +182,7 @@ function OpiekunZ(props) {
         >
           {!loading && (
             <SearchBar
-              darkMode={props.darkMode}
+              darkMode={darkMode}
               setSearchLogin={setSearchLogin}
               setRemountComponent={setRemountComponent}
             />
@@ -192,7 +190,7 @@ function OpiekunZ(props) {
           <Helper
             info={info}
             title="Pomoc opiekun zakładowy"
-            darkMode={props.darkMode}
+            darkMode={darkMode}
           />
 
           <ButtonLink linkTo="/opiekunz/historia" text="Historia" />
@@ -207,7 +205,7 @@ function OpiekunZ(props) {
             <div />
             <h6
               style={{
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
               }}
             >
               Nie odnaleziono wyniku, którego szukasz...{" "}
@@ -224,7 +222,7 @@ function OpiekunZ(props) {
               open={open}
               statusOpiekuna={statusOpiekuna}
               dzienniczek={dzienniczek}
-              darkMode={props.darkMode}
+              darkMode={darkMode}
             />
           </div>
         ) : null}
@@ -238,7 +236,7 @@ function OpiekunZ(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
         statusOpiekuna={statusOpiekuna}
-        darkMode={props.darkMode}
+        darkMode={darkMode}
       />
       <ToastContainer autoClose={1000} />
     </div>

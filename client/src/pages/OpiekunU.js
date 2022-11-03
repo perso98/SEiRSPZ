@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import Container from "@material-ui/core/Container";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import DialogOpiekunZ from "../components/DialogOpiekunZ";
 import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Helper from "../components/Helper";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import { makeStyles } from "@material-ui/core";
+import { ThemeContext } from "../context/ThemeContext";
 const useStyles = makeStyles((theme) => ({
   notchedOutline: {
     borderWidth: "1px",
@@ -33,7 +34,7 @@ function OpiekunU(props) {
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaU";
   const navigate = useNavigate();
-
+  const [darkMode] = useContext(ThemeContext);
   const handleClose = () => {
     setOpis();
     setKomentarz();
@@ -149,14 +150,12 @@ function OpiekunU(props) {
     </div>
   );
   return (
-    <div
-      style={{ background: props.darkMode == "white" ? "white" : "#242424" }}
-    >
+    <div style={{ background: darkMode == "white" ? "white" : "#242424" }}>
       <Container
         style={{
           paddingTop: "3rem",
           paddingBottom: "3rem",
-          background: props.darkMode == "white" ? "white" : "#242424",
+          background: darkMode == "white" ? "white" : "#242424",
         }}
       >
         <div
@@ -176,7 +175,7 @@ function OpiekunU(props) {
               <div />
               <h5
                 style={{
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                 }}
               >
                 Ładowanie...
@@ -188,7 +187,7 @@ function OpiekunU(props) {
             <SearchBar
               setSearchLogin={setSearchLogin}
               setRemountComponent={setRemountComponent}
-              darkMode={props.darkMode}
+              darkMode={darkMode}
             />
           )}
           <Helper info={info} title="Pomoc opiekun uczelniany" />
@@ -204,7 +203,7 @@ function OpiekunU(props) {
             <div />
             <h6
               style={{
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
               }}
             >
               Nie odnaleziono wyniku, którego szukasz...{" "}
@@ -221,7 +220,7 @@ function OpiekunU(props) {
               open={open}
               statusOpiekuna={statusOpiekuna}
               dzienniczek={dzienniczek}
-              darkMode={props.darkMode}
+              darkMode={darkMode}
             />
           </div>
         ) : null}
@@ -235,7 +234,7 @@ function OpiekunU(props) {
         setOpis={setOpis}
         setKomentarz={setKomentarz}
         statusOpiekuna={statusOpiekuna}
-        darkMode={props.darkMode}
+        darkMode={darkMode}
       />
       <ToastContainer autoClose={1000} />
     </div>

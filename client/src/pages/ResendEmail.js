@@ -1,5 +1,5 @@
 import { Button, Grid, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import logo from "../img/ans.png";
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
@@ -8,14 +8,14 @@ import Axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Collapse, Alert, IconButton } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-
-function ResendEmail(props) {
+import { ThemeContext } from "../context/ThemeContext";
+function ResendEmail() {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
-      marginTop: "10%",
+      paddingTop: "10%",
       padding: "20px",
       [theme.breakpoints.down("md")]: {
-        marginTop: "20%",
+        paddingTop: "20%",
       },
     },
     notchedOutline: {
@@ -28,7 +28,7 @@ function ResendEmail(props) {
   const [loginStatus, setLoginStatus] = useState("");
   const [type, setType] = useState();
   const [loading, setLoading] = useState(false);
-
+  const [darkMode] = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
   const resendEmail = async () => {
     setLoading(true);
@@ -109,7 +109,7 @@ function ResendEmail(props) {
         <div
           style={{
             textAlign: "center",
-            color: props.darkMode == "white" ? "black" : "white",
+            color: darkMode == "white" ? "black" : "white",
           }}
         >
           Wpisz swój e-mail, aby przesłać ponownie link aktywacyjny
@@ -125,22 +125,22 @@ function ResendEmail(props) {
           type="email"
           inputProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             },
           }}
           InputLabelProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
             },
           }}
           InputProps={{
             classes: {
               notchedOutline:
-                props.darkMode == "white" ? null : classes.notchedOutline,
+                darkMode == "white" ? null : classes.notchedOutline,
             },
           }}
         />

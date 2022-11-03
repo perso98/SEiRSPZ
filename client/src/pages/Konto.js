@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import { makeStyles } from "@mui/styles";
 import Axios from "axios";
 import {
@@ -17,8 +17,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
-function Konto(props) {
+import { ThemeContext } from "../context/ThemeContext";
+function Konto() {
   const useStyles = makeStyles((theme) => ({
     center: {
       justifyContent: "space-around",
@@ -80,7 +80,7 @@ function Konto(props) {
   const [changePassword2, getChangePassword2] = useState("");
   const [changePasswordStatus, setChangePasswordStatus] = useState("");
   const [alertSeverity, setalertSeverity] = useState("");
-
+  const [darkMode] = useContext(ThemeContext);
   const changePasswordToAccount = () => {
     Axios.post(`${url}changePasswordToAccount`, {
       changePassword: changePassword,
@@ -141,7 +141,7 @@ function Konto(props) {
   return (
     <Grid
       style={{
-        backgroundColor: props.darkMode == "white" ? "white" : "#242424",
+        backgroundColor: darkMode == "white" ? "white" : "#242424",
       }}
     >
       {loading === false ? (
@@ -150,7 +150,7 @@ function Konto(props) {
             <Typography
               variant="h4"
               color="initial"
-              style={{ color: props.darkMode == "white" ? "black" : "white" }}
+              style={{ color: darkMode == "white" ? "black" : "white" }}
             >
               {" "}
               Wprowadź swoje dane
@@ -213,22 +213,22 @@ function Konto(props) {
               margin="normal"
               inputProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                   classes: {
                     notchedOutline:
-                      props.darkMode == "white" ? null : classes.notchedOutline,
+                      darkMode == "white" ? null : classes.notchedOutline,
                   },
                 },
               }}
               InputLabelProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                 },
               }}
               InputProps={{
                 classes: {
                   notchedOutline:
-                    props.darkMode == "white" ? null : classes.notchedOutline,
+                    darkMode == "white" ? null : classes.notchedOutline,
                 },
               }}
               onChange={(e) => {
@@ -244,22 +244,22 @@ function Konto(props) {
               margin="normal"
               inputProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                   classes: {
                     notchedOutline:
-                      props.darkMode == "white" ? null : classes.notchedOutline,
+                      darkMode == "white" ? null : classes.notchedOutline,
                   },
                 },
               }}
               InputLabelProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                 },
               }}
               InputProps={{
                 classes: {
                   notchedOutline:
-                    props.darkMode == "white" ? null : classes.notchedOutline,
+                    darkMode == "white" ? null : classes.notchedOutline,
                 },
               }}
               onChange={(e) => {
@@ -273,22 +273,22 @@ function Konto(props) {
               defaultValue={user.studia}
               inputProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                   classes: {
                     notchedOutline:
-                      props.darkMode == "white" ? null : classes.notchedOutline,
+                      darkMode == "white" ? null : classes.notchedOutline,
                   },
                 },
               }}
               InputLabelProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                 },
               }}
               InputProps={{
                 classes: {
                   notchedOutline:
-                    props.darkMode == "white" ? null : classes.notchedOutline,
+                    darkMode == "white" ? null : classes.notchedOutline,
                 },
               }}
               onChange={(e) => {
@@ -308,22 +308,22 @@ function Konto(props) {
               margin="normal"
               inputProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                   classes: {
                     notchedOutline:
-                      props.darkMode == "white" ? null : classes.notchedOutline,
+                      darkMode == "white" ? null : classes.notchedOutline,
                   },
                 },
               }}
               InputLabelProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                 },
               }}
               InputProps={{
                 classes: {
                   notchedOutline:
-                    props.darkMode == "white" ? null : classes.notchedOutline,
+                    darkMode == "white" ? null : classes.notchedOutline,
                 },
               }}
               onChange={(e) => {
@@ -380,22 +380,22 @@ function Konto(props) {
               margin="normal"
               inputProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                   classes: {
                     notchedOutline:
-                      props.darkMode == "white" ? null : classes.notchedOutline,
+                      darkMode == "white" ? null : classes.notchedOutline,
                   },
                 },
               }}
               InputLabelProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                 },
               }}
               InputProps={{
                 classes: {
                   notchedOutline:
-                    props.darkMode == "white" ? null : classes.notchedOutline,
+                    darkMode == "white" ? null : classes.notchedOutline,
                 },
               }}
               onChange={(e) => {
@@ -410,22 +410,22 @@ function Konto(props) {
               margin="normal"
               inputProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                   classes: {
                     notchedOutline:
-                      props.darkMode == "white" ? null : classes.notchedOutline,
+                      darkMode == "white" ? null : classes.notchedOutline,
                   },
                 },
               }}
               InputLabelProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                 },
               }}
               InputProps={{
                 classes: {
                   notchedOutline:
-                    props.darkMode == "white" ? null : classes.notchedOutline,
+                    darkMode == "white" ? null : classes.notchedOutline,
                 },
               }}
               onChange={(e) => {
@@ -440,22 +440,22 @@ function Konto(props) {
               margin="normal"
               inputProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                   classes: {
                     notchedOutline:
-                      props.darkMode == "white" ? null : classes.notchedOutline,
+                      darkMode == "white" ? null : classes.notchedOutline,
                   },
                 },
               }}
               InputLabelProps={{
                 style: {
-                  color: props.darkMode == "white" ? "black" : "white",
+                  color: darkMode == "white" ? "black" : "white",
                 },
               }}
               InputProps={{
                 classes: {
                   notchedOutline:
-                    props.darkMode == "white" ? null : classes.notchedOutline,
+                    darkMode == "white" ? null : classes.notchedOutline,
                 },
               }}
               onChange={(e) => {
@@ -481,7 +481,7 @@ function Konto(props) {
           <Typography
             variant="h4"
             color="initial"
-            style={{ color: props.darkMode == "white" ? "black" : "white" }}
+            style={{ color: darkMode == "white" ? "black" : "white" }}
           >
             {" "}
             Zmiana hasła
@@ -544,22 +544,22 @@ function Konto(props) {
             type="password"
             inputProps={{
               style: {
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
                 classes: {
                   notchedOutline:
-                    props.darkMode == "white" ? null : classes.notchedOutline,
+                    darkMode == "white" ? null : classes.notchedOutline,
                 },
               },
             }}
             InputLabelProps={{
               style: {
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
               },
             }}
             InputProps={{
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             }}
             onChange={(e) => {
@@ -574,22 +574,22 @@ function Konto(props) {
             margin="normal"
             inputProps={{
               style: {
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
                 classes: {
                   notchedOutline:
-                    props.darkMode == "white" ? null : classes.notchedOutline,
+                    darkMode == "white" ? null : classes.notchedOutline,
                 },
               },
             }}
             InputLabelProps={{
               style: {
-                color: props.darkMode == "white" ? "black" : "white",
+                color: darkMode == "white" ? "black" : "white",
               },
             }}
             InputProps={{
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             }}
             onChange={(e) => {

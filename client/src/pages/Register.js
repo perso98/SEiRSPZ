@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import logo from "../../src/img/ans.png";
 import { Button, Grid, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -8,13 +8,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import Box from "@mui/material/Box";
-function Register(props) {
+import { ThemeContext } from "../context/ThemeContext";
+function Register() {
   const useStyles = makeStyles((theme) => ({
     registerForm: {
-      marginTop: "10%",
+      paddingTop: "10%",
       padding: "20px",
       [theme.breakpoints.down("md")]: {
-        marginTop: "20%",
+        paddingTop: "20%",
       },
     },
     notchedOutline: {
@@ -30,7 +31,7 @@ function Register(props) {
   const [registerStatus, setRegisterStatus] = useState("");
   const [alertSeverity, setalertSeverity] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [darkMode] = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
   Axios.defaults.withCredentials = true;
 
@@ -80,22 +81,22 @@ function Register(props) {
           margin="normal"
           inputProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             },
           }}
           InputLabelProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
             },
           }}
           InputProps={{
             classes: {
               notchedOutline:
-                props.darkMode == "white" ? null : classes.notchedOutline,
+                darkMode == "white" ? null : classes.notchedOutline,
             },
           }}
         />
@@ -110,22 +111,22 @@ function Register(props) {
           type="password"
           inputProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             },
           }}
           InputLabelProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
             },
           }}
           InputProps={{
             classes: {
               notchedOutline:
-                props.darkMode == "white" ? null : classes.notchedOutline,
+                darkMode == "white" ? null : classes.notchedOutline,
             },
           }}
         />
@@ -140,22 +141,22 @@ function Register(props) {
           type="password"
           inputProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
               classes: {
                 notchedOutline:
-                  props.darkMode == "white" ? null : classes.notchedOutline,
+                  darkMode == "white" ? null : classes.notchedOutline,
               },
             },
           }}
           InputLabelProps={{
             style: {
-              color: props.darkMode == "white" ? "black" : "white",
+              color: darkMode == "white" ? "black" : "white",
             },
           }}
           InputProps={{
             classes: {
               notchedOutline:
-                props.darkMode == "white" ? null : classes.notchedOutline,
+                darkMode == "white" ? null : classes.notchedOutline,
             },
           }}
         />
