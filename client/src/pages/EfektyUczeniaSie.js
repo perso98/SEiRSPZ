@@ -238,7 +238,7 @@ function EfektyUczeniaSie() {
             }
           })
     }
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const handleClose = () => {
       setOpen(false);
@@ -249,7 +249,7 @@ function EfektyUczeniaSie() {
     };
 
 
-    const [openSpecjalnosc, setOpenSpecjalnosc] = useState(true);
+    const [openSpecjalnosc, setOpenSpecjalnosc] = useState(false);
 
     const handleCloseSpecjalnosc = () => {
       setOpenSpecjalnosc(false);
@@ -409,9 +409,9 @@ function EfektyUczeniaSie() {
                                       <DodanieEfektuDialog
                                           open = { openSpecjalnosc }
                                           handleClose = { handleCloseSpecjalnosc }
-                                          setNazwaSpecjalnosci = { setNazwaSpecjalnosci }
-                                          setSkrotSpecjalnosci = { setSkrotSpecjalnosci }
-                                          dodanieSpecjalnosci = { dodanieSpecjalnosci }
+                                          setNazwaSpecjalnosci = { setNazwaEfektu }
+                                          setSkrotSpecjalnosci = { setOpisEfektu }
+                                          dodanieSpecjalnosci = { dodanieEfektu }
                                           info = { valSpecjalnosc }
                                           val = { valSpecjalnosc }
                                         />

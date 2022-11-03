@@ -333,7 +333,7 @@ function Konto(props) {
             <Box style={{ paddingTop: "3%", paddingBottom: " 1%" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
-                  Specjalność
+                  Kierunek
                 </InputLabel>
                 <Select
                   labelId="select-Kierunek-label"
@@ -349,7 +349,7 @@ function Konto(props) {
                 </Select>
               </FormControl>
             </Box>
-
+                        {console.log(user)}
             <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Specjalność</InputLabel>
@@ -357,14 +357,14 @@ function Konto(props) {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   defaultValue={user.specjalnosc}
-                  label="specjalnosc"
+                  label={user.kierunek}
                   onChange={handleChangeSpecjalnosc}
                 >
                   <MenuItem>-</MenuItem>
-                  {listaKierunkow.map((valKierunek)=> (
-                      valKierunek.nazwa === kierunek ? (  
-                          valKierunek.listaSpecjalnoscis.map((val)=> ( 
-                            <MenuItem value={val.id}>{val.nazwa}</MenuItem>
+                  {listaKierunkow?.map((valKierunek)=> (
+                      valKierunek?.nazwa === kierunek ? (  
+                          valKierunek?.listaSpecjalnoscis?.map((val)=> ( 
+                            <MenuItem value={val?.id}>{val?.nazwa}</MenuItem>
                           ))
                       ): null
                   ))}
