@@ -12,11 +12,8 @@ import axios from "axios";
 function ConfirmEmail() {
   const useStyles = makeStyles((theme) => ({
     loginForm: {
-      paddingTop: "10%",
+      paddingTop: "10rem",
       padding: "20px",
-      [theme.breakpoints.down("md")]: {
-        paddingTop: "20%",
-      },
     },
     notchedOutline: {
       borderWidth: "1px",
