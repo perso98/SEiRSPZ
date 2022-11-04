@@ -58,7 +58,7 @@ function App() {
           <Nav auth={auth} setStatus={setStatus} />
           <Routes>
             <Route path="/">
-              <Route index element={<Home />} />
+              <Route index element={<Home auth={auth}/>} />
               <Route path="noauth" element={<NoAuth />} />
               <Route element={<UnLoggedRoute auth={auth} />}>
                 <Route path="login" element={<Login setStatus={setStatus} />} />
