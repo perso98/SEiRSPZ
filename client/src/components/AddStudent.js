@@ -62,6 +62,10 @@ const useStyles = makeStyles(theme => ({
     form:{
         paddingRight: theme.spacing(2),
     },
+    notchedOutline: {
+        borderWidth: "1px",
+        borderColor: "white !important",
+      },
 }));
 
 function AddStudent(
@@ -77,6 +81,7 @@ function AddStudent(
         delStudentFirma,
         onChange,
         object,
+        darkMode,
       }
 ) {
 
@@ -133,12 +138,21 @@ function AddStudent(
 
 
   return (
-    <Dialog open={addOpen} onClose={handleClose} fullWidth="60%">
+    <Dialog open={addOpen} onClose={handleClose} fullWidth="60%"
+    PaperProps={{
+        style: {
+          backgroundColor: darkMode == "white" ? "white" : "#242424",
+          color: darkMode == "white" ? "black" : "white",
+        },
+      }}
+      >
       <DialogTitle style={{ display: "flex", justifyContent: "space-between" }}>
         Firma: {idFirma.nazwa}
         <div>Dodawanie studenta </div>
         <IconButton aria-label="close" onClick={handleClose}>
-          <CloseIcon />
+          <CloseIcon 
+          style={{ color: darkMode == "white" ? "black" : "white" }}
+          />
         </IconButton>
       </DialogTitle>
       <DialogContent>
@@ -146,10 +160,11 @@ function AddStudent(
             <div>
                 <Grid item xs className={classes.content}>
                     <Grid container>
-                    <Grid item xs >
+                    <Grid item xs style={{ color: darkMode == "white" ? "black" : "white" }}>
                             <div>
                             <div  style={{marginBottom:"1rem"}}>
                             <SearchBar
+                            darkMode={darkMode}
                             setSearchLogin={setSearchLogin}
                             setItemOffset={setItemOffset}
                             />

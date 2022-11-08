@@ -54,6 +54,10 @@ const useStyles = makeStyles(theme => ({
   form:{
       paddingRight: theme.spacing(2),
   },
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
 }));
 
 function EditStudent(
@@ -68,8 +72,8 @@ function EditStudent(
     setChangeCTP,
     setChangePO,
     setChangePD,
-    setChangeDP
-
+    setChangeDP,
+    darkMode,
   }
   ){
 
@@ -83,13 +87,21 @@ function EditStudent(
           onClose={handleClose}
           fullWidth="40%"
           style={{ fontSize: "1.2rem", color: "#403c3c" }}
+          PaperProps={{
+            style: {
+              backgroundColor: darkMode == "white" ? "white" : "#242424",
+              color: darkMode == "white" ? "black" : "white",
+            },
+          }}
         >
           <DialogTitle
             style={{ justifyContent: "space-between", display: "flex" }}
           >
             Student:
             <IconButton onClick={handleClose}>
-              <CloseIcon />
+              <CloseIcon 
+              style={{ color: darkMode == "white" ? "black" : "white" }}
+              />
             </IconButton>
             
           </DialogTitle>
@@ -104,6 +116,22 @@ function EditStudent(
                     setChangeNP(e.target.value);
                 }}
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
                 <TextField className={classes.TextField}
                 label="Czas trwania praktyki"
@@ -112,6 +140,22 @@ function EditStudent(
                     setChangeCTP(e.target.value);
                 }}
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
                 <TextField className={classes.TextField}
                 label="Porozumienie Od"
@@ -120,6 +164,22 @@ function EditStudent(
                     setChangePO(e.target.value);
                 }}
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
                 <TextField className={classes.TextField}
                 label="Porozumienie Do"
@@ -128,6 +188,22 @@ function EditStudent(
                     setChangePD(e.target.value);
                 }}
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
                 <TextField className={classes.TextField}
                 label="Data Porozumienia"
@@ -136,6 +212,22 @@ function EditStudent(
                     setChangeDP(e.target.value);
                 }}
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
             </div>
 

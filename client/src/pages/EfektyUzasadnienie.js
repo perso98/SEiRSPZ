@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import {
   makeStyles,
@@ -15,6 +15,7 @@ import Button from "@mui/material/Button";
 import EfektUzasadnienie from "../components/EfektUzasadnienie";
 import "react-toastify/dist/ReactToastify.css";
 import Helper from "../components/Helper";
+import { ThemeContext } from "../context/ThemeContext";
 
 const useStyles = makeStyles((theme) => ({
   containerMain: {
@@ -87,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
 function EfektyUzasadnienie() {
   const classes = useStyles();
 
+  const [darkMode] = useContext(ThemeContext);
   const [listaEfektyow, setListaEfektyow] = useState([]);
   const [idUser, setIdUser] = useState([]);
 
@@ -98,9 +100,11 @@ function EfektyUzasadnienie() {
       axios.get(`${url}getEfektUczenia`).then((res) => {
         setListaEfektyow(res.data);
         console.log(res.data)
+        console.log(res.message)
     })
       axios.get(`${url}IdUser`).then((res) => {
         setIdUser(res.data);
+        console.log(res.data)
     });
     setLoading(false)
     }, []);
@@ -175,6 +179,7 @@ function EfektyUzasadnienie() {
                 operacja={updateUzasadnienieEfektu}
                 set={setKomentarz}
                 komentarze={komentarz}
+                darkMode={darkMode}
             />
             <div style={{
               display: "flex",
@@ -207,12 +212,15 @@ function EfektyUzasadnienie() {
                   </TableHead>
                   <TableBody>
                   {loading === false ?(
-                      listaEfektyow.message === "Wybierz specjalność" ?(
+                    listaEfektyow?.message === "Wybierz Kierunek i Specjalność" ?(
+                      <div>Wybierz kierunek i specjalność w panelu Konto aby pojawiły się efekty uczenia się</div>
+                    ): 
+                      listaEfektyow?.message === "Wybierz specjalność" ?(
                         <div>Wybierz specjalność w panelu Konto aby pojawiły się efekty uczenia się</div>
                       ): 
                         listaEfektyow?.map((val) => (
                             <TableRow >
-                              <TableCell style={{ wordWrap: "break-word", maxWidth: "500px", textAlign: "center" }}>
+                              <TableCell style={{ wordWrap: "break-word", maxWidth: "500px", textAlign: "center",  color: darkMode == "white" ? "black" : "white" }}>
                                 {val.opis} {val.nazwa}
                               </TableCell>
     

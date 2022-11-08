@@ -162,10 +162,10 @@ exports.getEfektUczenia = async (req, res) => {
         id: userId.daneId,
       },
     })
-
+    console.log("specjalnosc.kierunek")
     console.log(specjalnosc.kierunek)
 
-    if(specjalnosc.kierunek !== null){
+    if(specjalnosc?.kierunek !== null){
       const idKierunek = await listaKierunkow.findOne({
         attributes: ['id'],
         where: {
@@ -197,12 +197,14 @@ exports.getEfektUczenia = async (req, res) => {
         res.send(listaEfektow);
       }
       else{
+        console.log("Wybierz Specjalność")
         res.send({
           message: "Wybierz Specjalność",
         });
       }
     }
     else{
+      console.log("Wybierz Kierunek i Specjalność")
       res.send({
         message: "Wybierz Kierunek i Specjalność",
       });

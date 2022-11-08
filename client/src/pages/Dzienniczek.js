@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import {
   makeStyles,
@@ -18,6 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Helper from "../components/Helper";
+import { ThemeContext } from "../context/ThemeContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -92,6 +93,7 @@ function Dzienniczek() {
   const classes = useStyles();
 
 //  const [checkDay, setCheckDay] = useState(null);
+  const [darkMode] = useContext(ThemeContext);
 
   const [dziennik, setDziennik] = useState([]);
 
@@ -444,6 +446,7 @@ function Dzienniczek() {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-around",
+                color: darkMode == "white" ? "black" : "white",
               }}
             >
               <div style={{ overflowX: "auto" }}>
@@ -476,16 +479,16 @@ function Dzienniczek() {
                   <TableBody>
                     {loading === true && <TableRow>Ładowanie...</TableRow>}
                     {dziennik.map((val) => (
-                      <TableRow key={val.id}>
+                      <TableRow key={val.id} >
                         <TableCell
-                          style={{ maxWidth: "100px", wordWrap: "break-word" }}
+                          style={{ maxWidth: "100px", wordWrap: "break-word",color: darkMode == "white" ? "black" : "white" }}
                         >
                           {val.dzien}
                         </TableCell>
-                        <TableCell style={{ textAlign: "center" }}>
+                        <TableCell style={{ textAlign: "center", color: darkMode == "white" ? "black" : "white"}}>
                         {val.data}
                         </TableCell>
-                        <TableCell style={{ textAlign: "center" }}>
+                        <TableCell style={{ textAlign: "center",color: darkMode == "white" ? "black" : "white" }}>
                         <div style={{ wordWrap: "break-word", minWidth: "120px", maxWidth: "180px" }}>
                           {val.opis.length < 26 ? (
                             <div>{val.opis}</div>
@@ -495,10 +498,29 @@ function Dzienniczek() {
                         </div>
                         </TableCell>
                         <TableCell style={{ textAlign: "center" }}>
-                        <div style={{ color: val.statusOpiekunaU === "Odrzucono" ? ("red"): val.statusOpiekunaU === "Zaakceptowano" ? ("green"):null }}>{val.statusOpiekunaU}</div>
+                        <div style={{ 
+                          color: darkMode == "white" ?
+                            (val.statusOpiekunaU === "Odrzucono" ? 
+                              ("red")
+                              : 
+                              val.statusOpiekunaU === "Zaakceptowano" ? 
+                                ("green")
+                                :
+                                ("black")
+                            )
+                            :
+                            (val.statusOpiekunaU === "Odrzucono" ? ("red"): val.statusOpiekunaU === "Zaakceptowano" ? ("green"):("white")) 
+                          }}>
+                            {val.statusOpiekunaU}
+                        </div>
                         </TableCell>
                         <TableCell style={{ textAlign: "center" }}>
-                        <div style={{ color: val.statusOpiekunaZ === "Odrzucono" ? ("red"): val.statusOpiekunaZ === "Zaakceptowano" ? ("green"):null }}>{val.statusOpiekunaZ}</div>
+                        <div style={{ 
+                          color: darkMode == "white" ?
+                          (val.statusOpiekunaZ === "Odrzucono" ? ("red"): val.statusOpiekunaZ === "Zaakceptowano" ? ("green"):("black"))
+                          :
+                          (val.statusOpiekunaZ === "Odrzucono" ? ("red"): val.statusOpiekunaZ === "Zaakceptowano" ? ("green"):("white")) 
+                        }}>{val.statusOpiekunaZ}</div>
                         </TableCell>
                         <TableCell>
                           <IconButton
@@ -540,6 +562,7 @@ function Dzienniczek() {
         setChangeDzien={setChangeDzien}
         setChangeData={setChangeData}
         setChangeIloscGodzin={setChangeIloscGodzin}
+        darkMode={darkMode}
       />
 
       {/* <AddDayDialog

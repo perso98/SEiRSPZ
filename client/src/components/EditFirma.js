@@ -16,6 +16,7 @@ import {
   TablePagination,
   TableRow,
   Toolbar,
+  
 } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
@@ -54,6 +55,10 @@ const useStyles = makeStyles(theme => ({
   form:{
       paddingRight: theme.spacing(2),
   },
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
 }));
 
 function EditFirma(
@@ -64,6 +69,7 @@ function EditFirma(
     operacja,
     onChange,
     setChange,
+    darkMode,
   }
   ){
 
@@ -77,13 +83,20 @@ function EditFirma(
           onClose={handleClose}
           fullWidth="40%"
           style={{ fontSize: "1.2rem", color: "#403c3c" }}
+          PaperProps={{
+            style: {
+              backgroundColor: darkMode == "white" ? "white" : "#242424",
+              color: darkMode == "white" ? "black" : "white",
+            },
+          }}
         >
           <DialogTitle
             style={{ justifyContent: "space-between", display: "flex" }}
           >
             Firma:{info.nazwa}
             <IconButton onClick={handleClose}>
-              <CloseIcon />
+              <CloseIcon 
+              style={{ color: darkMode == "white" ? "black" : "white" }}/>
             </IconButton>
           </DialogTitle>
           <DialogContent>
@@ -96,6 +109,22 @@ function EditFirma(
                     setChange(e.target.value);
                 }}
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
             </div>
 

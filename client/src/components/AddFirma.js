@@ -61,6 +61,10 @@ const useStyles = makeStyles(theme => ({
     form:{
         paddingRight: theme.spacing(2),
     },
+    notchedOutline: {
+        borderWidth: "1px",
+        borderColor: "white !important",
+      },
 }));
 
 function AddFirma(
@@ -70,6 +74,7 @@ function AddFirma(
         createFirma,
         onChange,
         firmaObject,
+        darkMode,
       }
 ) {
 
@@ -81,11 +86,18 @@ function AddFirma(
       } = firmaObject;
 
   return (
-    <Dialog open={addOpen} onClose={handleAddClose} fullWidth="60%">
+    <Dialog open={addOpen} onClose={handleAddClose} fullWidth="60%"
+    PaperProps={{
+        style: {
+          backgroundColor: darkMode == "white" ? "white" : "#242424",
+          color: darkMode == "white" ? "black" : "white",
+        },
+      }}>
       <DialogTitle style={{ display: "flex", justifyContent: "space-between" }}>
         Dodawanie nowego zakładu
         <IconButton aria-label="close" onClick={handleAddClose}>
-          <CloseIcon />
+          <CloseIcon 
+          style={{ color: darkMode == "white" ? "black" : "white" }}/>
         </IconButton>
       </DialogTitle>
       <DialogContent>
@@ -105,6 +117,22 @@ function AddFirma(
                                             onChange={(e) => onChange(e)}
                                             sx={{ width: '8ch'}}
                                             margin="normal"
+                                            inputProps={{
+                                                style: {
+                                                  color: darkMode == "white" ? "black" : "white",
+                                                },
+                                              }}
+                                              InputLabelProps={{
+                                                style: {
+                                                  color: darkMode == "white" ? "black" : "white",
+                                                },
+                                              }}
+                                              InputProps={{
+                                                classes: {
+                                                  notchedOutline:
+                                                    darkMode == "white" ? null : classes.notchedOutline,
+                                                },
+                                              }}
                                             />
                                         </Grid>
                                     </Grid>
@@ -118,6 +146,22 @@ function AddFirma(
                                         onChange={(e) => onChange(e)}
                                         multiline
                                         margin="normal"
+                                        inputProps={{
+                                            style: {
+                                              color: darkMode == "white" ? "black" : "white",
+                                            },
+                                          }}
+                                          InputLabelProps={{
+                                            style: {
+                                              color: darkMode == "white" ? "black" : "white",
+                                            },
+                                          }}
+                                          InputProps={{
+                                            classes: {
+                                              notchedOutline:
+                                                darkMode == "white" ? null : classes.notchedOutline,
+                                            },
+                                          }}
                                     />
                                 </div>
                             </form>

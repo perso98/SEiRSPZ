@@ -1,4 +1,4 @@
-import React,{ useState, useEffect} from 'react'
+import React,{ useState, useEffect, useContext} from 'react'
 import axios from 'axios'
 
 import { Container, formControlLabelClasses, Grid} from '@mui/material'
@@ -14,6 +14,8 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { url } from "../services/Url";
 import Helper from "../components/Helper";
+import { ThemeContext } from "../context/ThemeContext";
+
 function ListaOpiekunow() {
 
     const [dane,setDane]=useState([])
@@ -86,7 +88,7 @@ function ListaOpiekunow() {
 //Student
 
     const [addSOpen, setAddSOpen] = useState(false);
-
+    const [darkMode] = useContext(ThemeContext);
     const [firmaIdS, setFirmaSId] = useState([]);
     const [idOpiekuna, setIdOpiekuna] = useState();
     const [jakiOpiekun, setJakiOpiekun] = useState();
@@ -394,7 +396,7 @@ function ListaOpiekunow() {
                 onChange={onChangeAddOpiekun}
                 object={opiekunObject}
                 setChangeFirma={setChangeFirma}
-
+                darkMode={darkMode}
             />
             <AddStudent
                 idFirma={firmaIdS}
@@ -409,6 +411,7 @@ function ListaOpiekunow() {
                 onChange={onChangeAddStudent}
                 object={studentObject}
                 setChangeFirma={setChangeFirma}
+                darkMode={darkMode}
             />
             <AddFirma
                 addOpen={addOpen}
@@ -416,6 +419,7 @@ function ListaOpiekunow() {
                 createFirma={createFirma}
                 onChange={onChange}
                 firmaObject={firmaObject}
+                darkMode={darkMode}
             />
             <EditFirma
                 open={firmaEditOpen}
@@ -424,6 +428,7 @@ function ListaOpiekunow() {
                 operacja={updateFirma}
                 onChange={onChangeEditFirma}
                 setChange={setChangeNazwa}
+                darkMode={darkMode}
             />
             <EditStudent
                 open={studentEditOpen}
@@ -436,6 +441,7 @@ function ListaOpiekunow() {
                 setChangePO =  {setChangePO}
                 setChangePD =  {setChangePD}
                 setChangeDP =  {setChangeDP}
+                darkMode={darkMode}
             />
             <Grid container
                 style={{
