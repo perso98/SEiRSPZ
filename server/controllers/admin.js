@@ -85,7 +85,7 @@ exports.createAccount = async (req, res) => {
           login: userObject.login,
         },
       });
-      if (checkLogin == null) {
+      if (!checkLogin) {
         const hashed = await bcrypt.hash(userObject.password, 10);
         const newAcc = await user.create({
           login: userObject.login,
@@ -96,11 +96,13 @@ exports.createAccount = async (req, res) => {
           isAdmin: userObject.admin,
           isDziekanat: userObject.dziekanat,
           isOpiekun: userObject.opiekunU,
+          confirmation: 1,
         });
 
         res.send({
           message2: "Konto zostało pomyślnie utworzone",
           id: newAcc.id,
+          createdAt: newAcc.createdAt,
         });
       } else {
         res.send({ message2: "Login jest już zajęty" });
@@ -156,8 +158,11 @@ exports.getStudents = async (req, res) => {
     if (!req.session.user)
       res.send({ message: "Sesja utracona, zaloguj się ponownie" });
     else {
-      const listStudent = await user.findAll();
+      const listStudent = await user.findAll({
+        include: { model: dane, required: false },
+      });
       res.send(listStudent);
+      console.log(listStudent);
     }
   } catch (err) {
     console.log(err);

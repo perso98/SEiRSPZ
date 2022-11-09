@@ -60,22 +60,10 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   user.associate = (models) => {
-    user.belongsTo(models.dane, {
-      foreignKey: {
-        allowNull: true,
-      },
-    });
-    user.belongsTo(models.dane, {
-      foreignKey: {
-        allowNull: true,
-      },
-    });
-  };
-
-  user.associate = (models) => {
     user.hasMany(models.dziennik, {
       onDelete: "cascade",
     });
+    user.belongsTo(models.dane, { onDelete: "cascade" });
     user.hasMany(models.komentarze, {
       onDelete: "cascade",
     });

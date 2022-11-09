@@ -78,6 +78,7 @@ export default function Admin(props) {
   const [editOpen, setEditOpen] = useState(false);
   const [toggleSearch, setToggleSearch] = useState(true);
   const [yearSearch, setYearSearch] = useState("");
+  const [surnameSearch, setSurnameSearch] = useState("");
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -171,7 +172,7 @@ export default function Admin(props) {
             navigate("/login");
           });
         } else {
-          if (res.data.message2 === "Konto zostało pomyślnie utworzone") {
+          if (res.data.id) {
             setStudents([
               ...students,
               {
@@ -184,6 +185,8 @@ export default function Admin(props) {
                 isOpiekun: userObject.opiekunU,
                 isDziekanat: userObject.dziekanat,
                 isStudent: userObject.student,
+                createdAt: res.data.createdAt,
+                confirmation: 1,
               },
             ]);
             setUserObject({ ...userObject, login: "", password: "" });
@@ -204,30 +207,52 @@ export default function Admin(props) {
   };
   const recordsAfterFiltering = students.filter((val) => {
     if (all) {
-      if (searchLogin === "" && yearSearch === "") {
+      if (searchLogin === "" && yearSearch === "" && surnameSearch === "") {
         return val;
       } else if (searchLogin !== "") {
         return val.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (yearSearch !== "") {
         return val.createdAt.split("-")[0] === yearSearch;
+      } else if (surnameSearch !== "") {
+        return val.dane?.nazwisko
+          .toLowerCase()
+          .includes(surnameSearch.toLowerCase());
       }
     }
     if (confirmed) {
-      if (searchLogin === "" && yearSearch === "" && val.confirmation == 1) {
+      if (
+        searchLogin === "" &&
+        yearSearch === "" &&
+        val.confirmation == 1 &&
+        surnameSearch === ""
+      ) {
         return val;
       } else if (searchLogin !== "" && val.confirmation == 1) {
         return val.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (yearSearch !== "" && val.confirmation == 1) {
         return val.createdAt.split("-")[0] === yearSearch;
+      } else if (surnameSearch !== "") {
+        return val.dane?.nazwisko
+          .toLowerCase()
+          .includes(surnameSearch.toLowerCase());
       }
     }
     if (notConfirmed) {
-      if (searchLogin === "" && yearSearch === "" && val.confirmation == 0) {
+      if (
+        searchLogin === "" &&
+        yearSearch === "" &&
+        val.confirmation == 0 &&
+        surnameSearch === ""
+      ) {
         return val;
       } else if (searchLogin !== "" && val.confirmation == 0) {
         return val.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (yearSearch !== "" && val.confirmation == 0) {
         return val.createdAt.split("-")[0] === yearSearch;
+      } else if (surnameSearch !== "") {
+        return val.dane?.nazwisko
+          .toLowerCase()
+          .includes(surnameSearch.toLowerCase());
       }
     }
   });
@@ -370,12 +395,15 @@ export default function Admin(props) {
       });
   };
   const functionToggleSearch = () => {
-    if (toggleSearch === true) {
-      setToggleSearch(false);
+    if (toggleSearch === 0) {
+      setToggleSearch(1);
       setSearchLogin("");
-    } else {
-      setToggleSearch(true);
+    } else if (toggleSearch === 1) {
+      setToggleSearch(2);
       setYearSearch("");
+    } else {
+      setSurnameSearch("");
+      setToggleSearch(0);
     }
   };
   const info = (
@@ -437,7 +465,7 @@ export default function Admin(props) {
         <div />
         <div style={{ overflowX: "auto" }}>
           <Toolbar className={classes.toolbar}>
-            {toggleSearch === true ? (
+            {toggleSearch === 0 ? (
               <TextField
                 className={classes.searchInp}
                 label="Szukaj po e-mailu"
@@ -474,6 +502,47 @@ export default function Admin(props) {
                 }}
                 onChange={(e) => {
                   setSearchLogin(e.target.value);
+                  setPage(0);
+                }}
+              />
+            ) : toggleSearch === 1 ? (
+              <TextField
+                className={classes.searchInp}
+                type="text"
+                value={surnameSearch}
+                label="Szukaj po nazwisku"
+                variant="outlined"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                    classes: {
+                      notchedOutline:
+                        darkMode == "white" ? null : classes.notchedOutline,
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon
+                        style={{
+                          color: darkMode == "white" ? "black" : "white",
+                        }}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setSurnameSearch(e.target.value);
                   setPage(0);
                 }}
               />

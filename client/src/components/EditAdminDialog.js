@@ -63,6 +63,15 @@ function EditAdminDialog({
           <DialogContent
             style={{ display: "flex", flexDirection: "column", margin: "5%" }}
           >
+            {editStudent.dane ? (
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <span style={{ marginBottom: "1rem" }}>
+                  {" "}
+                  Imię: {editStudent.dane.imie}
+                </span>
+                <span> Nazwisko: {editStudent.dane.nazwisko}</span>
+              </div>
+            ) : null}
             <div
               style={{
                 margin: "1rem",
