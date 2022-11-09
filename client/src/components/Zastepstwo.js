@@ -24,8 +24,10 @@ import Button from "@mui/material/Button";
 import { Container, Typography, Grid, Input } from '@mui/material'
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import OpiekunU from "../pages/OpiekunU";
-import OpiekunUEfekty from "../pages/EfektyOpiekunU";
+import OpiekunU from "../pages/ZastepstwoOpiekunU";
+import OpiekunUEfekty from "../pages/ZastepstwoEfektyOpiekunU";
+import OpiekunUHistory from "../pages/ZastepstwoOpiekunUHistory";
+
 function Zastepstwo(
     {
         open,
@@ -50,6 +52,7 @@ function Zastepstwo(
         {infoUser !== null ? (
             <div>
                 Zastępstwo: {infoUser.imie} {infoUser.nazwisko}
+                Id: {infoUser.user.id}
             </div>
         ): null}
         <IconButton aria-label="close" onClick={handleClose}>
@@ -59,8 +62,15 @@ function Zastepstwo(
       <DialogContent>
         <DialogContentText style={{ marginTop: "2%" }}>
             <div>
-            <OpiekunU></OpiekunU>
-            <OpiekunUEfekty/>
+            <OpiekunU 
+            infoUser = { infoUser }
+            />
+            <OpiekunUHistory
+            infoUser = { infoUser }
+            />
+            <OpiekunUEfekty
+            infoUser = { infoUser }
+            />
 
             </div>
         </DialogContentText>

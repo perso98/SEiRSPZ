@@ -64,6 +64,10 @@ const useStyles = makeStyles(theme => ({
   form:{
       paddingRight: theme.spacing(2),
   },
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
 }));
 
 function EditDay(
@@ -85,6 +89,7 @@ function EditDay(
     setChangeData,
     setChangeIloscGodzin,
     sendDay,
+    darkMode,
   }
   ){
 
@@ -175,6 +180,12 @@ function EditDay(
           open={editOpen}
           onClose={handleEditClose}
           fullWidth="40%"
+          PaperProps={{
+            style: {
+              backgroundColor: darkMode == "white" ? "white" : "#242424",
+              color: darkMode == "white" ? "black" : "white",
+            },
+          }}
           style={{ fontSize: "1.2rem", color: "#403c3c" }}
         >
           <DialogTitle
@@ -182,7 +193,9 @@ function EditDay(
           >
             Dzień:{editDay.dzien}
             <IconButton onClick={handleEditClose}>
-              <CloseIcon />
+              <CloseIcon 
+              style={{ color: darkMode == "white" ? "black" : "white" }}
+              />
             </IconButton>
           </DialogTitle>
           <DialogContent>
@@ -200,6 +213,22 @@ function EditDay(
                   setChangeDzien(e.target.value);
                 }}
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
             </Box>
             <Box sx={{ width: 120}}>
@@ -211,6 +240,22 @@ function EditDay(
                   setChangeData(e.target.value);
                 }}
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
             </Box>
 
@@ -223,6 +268,22 @@ function EditDay(
                   setChangeIloscGodzin(e.target.value);
                 }}
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
             </Box>
             </Stack>
@@ -236,6 +297,22 @@ function EditDay(
                 multiline
                 fullWidth
                 margin="normal"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                }}
                 />
             </div>
 
@@ -243,11 +320,39 @@ function EditDay(
               <b>Zatwierdzenie </b>
               <Stack direction="row" spacing={1}>
                 <h5>Opiekun uczelniany:</h5>
-                <div>{editDay.statusOpiekunaU}</div>
+                <div style={{ 
+                          color: darkMode == "white" ?
+                            (editDay.statusOpiekunaU === "Odrzucono" ? 
+                              ("red")
+                              : 
+                              editDay.statusOpiekunaU === "Zaakceptowano" ? 
+                                ("green")
+                                :
+                                ("black")
+                            )
+                            :
+                            (editDay.statusOpiekunaU === "Odrzucono" ? ("red"): editDay.statusOpiekunaU === "Zaakceptowano" ? ("green"):("white")) 
+                          }}>
+                    {editDay.statusOpiekunaU}
+                  </div>
               </Stack>
               <Stack direction="row" spacing={1}>
               <h5>Opiekun zakładowy: </h5> 
-              <div>{editDay.statusOpiekunaZ}</div>
+              <div style={{ 
+                          color: darkMode == "white" ?
+                            (editDay.statusOpiekunaZ === "Odrzucono" ? 
+                              ("red")
+                              : 
+                              editDay.statusOpiekunaZ === "Zaakceptowano" ? 
+                                ("green")
+                                :
+                                ("black")
+                            )
+                            :
+                            (editDay.statusOpiekunaZ === "Odrzucono" ? ("red"): editDay.statusOpiekunaZ === "Zaakceptowano" ? ("green"):("white")) 
+                          }}>
+                    {editDay.statusOpiekunaZ}
+                  </div>
               </Stack>
             </div>
 

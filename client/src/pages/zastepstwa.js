@@ -1,12 +1,11 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useContext} from 'react'
 import axios from "axios"
 import { makeStyles } from '@mui/styles'
 import { Button, Grid } from '@mui/material';
 import { url } from "../services/Url";
 import SearchBar from "../components/SearchBarNoMargin";
 import Zastepstwo from "../components/Zastepstwo";
-
-
+import { ThemeContext } from "../context/ThemeContext";
 const useStyles = makeStyles(theme => ({
     container:{
         marginBottom: theme.spacing(10)
@@ -42,6 +41,7 @@ const useStyles = makeStyles(theme => ({
 
 function Zastepstwa() {
     const classes = useStyles();
+    const [darkMode] = useContext(ThemeContext);
 
   //  const [edit, setEdit] = useState(0);
   //  const [nazwaKierunku, setNazwaKierunku] = useState();
@@ -123,10 +123,11 @@ function Zastepstwa() {
       <Grid item xs className={classes.content}>
         
                     <Grid container>
-                    <Grid item xs >
+                    <Grid item xs style={{color: darkMode == "white" ? "black" : "white"}}>
                             <div>
                               <div style={{margin:"3rem", display:"flex", justifyContent: "center"}} >
                                     <SearchBar
+                                    darkMode={darkMode}
                                     setSearchLogin={setSearchLogin}
                                   //  setItemOffset={setItemOffset}
                                     />

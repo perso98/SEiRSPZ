@@ -357,6 +357,8 @@ function EfektyUczeniaSie() {
           style={{
             display: "flex",  
             justifyContent: "center",
+            flexDirection: "column",
+            paddingBottom: "50px",
             }}
         >
           <div/>

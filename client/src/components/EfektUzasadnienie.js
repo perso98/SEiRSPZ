@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
   containerMain:{
       height: "100vh",
   },
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
 
 }));
 
@@ -36,6 +40,7 @@ function EfektUzasadnienie(
     operacja,
     set,
     komentarze,
+    darkMode,
   }
   ){
 
@@ -60,12 +65,18 @@ function EfektUzasadnienie(
           onClose={handleClose}
           fullWidth="40%"
           style={{ fontSize: "1.2rem", color: "#403c3c" }}
+          PaperProps={{
+            style: {
+              backgroundColor: darkMode == "white" ? "white" : "#242424",
+              color: darkMode == "white" ? "black" : "white",
+            },
+          }}
         >
           <DialogTitle>
             <div style={{ justifyContent: "space-between", display: "flex" }}>
             Efekt: {info.nazwa}
             <IconButton onClick={handleClose}>
-              <CloseIcon />
+              <CloseIcon style={{ color: darkMode == "white" ? "black" : "white" }}/>
             </IconButton>
             </div>
             <div>
@@ -86,6 +97,22 @@ function EfektUzasadnienie(
                   multiline
                   fullWidth
                   margin="normal"
+                  inputProps={{
+                    style: {
+                      color: darkMode == "white" ? "black" : "white",
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      color: darkMode == "white" ? "black" : "white",
+                    },
+                  }}
+                  InputProps={{
+                    classes: {
+                      notchedOutline:
+                        darkMode == "white" ? null : classes.notchedOutline,
+                    },
+                  }}
                                   />
                       
                 </div>

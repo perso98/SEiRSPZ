@@ -63,6 +63,10 @@ const useStyles = makeStyles(theme => ({
     form:{
         paddingRight: theme.spacing(2),
     },
+    notchedOutline: {
+        borderWidth: "1px",
+        borderColor: "white !important",
+      },
 }));
 
 function AddOpiekun(
@@ -77,6 +81,7 @@ function AddOpiekun(
         delOpiekunFirma,
         onChange,
         object,
+        darkMode,
       }
 ) {
 
@@ -118,12 +123,21 @@ function AddOpiekun(
 
     const [rola, setRola] = useState("");
   return (
-    <Dialog open={addOpen} onClose={handleClose} fullWidth="60%">
+    <Dialog open={addOpen} onClose={handleClose} fullWidth="60%"
+    PaperProps={{
+        style: {
+          backgroundColor: darkMode == "white" ? "white" : "#242424",
+          color: darkMode == "white" ? "black" : "white",
+        },
+      }}
+      >
       <DialogTitle style={{ display: "flex", justifyContent: "space-between" }}>
         Firma: {idFirma.nazwa}
         <div>Dodawanie opiekuna </div>
         <IconButton aria-label="close" onClick={handleClose}>
-          <CloseIcon />
+          <CloseIcon 
+          style={{ color: darkMode == "white" ? "black" : "white" }}
+          />
         </IconButton>
       </DialogTitle>
       <DialogContent>
@@ -132,7 +146,7 @@ function AddOpiekun(
                 <Grid item xs className={classes.content}>
                     <Grid container>
                         
-                        <Grid item xs >
+                        <Grid item xs style={{ color: darkMode == "white" ? "black" : "white" }}>
                             <div>
                             Przypisani Opiekuni<p></p>
                             Imie i naziwkso: 
