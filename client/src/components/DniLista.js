@@ -130,8 +130,23 @@ function DzienniczekDni(props) {
                     ? val.opis.substring(0, 60) + "..."
                     : val.opis}
                 </div>{" "}
-                <div style={{ margin: "0 0 1rem 0" }}>
-                  Student: {val.user.login}{" "}
+                <div style={{ marginBottom: "1rem" }}>
+                  <span>Student: {val.user.login}</span>
+                  {val.user.dane ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginTop: "1rem",
+                      }}
+                    >
+                      <span style={{ marginBottom: "1rem" }}>
+                        {" "}
+                        Imię: {val.user.dane.imie}
+                      </span>
+                      <span> Nazwisko: {val.user.dane.nazwisko}</span>
+                    </div>
+                  ) : null}
                   {props.status
                     ? props.statusOpiekuna === "statusOpiekunaU"
                       ? OpiekunUcount(val.user.id)

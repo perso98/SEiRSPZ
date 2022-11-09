@@ -162,7 +162,6 @@ exports.getStudents = async (req, res) => {
         include: { model: dane, required: false },
       });
       res.send(listStudent);
-      console.log(listStudent);
     }
   } catch (err) {
     console.log(err);

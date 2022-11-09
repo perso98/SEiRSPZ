@@ -4,6 +4,7 @@ import Container from "@material-ui/core/Container";
 import { useState, useContext } from "react";
 import DialogOpiekunZ from "../components/DialogOpiekunZ";
 import * as axios from "axios";
+import { Button } from "@mui/material";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 import ButtonLink from "../components/Button";
@@ -35,6 +36,8 @@ function OpiekunU(props) {
   const statusOpiekuna = "statusOpiekunaU";
   const navigate = useNavigate();
   const [darkMode] = useContext(ThemeContext);
+  const [toggleSearch, setToggleSearch] = useState(false);
+  const [searchSurname, setSearchSurname] = useState("");
   const handleClose = () => {
     setOpis();
     setKomentarz();
@@ -44,7 +47,15 @@ function OpiekunU(props) {
     setCheckDay(val);
     setOpen(true);
   };
-
+  const changeToggle = () => {
+    if (toggleSearch) {
+      setToggleSearch(false);
+      setSearchLogin("");
+    } else {
+      setToggleSearch(true);
+      setSearchSurname("");
+    }
+  };
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunU`).then((res) => {
       if (res.data.message) {
@@ -120,12 +131,14 @@ function OpiekunU(props) {
   };
 
   const recordsAfterFiltering = dzienniczek.filter((val) => {
-    if (searchLogin == "") {
+    if (searchLogin == "" && searchSurname == "") {
       return val;
-    } else if (
-      val.user.login.toLowerCase().includes(searchLogin.toLowerCase())
-    ) {
-      return val;
+    } else if (searchLogin !== "")
+      return val.user.login.toLowerCase().includes(searchLogin.toLowerCase());
+    else if (searchSurname !== "") {
+      return val.user.dane.nazwisko
+        .toLowerCase()
+        .includes(searchSurname.toLowerCase());
     }
   });
   const info = (
@@ -188,11 +201,21 @@ function OpiekunU(props) {
               setSearchLogin={setSearchLogin}
               setRemountComponent={setRemountComponent}
               darkMode={darkMode}
+              toggleSearch={toggleSearch}
+              setSearchSurname={setSearchSurname}
             />
           )}
           <Helper info={info} title="Pomoc opiekun uczelniany" />
           <ButtonLink linkTo="/opiekunu/historia" text="Historia" />
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeToggle();
+          }}
+        >
+          Zmień opcje wyszukiwania
+        </Button>
         {recordsAfterFiltering.length === 0 && !loading && (
           <div
             style={{

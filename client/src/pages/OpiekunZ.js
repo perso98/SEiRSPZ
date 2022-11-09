@@ -16,10 +16,14 @@ import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
 import { ThemeContext } from "../context/ThemeContext";
+import { Button } from "@mui/material";
 function OpiekunZ(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [searchLogin, setSearchLogin] = useState("");
+  const [toggleSearch, setToggleSearch] = useState(false);
+  const [searchSurname, setSearchSurname] = useState("");
   const [open, setOpen] = useState(false);
   const [checkDay, setCheckDay] = useState(null);
   const [remountComponent, setRemountComponent] = useState(0);
@@ -117,12 +121,14 @@ function OpiekunZ(props) {
   };
 
   const recordsAfterFiltering = dzienniczek.filter((val) => {
-    if (searchLogin == "") {
+    if (searchLogin == "" && searchSurname == "") {
       return val;
-    } else if (
-      val.user.login.toLowerCase().includes(searchLogin.toLowerCase())
-    ) {
-      return val;
+    } else if (searchLogin !== "")
+      return val.user.login.toLowerCase().includes(searchLogin.toLowerCase());
+    else if (searchSurname !== "") {
+      return val.user.dane.nazwisko
+        .toLowerCase()
+        .includes(searchSurname.toLowerCase());
     }
   });
   const info = (
@@ -146,6 +152,15 @@ function OpiekunZ(props) {
       który znajdzie się tutaj.
     </div>
   );
+  const changeToggle = () => {
+    if (toggleSearch) {
+      setToggleSearch(false);
+      setSearchLogin("");
+    } else {
+      setToggleSearch(true);
+      setSearchSurname("");
+    }
+  };
   return (
     <div style={{ background: darkMode == "white" ? "white" : "#242424" }}>
       <Container
@@ -185,8 +200,11 @@ function OpiekunZ(props) {
               darkMode={darkMode}
               setSearchLogin={setSearchLogin}
               setRemountComponent={setRemountComponent}
+              toggleSearch={toggleSearch}
+              setSearchSurname={setSearchSurname}
             />
           )}
+
           <Helper
             info={info}
             title="Pomoc opiekun zakładowy"
@@ -195,6 +213,14 @@ function OpiekunZ(props) {
 
           <ButtonLink linkTo="/opiekunz/historia" text="Historia" />
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeToggle();
+          }}
+        >
+          Zmień opcje wyszukiwania
+        </Button>
         {recordsAfterFiltering.length === 0 && !loading && (
           <div
             style={{

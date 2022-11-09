@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import { useState, useContext } from "react";
 import DialogOpiekunZ from "../components/DialogOpiekunZ";
+
 import FileDownload from "js-file-download";
 import * as axios from "axios";
 import SearchBar from "../components/SearchBar";
@@ -32,6 +33,8 @@ function OpiekunStatus(props) {
   const [declined, setDeclined] = useState(false);
   const [all, setAll] = useState(true);
   const [darkMode] = useContext(ThemeContext);
+  const [toggleSearch, setToggleSearch] = useState(false);
+  const [searchSurname, setSearchSurname] = useState("");
   const status = true;
   const handleClose = () => {
     setKomentarz();
@@ -42,7 +45,15 @@ function OpiekunStatus(props) {
     setCheckDay(val);
     setOpen(true);
   };
-
+  const changeToggle = () => {
+    if (toggleSearch) {
+      setToggleSearch(false);
+      setSearchLogin("");
+    } else {
+      setToggleSearch(true);
+      setSearchSurname("");
+    }
+  };
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunZStatus`).then((res) => {
       if (res.data.message) {
@@ -169,35 +180,56 @@ function OpiekunStatus(props) {
 
   const recordsAfterFiltering = dzienniczek.filter((val) => {
     if (accepted) {
-      if (val?.statusOpiekunaZ === "Zaakceptowano" && searchLogin === "") {
-        return val;
-      } else if (
-        val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
+      if (
         val?.statusOpiekunaZ === "Zaakceptowano" &&
-        searchLogin !== ""
+        searchLogin === "" &&
+        searchSurname === ""
       ) {
         return val;
+      } else if (
+        searchLogin !== "" &&
+        val?.statusOpiekunaZ === "Zaakceptowano"
+      ) {
+        return val?.user?.login
+          .toLowerCase()
+          .includes(searchLogin.toLowerCase());
+      } else if (
+        searchSurname !== "" &&
+        val?.statusOpiekunaZ === "Zaakceptowano"
+      ) {
+        return val.user.dane.nazwisko
+          .toLowerCase()
+          .includes(searchSurname.toLowerCase());
       }
     }
     if (all) {
-      if (searchLogin === "") {
+      if (searchLogin === "" && searchSurname === "") {
         return val;
-      } else if (
-        val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
-        searchLogin !== ""
-      ) {
-        return val;
+      } else if (searchLogin !== "") {
+        return val?.user?.login
+          .toLowerCase()
+          .includes(searchLogin.toLowerCase());
+      } else if (searchSurname !== "") {
+        return val.user.dane.nazwisko
+          .toLowerCase()
+          .includes(searchSurname.toLowerCase());
       }
     }
     if (declined) {
-      if (val?.statusOpiekunaZ === "Odrzucono" && searchLogin === "") {
-        return val;
-      } else if (
-        val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
+      if (
         val?.statusOpiekunaZ === "Odrzucono" &&
-        searchLogin !== ""
+        searchLogin === "" &&
+        searchSurname === ""
       ) {
         return val;
+      } else if (searchLogin !== "" && val?.statusOpiekunaZ === "Odrzucono") {
+        return val?.user?.login
+          .toLowerCase()
+          .includes(searchLogin.toLowerCase());
+      } else if (searchSurname !== "" && val?.statusOpiekunaZ === "Odrzucono") {
+        return val.user.dane.nazwisko
+          .toLowerCase()
+          .includes(searchSurname.toLowerCase());
       }
     }
   });
@@ -262,6 +294,8 @@ function OpiekunStatus(props) {
               setSearchLogin={setSearchLogin}
               darkMode={darkMode}
               setRemountComponent={setRemountComponent}
+              toggleSearch={toggleSearch}
+              setSearchSurname={setSearchSurname}
             />
           )}
           <Helper
@@ -348,6 +382,14 @@ function OpiekunStatus(props) {
             </Button>
           )}
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeToggle();
+          }}
+        >
+          Zmień opcje wyszukiwania
+        </Button>
         {recordsAfterFiltering.length === 0 && !loading && (
           <div
             style={{

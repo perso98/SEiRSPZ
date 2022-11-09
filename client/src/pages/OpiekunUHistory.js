@@ -4,6 +4,7 @@ import Container from "@material-ui/core/Container";
 import { useState, useContext } from "react";
 import DialogOpiekunZ from "../components/DialogOpiekunZ";
 import * as axios from "axios";
+
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 import ButtonLink from "../components/Button";
@@ -28,6 +29,8 @@ function OpiekunUHistory(props) {
   const [declined, setDeclined] = useState(false);
   const [all, setAll] = useState(true);
   const [remountComponent, setRemountComponent] = useState(0);
+  const [toggleSearch, setToggleSearch] = useState(false);
+  const [searchSurname, setSearchSurname] = useState("");
   const [darkMode] = useContext(ThemeContext);
   const statusOpiekuna = "statusOpiekunaU";
   const navigate = useNavigate();
@@ -42,7 +45,15 @@ function OpiekunUHistory(props) {
 
     setOpen(true);
   };
-
+  const changeToggle = () => {
+    if (toggleSearch) {
+      setToggleSearch(false);
+      setSearchLogin("");
+    } else {
+      setToggleSearch(true);
+      setSearchSurname("");
+    }
+  };
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunUStatus`).then((res) => {
       if (res.data.message) {
@@ -172,35 +183,56 @@ function OpiekunUHistory(props) {
 
   const recordsAfterFiltering = dzienniczek.filter((val) => {
     if (accepted) {
-      if (val?.statusOpiekunaU === "Zaakceptowano" && searchLogin == "") {
-        return val;
-      } else if (
-        val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
+      if (
         val?.statusOpiekunaU === "Zaakceptowano" &&
-        searchLogin !== ""
+        searchLogin === "" &&
+        searchSurname === ""
       ) {
         return val;
+      } else if (
+        searchLogin !== "" &&
+        val?.statusOpiekunaU === "Zaakceptowano"
+      ) {
+        return val?.user?.login
+          .toLowerCase()
+          .includes(searchLogin.toLowerCase());
+      } else if (
+        searchSurname !== "" &&
+        val?.statusOpiekunaU === "Zaakceptowano"
+      ) {
+        return val.user.dane.nazwisko
+          .toLowerCase()
+          .includes(searchSurname.toLowerCase());
       }
     }
     if (all) {
-      if (searchLogin == "") {
+      if (searchLogin === "" && searchSurname === "") {
         return val;
-      } else if (
-        val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
-        searchLogin !== ""
-      ) {
-        return val;
+      } else if (searchLogin !== "") {
+        return val?.user?.login
+          .toLowerCase()
+          .includes(searchLogin.toLowerCase());
+      } else if (searchSurname !== "") {
+        return val.user.dane.nazwisko
+          .toLowerCase()
+          .includes(searchSurname.toLowerCase());
       }
     }
     if (declined) {
-      if (val?.statusOpiekunaU === "Odrzucono" && searchLogin == "") {
-        return val;
-      } else if (
-        val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase()) &&
+      if (
         val?.statusOpiekunaU === "Odrzucono" &&
-        searchLogin !== ""
+        searchLogin === "" &&
+        searchSurname === ""
       ) {
         return val;
+      } else if (searchLogin !== "" && val?.statusOpiekunaU === "Odrzucono") {
+        return val?.user?.login
+          .toLowerCase()
+          .includes(searchLogin.toLowerCase());
+      } else if (searchSurname !== "" && val?.statusOpiekunaU === "Odrzucono") {
+        return val.user.dane.nazwisko
+          .toLowerCase()
+          .includes(searchSurname.toLowerCase());
       }
     }
   });
@@ -265,6 +297,8 @@ function OpiekunUHistory(props) {
               setSearchLogin={setSearchLogin}
               setRemountComponent={setRemountComponent}
               darkMode={darkMode}
+              toggleSearch={toggleSearch}
+              setSearchSurname={setSearchSurname}
             />
           )}
           <Helper
@@ -354,6 +388,14 @@ function OpiekunUHistory(props) {
             </Button>
           )}
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeToggle();
+          }}
+        >
+          Zmień opcje wyszukiwania
+        </Button>
         {recordsAfterFiltering.length === 0 && !loading && (
           <div
             style={{
@@ -372,6 +414,7 @@ function OpiekunUHistory(props) {
             <div />
           </div>
         )}
+
         {recordsAfterFiltering.length > 0 ? (
           <div key={remountComponent}>
             <Pagination

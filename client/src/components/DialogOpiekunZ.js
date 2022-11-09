@@ -95,6 +95,22 @@ function DialogOpiekunZ(props) {
                 <h5>E-mail:</h5>
                 {props.checkDay.user.login}
               </div>
+              {console.log(props.checkDay)}
+              {props.checkDay.user.dane ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <span style={{ marginBottom: "1rem" }}>
+                    {" "}
+                    Imię: {props.checkDay.user.dane.imie}
+                  </span>
+                  <span> Nazwisko: {props.checkDay.user.dane.nazwisko}</span>
+                </div>
+              ) : null}
               <div>
                 {props.checkDay?.dzienZalacznikis?.length > 0 && (
                   <div style={{ marginBottom: "1rem" }}>Załączniki:</div>
