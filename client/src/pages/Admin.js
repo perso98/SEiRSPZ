@@ -76,7 +76,7 @@ export default function Admin(props) {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
-  const [toggleSearch, setToggleSearch] = useState(true);
+  const [toggleSearch, setToggleSearch] = useState(0);
   const [yearSearch, setYearSearch] = useState("");
   const [surnameSearch, setSurnameSearch] = useState("");
   const navigate = useNavigate();
