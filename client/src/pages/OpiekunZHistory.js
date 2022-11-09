@@ -305,6 +305,14 @@ function OpiekunStatus(props) {
           />
           <ButtonLink linkTo="/opiekunz" text="Nowe" />
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeToggle();
+          }}
+        >
+          Zmień opcje wyszukiwania
+        </Button>
         <div
           style={{
             display: "flex",
@@ -382,14 +390,7 @@ function OpiekunStatus(props) {
             </Button>
           )}
         </div>
-        <Button
-          variant="contained"
-          onClick={() => {
-            changeToggle();
-          }}
-        >
-          Zmień opcje wyszukiwania
-        </Button>
+
         {recordsAfterFiltering.length === 0 && !loading && (
           <div
             style={{

@@ -308,6 +308,14 @@ function OpiekunUHistory(props) {
           />
           <ButtonLink linkTo="/opiekunu" text="Nowe" />
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeToggle();
+          }}
+        >
+          Zmień opcje wyszukiwania
+        </Button>
         <div
           style={{
             display: "flex",
@@ -388,14 +396,7 @@ function OpiekunUHistory(props) {
             </Button>
           )}
         </div>
-        <Button
-          variant="contained"
-          onClick={() => {
-            changeToggle();
-          }}
-        >
-          Zmień opcje wyszukiwania
-        </Button>
+
         {recordsAfterFiltering.length === 0 && !loading && (
           <div
             style={{
