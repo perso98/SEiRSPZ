@@ -12,6 +12,10 @@ import {
   //  Tooltip,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import React, { useState, useEffect, useContext } from "react";
 import SearchIcon from "@mui/icons-material/Search";
@@ -79,6 +83,8 @@ export default function Admin(props) {
   const [toggleSearch, setToggleSearch] = useState(0);
   const [yearSearch, setYearSearch] = useState("");
   const [surnameSearch, setSurnameSearch] = useState("");
+  const [firmaSearch, setFirmaSearch] = useState("");
+  const [roleSearch, setRoleSearch] = useState("Wszyscy");
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -207,16 +213,35 @@ export default function Admin(props) {
   };
   const recordsAfterFiltering = students.filter((val) => {
     if (all) {
-      if (searchLogin === "" && yearSearch === "" && surnameSearch === "") {
-        return val;
+      if (
+        searchLogin === "" &&
+        yearSearch === "" &&
+        surnameSearch === "" &&
+        firmaSearch === ""
+      ) {
+        return roleSearch !== "Wszyscy" ? val[roleSearch] == 1 : val;
       } else if (searchLogin !== "") {
-        return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 &&
+              val.login.toLowerCase().includes(searchLogin.toLowerCase())
+          : val && val.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (yearSearch !== "") {
-        return val.createdAt.split("-")[0] === yearSearch;
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearSearch
+          : val.createdAt.split("-")[0] === yearSearch;
       } else if (surnameSearch !== "") {
-        return val.dane?.nazwisko
-          .toLowerCase()
-          .includes(surnameSearch.toLowerCase());
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 && val.dane?.nazwisko
+          : val.dane?.nazwisko
+              .toLowerCase()
+              .includes(surnameSearch.toLowerCase());
+      } else if (firmaSearch !== "") {
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 &&
+              val.firma?.nazwa
+                .toLowerCase()
+                .includes(firmaSearch.toLowerCase()) === yearSearch
+          : val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase());
       }
     }
     if (confirmed) {
@@ -224,17 +249,33 @@ export default function Admin(props) {
         searchLogin === "" &&
         yearSearch === "" &&
         val.confirmation == 1 &&
-        surnameSearch === ""
+        surnameSearch === "" &&
+        firmaSearch === ""
       ) {
-        return val;
+        return roleSearch !== "Wszyscy" ? val[roleSearch] == 1 : val;
       } else if (searchLogin !== "" && val.confirmation == 1) {
-        return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 &&
+              val.login.toLowerCase().includes(searchLogin.toLowerCase())
+          : val.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (yearSearch !== "" && val.confirmation == 1) {
-        return val.createdAt.split("-")[0] === yearSearch;
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearSearch
+          : val.createdAt.split("-")[0] === yearSearch;
       } else if (surnameSearch !== "") {
-        return val.dane?.nazwisko
-          .toLowerCase()
-          .includes(surnameSearch.toLowerCase());
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 &&
+              val.dane?.nazwisko
+                .toLowerCase()
+                .includes(surnameSearch.toLowerCase())
+          : val.dane?.nazwisko
+              .toLowerCase()
+              .includes(surnameSearch.toLowerCase());
+      } else if (firmaSearch !== "" && val.confirmation == 1) {
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 &&
+              val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase())
+          : val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase());
       }
     }
     if (notConfirmed) {
@@ -242,17 +283,30 @@ export default function Admin(props) {
         searchLogin === "" &&
         yearSearch === "" &&
         val.confirmation == 0 &&
-        surnameSearch === ""
+        surnameSearch === "" &&
+        firmaSearch === ""
       ) {
-        return val;
+        return roleSearch !== "Wszyscy" ? val[roleSearch] == 1 : val;
       } else if (searchLogin !== "" && val.confirmation == 0) {
-        return val.login.toLowerCase().includes(searchLogin.toLowerCase());
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 &&
+              val.login.toLowerCase().includes(searchLogin.toLowerCase())
+          : val.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (yearSearch !== "" && val.confirmation == 0) {
-        return val.createdAt.split("-")[0] === yearSearch;
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearSearch
+          : val.createdAt.split("-")[0] === yearSearch;
       } else if (surnameSearch !== "") {
-        return val.dane?.nazwisko
-          .toLowerCase()
-          .includes(surnameSearch.toLowerCase());
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 && val.dane?.nazwisko
+          : val.dane?.nazwisko
+              .toLowerCase()
+              .includes(surnameSearch.toLowerCase());
+      } else if (firmaSearch !== "" && val.confirmation == 0) {
+        return roleSearch !== "Wszyscy"
+          ? val[roleSearch] == 1 &&
+              val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase())
+          : val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase());
       }
     }
   });
@@ -401,10 +455,17 @@ export default function Admin(props) {
     } else if (toggleSearch === 1) {
       setToggleSearch(2);
       setYearSearch("");
-    } else {
+    } else if (toggleSearch === 2) {
       setSurnameSearch("");
+      setToggleSearch(3);
+    } else {
       setToggleSearch(0);
+      setFirmaSearch("");
     }
+  };
+  const handleRoleChange = (event) => {
+    setRoleSearch(event.target.value);
+    setPage(0);
   };
   const info = (
     <div>
@@ -546,7 +607,7 @@ export default function Admin(props) {
                   setPage(0);
                 }}
               />
-            ) : (
+            ) : toggleSearch === 2 ? (
               <TextField
                 className={classes.searchInp}
                 type="number"
@@ -587,7 +648,49 @@ export default function Admin(props) {
                   setPage(0);
                 }}
               />
+            ) : (
+              <TextField
+                className={classes.searchInp}
+                type="text"
+                value={firmaSearch}
+                label="Szukaj po nazwie firmy"
+                variant="outlined"
+                inputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                    classes: {
+                      notchedOutline:
+                        darkMode == "white" ? null : classes.notchedOutline,
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
+                }}
+                InputProps={{
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon
+                        style={{
+                          color: darkMode == "white" ? "black" : "white",
+                        }}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setFirmaSearch(e.target.value);
+                  setPage(0);
+                }}
+              />
             )}
+
             <Helper info={info} title="Pomoc admin" darkMode={darkMode} />
             <Button
               variant="contained"
@@ -623,6 +726,24 @@ export default function Admin(props) {
                 Usuń wszystkich z roku {yearSearch}
               </Button>
             ) : null}
+          </div>
+          <div style={{ alignContent: "center" }}>
+            {" "}
+            <FormControl sx={{ minWidth: 200 }}>
+              <InputLabel>Rola</InputLabel>
+              <Select
+                value={roleSearch}
+                label="Role"
+                onChange={handleRoleChange}
+              >
+                <MenuItem value={"Wszyscy"}>Wszyscy</MenuItem>
+                <MenuItem value={"isStudent"}>Student</MenuItem>
+                <MenuItem value={"isOpiekun"}>Opiekun Uczelniany</MenuItem>
+                <MenuItem value={"isOpiekunZakl"}>Opiekun Zakładowy</MenuItem>
+                <MenuItem value={"isDyrektor"}>Dyrektor</MenuItem>
+                <MenuItem value={"isDziekanat"}>Dziekanat</MenuItem>
+              </Select>
+            </FormControl>
           </div>
           <div
             style={{

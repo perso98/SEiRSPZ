@@ -67,6 +67,7 @@ module.exports = (sequelize, DataTypes) => {
     user.hasMany(models.komentarze, {
       onDelete: "cascade",
     });
+    user.belongsTo(models.firma, { onDelete: "cascade" });
     user.hasMany(models.efektyStudent, {
       onDelete: "cascade",
     });

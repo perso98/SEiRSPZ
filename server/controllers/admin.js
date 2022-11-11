@@ -159,7 +159,10 @@ exports.getStudents = async (req, res) => {
       res.send({ message: "Sesja utracona, zaloguj się ponownie" });
     else {
       const listStudent = await user.findAll({
-        include: { model: dane, required: false },
+        include: [
+          { model: dane, required: false },
+          { model: firma, required: false },
+        ],
       });
       res.send(listStudent);
     }
