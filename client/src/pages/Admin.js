@@ -242,7 +242,10 @@ export default function Admin(props) {
           : val.createdAt.split("-")[0] === yearSearch;
       } else if (surnameSearch !== "") {
         return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 && val.dane?.nazwisko
+          ? val[roleSearch] == 1 &&
+              val.dane?.nazwisko
+                .toLowerCase()
+                .includes(surnameSearch.toLowerCase())
           : val.dane?.nazwisko
               .toLowerCase()
               .includes(surnameSearch.toLowerCase());
@@ -273,7 +276,7 @@ export default function Admin(props) {
         return roleSearch !== "Wszyscy"
           ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearSearch
           : val.createdAt.split("-")[0] === yearSearch;
-      } else if (surnameSearch !== "") {
+      } else if (surnameSearch !== "" && val.confirmation == 1) {
         return roleSearch !== "Wszyscy"
           ? val[roleSearch] == 1 &&
               val.dane?.nazwisko
@@ -307,7 +310,7 @@ export default function Admin(props) {
         return roleSearch !== "Wszyscy"
           ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearSearch
           : val.createdAt.split("-")[0] === yearSearch;
-      } else if (surnameSearch !== "") {
+      } else if (surnameSearch !== "" && val.confirmation == 0) {
         return roleSearch !== "Wszyscy"
           ? val[roleSearch] == 1 && val.dane?.nazwisko
           : val.dane?.nazwisko

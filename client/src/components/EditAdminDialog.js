@@ -58,7 +58,7 @@ function EditAdminDialog({
           <DialogTitle>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div>Edycja użytkownika : </div>
+                <div>Edycja użytkownika </div>
                 <IconButton aria-label="close" onClick={handleEditClose}>
                   <CloseIcon
                     style={{ color: darkMode == "white" ? "black" : "white" }}
