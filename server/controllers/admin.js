@@ -117,7 +117,16 @@ exports.createAccount = async (req, res) => {
     res.send({ message: err.message });
   }
 };
+exports.changePasswordAdmin = async (req, res) => {
+  const { id, password } = req.body;
+  if (!req.session.user) res.send({ session: "Sesja nie dostępna" });
+  else {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await user.update({ haslo: hashedPassword }, { where: { id: id } });
 
+    res.send({ message: "Pomyślnie zmieniono hasło użytkownika" });
+  }
+};
 exports.changeConfirmation = async (req, res) => {
   const { id, confirmation } = req.body;
   if (!req.session.user) res.send({ session: "Sesja nie dostępna" });

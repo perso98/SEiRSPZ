@@ -85,6 +85,8 @@ export default function Admin(props) {
   const [surnameSearch, setSurnameSearch] = useState("");
   const [firmaSearch, setFirmaSearch] = useState("");
   const [roleSearch, setRoleSearch] = useState("Wszyscy");
+  const [changePassword, setChangePassword] = useState("");
+  const [changePassword2, setChangePassword2] = useState("");
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -323,7 +325,16 @@ export default function Admin(props) {
   const recordsAfter = () => {
     return recordsAfterFiltering.slice(page * pageRows, (page + 1) * pageRows);
   };
-
+  const changePasswordAdmin = (id, password) => {
+    axios
+      .put(`${url}changePasswordAdmin`, { id: id, password: password })
+      .then((res) => {
+        if (res.data.session) window.location.reload(false);
+        if (res.data.message) {
+          toast.success(res.data.message);
+        }
+      });
+  };
   const changeConfirmation = (id, confirmation) => {
     axios
       .put(`${url}changeConfirmation`, { id: id, confirmation: confirmation })
@@ -425,6 +436,8 @@ export default function Admin(props) {
   };
   const handleEditClose = () => {
     setChangeLogin();
+    setChangePassword();
+    setChangePassword2();
     setEditOpen(false);
   };
   const [editStudent, setEditStudent] = useState(null);
@@ -978,6 +991,11 @@ export default function Admin(props) {
         setChangeLogin={setChangeLogin}
         darkMode={darkMode}
         changeConfirmation={changeConfirmation}
+        changePassword={changePassword}
+        setChangePassword={setChangePassword}
+        changePassword2={changePassword2}
+        setChangePassword2={setChangePassword2}
+        changePasswordAdmin={changePasswordAdmin}
       />
 
       <ToastContainer autoClose={1000} />
