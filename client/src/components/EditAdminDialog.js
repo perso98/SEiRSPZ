@@ -36,6 +36,7 @@ function EditAdminDialog({
   const classes = useStyles();
   const [confirm, setConfirm] = useState(editStudent?.confirmation);
   const [currentLogin, setCurrentLogin] = useState(editStudent?.login);
+  const [loginChange, setLoginChange] = useState(editStudent?.login);
 
   useEffect(() => {
     setConfirm(editStudent?.confirmation);
@@ -148,7 +149,7 @@ function EditAdminDialog({
 
             <TextField
               label="Zmień e-mail"
-              defaultValue={editStudent.login}
+              defaultValue={currentLogin}
               variant="outlined"
               style={{ marginTop: "1rem", marginBottom: "1rem" }}
               inputProps={{
@@ -176,12 +177,13 @@ function EditAdminDialog({
                 setCurrentLogin(e.target.value);
               }}
             />
-            {currentLogin !== editStudent.login ? (
+            {loginChange !== currentLogin ? (
               <Button
                 variant="contained"
                 style={{ marginTop: "1rem" }}
                 onClick={() => {
                   changeUserInfo(editStudent.id);
+                  setLoginChange(currentLogin);
                 }}
               >
                 Zmień e-mail
