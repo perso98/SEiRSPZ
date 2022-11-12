@@ -86,6 +86,10 @@ exports.createAccount = async (req, res) => {
         },
       });
       if (!checkLogin) {
+        const createDane = await dane.create({
+          imie: userObject.imie,
+          nazwisko: userObject.nazwisko,
+        });
         const hashed = await bcrypt.hash(userObject.password, 10);
         const newAcc = await user.create({
           login: userObject.login,
@@ -97,6 +101,7 @@ exports.createAccount = async (req, res) => {
           isDziekanat: userObject.dziekanat,
           isOpiekun: userObject.opiekunU,
           confirmation: 1,
+          daneId: createDane.id,
         });
 
         res.send({

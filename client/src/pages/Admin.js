@@ -157,6 +157,8 @@ export default function Admin(props) {
     student: 0,
     dziekanat: 0,
     dyrektor: 0,
+    imie: "",
+    nazwisko: "",
   });
   const onChange = (e) => {
     const { value, id } = e.target;
@@ -191,11 +193,18 @@ export default function Admin(props) {
                 isOpiekun: userObject.opiekunU,
                 isDziekanat: userObject.dziekanat,
                 isStudent: userObject.student,
+                dane: { imie: userObject.imie, nazwisko: userObject.nazwisko },
                 createdAt: res.data.createdAt,
                 confirmation: 1,
               },
             ]);
-            setUserObject({ ...userObject, login: "", password: "" });
+            setUserObject({
+              ...userObject,
+              login: "",
+              password: "",
+              imie: "",
+              nazwisko: "",
+            });
           }
 
           toast.success(res.data.message2);

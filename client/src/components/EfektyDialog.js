@@ -79,6 +79,12 @@ function EfektyDialog(props) {
           </DialogTitle>
           <DialogContent>
             <>
+              {props?.checkStudent.dane.imie ? (
+                <div>Imie: {props?.checkStudent.dane.imie}</div>
+              ) : null}
+              {props?.checkStudent.dane.nazwisko ? (
+                <div>Nazwisko: {props?.checkStudent.dane.nazwisko}</div>
+              ) : null}
               <FormControl style={{ marginTop: "1rem" }} sx={{ width: 550 }}>
                 <InputLabel>Efekty</InputLabel>
                 <Select
