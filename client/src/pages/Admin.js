@@ -729,7 +729,7 @@ export default function Admin(props) {
           </div>
           <div style={{ alignContent: "center" }}>
             {" "}
-            <FormControl sx={{ minWidth: 200 }}>
+            <FormControl style={{ marginLeft: "1.5rem", width: "200px" }}>
               <InputLabel>Rola</InputLabel>
               <Select
                 value={roleSearch}
