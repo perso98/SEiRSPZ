@@ -126,12 +126,12 @@ function Nav(props) {
         <Toolbar className={classes.toolbar}>
           <div />
           <Typography variant="h5" className={classes.logoBig}>
-            <NavLink to="/" className={classes.links}>
+            <NavLink to="/" end className={classes.links}>
               Akademia Nauk Stosowanych
             </NavLink>
           </Typography>
           <Typography variant="h5" className={classes.logoLit}>
-            <NavLink to="/" className={classes.links}>
+            <NavLink to="/" end className={classes.links}>
               ANS
             </NavLink>
           </Typography>
@@ -180,12 +180,12 @@ function Nav(props) {
         <Toolbar className={classes.toolbar}>
           <Sidebar auth={props.auth} />
           <Typography variant="h5" className={classes.logoBig}>
-            <NavLink to="/" className={classes.links}>
+            <NavLink to="/" end className={classes.links}>
               Akademia Nauk Stosowanych
             </NavLink>
           </Typography>
           <Typography variant="h5" className={classes.logoLit}>
-            <NavLink to="/" className={classes.linksLogoLitSM}>
+            <NavLink to="/" end className={classes.linksLogoLitSM}>
               ANS
             </NavLink>
           </Typography>

@@ -42,7 +42,9 @@ function App() {
     });
   }, [status]);
 
-  const [darkMode, setDarkMode] = useState(localStorage.getItem("theme"));
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") ? localStorage.getItem("theme") : "white"
+  );
   useEffect(() => {
     localStorage.setItem("theme", darkMode);
   }, [darkMode]);
