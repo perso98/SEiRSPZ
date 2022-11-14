@@ -85,8 +85,9 @@ function DzienniczekDni(props) {
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <h6 style={{ textAlign: "center" }}>Dzień: {val.dzien}</h6>{" "}
-                  <h6 style={{ textAlign: "center" }}>Data: {val.data}</h6>
+                  <span style={{ textAlign: "center" }}>
+                    Dzień: {val.dzien}
+                  </span>{" "}
                   <Button
                     onClick={() => {
                       props.handleOpen(val);
@@ -97,6 +98,7 @@ function DzienniczekDni(props) {
                     Edycja
                   </Button>
                 </div>{" "}
+                <span>Data: {val.data}</span>
                 {props.status ? (
                   <div
                     style={{

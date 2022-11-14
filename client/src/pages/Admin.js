@@ -754,7 +754,9 @@ export default function Admin(props) {
           </div>
           <div style={{ alignContent: "center" }}>
             {" "}
-            <FormControl style={{ marginLeft: "1.5rem", width: "200px" }}>
+            <FormControl
+              style={{ marginLeft: "1.5rem", width: "200px", height: "60px" }}
+            >
               <InputLabel>Rola</InputLabel>
               <Select
                 value={roleSearch}
@@ -782,13 +784,13 @@ export default function Admin(props) {
               <Button
                 variant="outlined"
                 disabled
-                style={{ marginRight: "0.5rem" }}
+                style={{ marginRight: "0.5rem", marginLeft: "0.5rem" }}
               >
                 Zatwierdzone
               </Button>
             ) : (
               <Button
-                style={{ marginRight: "0.5rem" }}
+                style={{ marginRight: "0.5rem", marginLeft: "0.5rem" }}
                 color="success"
                 variant="contained"
                 onClick={() => {
@@ -830,7 +832,7 @@ export default function Admin(props) {
                 disabled
                 style={{ marginRight: "0.5rem" }}
               >
-                Nie zatwierdzone
+                Niezatwierdzone
               </Button>
             ) : (
               <Button
@@ -844,7 +846,7 @@ export default function Admin(props) {
                   setPage(0);
                 }}
               >
-                Nie zatwierdzone
+                Niezatwierdzone
               </Button>
             )}
           </div>

@@ -34,13 +34,17 @@ function EditAdminDialog({
   changePasswordAdmin,
 }) {
   const classes = useStyles();
-  const [confirm, setConfirm] = useState(editStudent?.confirmation);
-  const [currentLogin, setCurrentLogin] = useState(editStudent?.login);
-  const [loginChange, setLoginChange] = useState(editStudent?.login);
-
+  const [confirm, setConfirm] = useState();
+  const [currentLogin, setCurrentLogin] = useState();
+  const [loginChange, setLoginChange] = useState();
+  const [currentPassword, setCurrentPassword] = useState();
+  const [passwordChange, setPasswordChange] = useState();
   useEffect(() => {
     setConfirm(editStudent?.confirmation);
     setCurrentLogin(editStudent?.login);
+    setLoginChange(editStudent?.login);
+    setCurrentPassword(editStudent?.haslo);
+    setPasswordChange(editStudent?.haslo);
   }, [editStudent]);
   return (
     <>
@@ -177,7 +181,7 @@ function EditAdminDialog({
                 setCurrentLogin(e.target.value);
               }}
             />
-            {loginChange !== currentLogin ? (
+            {loginChange !== currentLogin && currentLogin ? (
               <Button
                 variant="contained"
                 style={{ marginTop: "1rem" }}
@@ -240,6 +244,7 @@ function EditAdminDialog({
               }}
               onChange={(e) => {
                 setChangePassword(e.target.value);
+                setPasswordChange(e.target.value);
               }}
             />
             <TextField
@@ -274,12 +279,14 @@ function EditAdminDialog({
 
             {changePassword &&
             changePassword2 &&
-            changePassword === changePassword2 ? (
+            changePassword === changePassword2 &&
+            passwordChange !== currentPassword ? (
               <Button
                 variant="contained"
                 style={{ marginTop: "1rem" }}
                 onClick={() => {
                   changePasswordAdmin(editStudent.id, changePassword);
+                  setCurrentPassword(changePassword);
                 }}
               >
                 Zmień hasło

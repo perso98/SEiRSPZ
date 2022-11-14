@@ -171,7 +171,7 @@ function Register() {
           <Link to="/login">zaloguj się</Link>
           <Link to="/restartpassword">zrestartuj hasło</Link>
         </div>
-        {loading == false ? (
+        {!loading ? (
           login && password && password2 ? (
             <Button
               variant="contained"
