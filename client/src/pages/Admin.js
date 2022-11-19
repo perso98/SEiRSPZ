@@ -234,8 +234,8 @@ export default function Admin(props) {
       } else if (searchLogin !== "") {
         return roleSearch !== "Wszyscy"
           ? val[roleSearch] == 1 &&
-              val.login.toLowerCase().includes(searchLogin.toLowerCase())
-          : val && val.login.toLowerCase().includes(searchLogin.toLowerCase());
+              val.login.toLowerCase().includes(searchLogin?.toLowerCase())
+          : val && val.login.toLowerCase().includes(searchLogin?.toLowerCase());
       } else if (yearSearch !== "") {
         return roleSearch !== "Wszyscy"
           ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearSearch
@@ -243,12 +243,12 @@ export default function Admin(props) {
       } else if (surnameSearch !== "") {
         return roleSearch !== "Wszyscy"
           ? val[roleSearch] == 1 &&
-              val.dane?.nazwisko
-                .toLowerCase()
-                .includes(surnameSearch.toLowerCase())
-          : val.dane?.nazwisko
-              .toLowerCase()
-              .includes(surnameSearch.toLowerCase());
+              val?.dane?.nazwisko
+                ?.toLowerCase()
+                .includes(surnameSearch?.toLowerCase())
+          : val?.dane?.nazwisko
+              ?.toLowerCase()
+              ?.includes(surnameSearch?.toLowerCase());
       } else if (firmaSearch !== "") {
         return roleSearch !== "Wszyscy"
           ? val[roleSearch] == 1 &&
@@ -479,19 +479,16 @@ export default function Admin(props) {
       setSearchLogin("");
     } else if (toggleSearch === 1) {
       setToggleSearch(2);
-      setYearSearch("");
-    } else if (toggleSearch === 2) {
       setSurnameSearch("");
+    } else if (toggleSearch === 2) {
       setToggleSearch(3);
+      setYearSearch("");
     } else {
       setToggleSearch(0);
       setFirmaSearch("");
     }
   };
-  const handleRoleChange = (event) => {
-    setRoleSearch(event.target.value);
-    setPage(0);
-  };
+
   const info = (
     <div>
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać
@@ -537,6 +534,10 @@ export default function Admin(props) {
     </div>
   );
 
+  const handleRoleChange = (event) => {
+    setRoleSearch(event.target.value);
+    setPage(0);
+  };
   return (
     <>
       <div

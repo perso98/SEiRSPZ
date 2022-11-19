@@ -50,10 +50,11 @@ function OpiekunU(props) {
   const changeToggle = () => {
     if (toggleSearch) {
       setToggleSearch(false);
-      setSearchLogin("");
+      setSearchSurname("");
     } else {
       setToggleSearch(true);
-      setSearchSurname("");
+
+      setSearchLogin("");
     }
   };
   useEffect(() => {
@@ -199,10 +200,12 @@ function OpiekunU(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
-              setRemountComponent={setRemountComponent}
+              searchLogin={searchLogin}
               darkMode={darkMode}
+              setRemountComponent={setRemountComponent}
               toggleSearch={toggleSearch}
               setSearchSurname={setSearchSurname}
+              searchSurname={searchSurname}
             />
           )}
           <Helper info={info} title="Pomoc opiekun uczelniany" />

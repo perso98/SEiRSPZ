@@ -18,6 +18,7 @@ function SearchBar(props) {
           style={{ width: "70%" }}
           label="Szukaj po e-mailu"
           variant="outlined"
+          value={props.searchLogin}
           inputProps={{
             style: {
               color: props.darkMode == "white" ? "black" : "white",
@@ -57,6 +58,7 @@ function SearchBar(props) {
           style={{ width: "70%" }}
           label="Szukaj po nazwisku"
           variant="outlined"
+          value={props.searchSurname}
           inputProps={{
             style: {
               color: props.darkMode == "white" ? "black" : "white",

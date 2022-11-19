@@ -17,6 +17,10 @@ import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
 import { ThemeContext } from "../context/ThemeContext";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 
 function OpiekunStatus(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
@@ -28,6 +32,7 @@ function OpiekunStatus(props) {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaZ";
+  const [yearFilter, setYearFilter] = useState("Wszystkie");
   const navigate = useNavigate();
   const [accepted, setAccepted] = useState(false);
   const [declined, setDeclined] = useState(false);
@@ -48,10 +53,11 @@ function OpiekunStatus(props) {
   const changeToggle = () => {
     if (toggleSearch) {
       setToggleSearch(false);
-      setSearchLogin("");
+      setSearchSurname("");
     } else {
       setToggleSearch(true);
-      setSearchSurname("");
+
+      setSearchLogin("");
     }
   };
   useEffect(() => {
@@ -177,22 +183,29 @@ function OpiekunStatus(props) {
         }
       });
   };
-
+  const yearArray = [];
   const recordsAfterFiltering = dzienniczek.filter((val) => {
+    if (!yearArray.includes(val.createdAt.split("-")[0]))
+      yearArray.push(val.createdAt.split("-")[0]);
     if (accepted) {
       if (
         val?.statusOpiekunaZ === "Zaakceptowano" &&
         searchLogin === "" &&
         searchSurname === ""
       ) {
-        return val;
+        return yearFilter !== "Wszystkie"
+          ? val.createdAt.split("-")[0] === yearFilter
+          : val;
       } else if (
         searchLogin !== "" &&
         val?.statusOpiekunaZ === "Zaakceptowano"
       ) {
-        return val?.user?.login
-          .toLowerCase()
-          .includes(searchLogin.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val?.user?.login
+              .toLowerCase()
+              .includes(searchLogin.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter
+          : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (
         searchSurname !== "" &&
         val?.statusOpiekunaZ === "Zaakceptowano"
@@ -204,15 +217,25 @@ function OpiekunStatus(props) {
     }
     if (all) {
       if (searchLogin === "" && searchSurname === "") {
-        return val;
+        return yearFilter !== "Wszystkie"
+          ? val.createdAt.split("-")[0] === yearFilter
+          : val;
       } else if (searchLogin !== "") {
-        return val?.user?.login
-          .toLowerCase()
-          .includes(searchLogin.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val?.user?.login
+              .toLowerCase()
+              .includes(searchLogin.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter
+          : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (searchSurname !== "") {
-        return val.user.dane.nazwisko
-          .toLowerCase()
-          .includes(searchSurname.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase())
+          : val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter;
       }
     }
     if (declined) {
@@ -221,18 +244,29 @@ function OpiekunStatus(props) {
         searchLogin === "" &&
         searchSurname === ""
       ) {
-        return val;
+        return yearFilter !== "Wszystkie"
+          ? val.createdAt.split("-")[0] === yearFilter
+          : val;
       } else if (searchLogin !== "" && val?.statusOpiekunaZ === "Odrzucono") {
         return val?.user?.login
           .toLowerCase()
           .includes(searchLogin.toLowerCase());
       } else if (searchSurname !== "" && val?.statusOpiekunaZ === "Odrzucono") {
-        return val.user.dane.nazwisko
-          .toLowerCase()
-          .includes(searchSurname.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase())
+          : val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter;
       }
     }
   });
+  const handleYearChange = (event) => {
+    setYearFilter(event.target.value);
+    setRemountComponent(Math.random());
+  };
   const info = (
     <div>
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
@@ -292,10 +326,12 @@ function OpiekunStatus(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
+              searchLogin={searchLogin}
               darkMode={darkMode}
               setRemountComponent={setRemountComponent}
               toggleSearch={toggleSearch}
               setSearchSurname={setSearchSurname}
+              searchSurname={searchSurname}
             />
           )}
           <Helper
@@ -313,6 +349,17 @@ function OpiekunStatus(props) {
         >
           Zmień opcje wyszukiwania
         </Button>
+        <div style={{ marginTop: "1.5rem" }}>
+          <FormControl style={{ width: "200px", height: "60px" }}>
+            <InputLabel>Rok</InputLabel>
+            <Select value={yearFilter} label="Rok" onChange={handleYearChange}>
+              <MenuItem value={"Wszystkie"}>Wszystkie</MenuItem>
+              {yearArray.map((val) => (
+                <MenuItem value={val}>{val}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
         <div
           style={{
             display: "flex",
