@@ -74,7 +74,11 @@ function EfektyDialog(props) {
           >
             Efekty studenta {props.checkStudent.login}
             <IconButton onClick={props.handleClose}>
-              <CloseIcon />
+              <CloseIcon
+                style={{
+                  color: props.darkMode === "white" ? "black" : "white",
+                }}
+              />
             </IconButton>
           </DialogTitle>
           <DialogContent>
@@ -86,8 +90,35 @@ function EfektyDialog(props) {
                 <div>Nazwisko: {props?.checkStudent.dane.nazwisko}</div>
               ) : null}
               <FormControl style={{ marginTop: "1rem" }} sx={{ width: 550 }}>
-                <InputLabel>Efekty</InputLabel>
+                <InputLabel
+                  sx={{
+                    color:
+                      props.darkMode === "white" ? null : "white !important",
+                  }}
+                >
+                  Efekty
+                </InputLabel>
                 <Select
+                  sx={{
+                    color:
+                      props.darkMode === "white" ? null : "white !important",
+                    ".MuiOutlinedInput-notchedOutline": {
+                      borderColor:
+                        props.darkMode === "white" ? null : "white !important",
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor:
+                        props.darkMode === "white" ? null : "white !important",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor:
+                        props.darkMode === "white" ? null : "white !important",
+                    },
+                    ".MuiSvgIcon-root ": {
+                      fill:
+                        props.darkMode === "white" ? null : "white !important",
+                    },
+                  }}
                   open={open}
                   onClose={handleClose}
                   onOpen={handleOpen}

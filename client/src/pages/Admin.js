@@ -756,10 +756,36 @@ export default function Admin(props) {
           <div style={{ alignContent: "center" }}>
             {" "}
             <FormControl
-              style={{ marginLeft: "1.5rem", width: "200px", height: "60px" }}
+              style={{
+                marginLeft: "1.5rem",
+                width: "200px",
+                height: "60px",
+              }}
             >
-              <InputLabel>Rola</InputLabel>
+              <InputLabel
+                sx={{ color: darkMode === "white" ? null : "white !important" }}
+              >
+                Rola
+              </InputLabel>
               <Select
+                sx={{
+                  color: darkMode === "white" ? null : "white !important",
+                  ".MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      darkMode === "white" ? null : "white !important",
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      darkMode === "white" ? null : "white !important",
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      darkMode === "white" ? null : "white !important",
+                  },
+                  ".MuiSvgIcon-root ": {
+                    fill: darkMode === "white" ? null : "white !important",
+                  },
+                }}
                 value={roleSearch}
                 label="Role"
                 onChange={handleRoleChange}

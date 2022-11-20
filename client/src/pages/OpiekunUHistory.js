@@ -362,8 +362,31 @@ function OpiekunUHistory(props) {
         </Button>
         <div style={{ marginTop: "1.5rem" }}>
           <FormControl style={{ width: "200px", height: "60px" }}>
-            <InputLabel>Rok</InputLabel>
-            <Select value={yearFilter} label="Rok" onChange={handleYearChange}>
+            <InputLabel
+              sx={{ color: darkMode === "white" ? null : "white !important" }}
+            >
+              Rok
+            </InputLabel>
+            <Select
+              sx={{
+                color: darkMode === "white" ? null : "white !important",
+                ".MuiOutlinedInput-notchedOutline": {
+                  borderColor: darkMode === "white" ? null : "white !important",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: darkMode === "white" ? null : "white !important",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: darkMode === "white" ? null : "white !important",
+                },
+                ".MuiSvgIcon-root ": {
+                  fill: darkMode === "white" ? null : "white !important",
+                },
+              }}
+              value={yearFilter}
+              label="Rok"
+              onChange={handleYearChange}
+            >
               <MenuItem value={"Wszystkie"}>Wszystkie</MenuItem>
               {yearArray.map((val) => (
                 <MenuItem value={val}>{val}</MenuItem>
