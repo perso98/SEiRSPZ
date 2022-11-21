@@ -127,33 +127,41 @@ app.delete(
   dyrektor_controller.usuwanieZastepstwa
 );
 
-
 app.get(
   "/api/getDaysOpiekunUStatusZastepstwo/:id",
   dyrektor_controller.getDaysOpiekunUStatus
 );
 //pobieranie efektow uczenia dla opiekuna uczelnianego
-app.get("/api/getEffectsOpiekunUZastepstwo/:id", dyrektor_controller.getEffectsOpiekunU);
+app.get(
+  "/api/getEffectsOpiekunUZastepstwo/:id",
+  dyrektor_controller.getEffectsOpiekunU
+);
 //pobieranie dni dzienniczka studentow dla opiekuna uczelnianego
-app.get("/api/getDaysOpiekunUZastepstwo/:id", dyrektor_controller.getDaysOpiekunU);
-
+app.get(
+  "/api/getDaysOpiekunUZastepstwo/:id",
+  dyrektor_controller.getDaysOpiekunU
+);
 
 //===========================================================
-app.delete("/api/deleteCommentZastepstwo/:id", dyrektor_controller.deleteComment);
+app.delete(
+  "/api/deleteCommentZastepstwo/:id",
+  dyrektor_controller.deleteComment
+);
 //(historia dzienniczka)zmiana statusu w popupie
-app.post("/api/changeStatusEditZastepstwo", dyrektor_controller.changeStatusEdit);
+app.post(
+  "/api/changeStatusEditZastepstwo",
+  dyrektor_controller.changeStatusEdit
+);
 //zmiana statusu akceptacji zaleznie od opiekuna
 app.post("/api/changeStatusZastepstwo", dyrektor_controller.changeStatus);
 //update efektu
 app.put("/api/updateEffectsZastepstwo", dyrektor_controller.updateEffects);
 //usuniecie komentarza z dnia
-app.delete("/api/deleteCommentZastepstwo/:id", dyrektor_controller.deleteComment);
+app.delete(
+  "/api/deleteCommentZastepstwo/:id",
+  dyrektor_controller.deleteComment
+);
 app.get("/api/downloadFileZastepstwo/:name", dyrektor_controller.downloadFile);
-
-
-
-
-
 
 //Maciek
 //User
@@ -193,6 +201,7 @@ app.delete("/api/deleteYear/:year", admin_controller.deleteYear);
 app.put("/api/changeUserInfo", admin_controller.changeUserInfo);
 
 app.put("/api/changeConfirmation", admin_controller.changeConfirmation);
+app.put("/api/changePasswordAdmin", admin_controller.changePasswordAdmin);
 //Zmiana ról w panelu administratora
 app.put("/api/changeRole", admin_controller.changeRole);
 //Utworzenie konta w admin panelu

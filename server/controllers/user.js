@@ -45,7 +45,7 @@ exports.changeDaneToAccount = async (req, res) => {
     telefon,
   } = req.body;
 
-    // First try to find the record
+  // First try to find the record
 
   const foundItem = await user.findOne({
     where: { login: req.session.user.login },
@@ -93,87 +93,86 @@ exports.changeDaneToAccount = async (req, res) => {
     } catch (err) {
       res.send({ message: err.message });
     }
-  }
-    else{
-      try{
-        let czyNull = null
-        let czyKierunekNull = null
-        if(specjalnosc != null){
-          czyNull = specjalnosc
-        }
-        if(kierunek != null){
-          czyKierunekNull = kierunek
-        }
-        console.log(1)
-        
-        console.log(czyNull)
+  } else {
+    try {
+      let czyNull = null;
+      let czyKierunekNull = null;
+      if (specjalnosc != null) {
+        czyNull = specjalnosc;
+      }
+      if (kierunek != null) {
+        czyKierunekNull = kierunek;
+      }
+      console.log(1);
 
-        let numerSpecjalnosci = czyNull
-        if(specjalnosc != null){
-        numerSpecjalnosci = await listaSpecjalnosci.findOne({ 
+      console.log(czyNull);
+
+      let numerSpecjalnosci = czyNull;
+      if (specjalnosc != null) {
+        numerSpecjalnosci = await listaSpecjalnosci.findOne({
           attributes: ["nazwa"],
-          where: { id: czyNull} 
-        })
-        }
+          where: { id: czyNull },
+        });
+      }
 
-        console.log(1.1)
-        console.log(numerSpecjalnosci)
+      console.log(1.1);
+      console.log(numerSpecjalnosci);
 
-        const updateDane = await dane.update({ 
+      const updateDane = await dane.update(
+        {
           imie: imie,
           nazwisko: nazwisko,
           studia: studia,
-          kierunek: czyKierunekNull, 
-          specjalnosc: numerSpecjalnosci.nazwa, 
-          rok_studiow: rokStudiow, 
-          rodzaj_studiow: rodzajStudiow, 
-          telefon: telefon, 
-          },
-          { where: { id: foundItem.daneId } }
-        );
-        console.log(2)
-       
-        if(specjalnosc != null){
-          const numerSpecjalnosci = await listaSpecjalnosci.findOne({ 
-            where: { id: czyNull} 
-          })
-          console.log(3)
-          
-          const listaEfektow = await efektyLista.findAll({ 
-            where: { listaSpecjalnosciId: numerSpecjalnosci.id} 
-          })
-          
-          await efektyStudent.destroy({ 
-            where:{userId: req.session.user.id,}
-          })
+          kierunek: czyKierunekNull,
+          specjalnosc: numerSpecjalnosci.nazwa,
+          rok_studiow: rokStudiow,
+          rodzaj_studiow: rodzajStudiow,
+          telefon: telefon,
+        },
+        { where: { id: foundItem.daneId } }
+      );
+      console.log(2);
 
-          console.log(4)
-          listaEfektow.forEach(async element => {
-            await efektyStudent.create({ 
-              efektyListumId: element.id,
-              userId: req.session.user.id,
-            })
+      if (specjalnosc != null) {
+        const numerSpecjalnosci = await listaSpecjalnosci.findOne({
+          where: { id: czyNull },
+        });
+        console.log(3);
+
+        const listaEfektow = await efektyLista.findAll({
+          where: { listaSpecjalnosciId: numerSpecjalnosci.id },
+        });
+
+        await efektyStudent.destroy({
+          where: { userId: req.session.user.id },
+        });
+
+        console.log(4);
+        listaEfektow.forEach(async (element) => {
+          await efektyStudent.create({
+            efektyListumId: element.id,
+            userId: req.session.user.id,
           });
-        }
-        else{
-          await efektyStudent.destroy({ 
-            where:{userId: req.session.user.id,}
-          })
-        }
-          // const createEfektyEmpty = await efektyStudent.create({ 
-          //   efektyListumId: ,
-          //   userId: req.session.user.id,
+        });
+      } else {
+        await efektyStudent.destroy({
+          where: { userId: req.session.user.id },
+        });
+      }
+      // const createEfektyEmpty = await efektyStudent.create({
+      //   efektyListumId: ,
+      //   userId: req.session.user.id,
 
-          // })
-        res.send({ message: "Pomyślnie zmieniono dane do konta",
-        updateDane: updateDane });
-      }
-      catch (err) {
-        res.send({ message: "Wybierz Kierunek oraz Specjalność" });
-      }
+      // })
+      res.send({
+        message: "Pomyślnie zmieniono dane do konta",
+        updateDane: updateDane,
+      });
+    } catch (err) {
+      res.send({ message: "Wybierz Kierunek oraz Specjalność" });
     }
   }
-
+};
 
 exports.getloginToAccount = async (req, res) => {
   if (req.session.user) {
@@ -235,12 +234,18 @@ exports.confirmMail = async (req, res) => {
         message: "Te konto już zostało zweryfikowane",
         info: true,
       });
+    else {
+      const userDane = await dane.create({ where: { id: id } });
+      await user.update(
+        { confirmation: 1, daneId: userDane.id },
+        { where: { id: id } }
+      );
 
-    await user.update({ confirmation: 1 }, { where: { id: id } });
-    res.send({
-      message: "Weryfikacja przeszła pomyślnie, zaloguj się teraz do konta",
-      info: true,
-    });
+      res.send({
+        message: "Weryfikacja przeszła pomyślnie, zaloguj się teraz do konta",
+        info: true,
+      });
+    }
   } catch (err) {
     res.send({ message: "Błąd w weryfikacji...", info: false });
   }
@@ -402,7 +407,6 @@ exports.createAccount = async (req, res) => {
 };
 
 exports.getListaKierunkow = async (req, res) => {
-
   const lista = await listaKierunkow.findAll({
     include: {
       model: listaSpecjalnosci,
@@ -411,10 +415,6 @@ exports.getListaKierunkow = async (req, res) => {
 
   res.send(lista);
 };
-
-
-
-
 
 exports.getUserSesionId = async (req, res) => {
   const lista = await user.findOne({ where: { id: req.session.user.id } });

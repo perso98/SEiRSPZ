@@ -13,10 +13,6 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const useStyles = makeStyles((theme) => ({
-  DialogTitleClass: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
   notchedOutline: {
     borderWidth: "1px",
     borderColor: "white !important",
@@ -31,12 +27,24 @@ function EditAdminDialog({
   changeUserInfo,
   setChangeLogin,
   darkMode,
+  changePassword,
+  setChangePassword,
+  changePassword2,
+  setChangePassword2,
+  changePasswordAdmin,
 }) {
   const classes = useStyles();
-  const [confirm, setConfirm] = useState(editStudent?.confirmation);
-
+  const [confirm, setConfirm] = useState();
+  const [currentLogin, setCurrentLogin] = useState();
+  const [loginChange, setLoginChange] = useState();
+  const [currentPassword, setCurrentPassword] = useState();
+  const [passwordChange, setPasswordChange] = useState();
   useEffect(() => {
     setConfirm(editStudent?.confirmation);
+    setCurrentLogin(editStudent?.login);
+    setLoginChange(editStudent?.login);
+    setCurrentPassword(editStudent?.haslo);
+    setPasswordChange(editStudent?.haslo);
   }, [editStudent]);
   return (
     <>
@@ -52,13 +60,18 @@ function EditAdminDialog({
             },
           }}
         >
-          <DialogTitle className={classes.DialogTitleClass}>
-            Edycja użytkownika : {editStudent.login}
-            <IconButton aria-label="close" onClick={handleEditClose}>
-              <CloseIcon
-                style={{ color: darkMode == "white" ? "black" : "white" }}
-              />
-            </IconButton>
+          <DialogTitle>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div>Edycja użytkownika </div>
+                <IconButton aria-label="close" onClick={handleEditClose}>
+                  <CloseIcon
+                    style={{ color: darkMode == "white" ? "black" : "white" }}
+                  />
+                </IconButton>
+              </div>
+              <div>{editStudent.login}</div>
+            </div>
           </DialogTitle>
           <DialogContent
             style={{ display: "flex", flexDirection: "column", margin: "5%" }}
@@ -128,10 +141,19 @@ function EditAdminDialog({
                 </div>
               )}
             </div>
+            <div
+              style={{
+                marginTop: "1rem",
+                marginBottom: "1rem",
+                textAlign: "center",
+              }}
+            >
+              Zmiana e-maila
+            </div>
 
             <TextField
-              label="Zmiana loginu"
-              defaultValue={editStudent.login}
+              label="Zmień e-mail"
+              defaultValue={currentLogin}
               variant="outlined"
               style={{ marginTop: "1rem", marginBottom: "1rem" }}
               inputProps={{
@@ -156,17 +178,128 @@ function EditAdminDialog({
               }}
               onChange={(e) => {
                 setChangeLogin(e.target.value);
+                setCurrentLogin(e.target.value);
               }}
             />
-            <Button
-              variant="contained"
-              style={{ marginTop: "1rem" }}
-              onClick={() => {
-                changeUserInfo(editStudent.id);
+            {loginChange !== currentLogin && currentLogin ? (
+              <Button
+                variant="contained"
+                style={{ marginTop: "1rem" }}
+                onClick={() => {
+                  changeUserInfo(editStudent.id);
+                  setLoginChange(currentLogin);
+                }}
+              >
+                Zmień e-mail
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                style={{ marginTop: "1rem" }}
+                disabled="true"
+              >
+                Zmień e-mail
+              </Button>
+            )}
+            <div
+              style={{
+                marginTop: "1rem",
+                marginBottom: "1rem",
+                textAlign: "center",
               }}
             >
-              Zmień
-            </Button>
+              Zmiana hasła
+            </div>
+            {changePassword &&
+            changePassword2 &&
+            changePassword !== changePassword2 ? (
+              <span style={{ textAlign: "center", color: "#ff4d4d" }}>
+                Hasła się nie zgadzają{" "}
+              </span>
+            ) : null}
+            <TextField
+              type="password"
+              label="Podaj hasło"
+              variant="outlined"
+              style={{ marginTop: "1rem", marginBottom: "1rem" }}
+              inputProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
+              onChange={(e) => {
+                setChangePassword(e.target.value);
+                setPasswordChange(e.target.value);
+              }}
+            />
+            <TextField
+              type="password"
+              label="Potwierdź hasło"
+              variant="outlined"
+              style={{ marginTop: "1rem", marginBottom: "1rem" }}
+              inputProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                  classes: {
+                    notchedOutline:
+                      darkMode == "white" ? null : classes.notchedOutline,
+                  },
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
+              onChange={(e) => {
+                setChangePassword2(e.target.value);
+              }}
+            />
+
+            {changePassword &&
+            changePassword2 &&
+            changePassword === changePassword2 &&
+            passwordChange !== currentPassword ? (
+              <Button
+                variant="contained"
+                style={{ marginTop: "1rem" }}
+                onClick={() => {
+                  changePasswordAdmin(editStudent.id, changePassword);
+                  setCurrentPassword(changePassword);
+                }}
+              >
+                Zmień hasło
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                style={{ marginTop: "1rem" }}
+                disabled="true"
+              >
+                Zmień hasło
+              </Button>
+            )}
           </DialogContent>
         </Dialog>
       )}

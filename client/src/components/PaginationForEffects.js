@@ -5,18 +5,19 @@ import "../App.css";
 
 function PaginationForEffects(props) {
   const [currentItems, setCurrentItems] = useState([]);
+  const [itemOffset, setItemOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const itemsPerPage = 4;
   const { data } = props;
   useEffect(() => {
-    const endOffset = props.itemOffset + itemsPerPage;
-    setCurrentItems(data.slice(props.itemOffset, endOffset));
+    const endOffset = itemOffset + itemsPerPage;
+    setCurrentItems(data.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(data.length / itemsPerPage));
-  }, [props.itemOffset, itemsPerPage, data]);
+  }, [itemOffset, itemsPerPage, data]);
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % data.length;
-    props.setItemOffset(newOffset);
+    setItemOffset(newOffset);
   };
   return (
     <>

@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import logo from "../img/ans.png";
 import { makeStyles } from "@mui/styles";
 import AlertComponent from "../components/AlertComponent";
+import CircularProgress from "@mui/material/CircularProgress";
 import { url } from "../services/Url";
 import Axios from "axios";
 import { Link } from "react-router-dom";
@@ -26,12 +27,14 @@ function Login(props) {
   const [loginStatus, setLoginStatus] = useState("");
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const loginToAccount = async () => {
     await Axios.post(`${url}loginToAccount`, {
       login: login,
       password: password,
     }).then((res) => {
+      setLoading(false);
       if (res.data.message) setLoginStatus(res.data.message);
       if (res.data.logged) {
         props.setStatus(res.data);
@@ -132,23 +135,34 @@ function Login(props) {
           <Link to="/restartpassword">zrestartuj hasło</Link>
         </div>
 
-        {login && password ? (
-          <Button
-            variant="contained"
-            style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
-            onClick={() => {
-              loginToAccount();
-            }}
-          >
-            Zaloguj się
-          </Button>
+        {!loading ? (
+          login && password ? (
+            <Button
+              variant="contained"
+              style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+              onClick={() => {
+                loginToAccount();
+                setLoading(true);
+              }}
+            >
+              Zaloguj się
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
+              disabled="true"
+            >
+              Zaloguj się
+            </Button>
+          )
         ) : (
           <Button
             variant="contained"
             style={{ marginTop: "20px", minHeight: "50px", fontSize: "17px" }}
             disabled="true"
           >
-            Zaloguj się
+            <CircularProgress color="inherit" />
           </Button>
         )}
       </div>

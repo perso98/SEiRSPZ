@@ -12,11 +12,8 @@ import { ThemeContext } from "../context/ThemeContext";
 function Register() {
   const useStyles = makeStyles((theme) => ({
     registerForm: {
-      paddingTop: "10%",
+      paddingTop: "10rem",
       padding: "20px",
-      [theme.breakpoints.down("md")]: {
-        paddingTop: "20%",
-      },
     },
     notchedOutline: {
       borderWidth: "1px",
@@ -171,7 +168,7 @@ function Register() {
           <Link to="/login">zaloguj się</Link>
           <Link to="/restartpassword">zrestartuj hasło</Link>
         </div>
-        {loading == false ? (
+        {!loading ? (
           login && password && password2 ? (
             <Button
               variant="contained"

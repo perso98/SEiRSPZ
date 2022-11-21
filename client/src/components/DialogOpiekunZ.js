@@ -45,18 +45,22 @@ function DialogOpiekunZ(props) {
             },
           }}
         >
-          <DialogTitle
-            style={{ justifyContent: "space-between", display: "flex" }}
-          >
-            <h6 style={{ textAlign: "center" }}>
+          <DialogTitle>
+            <div style={{ justifyContent: "space-between", display: "flex" }}>
+              <span style={{ textAlign: "center" }}>
+                Data: {props.checkDay.data}
+              </span>
+              <IconButton onClick={props.handleClose}>
+                <CloseIcon
+                  style={{
+                    color: props.darkMode == "white" ? "black" : "white",
+                  }}
+                />
+              </IconButton>
+            </div>
+            <span style={{ textAlign: "center" }}>
               Dzień: {props.checkDay.dzien}
-            </h6>{" "}
-            <h6 style={{ textAlign: "center" }}>Data: {props.checkDay.data}</h6>
-            <IconButton onClick={props.handleClose}>
-              <CloseIcon
-                style={{ color: props.darkMode == "white" ? "black" : "white" }}
-              />
-            </IconButton>
+            </span>
           </DialogTitle>
           <DialogContent>
             <>
@@ -90,7 +94,6 @@ function DialogOpiekunZ(props) {
                   }}
                 />
               </div>
-
               <div style={{ margin: "1rem 0px 1rem 0 " }}>
                 <h5>E-mail:</h5>
                 {props.checkDay.user.login}

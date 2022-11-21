@@ -39,6 +39,8 @@ function AddAdminDialog({
     student,
     dziekanat,
     dyrektor,
+    imie,
+    nazwisko,
   } = userObject;
   const classes = useStyles();
   return (
@@ -77,9 +79,9 @@ function AddAdminDialog({
               id="login"
               value={login}
               variant="outlined"
-              label="Login:"
+              label="E-mail:"
               onChange={(e) => onChange(e)}
-              style={{ marginBottom: "5%" }}
+              style={{ marginBottom: "1.5rem" }}
               inputProps={{
                 style: {
                   color: darkMode == "white" ? "black" : "white",
@@ -101,8 +103,57 @@ function AddAdminDialog({
             <TextField
               id="password"
               value={password}
+              style={{ marginBottom: "1.5rem" }}
               variant="outlined"
               label="Hasło:"
+              onChange={(e) => onChange(e)}
+              inputProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
+            />
+            <TextField
+              id="imie"
+              value={imie}
+              variant="outlined"
+              style={{ marginBottom: "1.5rem" }}
+              label="Imie:"
+              onChange={(e) => onChange(e)}
+              inputProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode == "white" ? "black" : "white",
+                },
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline:
+                    darkMode == "white" ? null : classes.notchedOutline,
+                },
+              }}
+            />
+            <TextField
+              id="nazwisko"
+              style={{ marginBottom: "1.5rem" }}
+              value={nazwisko}
+              variant="outlined"
+              label="Nazwisko:"
               onChange={(e) => onChange(e)}
               inputProps={{
                 style: {
@@ -332,13 +383,31 @@ function AddAdminDialog({
                 </div>
               </div>
             </div>
-            <Button
-              variant="contained"
-              style={{ marginTop: "4%" }}
-              onClick={createAcc}
-            >
-              Dodaj
-            </Button>
+            {login && password ? (
+              <Button
+                variant="contained"
+                style={{
+                  marginTop: "20px",
+                  minHeight: "50px",
+                  fontSize: "17px",
+                }}
+                onClick={createAcc}
+              >
+                Dodaj
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                style={{
+                  marginTop: "20px",
+                  minHeight: "50px",
+                  fontSize: "17px",
+                }}
+                disabled="true"
+              >
+                Dodaj
+              </Button>
+            )}
           </div>
         </DialogContentText>
       </DialogContent>

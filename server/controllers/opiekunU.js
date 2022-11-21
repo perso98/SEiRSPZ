@@ -17,12 +17,20 @@ exports.getEffectsOpiekunU = async (req, res) => {
       where: {
         id_opiekunU: req.session.user.id,
       },
-      include: {
-        model: efektyStudent,
-        include: {
-          model: efektyLista,
+      include: [
+        {
+          model: dane,
+          required: false,
         },
-      },
+        {
+          model: efektyStudent,
+          required: false,
+          include: {
+            model: efektyLista,
+            required: false,
+          },
+        },
+      ],
     });
 
     res.send(getEffects);

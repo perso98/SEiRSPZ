@@ -73,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Admin(props) {
   const classes = useStyles();
+  const [yearFilter, setYearFilter] = useState("Wszystkie");
   const [confirmed, setConfirmed] = useState(false);
   const [notConfirmed, setNotConfirmed] = useState(false);
   const [all, setAll] = useState(true);
@@ -85,6 +86,8 @@ export default function Admin(props) {
   const [surnameSearch, setSurnameSearch] = useState("");
   const [firmaSearch, setFirmaSearch] = useState("");
   const [roleSearch, setRoleSearch] = useState("Wszyscy");
+  const [changePassword, setChangePassword] = useState("");
+  const [changePassword2, setChangePassword2] = useState("");
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -157,6 +160,8 @@ export default function Admin(props) {
     student: 0,
     dziekanat: 0,
     dyrektor: 0,
+    imie: "",
+    nazwisko: "",
   });
   const onChange = (e) => {
     const { value, id } = e.target;
@@ -191,11 +196,18 @@ export default function Admin(props) {
                 isOpiekun: userObject.opiekunU,
                 isDziekanat: userObject.dziekanat,
                 isStudent: userObject.student,
+                dane: { imie: userObject.imie, nazwisko: userObject.nazwisko },
                 createdAt: res.data.createdAt,
                 confirmation: 1,
               },
             ]);
-            setUserObject({ ...userObject, login: "", password: "" });
+            setUserObject({
+              ...userObject,
+              login: "",
+              password: "",
+              imie: "",
+              nazwisko: "",
+            });
           }
 
           toast.success(res.data.message2);
@@ -211,102 +223,198 @@ export default function Admin(props) {
     setpageRows(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const yearArray = [];
   const recordsAfterFiltering = students.filter((val) => {
+    if (!yearArray.includes(val.createdAt.split("-")[0]))
+      yearArray.push(val.createdAt.split("-")[0]);
     if (all) {
-      if (
-        searchLogin === "" &&
-        yearSearch === "" &&
-        surnameSearch === "" &&
-        firmaSearch === ""
-      ) {
-        return roleSearch !== "Wszyscy" ? val[roleSearch] == 1 : val;
+      if (searchLogin === "" && surnameSearch === "" && firmaSearch === "") {
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy" ? val[roleSearch] == 1 : val;
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearFilter
+            : val && val.createdAt.split("-")[0] === yearFilter;
       } else if (searchLogin !== "") {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 &&
-              val.login.toLowerCase().includes(searchLogin.toLowerCase())
-          : val && val.login.toLowerCase().includes(searchLogin.toLowerCase());
-      } else if (yearSearch !== "") {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearSearch
-          : val.createdAt.split("-")[0] === yearSearch;
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase())
+            : val &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase());
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter
+            : val &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter;
       } else if (surnameSearch !== "") {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 && val.dane?.nazwisko
-          : val.dane?.nazwisko
-              .toLowerCase()
-              .includes(surnameSearch.toLowerCase());
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val?.dane?.nazwisko
+                  ?.toLowerCase()
+                  .includes(surnameSearch?.toLowerCase())
+            : val?.dane?.nazwisko
+                ?.toLowerCase()
+                ?.includes(surnameSearch?.toLowerCase());
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val?.dane?.nazwisko
+                  ?.toLowerCase()
+                  .includes(surnameSearch?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter
+            : val?.dane?.nazwisko
+                ?.toLowerCase()
+                ?.includes(surnameSearch?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter;
       } else if (firmaSearch !== "") {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 &&
-              val.firma?.nazwa
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1
+            : val.firma?.nazwa
                 .toLowerCase()
-                .includes(firmaSearch.toLowerCase()) === yearSearch
-          : val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase());
+                .includes(firmaSearch.toLowerCase());
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearFilter
+            : val.firma?.nazwa
+                .toLowerCase()
+                .includes(firmaSearch.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter;
       }
     }
     if (confirmed) {
       if (
         searchLogin === "" &&
-        yearSearch === "" &&
         val.confirmation == 1 &&
         surnameSearch === "" &&
         firmaSearch === ""
       ) {
-        return roleSearch !== "Wszyscy" ? val[roleSearch] == 1 : val;
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy" ? val[roleSearch] == 1 : val;
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearFilter
+            : val && val.createdAt.split("-")[0] === yearFilter;
       } else if (searchLogin !== "" && val.confirmation == 1) {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 &&
-              val.login.toLowerCase().includes(searchLogin.toLowerCase())
-          : val.login.toLowerCase().includes(searchLogin.toLowerCase());
-      } else if (yearSearch !== "" && val.confirmation == 1) {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearSearch
-          : val.createdAt.split("-")[0] === yearSearch;
-      } else if (surnameSearch !== "") {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 &&
-              val.dane?.nazwisko
-                .toLowerCase()
-                .includes(surnameSearch.toLowerCase())
-          : val.dane?.nazwisko
-              .toLowerCase()
-              .includes(surnameSearch.toLowerCase());
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase())
+            : val &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase());
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter
+            : val &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter;
+      } else if (surnameSearch !== "" && val.confirmation == 1) {
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val?.dane?.nazwisko
+                  ?.toLowerCase()
+                  .includes(surnameSearch?.toLowerCase())
+            : val?.dane?.nazwisko
+                ?.toLowerCase()
+                ?.includes(surnameSearch?.toLowerCase());
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val?.dane?.nazwisko
+                  ?.toLowerCase()
+                  .includes(surnameSearch?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter
+            : val?.dane?.nazwisko
+                ?.toLowerCase()
+                ?.includes(surnameSearch?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter;
       } else if (firmaSearch !== "" && val.confirmation == 1) {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 &&
-              val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase())
-          : val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase());
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1
+            : val.firma?.nazwa
+                .toLowerCase()
+                .includes(firmaSearch.toLowerCase());
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearFilter
+            : val.firma?.nazwa
+                .toLowerCase()
+                .includes(firmaSearch.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter;
       }
     }
     if (notConfirmed) {
       if (
         searchLogin === "" &&
-        yearSearch === "" &&
         val.confirmation == 0 &&
         surnameSearch === "" &&
         firmaSearch === ""
       ) {
-        return roleSearch !== "Wszyscy" ? val[roleSearch] == 1 : val;
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy" ? val[roleSearch] == 1 : val;
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearFilter
+            : val && val.createdAt.split("-")[0] === yearFilter;
       } else if (searchLogin !== "" && val.confirmation == 0) {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 &&
-              val.login.toLowerCase().includes(searchLogin.toLowerCase())
-          : val.login.toLowerCase().includes(searchLogin.toLowerCase());
-      } else if (yearSearch !== "" && val.confirmation == 0) {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearSearch
-          : val.createdAt.split("-")[0] === yearSearch;
-      } else if (surnameSearch !== "") {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 && val.dane?.nazwisko
-          : val.dane?.nazwisko
-              .toLowerCase()
-              .includes(surnameSearch.toLowerCase());
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase())
+            : val &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase());
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter
+            : val &&
+                val.login.toLowerCase().includes(searchLogin?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter;
+      } else if (surnameSearch !== "" && val.confirmation == 0) {
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val?.dane?.nazwisko
+                  ?.toLowerCase()
+                  .includes(surnameSearch?.toLowerCase())
+            : val?.dane?.nazwisko
+                ?.toLowerCase()
+                ?.includes(surnameSearch?.toLowerCase());
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 &&
+                val?.dane?.nazwisko
+                  ?.toLowerCase()
+                  .includes(surnameSearch?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter
+            : val?.dane?.nazwisko
+                ?.toLowerCase()
+                ?.includes(surnameSearch?.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter;
       } else if (firmaSearch !== "" && val.confirmation == 0) {
-        return roleSearch !== "Wszyscy"
-          ? val[roleSearch] == 1 &&
-              val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase())
-          : val.firma?.nazwa.toLowerCase().includes(firmaSearch.toLowerCase());
+        if (yearFilter === "Wszystkie")
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1
+            : val.firma?.nazwa
+                .toLowerCase()
+                .includes(firmaSearch.toLowerCase());
+        else
+          return roleSearch !== "Wszyscy"
+            ? val[roleSearch] == 1 && val.createdAt.split("-")[0] === yearFilter
+            : val.firma?.nazwa
+                .toLowerCase()
+                .includes(firmaSearch.toLowerCase()) &&
+                val.createdAt.split("-")[0] === yearFilter;
       }
     }
   });
@@ -314,7 +422,16 @@ export default function Admin(props) {
   const recordsAfter = () => {
     return recordsAfterFiltering.slice(page * pageRows, (page + 1) * pageRows);
   };
-
+  const changePasswordAdmin = (id, password) => {
+    axios
+      .put(`${url}changePasswordAdmin`, { id: id, password: password })
+      .then((res) => {
+        if (res.data.session) window.location.reload(false);
+        if (res.data.message) {
+          toast.success(res.data.message);
+        }
+      });
+  };
   const changeConfirmation = (id, confirmation) => {
     axios
       .put(`${url}changeConfirmation`, { id: id, confirmation: confirmation })
@@ -416,6 +533,8 @@ export default function Admin(props) {
   };
   const handleEditClose = () => {
     setChangeLogin();
+    setChangePassword();
+    setChangePassword2();
     setEditOpen(false);
   };
   const [editStudent, setEditStudent] = useState(null);
@@ -454,19 +573,13 @@ export default function Admin(props) {
       setSearchLogin("");
     } else if (toggleSearch === 1) {
       setToggleSearch(2);
-      setYearSearch("");
-    } else if (toggleSearch === 2) {
       setSurnameSearch("");
-      setToggleSearch(3);
-    } else {
+    } else if (toggleSearch === 2) {
       setToggleSearch(0);
       setFirmaSearch("");
     }
   };
-  const handleRoleChange = (event) => {
-    setRoleSearch(event.target.value);
-    setPage(0);
-  };
+
   const info = (
     <div>
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać
@@ -511,7 +624,14 @@ export default function Admin(props) {
       STUDENT*
     </div>
   );
-
+  const handleYearChange = (event) => {
+    setYearFilter(event.target.value);
+    setPage(0);
+  };
+  const handleRoleChange = (event) => {
+    setRoleSearch(event.target.value);
+    setPage(0);
+  };
   return (
     <>
       <div
@@ -607,47 +727,6 @@ export default function Admin(props) {
                   setPage(0);
                 }}
               />
-            ) : toggleSearch === 2 ? (
-              <TextField
-                className={classes.searchInp}
-                type="number"
-                value={yearSearch}
-                label="Szukaj po roku utworzenia"
-                variant="outlined"
-                inputProps={{
-                  style: {
-                    color: darkMode == "white" ? "black" : "white",
-                    classes: {
-                      notchedOutline:
-                        darkMode == "white" ? null : classes.notchedOutline,
-                    },
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    color: darkMode == "white" ? "black" : "white",
-                  },
-                }}
-                InputProps={{
-                  classes: {
-                    notchedOutline:
-                      darkMode == "white" ? null : classes.notchedOutline,
-                  },
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon
-                        style={{
-                          color: darkMode == "white" ? "black" : "white",
-                        }}
-                      />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={(e) => {
-                  setYearSearch(e.target.value);
-                  setPage(0);
-                }}
-              />
             ) : (
               <TextField
                 className={classes.searchInp}
@@ -711,27 +790,61 @@ export default function Admin(props) {
               {" "}
               Zmień opcje szukania
             </Button>
-            {yearSearch > 2000 &&
-            yearSearch < 3000 &&
-            yearSearch < new Date().getFullYear() - 3 &&
+            {yearFilter > 2000 &&
+            yearFilter < 3000 &&
+            yearFilter < new Date().getFullYear() - 3 &&
             recordsAfterFiltering.length > 0 ? (
               <Button
                 variant="contained"
                 color="error"
                 style={{ margin: "1.5rem" }}
                 onClick={() => {
-                  deleteYear(yearSearch);
+                  deleteYear(yearFilter);
                 }}
               >
-                Usuń wszystkich z roku {yearSearch}
+                Usuń wszystkich z roku {yearFilter}
               </Button>
             ) : null}
           </div>
-          <div style={{ alignContent: "center" }}>
+          <div
+            style={{
+              alignContent: "center",
+              justifyContent: "space-between",
+              display: "flex",
+            }}
+          >
             {" "}
-            <FormControl sx={{ minWidth: 200 }}>
-              <InputLabel>Rola</InputLabel>
+            <FormControl
+              style={{
+                marginLeft: "1.5rem",
+                width: "200px",
+                height: "60px",
+              }}
+            >
+              <InputLabel
+                sx={{ color: darkMode === "white" ? null : "white !important" }}
+              >
+                Rola
+              </InputLabel>
               <Select
+                sx={{
+                  color: darkMode === "white" ? null : "white !important",
+                  ".MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      darkMode === "white" ? null : "white !important",
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      darkMode === "white" ? null : "white !important",
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      darkMode === "white" ? null : "white !important",
+                  },
+                  ".MuiSvgIcon-root ": {
+                    fill: darkMode === "white" ? null : "white !important",
+                  },
+                }}
                 value={roleSearch}
                 label="Role"
                 onChange={handleRoleChange}
@@ -742,6 +855,41 @@ export default function Admin(props) {
                 <MenuItem value={"isOpiekunZakl"}>Opiekun Zakładowy</MenuItem>
                 <MenuItem value={"isDyrektor"}>Dyrektor</MenuItem>
                 <MenuItem value={"isDziekanat"}>Dziekanat</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl style={{ width: "200px", height: "60px" }}>
+              <InputLabel
+                sx={{ color: darkMode === "white" ? null : "white !important" }}
+              >
+                Rok
+              </InputLabel>
+              <Select
+                sx={{
+                  color: darkMode === "white" ? null : "white !important",
+                  ".MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      darkMode === "white" ? null : "white !important",
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      darkMode === "white" ? null : "white !important",
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      darkMode === "white" ? null : "white !important",
+                  },
+                  ".MuiSvgIcon-root ": {
+                    fill: darkMode === "white" ? null : "white !important",
+                  },
+                }}
+                value={yearFilter}
+                label="Rok"
+                onChange={handleYearChange}
+              >
+                <MenuItem value={"Wszystkie"}>Wszystkie</MenuItem>
+                {yearArray.map((val) => (
+                  <MenuItem value={val}>{val}</MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>
@@ -757,13 +905,13 @@ export default function Admin(props) {
               <Button
                 variant="outlined"
                 disabled
-                style={{ marginRight: "0.5rem" }}
+                style={{ marginRight: "0.5rem", marginLeft: "0.5rem" }}
               >
                 Zatwierdzone
               </Button>
             ) : (
               <Button
-                style={{ marginRight: "0.5rem" }}
+                style={{ marginRight: "0.5rem", marginLeft: "0.5rem" }}
                 color="success"
                 variant="contained"
                 onClick={() => {
@@ -805,7 +953,7 @@ export default function Admin(props) {
                 disabled
                 style={{ marginRight: "0.5rem" }}
               >
-                Nie zatwierdzone
+                Niezatwierdzone
               </Button>
             ) : (
               <Button
@@ -819,7 +967,7 @@ export default function Admin(props) {
                   setPage(0);
                 }}
               >
-                Nie zatwierdzone
+                Niezatwierdzone
               </Button>
             )}
           </div>
@@ -969,6 +1117,11 @@ export default function Admin(props) {
         setChangeLogin={setChangeLogin}
         darkMode={darkMode}
         changeConfirmation={changeConfirmation}
+        changePassword={changePassword}
+        setChangePassword={setChangePassword}
+        changePassword2={changePassword2}
+        setChangePassword2={setChangePassword2}
+        changePasswordAdmin={changePasswordAdmin}
       />
 
       <ToastContainer autoClose={1000} />

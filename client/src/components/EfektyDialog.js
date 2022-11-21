@@ -6,18 +6,24 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { TextField } from "@mui/material";
+
+import { TextField, makeStyles } from "@material-ui/core";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+const useStyles = makeStyles((theme) => ({
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "white !important",
+  },
+}));
 function EfektyDialog(props) {
   const [open, setOpen] = useState(false);
   const [updateEffect, setUpdateEffect] = useState(
     props?.checkStudent?.efektyStudents
   );
-
+  const classes = useStyles();
   useEffect(() => {
     setUpdateEffect(props?.checkStudent?.efektyStudents);
   }, [props?.checkStudent?.efektyStudents]);
@@ -53,20 +59,66 @@ function EfektyDialog(props) {
           onClose={props.handleClose}
           fullWidth="40%"
           style={{ fontSize: "1.2rem", color: "#403c3c" }}
+          PaperProps={{
+            style: {
+              backgroundColor: props.darkMode == "white" ? "white" : "#242424",
+              color: props.darkMode == "white" ? "black" : "white",
+            },
+          }}
         >
           <DialogTitle
-            style={{ justifyContent: "space-between", display: "flex" }}
+            style={{
+              justifyContent: "space-between",
+              display: "flex",
+            }}
           >
             Efekty studenta {props.checkStudent.login}
             <IconButton onClick={props.handleClose}>
-              <CloseIcon />
+              <CloseIcon
+                style={{
+                  color: props.darkMode === "white" ? "black" : "white",
+                }}
+              />
             </IconButton>
           </DialogTitle>
           <DialogContent>
             <>
+              {props?.checkStudent.dane.imie ? (
+                <div>Imie: {props?.checkStudent.dane.imie}</div>
+              ) : null}
+              {props?.checkStudent.dane.nazwisko ? (
+                <div>Nazwisko: {props?.checkStudent.dane.nazwisko}</div>
+              ) : null}
               <FormControl style={{ marginTop: "1rem" }} sx={{ width: 550 }}>
-                <InputLabel>Efekty</InputLabel>
+                <InputLabel
+                  sx={{
+                    color:
+                      props.darkMode === "white" ? null : "white !important",
+                  }}
+                >
+                  Efekty
+                </InputLabel>
                 <Select
+                  sx={{
+                    color:
+                      props.darkMode === "white" ? null : "white !important",
+                    ".MuiOutlinedInput-notchedOutline": {
+                      borderColor:
+                        props.darkMode === "white" ? null : "white !important",
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor:
+                        props.darkMode === "white" ? null : "white !important",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor:
+                        props.darkMode === "white" ? null : "white !important",
+                    },
+                    ".MuiSvgIcon-root ": {
+                      fill:
+                        props.darkMode === "white" ? null : "white !important",
+                    },
+                  }}
                   open={open}
                   onClose={handleClose}
                   onOpen={handleOpen}
@@ -102,8 +154,33 @@ function EfektyDialog(props) {
                   rows={10}
                   margin="normal"
                   label="Opis"
+                  variant="outlined"
                   value={props?.opis?.length > 0 ? props.opis : ""}
                   style={{ width: "100%" }}
+                  inputProps={{
+                    style: {
+                      color: props.darkMode == "white" ? "black" : "white",
+                      classes: {
+                        notchedOutline:
+                          props.darkMode == "white"
+                            ? null
+                            : classes.notchedOutline,
+                      },
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      color: props.darkMode == "white" ? "black" : "white",
+                    },
+                  }}
+                  InputProps={{
+                    classes: {
+                      notchedOutline:
+                        props.darkMode == "white"
+                          ? null
+                          : classes.notchedOutline,
+                    },
+                  }}
                   onChange={(e) => {
                     props.setOpis(e.target.value);
                   }}

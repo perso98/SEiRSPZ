@@ -17,6 +17,10 @@ import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
 import { ThemeContext } from "../context/ThemeContext";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 function OpiekunUHistory(props) {
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +32,7 @@ function OpiekunUHistory(props) {
   const [accepted, setAccepted] = useState(false);
   const [declined, setDeclined] = useState(false);
   const [all, setAll] = useState(true);
+  const [yearFilter, setYearFilter] = useState("Wszystkie");
   const [remountComponent, setRemountComponent] = useState(0);
   const [toggleSearch, setToggleSearch] = useState(false);
   const [searchSurname, setSearchSurname] = useState("");
@@ -48,10 +53,11 @@ function OpiekunUHistory(props) {
   const changeToggle = () => {
     if (toggleSearch) {
       setToggleSearch(false);
-      setSearchLogin("");
+      setSearchSurname("");
     } else {
       setToggleSearch(true);
-      setSearchSurname("");
+
+      setSearchLogin("");
     }
   };
   useEffect(() => {
@@ -180,42 +186,64 @@ function OpiekunUHistory(props) {
         }
       });
   };
-
+  const yearArray = [];
   const recordsAfterFiltering = dzienniczek.filter((val) => {
+    if (!yearArray.includes(val.createdAt.split("-")[0]))
+      yearArray.push(val.createdAt.split("-")[0]);
     if (accepted) {
       if (
         val?.statusOpiekunaU === "Zaakceptowano" &&
         searchLogin === "" &&
         searchSurname === ""
       ) {
-        return val;
+        return yearFilter !== "Wszystkie"
+          ? val.createdAt.split("-")[0] === yearFilter
+          : val;
       } else if (
         searchLogin !== "" &&
         val?.statusOpiekunaU === "Zaakceptowano"
       ) {
-        return val?.user?.login
-          .toLowerCase()
-          .includes(searchLogin.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val?.user?.login
+              .toLowerCase()
+              .includes(searchLogin.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter
+          : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (
         searchSurname !== "" &&
         val?.statusOpiekunaU === "Zaakceptowano"
       ) {
-        return val.user.dane.nazwisko
-          .toLowerCase()
-          .includes(searchSurname.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase())
+          : val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter;
       }
     }
     if (all) {
       if (searchLogin === "" && searchSurname === "") {
-        return val;
+        return yearFilter !== "Wszystkie"
+          ? val.createdAt.split("-")[0] === yearFilter
+          : val;
       } else if (searchLogin !== "") {
-        return val?.user?.login
-          .toLowerCase()
-          .includes(searchLogin.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val?.user?.login
+              .toLowerCase()
+              .includes(searchLogin.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter
+          : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (searchSurname !== "") {
-        return val.user.dane.nazwisko
-          .toLowerCase()
-          .includes(searchSurname.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase())
+          : val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter;
       }
     }
     if (declined) {
@@ -224,15 +252,25 @@ function OpiekunUHistory(props) {
         searchLogin === "" &&
         searchSurname === ""
       ) {
-        return val;
+        return yearFilter !== "Wszystkie"
+          ? val.createdAt.split("-")[0] === yearFilter
+          : val;
       } else if (searchLogin !== "" && val?.statusOpiekunaU === "Odrzucono") {
-        return val?.user?.login
-          .toLowerCase()
-          .includes(searchLogin.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val?.user?.login
+              .toLowerCase()
+              .includes(searchLogin.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter
+          : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (searchSurname !== "" && val?.statusOpiekunaU === "Odrzucono") {
-        return val.user.dane.nazwisko
-          .toLowerCase()
-          .includes(searchSurname.toLowerCase());
+        return yearFilter !== "Wszystkie"
+          ? val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase())
+          : val.user.dane.nazwisko
+              .toLowerCase()
+              .includes(searchSurname.toLowerCase()) &&
+              val.createdAt.split("-")[0] === yearFilter;
       }
     }
   });
@@ -259,6 +297,10 @@ function OpiekunUHistory(props) {
       tamtym panelu.
     </div>
   );
+  const handleYearChange = (event) => {
+    setYearFilter(event.target.value);
+    setRemountComponent(Math.random());
+  };
   return (
     <div style={{ background: darkMode == "white" ? "white" : "#242424" }}>
       <Container
@@ -295,10 +337,12 @@ function OpiekunUHistory(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
-              setRemountComponent={setRemountComponent}
+              searchLogin={searchLogin}
               darkMode={darkMode}
+              setRemountComponent={setRemountComponent}
               toggleSearch={toggleSearch}
               setSearchSurname={setSearchSurname}
+              searchSurname={searchSurname}
             />
           )}
           <Helper
@@ -316,6 +360,40 @@ function OpiekunUHistory(props) {
         >
           Zmień opcje wyszukiwania
         </Button>
+        <div style={{ marginTop: "1.5rem" }}>
+          <FormControl style={{ width: "200px", height: "60px" }}>
+            <InputLabel
+              sx={{ color: darkMode === "white" ? null : "white !important" }}
+            >
+              Rok
+            </InputLabel>
+            <Select
+              sx={{
+                color: darkMode === "white" ? null : "white !important",
+                ".MuiOutlinedInput-notchedOutline": {
+                  borderColor: darkMode === "white" ? null : "white !important",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: darkMode === "white" ? null : "white !important",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: darkMode === "white" ? null : "white !important",
+                },
+                ".MuiSvgIcon-root ": {
+                  fill: darkMode === "white" ? null : "white !important",
+                },
+              }}
+              value={yearFilter}
+              label="Rok"
+              onChange={handleYearChange}
+            >
+              <MenuItem value={"Wszystkie"}>Wszystkie</MenuItem>
+              {yearArray.map((val) => (
+                <MenuItem value={val}>{val}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
         <div
           style={{
             display: "flex",

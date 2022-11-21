@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
 import { ThemeContext } from "../context/ThemeContext";
+import { Button } from "@mui/material";
 function EfektyOpiekunU(props) {
   const [opis, setOpis] = useState("");
   const [studenci, setStudenci] = useState([]);
@@ -17,11 +18,12 @@ function EfektyOpiekunU(props) {
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkStudent, setCheckStudent] = useState(null);
-  const [itemOffset, setItemOffset] = useState(0);
   const [efekt, setEfekt] = useState(0);
   const [efektId, setEfektId] = useState(0);
   const navigate = useNavigate();
-
+  const [toggleSearch, setToggleSearch] = useState(false);
+  const [searchSurname, setSearchSurname] = useState("");
+  const [remountComponent, setRemountComponent] = useState(0);
   const handleClose = () => {
     setOpis();
     setOpen(false);
@@ -80,10 +82,14 @@ function EfektyOpiekunU(props) {
   };
 
   const recordsAfterFiltering = studenci.filter((val) => {
-    if (searchLogin == "") {
+    if (searchLogin == "" && searchSurname == "") {
       return val;
-    } else if (val.login.toLowerCase().includes(searchLogin.toLowerCase())) {
-      return val;
+    } else if (searchLogin !== "")
+      return val?.login.toLowerCase().includes(searchLogin.toLowerCase());
+    else if (searchSurname !== "") {
+      return val?.dane.nazwisko
+        .toLowerCase()
+        .includes(searchSurname.toLowerCase());
     }
   });
   const info = (
@@ -116,6 +122,15 @@ function EfektyOpiekunU(props) {
       <br />
     </div>
   );
+  const changeToggle = () => {
+    if (toggleSearch) {
+      setToggleSearch(false);
+      setSearchLogin("");
+    } else {
+      setToggleSearch(true);
+      setSearchSurname("");
+    }
+  };
   return (
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
@@ -131,8 +146,10 @@ function EfektyOpiekunU(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
-              setItemOffset={setItemOffset}
               darkMode={darkMode}
+              setRemountComponent={setRemountComponent}
+              toggleSearch={toggleSearch}
+              setSearchSurname={setSearchSurname}
             />
           )}
           <Helper
@@ -141,6 +158,14 @@ function EfektyOpiekunU(props) {
             darkMode={darkMode}
           />
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeToggle();
+          }}
+        >
+          Zmień opcje wyszukiwania
+        </Button>
         {recordsAfterFiltering.length === 0 && !loading && (
           <div
             style={{
@@ -159,18 +184,20 @@ function EfektyOpiekunU(props) {
             <div />
           </div>
         )}
-        <PaginationForEffects
-          data={recordsAfterFiltering}
-          open={open}
-          handleOpen={handleOpen}
-          itemOffset={itemOffset}
-          setItemOffset={setItemOffset}
-          setEfekt={setEfekt}
-          opis={opis}
-          efekt={efekt}
-          checkStudent={checkStudent}
-          setOpis={setOpis}
-        />
+        {recordsAfterFiltering.length > 0 ? (
+          <div key={remountComponent}>
+            <PaginationForEffects
+              data={recordsAfterFiltering}
+              open={open}
+              handleOpen={handleOpen}
+              setEfekt={setEfekt}
+              opis={opis}
+              efekt={efekt}
+              checkStudent={checkStudent}
+              setOpis={setOpis}
+            />{" "}
+          </div>
+        ) : null}
       </Container>
       <EfektyDialog
         open={open}

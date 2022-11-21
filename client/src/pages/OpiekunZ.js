@@ -155,10 +155,11 @@ function OpiekunZ(props) {
   const changeToggle = () => {
     if (toggleSearch) {
       setToggleSearch(false);
-      setSearchLogin("");
+      setSearchSurname("");
     } else {
       setToggleSearch(true);
-      setSearchSurname("");
+
+      setSearchLogin("");
     }
   };
   return (
@@ -197,11 +198,13 @@ function OpiekunZ(props) {
         >
           {!loading && (
             <SearchBar
-              darkMode={darkMode}
               setSearchLogin={setSearchLogin}
+              searchLogin={searchLogin}
+              darkMode={darkMode}
               setRemountComponent={setRemountComponent}
               toggleSearch={toggleSearch}
               setSearchSurname={setSearchSurname}
+              searchSurname={searchSurname}
             />
           )}
 

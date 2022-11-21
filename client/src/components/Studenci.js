@@ -19,11 +19,22 @@ function Studenci(props) {
                   flexDirection: "column",
                   borderRadius: "25px",
                   boxShadow: " 0 0 5px black",
-                  height: "10rem",
+
                   marginTop: "2rem",
                 }}
               >
-                Login : {val.login}
+                <div style={{ marginBottom: "1rem" }}>E-mail : {val.login}</div>
+
+                {val?.dane?.imie ? (
+                  <div style={{ marginBottom: "1rem" }}>
+                    Imie: {val.dane.imie}
+                  </div>
+                ) : null}
+                {val?.dane?.imie ? (
+                  <div style={{ marginBottom: "1rem" }}>
+                    Nazwisko: {val.dane.nazwisko}
+                  </div>
+                ) : null}
                 {val.efektyStudents.length > 0 ? (
                   <Button
                     variant="contained"
