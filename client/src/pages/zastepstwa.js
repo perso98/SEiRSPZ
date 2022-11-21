@@ -6,6 +6,12 @@ import { url } from "../services/Url";
 import SearchBar from "../components/SearchBarNoMargin";
 import Zastepstwo from "../components/Zastepstwo";
 import { ThemeContext } from "../context/ThemeContext";
+
+import OpiekunU from "../pages/ZastepstwoOpiekunU";
+import OpiekunUEfekty from "../pages/ZastepstwoEfektyOpiekunU";
+import OpiekunUHistory from "../pages/ZastepstwoOpiekunUHistory";
+
+
 const useStyles = makeStyles(theme => ({
     container:{
         marginBottom: theme.spacing(10)
@@ -168,6 +174,27 @@ function Zastepstwa() {
                         </Grid>
                     </Grid>
                 </Grid>
+
+                <div>
+                {infoUser !== null ? (
+            <div>
+                Zastępstwo: {infoUser.imie} {infoUser.nazwisko}
+                Id: {infoUser.user.id}
+
+                <OpiekunU 
+            infoUser = { infoUser }
+            />
+            <OpiekunUHistory
+            infoUser = { infoUser }
+            />
+            <OpiekunUEfekty
+            infoUser = { infoUser }
+            />
+            </div>
+        ): null}
+            
+
+            </div>
       
                 
 

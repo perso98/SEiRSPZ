@@ -28,14 +28,17 @@ function ListaOpiekunow() {
     {
         axios.get(`${url}getUser`).then((res)=>{
             setUser(res.data)
+            console.log(res.data)
         })
 
         axios.get(`${url}getDane`).then((res)=>{
             setDane(res.data)
+            console.log(res.data)
         })
 
         axios.get(`${url}getFirma`).then((res)=>{
             setFirma(res.data)
+            
         })
 
     },[]
@@ -92,16 +95,17 @@ function ListaOpiekunow() {
     const [firmaIdS, setFirmaSId] = useState([]);
     const [idOpiekuna, setIdOpiekuna] = useState();
     const [jakiOpiekun, setJakiOpiekun] = useState();
-    
+    const [infoOpiekun, setInfoOpiekun] = useState();
 
     const handleAddSClose = () => {
         setAddSOpen(false);
     };
-    const handleAddSOpen = (firma, idOpiekuna, opiekunZorU) => {
+    const handleAddSOpen = (firma, idOpiekuna, opiekunZorU, infoOpiekun) => {
         setFirmaSId(firma)
         setIdOpiekuna(idOpiekuna)
         setJakiOpiekun(opiekunZorU)
         setAddSOpen(true);
+        setInfoOpiekun(infoOpiekun)
     };
 
     const [student, setStudent] = useState([]);
@@ -254,6 +258,11 @@ function ListaOpiekunow() {
                   return val.id == id ? { ...val, firmaId: firmaId } : val;
                 })
               );
+            setDane(
+                dane.map((val) => {
+                    return val.user.id == id ? { ...val, firmaId: firmaId } : val;
+                })
+            );
           });
       };
 
@@ -400,6 +409,7 @@ function ListaOpiekunow() {
             />
             <AddStudent
                 idFirma={firmaIdS}
+                infoOpiekun= {infoOpiekun}
                 user={user}
                 dane={dane}
                 idOpiekuna={idOpiekuna}
@@ -492,78 +502,87 @@ function ListaOpiekunow() {
                         
                         </div>
 
-                        {user.map((val) => (
+                    {/* tu zmiany  */}
+                        {dane.map((val) => (
                             <Grid>
-                                {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === firmaD.id ? (
+                                {( val.user?.isOpiekunZakl === 1 || val.user?.isOpiekun === 1 )  && val.user?.firmaId === firmaD.id ? (
                                     <div>
                                         <div
                                         style={{ display: "flex", justifyContent: "space-between", flexDirection: "column-reverse" }}
                                         >
-                                            { val.isOpiekunZakl === 1 ? (
-                                                <div
-                                                style={{ display: "flex", justifyContent: "space-between" }}
-                                                >   
-                                                    <Stack direction="row" spacing={1} alignItems="center">
-                                                        {/* <div>
-                                                            Login: {val.login}
-                                                        </div> */}
-                                                        <div 
-                                                        style={{fontSize:"11px"}}
-                                                        >
-                                                            (Opiekun zakładowy)
-                                                        </div>
-                                                    </Stack>
-                                                    <Button
-                                                    style={{ minWidth: '35px'}}
-                                                    size="small"
-                                                    onClick={() => {handleAddSOpen(firmaD, val.id, 1)}}
-                                                    variant="contained"
-                                                    color="success"
+                                            { val.user?.isOpiekunZakl === 1 ? (
+                                                <div>
+                                                    <div
+                                                    style={{ display: "flex", justifyContent: "space-between" }}
+                                                    >   
+                                                        <Stack direction="row" spacing={1} alignItems="center">
+                                                            {/* <div>
+                                                                Login: {val.login}
+                                                            </div> */}
+                                                            <div 
+                                                            style={{fontSize:"11px"}}
+                                                            >
+                                                                (Opiekun zakładowy)
+                                                            </div>
+                                                        </Stack>
+                                                        
+                                                    </div>
+                                                    <div
+                                                    style={{ display: "flex", justifyContent: "space-between" }}
                                                     >
-                                                    +/-
-                                                    </Button>
+                                                    <div>
+                                                            {val.imie} {val.nazwisko}
+                                                    </div>
+                                                    <Button
+                                                        style={{ minWidth: '35px'}}
+                                                        size="small"
+                                                        onClick={() => {handleAddSOpen(firmaD, val.user.id, 1, val)}}
+                                                        variant="contained"
+                                                        color="success"
+                                                        >
+                                                        +/-
+                                                        </Button>
+                                                        </div>
+                                                    
                                                 </div>
                                                 ): 
-                                                <div
-                                                style={{ display: "flex", justifyContent: "space-between" }}
-                                                >
-                                                    <Stack direction="row" spacing={1} alignItems="center">
-                                                        {/* <div>
-                                                            Login: {val.login}
-                                                        </div> */}
-                                                        <div 
-                                                        style={{fontSize:"11px"}}
-                                                        >
-                                                            (Opiekun uczelniany)
-                                                        </div>
-                                                    </Stack>
-                                                    <Button
-                                                    style={{ minWidth: '35px'}}
-                                                    size="small"
-                                                    onClick={() => {handleAddSOpen(firmaD, val.id, 0)}}
-                                                    variant="contained"
-                                                    color="success"
+                                                <div>
+                                                    <div
+                                                    style={{ display: "flex", justifyContent: "space-between" }}
                                                     >
-                                                    +/-
-                                                    </Button>
+                                                        <Stack direction="row" spacing={1} alignItems="center">
+                                                            {/* <div>
+                                                                Login: {val.login}
+                                                            </div> */}
+                                                            <div 
+                                                            style={{fontSize:"11px"}}
+                                                            >
+                                                                (Opiekun uczelniany)
+                                                            </div>
+                                                        </Stack>
+                                                    </div>
+                                                    <div 
+                                                    style={{ display: "flex", justifyContent: "space-between" }}
+                                                    >
+                                                        <div>
+                                                            {val.imie} {val.nazwisko}
+                                                        </div>
+                                                        <Button
+                                                        style={{ minWidth: '35px'}}
+                                                        size="small"
+                                                        onClick={() => {handleAddSOpen(firmaD, val.user.id, 0, val)}}
+                                                        variant="contained"
+                                                        color="success"
+                                                        >
+                                                        +/-
+                                                        </Button>
+                                                    </div>
                                                 </div>
                                             }
                                         
                                         </div>
                                             
-                                        {dane.map((daneO) => (
-                                            daneO.id === val.daneId ? (
-                                                <div style={{marginBottom: "10px"}}>
-                                                        
-                                                        <div style={{display: "flex", gap: "0.4rem"}}>
-                                                            {/* Imie i nazwisko: */}
-                                                            <div>{daneO.imie}</div>
-                                                            {daneO.nazwisko}
-                                                        </div>
-                                                </div>
-                                            ): null
-                                        ))
-                                        }
+                                        
                                         <h6 style={{ position: "flex" }}>Studenci: </h6>
                                         
                                         <div
@@ -571,7 +590,7 @@ function ListaOpiekunow() {
                                         >
                                             {user.map((valStudent) => (
                                                 <Grid>
-                                                    {valStudent.isStudent === 1 && valStudent.firmaId === firmaD.id && ( valStudent.id_opiekunU === val.id || valStudent.id_opiekunZ === val.id) ? (
+                                                    {valStudent.isStudent === 1 && valStudent.firmaId === firmaD.id && ( valStudent.id_opiekunU === val.user?.id || valStudent.id_opiekunZ === val.user?.id) ? (
                                                         <div>
                                                             {/* <div style={{display: "flex", gap: "0.4rem"}}>
                                                                 Login:<div>{valStudent.login}</div>
@@ -608,7 +627,132 @@ function ListaOpiekunow() {
                                 ): null}
                             </Grid>
                         ))}
+
+
+
+
+
+                        {/* na dole działa */}
                         
+                        {/* {user.map((val) => (
+                            <Grid>
+                                {( val.isOpiekunZakl === 1 || val.isOpiekun === 1 )  && val.firmaId === firmaD.id ? (
+                                    <div>
+                                        <div
+                                        style={{ display: "flex", justifyContent: "space-between", flexDirection: "column-reverse" }}
+                                        >
+                                            { val.isOpiekunZakl === 1 ? (
+                                                <div
+                                                style={{ display: "flex", justifyContent: "space-between" }}
+                                                >   
+                                                    <Stack direction="row" spacing={1} alignItems="center">
+                                                        
+                                                        <div 
+                                                        style={{fontSize:"11px"}}
+                                                        >
+                                                            (Opiekun zakładowy)
+                                                        </div>
+                                                    </Stack>
+                                                    <Button
+                                                    style={{ minWidth: '35px'}}
+                                                    size="small"
+                                                    onClick={() => {handleAddSOpen(firmaD, val.id, 1, val)}}
+                                                    variant="contained"
+                                                    color="success"
+                                                    >
+                                                    +/-
+                                                    </Button>
+                                                </div>
+                                                ): 
+                                                <div
+                                                style={{ display: "flex", justifyContent: "space-between" }}
+                                                >
+                                                    <Stack direction="row" spacing={1} alignItems="center">
+                                                        
+                                                        <div 
+                                                        style={{fontSize:"11px"}}
+                                                        >
+                                                            (Opiekun uczelniany)
+                                                        </div>
+                                                    </Stack>
+                                                    <Button
+                                                    style={{ minWidth: '35px'}}
+                                                    size="small"
+                                                    onClick={() => {handleAddSOpen(firmaD, val.id, 0, val)}}
+                                                    variant="contained"
+                                                    color="success"
+                                                    >
+                                                    +/-
+                                                    </Button>
+                                                </div>
+                                            }
+                                        
+                                        </div>
+                                            
+                                        {dane.map((daneO) => (
+                                            daneO.id === val.daneId ? (
+                                                <div 
+                                                style={{ marginBottom: "10px", display: "flex", justifyContent: "space-between", flexDirection: "row" }}
+                                                >
+                                                        <div style={{display: "flex", gap: "0.4rem"}}>
+                                                            
+                                                            <div>{daneO.imie}</div>
+                                                            {daneO.nazwisko}
+                                                        </div>
+                                                        <Button
+                                                        style={{ minWidth: '35px'}}
+                                                        size="small"
+                                                        onClick={() => {handleAddSOpen(firmaD, val.id, 0, val)}}
+                                                        variant="contained"
+                                                        color="success"
+                                                        >
+                                                        +/-
+                                                        </Button>
+                                                </div>
+                                            ): null
+                                        ))
+                                        }
+                                        <h6 style={{ position: "flex" }}>Studenci: </h6>
+                                        
+                                        <div
+                                        style={{ marginLeft: "15px", marginBottom:"15px"}}
+                                        >
+                                            {user.map((valStudent) => (
+                                                <Grid>
+                                                    {valStudent.isStudent === 1 && valStudent.firmaId === firmaD.id && ( valStudent.id_opiekunU === val.id || valStudent.id_opiekunZ === val.id) ? (
+                                                        <div>
+                                                            
+                                                        {dane.map((daneS) => (
+                                                            daneS.id === valStudent.daneId ? (
+                                                                <div style={{marginBottom: "10px"}}>
+                                                                            <div 
+                                                                            onClick={() => {handleStudentEditOpen(daneS)}} 
+                                                                            style={{
+                                                                                display: "flex", 
+                                                                                gap: "0.4rem", 
+                                                                                color: daneS.numerPorozumienia === null ? (
+                                                                                    "red"
+                                                                                    ): "green"
+
+                                                                                }}>
+                                                                                
+                                                                                <div>{daneS.imie}</div>
+                                                                                {daneS.nazwisko} <div>Indeks: {daneS.indeks}</div>
+                                                                            </div>
+                                                                        
+                                                                </div>
+                                                            ): null
+                                                        ))}
+                                                        </div>
+                                                    ): null}
+                                                </Grid>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ): null}
+                            </Grid>
+                        ))}
+                         */}
                         
                         
                     </div>

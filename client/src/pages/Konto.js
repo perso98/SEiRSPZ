@@ -18,6 +18,18 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ThemeContext } from "../context/ThemeContext";
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline';
+import ListSubheader from '@mui/material/ListSubheader';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
+
+
 function Konto() {
   const useStyles = makeStyles((theme) => ({
     center: {
@@ -45,10 +57,29 @@ function Konto() {
         minWidth: "400px",
       },
     },
+    formControl: {
+      color: darkMode == "white" ? "black" : "white",
+        '.MuiOutlinedInput-notchedOutline': {
+          borderColor:  darkMode == "white" ? "none" : "white",
+          color: darkMode == "white" ? "black" : "white",
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor:  darkMode == "white" ? "black" : "white",
+          color: darkMode == "white" ? "black" : "white",
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+          borderColor: darkMode == "white" ? "black" : "white",
+          color: darkMode == "white" ? "black" : "white",
+        },
+        '.MuiSvgIcon-root ': {
+          fill:  darkMode == "white" ? "black" : "white",
+        }
+    },
     notchedOutline: {
       borderWidth: "1px",
       borderColor: "white !important",
     },
+    
   }));
 
   const [listaKierunkow, setListaKierunkow] = useState([]);
@@ -136,6 +167,7 @@ function Konto() {
       }
     });
   };
+  
 
   const classes = useStyles();
   return (
@@ -331,16 +363,36 @@ function Konto() {
               }}
             /> */}
             <Box style={{ paddingTop: "3%", paddingBottom: " 1%" }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
+              <FormControl fullWidth className={classes.formControl}>
+                <InputLabel id="demo-simple-select-label" className={classes.formControl}>
                   Kierunek
                 </InputLabel>
                 <Select
+                  className={classes.formControl}
                   labelId="select-Kierunek-label"
                   id="select-Kierunek"
                   defaultValue={user.kierunek}
                   label="Kierunek"
                   onChange={handleChangeKierunek}
+                  sx={{
+                    color: darkMode == "white" ? "black" : "white",
+                    '.MuiOutlinedInput-notchedOutline': {
+                      borderColor:  darkMode == "white" ? "none" : "white",
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: darkMode == "white" ? "black" : "white",
+                    },
+                    '.MuiSvgIcon-root ': {
+                      fill:  darkMode == "white" ? "black" : "white",
+                    }
+                  }}
+                  PaperProps={{             
+                    style: {               
+                      backgroundColor: darkMode == "white" ? "white" : "#242424",               
+                      color: darkMode == "white" ? "black" : "white",             
+                    },           
+                  }}
+
                 >
                   <MenuItem>-</MenuItem>
                   {listaKierunkow.map((val) => (
@@ -349,16 +401,55 @@ function Konto() {
                 </Select>
               </FormControl>
             </Box>
+            <Box>
+              {/* <FormControl fullWidth>
+                <InputLabel htmlFor="grouped-select">Grouping</InputLabel>
+                <Select defaultValue="" id="grouped-select" label="Grouping">
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {listaKierunkow.map((val) => (
+                    <div>
+                      <ListSubheader>{val.nazwa}</ListSubheader>
+                      {val?.listaSpecjalnoscis?.map((valSpecjalnosc)=> ( 
+                        <MenuItem value={valSpecjalnosc?.id}>{valSpecjalnosc?.nazwa}</MenuItem>
+                      ))}
+                    </div>
+                  ))}
+                  <ListSubheader>Category 1</ListSubheader>
+                  <MenuItem value={1}>Option 1</MenuItem>
+                </Select>
+              </FormControl> */}
+            </Box>
                         {console.log(user)}
             <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Specjalność</InputLabel>
+              <FormControl fullWidth className={classes.formControl}>
+                <InputLabel className={classes.formControl} id="demo-simple-select-label">Specjalność</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   defaultValue={user.specjalnosc}
                   label={user.kierunek}
                   onChange={handleChangeSpecjalnosc}
+                  className={classes.formControl}
+                  sx={{
+                    color: darkMode == "white" ? "black" : "white",
+                    '.MuiOutlinedInput-notchedOutline': {
+                      borderColor:  darkMode == "white" ? "none" : "white",
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: darkMode == "white" ? "black" : "white",
+                    },
+                    '.MuiSvgIcon-root ': {
+                      fill:  darkMode == "white" ? "black" : "white",
+                    }
+                  }}
+                  PaperProps={{             
+                    style: {               
+                      backgroundColor: darkMode == "white" ? "white" : "#242424",               
+                      color: darkMode == "white" ? "black" : "white",             
+                    },           
+                  }}
                 >
                   <MenuItem>-</MenuItem>
                   {listaKierunkow?.map((valKierunek)=> (

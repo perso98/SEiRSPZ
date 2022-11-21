@@ -47,7 +47,7 @@ function Zastepstwo(
 
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth="60%">
+    <Dialog open={open} onClose={handleClose} fullWidth="20%">
       <DialogTitle style={{ display: "flex", justifyContent: "space-between" }}>
         {infoUser !== null ? (
             <div>
