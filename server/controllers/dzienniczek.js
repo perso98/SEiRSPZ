@@ -14,6 +14,10 @@ const { Op } = require("sequelize");
 const multer = require("multer");
 
 exports.getDziennik = async (req, res) => {
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
 
   const listDziennik = await dziennik.findAll({
     where: { userId: req.session.user.id },
@@ -23,11 +27,20 @@ exports.getDziennik = async (req, res) => {
   });
 
   res.send(listDziennik);
+}
+  }
+catch (err) {
+  console.log(err);
+}
 };
 
 //Utworzenie Dnia w dzienniczku
 exports.createDay = async (req, res) => {
   const { dayObject } = req.body;
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   try {
     const checkDay = await dziennik.findOne({
       where: {
@@ -58,9 +71,18 @@ exports.createDay = async (req, res) => {
   } catch (err) {
     res.send({ message: err.message });
   }
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 exports.createDay2 = async (req, res) => {
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   try {
     const newDay = await dziennik.create({
       userId: req.session.user.id,
@@ -79,6 +101,11 @@ exports.createDay2 = async (req, res) => {
   } catch (err) {
     res.send({ message: err.message });
   }
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 // Edycja dnia w dzienniczku
@@ -86,49 +113,63 @@ exports.createEditDay = async (req, res) => {
   const { id, changeOpis, changeDzien, changeData, changeIloscGodzin } =
     req.body;
   try {
-    // const checkDay = await dziennik.findOne({
-    //   where: {
-    //     id: id,
-    //   },
-    // });
-    // console.log("QQQQQQQQQ"+ checkDay.dzien )
-    // if (checkDay.dzien == null) {
-    await dziennik.update(
-      {
-        dzien: changeDzien,
-        data: changeData,
-        ilosc_godzin: changeIloscGodzin,
-        opis: changeOpis,
-      },
-      {
-        where: {
-          id: id,
-        },
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
+      try {
+        // const checkDay = await dziennik.findOne({
+        //   where: {
+        //     id: id,
+        //   },
+        // });
+        // console.log("QQQQQQQQQ"+ checkDay.dzien )
+        // if (checkDay.dzien == null) {
+        await dziennik.update(
+          {
+            dzien: changeDzien,
+            data: changeData,
+            ilosc_godzin: changeIloscGodzin,
+            opis: changeOpis,
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+        const editDay = await dziennik.findOne({
+          where: {
+            id: id,
+          },
+        });
+        res.send({
+          message: "Zmiana przeszła pomyślnie...",
+          editDzien: editDay.dzien,
+          editData: editDay.data,
+          editIlosc_godzin: editDay.ilosc_godzin,
+          editOpis: editDay.opis,
+        });
+        // }
+        // else {
+        //   res.send({ message: "Jest już taki dzień" });
+        // }
+      } catch (err) {
+        res.send({ message: "Wprawadź numer dnia" });
       }
-    );
-    const editDay = await dziennik.findOne({
-      where: {
-        id: id,
-      },
-    });
-    res.send({
-      message: "Zmiana przeszła pomyślnie...",
-      editDzien: editDay.dzien,
-      editData: editDay.data,
-      editIlosc_godzin: editDay.ilosc_godzin,
-      editOpis: editDay.opis,
-    });
-    // }
-    // else {
-    //   res.send({ message: "Jest już taki dzień" });
-    // }
-  } catch (err) {
-    res.send({ message: "Wprawadź numer dnia" });
+    }
   }
+  catch (err) {
+    console.log(err);
+  }
+ 
 };
 
 //Usuwanie dnia z dzinniczka
 exports.deleteDay = async (req, res) => {
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   const id = req.params.id;
   try {
     await dziennik.destroy({
@@ -140,10 +181,18 @@ exports.deleteDay = async (req, res) => {
   } catch (err) {
     res.send({ message: err.message });
   }
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 exports.getEfektUczenia = async (req, res) => {
-
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   try {
     const userId = await user.findOne({
       attributes: ['daneId'],
@@ -215,10 +264,19 @@ exports.getEfektUczenia = async (req, res) => {
   catch (err) {
     console.log(err)
   }
+}
+}
+catch (err) {
+console.log(err);
+}
   };
 
 exports.listEfektyStudent = async (req, res) => {
   const id = req.params.id;
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   const listaEfektyStudent = await efektyStudent.findOne({
     where: {
       [Op.and]: [{ userId: req.session.user.id }, { efektyListumId: id }],
@@ -228,10 +286,19 @@ exports.listEfektyStudent = async (req, res) => {
   } else {
     res.send(listaEfektyStudent);
   }
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 exports.updateUzasadnienieEfektu = async (req, res) => {
   const { id, komentarz } = req.body;
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   const checkEfekt = await efektyStudent.findOne({
     where: { id: id },
   });
@@ -256,18 +323,36 @@ exports.updateUzasadnienieEfektu = async (req, res) => {
       res.send(uzasadnienieEfektu);
     }
   }
+}
+}
+catch (err) {
+console.log(err);
+}
   
 };
 
 exports.IdUser = async (req, res) => {
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   const idUser = await user.findOne({
     where: { id: req.session.user.id },
   });
 
   res.send(idUser);
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 exports.createZalacznik = async (req, res) => {
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   try {
     const { zalacznik, idDay } = req.body;
 
@@ -283,16 +368,34 @@ exports.createZalacznik = async (req, res) => {
       message: "Błąd ;)",
     });
   }
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 exports.getZalacznik = async (req, res) => {
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   const zalaczniki = await dzienZalaczniki.findAll({});
 
   res.send(zalaczniki);
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 exports.deleteZalacznik = async (req, res) => {
   const id = req.params.id;
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   try {
     await dzienZalaczniki.destroy({
       where: {
@@ -303,9 +406,18 @@ exports.deleteZalacznik = async (req, res) => {
   } catch (err) {
     res.send({ message: err.message });
   }
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 exports.upload = async (req, res) => {
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   console.log("server/upload");
   const idDay = req.params.idDay;
 
@@ -331,9 +443,18 @@ exports.upload = async (req, res) => {
     }
     // return res.status(200).send(req.files)
   });
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 exports.sendDay = async (req, res) => {
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   try {
     const { id } = req.body;
 
@@ -405,4 +526,120 @@ exports.sendDay = async (req, res) => {
       message: "Błąd",
     });
   }
+}
+}
+catch (err) {
+console.log(err);
+}
 };
+
+// exports.sendDay = async (req, res) => {
+//   const { id, changeOpis, changeDzien, changeData, changeIloscGodzin } =
+//     req.body;
+//   try {
+//     if (!req.session.user)
+//       res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+//     else {
+//       try {
+//         const checkDay = await dziennik.findOne({
+//           where: {
+//             id: id,
+//           },
+//         });
+
+//         console.log("QQQQQQQQQ"+ checkDay.dzien)
+//         if (checkDay.dzien == null) {
+//           await dziennik.update(
+//             {
+//               dzien: changeDzien,
+//               data: changeData,
+//               ilosc_godzin: changeIloscGodzin,
+//               opis: changeOpis,
+              
+//             },
+//             {
+//               where: {
+//                 id: id,
+//               },
+//             }
+//           );
+//           const editDay = await dziennik.findOne({
+//             where: {
+//               id: id,
+//             },
+//           });
+//           if(checkDay.statusOpiekunaU === "Zaakceptowano"){
+//             await dziennik.update(
+//               {
+//                 statusOpiekunaU: "Zaakceptowano",
+//               },
+//               {
+//                 where: {
+//                   id: id,
+//                 },
+//               }
+//             );
+//           }
+//           else{
+//             await dziennik.update(
+//               {
+//                 statusOpiekunaU: "Oczekiwanie",
+//               },
+//               {
+//                 where: {
+//                   id: id,
+//                 },
+//               }
+//             );
+        
+//           }
+    
+//           if(checkDay.statusOpiekunaZ === "Zaakceptowano"){
+//             await dziennik.update(
+//               {
+//                 statusOpiekunaZ: "Zaakceptowano",
+//               },
+//               {
+//                 where: {
+//                   id: id,
+//                 },
+//               }
+//             );
+        
+            
+//           }
+//           else{
+//             await dziennik.update(
+//               {
+//                 statusOpiekunaZ: "Oczekiwanie",
+//               },
+//               {
+//                 where: {
+//                   id: id,
+//                 },
+//               }
+//             );            
+//           }
+//           res.send({
+//             message: "Wysłano",
+//             editDzien: editDay.dzien,
+//             editData: editDay.data,
+//             editIlosc_godzin: editDay.ilosc_godzin,
+//             editOpis: editDay.opis,
+//           });
+//         }
+//         else {
+//           res.send({ message: "Jest już taki dzień" });
+//         }
+//       } catch (err) {
+//         res.send({ message: "Wprawadź numer dnia" });
+//       }
+//     }
+//   }
+//   catch (err) {
+//     console.log(err);
+//   }
+
+
+  
+// };

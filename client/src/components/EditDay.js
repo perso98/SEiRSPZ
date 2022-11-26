@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -27,6 +27,12 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import FileDownload from "js-file-download";
 import ClearIcon from "@mui/icons-material/Clear";
 import { url } from "../services/Url";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import * as React from 'react';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+
 
 const useStyles = makeStyles(theme => ({
   containerMain:{
@@ -87,6 +93,7 @@ function EditDay(
     setChangeOpis,
     setChangeDzien,
     setChangeData,
+    changeData,
     setChangeIloscGodzin,
     sendDay,
     darkMode,
@@ -171,7 +178,6 @@ function EditDay(
     )
   }
 
-  
 
   return (
     <>
@@ -201,12 +207,13 @@ function EditDay(
           <DialogContent>
 
             <div style={{ margin: "1rem 0px 1rem 0 " }}>
-              <Stack  direction="row" spacing={1}>
+            <Stack direction="row" spacing={1}>
 
-              
-            <Box sx={{ width: 70}}>
+            
+            <Box sx={{ width: 90}}>
               <TextField className={classes.TextField}
                 size="small"
+                type="number"
                 label="Dzień"
                 defaultValue= {editDay.dzien}
                 onChange={(e) => {
@@ -231,8 +238,36 @@ function EditDay(
                 }}
                 />
             </Box>
-            <Box sx={{ width: 120}}>
-              <TextField className={classes.TextField}
+
+           
+
+            <Box>  
+              <TextField
+                id="date"
+                style= {{width: 150}}
+                size="small" 
+                margin="normal"
+                label="Data"
+                type="date"
+                defaultValue={editDay.data}
+                onChange={(e) => {
+                  setChangeData(e.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Data"
+                defaultValue={editDay.data}
+                onChange={(newValue) => {
+                  setChangeData(newValue);
+                }}
+                renderInput={(params) => <TextField size="small" margin="normal" {...params} />}
+              />
+            </LocalizationProvider> */}
+            {/* <TextField className={classes.TextField}
                 size="small"
                 label="Data"
                 defaultValue= {editDay.data}
@@ -256,12 +291,14 @@ function EditDay(
                       darkMode == "white" ? null : classes.notchedOutline,
                   },
                 }}
-                />
+                /> */}
+
             </Box>
 
-            <Box sx={{ width: 120}}>
+            <Box sx={{ width: 135}}>
               <TextField className={classes.TextField}
                 size="small"
+                type="number"
                 label="Ilość godzin"
                 defaultValue= {editDay.ilosc_godzin}
                 onChange={(e) => {
@@ -286,6 +323,7 @@ function EditDay(
                 }}
                 />
             </Box>
+            
             </Stack>
               <TextField className={classes.TextField}
                 label="Opis"
@@ -451,14 +489,14 @@ function EditDay(
               createEditDay(editDay.id, editDay.dzien, editDay.data, editDay.ilosc_godzin, editDay.opis);
             }}
           >
-            Zmień
+            Zapisz
           </Button>
           <Button
             variant="contained"
             color="success"
             style={{ marginTop: "5vh" }}
             onClick={() => {
-              sendDay(editDay.id);
+              sendDay(editDay.id, editDay.dzien, editDay.data, editDay.ilosc_godzin, editDay.opis);
             }}
           >
             Wyślij

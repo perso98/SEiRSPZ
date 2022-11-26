@@ -81,6 +81,7 @@ function AddStudent(
         delStudentFirma,
         onChange,
         object,
+        infoOpiekun,
         darkMode,
       }
 ) {
@@ -123,13 +124,13 @@ function AddStudent(
 
     // console.log(dane)
 
-    const recordsAfterFiltering = user.filter((val) => {
+    const recordsAfterFiltering = dane.filter((val) => {
         if (searchLogin == "") {
           return val;
         } else if (
-          val.login.toLowerCase().includes(searchLogin.toLowerCase())
-        //   ||
-        //   val.user.nazwisko.toLowerCase().includes(searchLogin.toLowerCase())
+          val.user?.login.toLowerCase().includes(searchLogin.toLowerCase())
+          ||
+          val.nazwisko.toLowerCase().includes(searchLogin.toLowerCase())
           
         ) {
           return val;
@@ -156,32 +157,40 @@ function AddStudent(
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <DialogContentText style={{ marginTop: "2%" }}>
+        <DialogContentText>
             <div>
                 <Grid item xs className={classes.content}>
                     <Grid container>
                     <Grid item xs style={{ color: darkMode == "white" ? "black" : "white" }}>
                             <div>
-                            <div  style={{marginBottom:"1rem"}}>
+                            <div>Opiekun {infoOpiekun?.imie} {infoOpiekun?.nazwisko}</div>
+                            <div  style={{marginBottom:"1rem", marginTop:"1rem"}}>
                             <SearchBar
                             darkMode={darkMode}
                             setSearchLogin={setSearchLogin}
                             setItemOffset={setItemOffset}
                             />
                             </div>
-                            <div className={classes.przerwa} style={{marginLeft:"15px", marginBottom:"15px"}}><b>Studenci lista</b></div>
+                            
+                            <div className={classes.przerwa} style={{marginLeft:"15px", marginBottom:"15px"}}><b>Lista studentów do dodania</b></div>
+                            {recordsAfterFiltering?.length === 0 ?(
+                                <div>Brak danych...</div>
+                            ):console.log("recordsAfterFiltering" + recordsAfterFiltering.length)
+                            }
+
                             {recordsAfterFiltering.map((val) => (
                                     jakiOpiekun === 1 ? (
                                 <Grid style={{ width: "300px"}}>
                                 <div >
-                                        { val.isStudent === 1 && val.id_opiekunZ === null ? (
-                                            <Grid container style={{ display: "flex", justifyContent: "space-between" }} >
+                                
+                                        { val.user?.isStudent === 1 && val.user?.id_opiekunZ === null && (val.user?.firmaId === null || val.user?.firmaId === idFirma.id) ? (
+                                            <Grid container style={{ display: "flex", justifyContent: "space-between", alignItems: "center"}} >
                                                 {/* <Grid  style={{marginRight:"15px"}}
                                                 xs = {2}>
                                                         login: {val.login}
                                                 </Grid> */}
                                                 {dane.map((daneNO) => (
-                                                    daneNO.id === val.daneId ? (
+                                                    daneNO.id === val.user?.daneId ? (
                                                         <Grid style={{marginRight:"15px"}}>
                                                             <div>
                                                                     {daneNO.imie} {daneNO.nazwisko}
@@ -190,7 +199,7 @@ function AddStudent(
                                                     ): null
                                                 ))}
                                                 <Grid>
-                                                    {giveButton(val.id, idFirma.id )}
+                                                    {giveButton(val.user?.id, idFirma.id )}
                                                 </Grid>
                                             </Grid>
                                         ): null}
@@ -199,14 +208,14 @@ function AddStudent(
                                     ): 
                                     <Grid style={{ width: "300px"}}>
                                     <div>
-                                        { val.isStudent === 1 && val.id_opiekunU === null ? (
-                                        <Grid container style={{ display: "flex", justifyContent: "space-between" }}>
+                                        { val.user?.isStudent === 1 && val.user?.id_opiekunU === null && (val.user?.firmaId === null || val.user?.firmaId === idFirma.id) ? (
+                                        <Grid container style={{ display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                                             {/* <Grid  style={{marginRight:"15px"}}
                                             xs = {2}>
                                                     login: {val.login}
                                             </Grid> */}
                                                 {dane.map((daneNO) => (
-                                                daneNO.id === val.daneId ? (
+                                                daneNO.id === val.user?.daneId ? (
                                                     <Grid style={{marginRight:"15px"}}>
                                                         <div>
                                                                 {daneNO.imie} {daneNO.nazwisko}
@@ -215,7 +224,7 @@ function AddStudent(
                                                 ): null
                                             ))}
                                             <Grid>
-                                                {giveButton(val.id, idFirma.id )}
+                                                {giveButton(val.user?.id, idFirma.id )}
                                             </Grid>
                                         </Grid>
                                         
@@ -223,7 +232,7 @@ function AddStudent(
                                     </div>
                                     </Grid>
                             ))}
-                                <div className={classes.przerwa} style={{margin:"15px"}}><b>Przypisani Studenci</b></div>
+                                <div className={classes.przerwa} style={{margin:"15px"}}><b>Przypisani Studenci do {infoOpiekun?.imie} {infoOpiekun?.nazwisko}</b></div>
                                 {user.map((val) => (
                                     <Grid style={{ width: "300px"}}>
                                         { jakiOpiekun === 1 ? (
