@@ -290,7 +290,7 @@ exports.resetPassword = async (req, res) => {
         expiresIn: "3d",
       },
       (err, token) => {
-        const url = `http://localhost:3000/restartpassword/${token}`;
+        const url = `http://localhost:8585/restartpassword/${token}`;
         const options = {
           from: "testmailerxx12345@gmail.com",
           to: email,
@@ -332,7 +332,7 @@ exports.resendMail = async (req, res) => {
         expiresIn: "3d",
       },
       (err, token) => {
-        const url = `http://localhost:3000/confirm/${token}`;
+        const url = `http://localhost:8585/confirm/${token}`;
         const options = {
           from: "testmailerxx12345@gmail.com",
           to: email,
@@ -376,7 +376,7 @@ exports.createAccount = async (req, res) => {
           expiresIn: "3d",
         },
         (err, token) => {
-          const url = `http://localhost:3000/confirm/${token}`;
+          const url = `http://localhost:8585/confirm/${token}`;
           const options = {
             from: "testmailerxx12345@gmail.com",
             to: login,
