@@ -36,7 +36,7 @@ app.use(
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:8585"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -233,7 +233,6 @@ app.get("/api/getDaysOpiekunU", opiekunU_controller.getDaysOpiekunU);
 //===========================================================
 
 //Opiekuni razem
-app.delete("/api/deleteComment/:id", opiekuni_controller.deleteComment);
 //(historia dzienniczka)zmiana statusu w popupie
 app.post("/api/changeStatusEdit", opiekuni_controller.changeStatusEdit);
 //zmiana statusu akceptacji zaleznie od opiekuna
