@@ -37,9 +37,13 @@ const {
 
 
   exports.getDane = async (req, res) => {
+    
     const listDane = await dane.findAll({
       include: {
         model: user,
+        include: {
+          model: firma,
+        },
       },
     });
   
@@ -52,7 +56,8 @@ const {
   };
 
   exports.getFirma = async (req, res) => {
-    const listUser = await firma.findAll();
+    const listUser = await firma.findAll(
+    );
   
     res.send(listUser);
   };

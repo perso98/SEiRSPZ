@@ -556,7 +556,7 @@ function Dzienniczek() {
                   Dodaj nowy dzień
                 </Button>
                 {/* {count()} */}
-                <Helper info={infomacja} title="Dzienniczek" napis={""}/>
+                <Helper info={infomacja} title="Dzienniczek" napis={""} darkMode={darkMode}/>
                 <Button variant="contained">
                 <Link to="/efekty" className={classes.links}>
                   <div className={classes.item}>

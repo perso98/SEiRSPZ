@@ -25,6 +25,8 @@ import Dzienniczek from "./pages/Dzienniczek";
 import EfektyUzasadnienie from "./pages/EfektyUzasadnienie";
 import Konto from "./pages/Konto";
 import ZarzadzanieZakladami from "./pages/ZarzadzanieZakladami";
+import SelectedFirma from "./pages/SelectedFirma";
+
 import Axios from "axios";
 import { url } from ".//services/Url";
 import ResendEmail from "./pages/ResendEmail";
@@ -107,6 +109,10 @@ function App() {
               <Route
                 path="zarzadzaniezakladami"
                 element={<ZarzadzanieZakladami />}
+              />
+              <Route
+                path="selectedFirma"
+                element={<SelectedFirma />}
               />
               <Route
                 element={<RoleRoute role={auth?.user} logged={auth?.logged} />}

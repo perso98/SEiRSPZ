@@ -197,7 +197,7 @@ function EfektyUzasadnienie() {
                 </div>
                 </Link>
                 </Button>
-                <Helper info={infomacja} title="Pomoc Efekty Uczenia się" napis={""}/>
+                <Helper info={infomacja} title="Pomoc Efekty Uczenia się" napis={""} darkMode={darkMode}/>
             </div>
             <Table className={classes.table}>
                   <TableHead className={classes.tableHead}>

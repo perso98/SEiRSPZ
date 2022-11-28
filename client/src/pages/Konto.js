@@ -58,7 +58,7 @@ function Konto() {
       },
     },
     formControl: {
-      color: darkMode == "white" ? "black" : "white",
+      color: darkMode == "white" ? "black" : "white !important",
         '.MuiOutlinedInput-notchedOutline': {
           borderColor:  darkMode == "white" ? "none" : "white",
           color: darkMode == "white" ? "black" : "white",

@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useContext} from 'react'
 import axios from "axios"
 import { makeStyles } from '@mui/styles'
 import { Button, Grid, TextField,TableRow, TableCell, Table,
@@ -7,7 +7,7 @@ import { Button, Grid, TextField,TableRow, TableCell, Table,
   TableHead,IconButton, Typography } from '@mui/material';
 import { url } from "../services/Url";
 import ClearIcon from '@mui/icons-material/Clear';
-import Helper from "../components/Helper";
+
 import AddIcon from '@mui/icons-material/Add';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
@@ -25,7 +25,10 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import Box from '@mui/material/Box';
 import DodanieSpecjalnosci from "../components/DodanieSpecjalnosci";
+import Helper from "../components/Helper";
 import DodanieEfektuDialog from "../components/DodanieEfektuDialog";
+import { ThemeContext } from "../context/ThemeContext";
+
 
 const useStyles = makeStyles(theme => ({
     container:{
@@ -61,6 +64,8 @@ const useStyles = makeStyles(theme => ({
 
 function EfektyUczeniaSie() {
     const classes = useStyles();
+
+    const [darkMode] = useContext(ThemeContext);
 
     const [edit, setEdit] = useState(0);
     const [nazwaKierunku, setNazwaKierunku] = useState();
@@ -300,7 +305,7 @@ function EfektyUczeniaSie() {
                 alignItems: "center"
                 }}> 
                   Dodawanie efektów uczenia się 
-              <Helper info={infomacja} title="Pomoc Efekty Uczenia Się" napis={""}/>
+              <Helper info={infomacja} title="Pomoc Efekty Uczenia Się" napis={""} darkMode={darkMode}/>
               </Typography> 
               
               <Typography variant="h5" color="initial"> 

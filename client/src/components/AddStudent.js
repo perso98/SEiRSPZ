@@ -175,7 +175,7 @@ function AddStudent(
                             <div className={classes.przerwa} style={{marginLeft:"15px", marginBottom:"15px"}}><b>Lista studentów do dodania</b></div>
                             {recordsAfterFiltering?.length === 0 ?(
                                 <div>Brak danych...</div>
-                            ):console.log("recordsAfterFiltering" + recordsAfterFiltering.length)
+                            ):null
                             }
 
                             {recordsAfterFiltering.map((val) => (
