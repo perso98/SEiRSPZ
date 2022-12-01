@@ -26,6 +26,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      LaststatusOpiekunaZ: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      LaststatusOpiekunaU: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       charset: "utf8",

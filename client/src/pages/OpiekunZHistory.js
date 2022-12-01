@@ -119,7 +119,11 @@ function OpiekunStatus(props) {
           setDzienniczek(
             dzienniczek.map((val) => {
               return val.id === id
-                ? { ...val, [res.data.status]: status }
+                ? {
+                    ...val,
+                    [res.data.status]: status,
+                    LaststatusOpiekunaZ: res.data.lastOpiekun,
+                  }
                 : val;
             })
           );
@@ -167,6 +171,7 @@ function OpiekunStatus(props) {
                 ? {
                     ...val,
                     [res.data.status]: status,
+                    LaststatusOpiekunaZ: res.data.lastOpiekun,
                     opis: opis ? opis : val.opis,
                     komentarzes: komentarz
                       ? [

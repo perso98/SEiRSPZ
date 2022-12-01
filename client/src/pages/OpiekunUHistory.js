@@ -138,7 +138,13 @@ function OpiekunUHistory(props) {
           toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
             dzienniczek.map((val) => {
-              return val.id == id ? { ...val, [res.data.status]: status } : val;
+              return val.id == id
+                ? {
+                    ...val,
+                    [res.data.status]: status,
+                    LaststatusOpiekunaU: res.data.lastOpiekun,
+                  }
+                : val;
             })
           );
         }
@@ -169,6 +175,7 @@ function OpiekunUHistory(props) {
                 ? {
                     ...val,
                     [res.data.status]: status,
+                    LaststatusOpiekunaU: res.data.lastOpiekun,
                     opis: opis ? opis : val.opis,
                     komentarzes: komentarz
                       ? [
