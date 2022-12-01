@@ -97,7 +97,8 @@ function EfektyOpiekunU(props) {
       W tym panelu oceniasz efekty uczenia się przypisanych do ciebie studentów.
       <br />
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
-      studenta po jego e-mailu. <br />
+      studenta po jego e-mailu, jeśli chcesz wyszukać użytkownika po jego
+      nazwisku kliknij w przycik "Zmień opcje wyszukiwania". <br />
       Jeśli student nie ma żadnych efektów studenta, to znaczy, że ich nie
       wybrał na swoim koncie.
       <br />

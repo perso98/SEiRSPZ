@@ -584,10 +584,16 @@ export default function Admin(props) {
     <div>
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać
       użytkowników po e-mailu. <br />
-      Jeśli chcesz wyszukać po roku utworzenia, wystarczy zmienić opcje
-      szukania, za które odpowiada przycisk "ZMIEŃ OPCJE SZUKANIA". <br />{" "}
-      Jeżeli twoim celem jest archiwizacja jakiegoś roku wystarczy wpisać rok a
-      następnie nacisnąć przycisk "USUŃ WSZYSTKICH Z ROKU *"
+      Jeśli chcesz wyszukać po nazwisku lub nazwie firmy, wystarczy zmienić
+      opcje szukania, za które odpowiada przycisk "ZMIEŃ OPCJE SZUKANIA". Możesz
+      również przefiltrować użytkowników poprzez ich role jak i rok utworzenia
+      konta używając z pól wybieranych o nazwie "Rola" i "Rok" Jeśli chcesz
+      sprawdzić zweryfikowane konta możesz skorzystać z przycisku
+      "Zatwierdzone", jeśli chcesz sprawdzić konta, które nie są zweryfikowane
+      skorzystaj z przycisku "Niezatwierdzone".
+      <br /> Jeżeli twoim celem jest archiwizacja jakiegoś roku wystarczy wybrać
+      rok korzystająć z pola wybieranego o nazwie "Rok", a następnie nacisnąć
+      przycisk "USUŃ WSZYSTKICH Z ROKU *"
       <br /> *UWAGA TA OPCJA USUWA UŻYTKOWNIKÓW, KTÓRZY NIE MAJĄ INNEJ ROLI NIŻ
       STUDENT* (Możesz usunąc tylko lata wcześniejsze o 3 od dzisiejszego roku).{" "}
       <br />
@@ -597,8 +603,8 @@ export default function Admin(props) {
       <HighlightOffIcon /> Ta ikona zwiastuje iż nie ma tej roli, <br />
       <CheckCircleOutlineIcon /> natomiast ta, że ją ma. <br />
       Możesz także zmienić role poniżej w tabelce już utworzonych użytkowników,
-      aby tego dokonać, należy podwójnie kliknąć na ikonkę <HighlightOffIcon />{" "}
-      (aby nadać rolę) lub <CheckCircleOutlineIcon />
+      aby tego dokonać, należy kliknąć na ikonkę <HighlightOffIcon /> (aby nadać
+      rolę) lub <CheckCircleOutlineIcon />
       (aby odebrać rolę). <br />
       <br /> Rola Student = student ma tylko możliwość do prowadzenia
       dzienniczka praktyk oraz uczenia się.
@@ -618,8 +624,8 @@ export default function Admin(props) {
       <br />
       Akcje w tabelce pozwalają na edycję użytkownika <EditIcon /> <br />
       oraz za usunięcie jego <DeleteIcon /> (jeżeli ten przycisk jest czerwony,
-      to możesz usunąc użytkownika, w innym razie musisz odebrać mu role).{" "}
-      <br />
+      to możesz usunąc użytkownika, w innym razie musisz odebrać mu role
+      wszystkie oprócz student). <br />
       *UWAGA TA OPCJA USUWA UŻYTKOWNIKÓW, KTÓRZY NIE MAJĄ INNEJ ROLI NIŻ
       STUDENT*
     </div>
