@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function AddOpiekun(
-    {
+    { 
         idFirma,
         user,
         dane,
