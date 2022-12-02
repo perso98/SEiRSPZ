@@ -151,7 +151,11 @@ function EditDay(
       method: "GET",
       responseType: "blob",
     }).then((res) => {
+      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+        window.location.reload(false)
+      } else {
       FileDownload(res.data, name);
+      }
     });
   };
 
@@ -181,6 +185,9 @@ function EditDay(
         axios.post(`${url}upload/${idDay}`, data,{
           })
             .then((response) => {
+              if (response.data.message === "Sesja utracona, zaloguj się ponownie") {
+                window.location.reload(false)
+              } else {
                 toast.success('Załadowano pomyślnie');
 
                 setDziennikZalaczniki([
@@ -193,6 +200,7 @@ function EditDay(
                 ])
                 setChangeZalacznik(response.data)
                 onSuccess(response.data)
+              }
             })
             .catch((e) => {
                 toast.error('Błąd')

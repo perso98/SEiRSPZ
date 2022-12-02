@@ -50,6 +50,9 @@ function ZastepstwoOpiekunU(props) {
     console.log(id)
     axios.get(`${url}getDaysOpiekunUZastepstwo/${id}`)
     .then((res) => {
+      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+        window.location.reload(false)
+      } else {
       if (res.data.message) {
         props.setStatus();
         alert(res.data.message).then(() => {
@@ -59,6 +62,7 @@ function ZastepstwoOpiekunU(props) {
         setDzienniczek(res.data);
         setLoading(false);
       }
+    }
     });
   }, []);
   const downloadFile = (name) => {
@@ -67,6 +71,9 @@ function ZastepstwoOpiekunU(props) {
       method: "GET",
       responseType: "blob",
     }).then((res) => {
+      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+        window.location.reload(false)
+      } else {
       if (res.data.message) {
         props.setStatus();
         alert(res.data.message).then(() => {
@@ -75,6 +82,7 @@ function ZastepstwoOpiekunU(props) {
       } else {
         FileDownload(res.data, name);
       }
+    }
     });
   };
   const changeStatus = (id, status) => {
@@ -85,6 +93,9 @@ function ZastepstwoOpiekunU(props) {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message) {
           props.setStatus();
           alert(res.data.message).then(() => {
@@ -98,6 +109,7 @@ function ZastepstwoOpiekunU(props) {
             })
           );
         }
+      }
       });
   };
   const changeStatusEdit = (id, status) => {
@@ -110,6 +122,9 @@ function ZastepstwoOpiekunU(props) {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message) {
           window.location.reload(false);
         } else {
@@ -119,6 +134,7 @@ function ZastepstwoOpiekunU(props) {
             })
           );
         }
+      }
       });
   };
 

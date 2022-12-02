@@ -59,15 +59,23 @@ function Zastepstwa() {
 
     useEffect(() => {
       axios.get(`${url}getListaOpiekunow`).then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         setListaOpiekunow(res.data);
         console.log("getListaOpiekunow")
         console.log(res.data)
+        }
 
       });
       axios.get(`${url}getListaZastepstw`).then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
     //    setListaZastepstw(res.data);
         console.log("getListaZastepstw")
         console.log(res.data)
+        }
       });
     //  setLoading(1)
   

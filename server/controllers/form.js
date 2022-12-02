@@ -10,6 +10,10 @@ const {
 
   exports.createForm = async (req, res) => {
     try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
+    try {
       const {
         imie,
         nazwisko,
@@ -45,4 +49,9 @@ const {
         message: "Błąd ;)",
       });
     }
+  }
+}
+catch (err) {
+console.log(err);
+}
   };

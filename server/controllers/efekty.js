@@ -12,6 +12,10 @@ const {
 
 
 exports.getEfektyKierunki = async (req, res) => {
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
     const listEfektyKierunki = await listaKierunkow.findAll({
       include: {
         model: listaSpecjalnosci,
@@ -22,10 +26,18 @@ exports.getEfektyKierunki = async (req, res) => {
     });
   
     res.send(listEfektyKierunki);
+  }}
+  catch (err) {
+  console.log(err);
+  }
   };
 
   exports.addKierunek = async (req, res) => {
      const { nazwaKierunku } = req.body;
+     try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     try {
         const newKierunek = await listaKierunkow.create({
           nazwa: nazwaKierunku,
@@ -38,10 +50,19 @@ exports.getEfektyKierunki = async (req, res) => {
     } catch (err) {
       res.send({ message: err.message });
     }
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
   exports.delKierunek = async (req, res) => {
     const id = req.params.id;
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     try {
       await listaKierunkow.destroy({
         where: {
@@ -65,10 +86,19 @@ exports.getEfektyKierunki = async (req, res) => {
     } catch (err) {
       res.send({ message: err.message });
     }
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
   exports.dodanieSpecjalnosci = async (req, res) => {
     const { nazwaSpecjalnosci, id } = req.body;
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
    try {
        const newSpecjalnosc = await listaSpecjalnosci.create({
          nazwa: nazwaSpecjalnosci,
@@ -93,10 +123,19 @@ exports.getEfektyKierunki = async (req, res) => {
    } catch (err) {
      res.send({ message: err.message });
    }
+  }
+}
+catch (err) {
+console.log(err);
+}
  };
 
  exports.delSpecjalnosc = async (req, res) => {
   const id = req.params.id;
+  try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
   console.log(id)
   try {
     await listaSpecjalnosci.destroy({
@@ -121,12 +160,21 @@ exports.getEfektyKierunki = async (req, res) => {
   } catch (err) {
     res.send({ message: err.message });
   }
+}
+}
+catch (err) {
+console.log(err);
+}
 };
 
 
 
   exports.addEfekt = async (req, res) => {
     const { nazwaEfektu, opisEfektu, id } = req.body;
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
    try {
       const efektId = await efektyLista.create({
          nazwa: nazwaEfektu,
@@ -152,11 +200,20 @@ exports.getEfektyKierunki = async (req, res) => {
    } catch (err) {
      res.send({ message: err.message });
    }
+  }
+}
+catch (err) {
+console.log(err);
+}
 
  };
 
  exports.delEfekt = async (req, res) => {
    const id = req.params.id;
+   try {
+    if (!req.session.user)
+      res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+    else {
    try {
     await efektyLista.destroy({
        where: {
@@ -181,5 +238,10 @@ exports.getEfektyKierunki = async (req, res) => {
    } catch (err) {
      res.send({ message: err.message });
    }
+  }
+}
+catch (err) {
+console.log(err);
+}
  };
  

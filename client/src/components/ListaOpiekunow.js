@@ -92,17 +92,29 @@ function ListaOpiekunow() {
     useEffect(()=>
     {
         axios.get(`${url}getUser`).then((res)=>{
+          if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+            window.location.reload(false)
+          } else {
             setUser(res.data)
+          }
         })
 
         axios.get(`${url}getDane`).then((res)=>{
+          if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+            window.location.reload(false)
+          } else {
             setDane(res.data)
             console.log(res.data)
             setDaneFiltracji(res.data)
+          }
         })
 
         axios.get(`${url}getFirma`).then((res)=>{
+          if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+            window.location.reload(false)
+          } else {
             setFirma(res.data)
+          }
         })
     },[]
     )
@@ -132,6 +144,9 @@ function ListaOpiekunow() {
           firmaObject:firmaObject
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             if (res.data.message === "Zakład został dodany") {
               setFirma([
                 ...firma,
@@ -148,6 +163,7 @@ function ListaOpiekunow() {
             }
      
             alert(res.data.message);
+          }
           });
       };
 //Student
@@ -194,6 +210,9 @@ function ListaOpiekunow() {
           jakiOpiekun: jakiOpiekun,
         })
         .then((res) => {
+          if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+            window.location.reload(false)
+          } else {
             if(jakiOpiekun == 1){
                 setUser(
                     user.map((val) => {
@@ -240,6 +259,7 @@ function ListaOpiekunow() {
                 // );
                 // console.log(dane)
             }
+          }
         });
       };
 
@@ -250,6 +270,9 @@ function ListaOpiekunow() {
             jakiOpiekun: jakiOpiekun,
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             if(jakiOpiekun == 1){
                 setUser(
                     user.map((val) => {
@@ -302,6 +325,7 @@ function ListaOpiekunow() {
                 //     })
                 // );
             }
+          }
           });
       };
 
@@ -340,6 +364,9 @@ function ListaOpiekunow() {
             firmaId: firmaId
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             setUser(
                 user.map((val) => {
                   return val.id == id ? { ...val, firmaId: firmaId } : val;
@@ -350,6 +377,7 @@ function ListaOpiekunow() {
                   return val.user.id == id ? { ...val, user: { ...val.user, firmaId: firmaId } } : val;
                 })
             );
+              }
           });
           console.log(" dane " + dane)
       };
@@ -361,6 +389,9 @@ function ListaOpiekunow() {
             isOpiekunZakl: isOpiekunZakl,
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             setUser(
                 user.map((val) => {
                   return val.id == id ? { ...val, firmaId: null } : val;
@@ -371,6 +402,7 @@ function ListaOpiekunow() {
                 return val.user.id == id ? { ...val, user: { ...val.user, firmaId: null } } : val;
               })
             );
+            }
           });
       };
 
@@ -402,6 +434,9 @@ function ListaOpiekunow() {
             changeNazwa: changeNazwa,
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             setFirma(
                 firma.map((val) => {
                   return val.id == id ? { ...val, 
@@ -409,6 +444,7 @@ function ListaOpiekunow() {
                 } : val;
                 })
               );
+            }
           });
       };
 
@@ -443,6 +479,9 @@ function ListaOpiekunow() {
 
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             setFirma(
                 firma.map((val) => {
                   return val.id == id ? { ...val, 
@@ -450,6 +489,7 @@ function ListaOpiekunow() {
                 } : val;
                 })
               );
+            }
           });
       };
 

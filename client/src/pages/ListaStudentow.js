@@ -11,8 +11,11 @@ function ListaStudentow() {
   {
 
     axios.get(`${url}getStudents`).then((res)=>{
-      
+      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+        window.location.reload(false)
+      } else {
     setStudents(res.data)
+      }
       
     })
   },[])

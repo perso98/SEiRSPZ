@@ -98,13 +98,21 @@ function EfektyUzasadnienie() {
 
     useEffect(() => {
       axios.get(`${url}getEfektUczenia`).then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         setListaEfektyow(res.data);
         console.log(res.data)
         console.log(res.message)
+        }
     })
       axios.get(`${url}IdUser`).then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         setIdUser(res.data);
         console.log(res.data)
+        }
     });
     setLoading(false)
     }, []);
@@ -133,9 +141,13 @@ function EfektyUzasadnienie() {
   const handleOpen = (val) => {
       axios.get(`${url}listEfektyStudent/${val.id}`,{
       }).then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         setKomentarz(res.data.komentarz);
         setInfoEfekt(res.data);
         console.log(res.data)
+        }
     });
       setOpen(true)
       setEfekt(val)
@@ -146,6 +158,13 @@ function EfektyUzasadnienie() {
     axios.put(`${url}updateUzasadnienieEfektu`, {
       id: infoEfekt.id,
       komentarz: komentarz,
+      })
+      .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
+          
+        }
       })
   };
   const infomacja = (

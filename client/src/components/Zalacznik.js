@@ -36,10 +36,14 @@ function Zalacznik(
         axios.post(`${url}${idDay}`, data,{
           })
             .then((response) => {
+              if (response.data.message === "Sesja utracona, zaloguj się ponownie") {
+                window.location.reload(false)
+              } else {
                 toast.success('Załadowano pomyślnie');
                 setChangeZalacznik(response.data)
                 onSuccess(response.data)
                 console.log("response.data" + response.data)
+              }
             })
             .catch((e) => {
                 toast.error('Błąd')
