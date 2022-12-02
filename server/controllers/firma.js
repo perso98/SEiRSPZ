@@ -10,6 +10,12 @@ const {
   const { Op } = require("sequelize");
 
   exports.getOpiekuni = async (req, res) => {
+
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
+
     const listOpiekun = await user.findAll({
       where: { isOpiekun: 1 },
     });
@@ -22,10 +28,20 @@ const {
     });
   
     res.send(listOpiekun, listStudentsO);
+
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
 
   exports.getOpiekunId = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const id = req.params.id;
   
     const Opiekun = await dane.findOne({
@@ -33,11 +49,19 @@ const {
     });
   
     res.send(Opiekun);
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
 
   exports.getDane = async (req, res) => {
-    
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const listDane = await dane.findAll({
       include: {
         model: user,
@@ -48,23 +72,50 @@ const {
     });
   
     res.send(listDane);
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
   exports.getUser = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const listUser = await user.findAll();
     res.send(listUser);
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
   exports.getFirma = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const listUser = await firma.findAll(
     );
   
     res.send(listUser);
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
 
 
   exports.createFirma = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const { firmaObject } = req.body;
     try {
       const checkFirma = await firma.findOne({
@@ -88,10 +139,19 @@ const {
     } catch (err) {
       res.send({ message: err.message });
     }
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
 
   exports.addOpiekunFirma = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const { id, firmaId } = req.body;
     updateOpiekun = await user.update(
       {
@@ -102,9 +162,18 @@ const {
       }
     );
     res.send(updateOpiekun);
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
   exports.delOpiekunFirma = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const { id, isOpiekun, isOpiekunZakl } = req.body;
     updateOpiekun = await user.update(
       {
@@ -168,10 +237,20 @@ const {
     }
 
     res.send(updateOpiekun);
+
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
   
   exports.addStudentFirma = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const { id, firmaId, idOpiekuna, jakiOpiekun } = req.body;
     console.log(id, firmaId, idOpiekuna, jakiOpiekun )
     if (jakiOpiekun == 1){
@@ -198,9 +277,18 @@ const {
     }
     
     res.send(updateStudent);
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
   exports.delStudentFirma = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const { id, jakiOpiekun } = req.body;
     if (jakiOpiekun == 1){
     updateOpiekun = await user.update(
@@ -237,11 +325,20 @@ const {
     );
 
     res.send(updateOpiekun);
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
 
 
   exports.updateFirma = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const { id, changeNazwa } = req.body;
   
     try {
@@ -268,10 +365,19 @@ const {
     } catch (err) {
       res.send({ message: err.message });
     }
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
 
   exports.deleteFirmaId = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const { id } = req.params.id;
   
     try {
@@ -289,10 +395,19 @@ const {
     } catch (err) {
       res.send({ message: err.message });
     }
+  }
+}
+catch (err) {
+console.log(err);
+}
   };
 
 
   exports.updateStudentPorozumienie = async (req, res) => {
+    try {
+      if (!req.session.user)
+        res.send({ message: "Sesja utracona, zaloguj się ponownie" });
+      else {
     const { id, changeNP, changeCTP, changePO, changePD, changeDP } = req.body;
   console.log(id)
 
@@ -343,4 +458,9 @@ const {
     } catch (err) {
       res.send({ message: err.message });
     }
+  }
+}
+catch (err) {
+console.log(err);
+}
   };

@@ -102,12 +102,20 @@ function Dzienniczek() {
 
   useEffect(() => {
     axios.get(`${url}getDziennik`).then((res) => {
+      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+        window.location.reload(false)
+      } else {
       setDziennik(res.data);
+      }
     });
 
     axios.get(`${url}getZalacznik`).then((res) => {
+      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+        window.location.reload(false)
+      } else {
       setDziennikZalaczniki(res.data);
       setLoading(false);
+      }
     });
   }, []);
 
@@ -167,6 +175,9 @@ function Dzienniczek() {
         changeIloscGodzin: changeIloscGodzin,
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message === "Zmiana przeszła pomyślnie...") {
           setDziennik(
             dziennik.map((val) =>
@@ -189,6 +200,7 @@ function Dzienniczek() {
           });
         }
         alert(res.data.message)
+      }
       })
       
   };
@@ -198,14 +210,17 @@ function Dzienniczek() {
     if (acceptDelete)
       axios
         .delete(`${url}deleteDay/${id}`)
-        .then((res) => {})
         .then((res) => {
+          if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+            window.location.reload(false)
+          } else {
           setDziennik(
             dziennik.filter((val) => {
               return val.id !== id;
             })
           );
           setEditOpen(false);
+          }
         });
   };
 
@@ -227,7 +242,10 @@ function Dzienniczek() {
         toast.success("Załadowano pomyślnie");
         // setChangeZalacznik(response.data)
       })
-      .then(() => {
+      .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         setDziennikZalaczniki([
           ...dziennikZalaczniki,
           {
@@ -236,6 +254,7 @@ function Dzienniczek() {
         ]).then(() => {
           setChangeZalacznik();
         });
+      }
       })
       .catch((e) => {
         toast.error("Błąd");
@@ -245,13 +264,16 @@ function Dzienniczek() {
   const deleteZalacznik = (id) => {
     axios
       .delete(`${url}deleteZalacznik/${id}`)
-      .then((res) => {})
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         setDziennikZalaczniki(
           dziennikZalaczniki.filter((val) => {
             return val.id !== id;
           })
         );
+        }
       });
   };
 
@@ -279,6 +301,9 @@ function Dzienniczek() {
       .post(`${url}createDay2`, {
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message === "Dzień został pomyślnie dodany") {
           setDziennik([
             ...dziennik,
@@ -305,6 +330,7 @@ function Dzienniczek() {
           });
           handleEditOpen(dayObject3)
         }
+      }
       })
   };
 
@@ -352,6 +378,9 @@ function Dzienniczek() {
         changeIloscGodzin: changeIloscGodzin,
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message === "Zmiana przeszła pomyślnie...") {
           setDziennik(
             dziennik.map((val) =>
@@ -374,6 +403,7 @@ function Dzienniczek() {
           });
         }
         alert(res.data.message)
+      }
       })
       
   };
@@ -388,6 +418,9 @@ function Dzienniczek() {
         changeIloscGodzin: changeIloscGodzin,
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message === "Zmiana przeszła pomyślnie...") {
           setDziennik(
             dziennik.map((val) =>
@@ -416,8 +449,15 @@ function Dzienniczek() {
           });
         }
         alert(res.data.message)
+      }
       })
-      sendDay2(id)
+      .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
+          sendDay2(id)
+        }
+      })
   };
 
   const sendDay2 = (id) => {

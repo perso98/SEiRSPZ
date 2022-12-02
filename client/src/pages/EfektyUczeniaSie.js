@@ -74,8 +74,12 @@ function EfektyUczeniaSie() {
 
     useEffect(() => {
       axios.get(`${url}getEfektyKierunki`).then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         setSipsKierunkow(res.data);
         console.log(res.data)
+        }
       });
   
     }, []);
@@ -88,6 +92,9 @@ function EfektyUczeniaSie() {
             nazwaKierunku: nazwaKierunku,
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             if (res.data.message === "Kierunek został pomyślnie dodany") {
                 setSipsKierunkow([
                     ...sipsKierunkow,
@@ -101,6 +108,7 @@ function EfektyUczeniaSie() {
               });
             }
             alert(res.data.message)
+          }
           })
     }
 
@@ -111,6 +119,9 @@ function EfektyUczeniaSie() {
           .delete(`${url}delKierunek/${id}`, {
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             if (res.data.message === "Usunięto") {
                 setSipsKierunkow(
                     sipsKierunkow.filter((val) => {
@@ -118,6 +129,7 @@ function EfektyUczeniaSie() {
                       })
                   );
             }
+          }
           })
     }
 
@@ -133,6 +145,9 @@ function EfektyUczeniaSie() {
           nazwaSpecjalnosci: nazwaSpecjalnosci,
         })
         .then((res) => {
+          if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+            window.location.reload(false)
+          } else {
             setSipsKierunkow(
               res.data.lista
               // sipsKierunkow.map((val) => {
@@ -153,6 +168,7 @@ function EfektyUczeniaSie() {
               //     : val;
               // })
             )
+          }
         })
   }
 
@@ -164,6 +180,9 @@ function EfektyUczeniaSie() {
         .delete(`${url}delSpecjalnosc/${id}`, {
         })
         .then((res) => {
+          if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+            window.location.reload(false)
+          } else {
           if (res.data.message === "Usunięto") {
               setSipsKierunkow(
                 res.data.lista
@@ -172,6 +191,7 @@ function EfektyUczeniaSie() {
                   //   })
                 );
           }
+        }
         })
   }
 
@@ -190,6 +210,9 @@ function EfektyUczeniaSie() {
             id: id
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             if (res.data.message === "Efekt został pomyślnie dodany") {
                 setSipsKierunkow(
                   res.data.lista
@@ -216,6 +239,7 @@ function EfektyUczeniaSie() {
                 //   })
                 // )
             }
+          }
           })
     }
 
@@ -226,6 +250,9 @@ function EfektyUczeniaSie() {
           .delete(`${url}delEfekt/${idEfekt}`, {
           })
           .then((res) => {
+            if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+              window.location.reload(false)
+            } else {
             if (res.data.message === "Usunięto") {
                 setSipsKierunkow(
                   res.data.lista
@@ -241,6 +268,7 @@ function EfektyUczeniaSie() {
                 // })
             );
             }
+          }
           })
     }
     const [open, setOpen] = useState(false);

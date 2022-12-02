@@ -36,6 +36,9 @@ function ZastepstwoEfektyOpiekunU(props) {
     const id = props.infoUser.user.id
     console.log("QQQQQQQQQQQQ Efekty Opiekun U " + id)
     axios.get(`${url}getEffectsOpiekunUZastepstwo/${id}`).then((res) => {
+      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+        window.location.reload(false)
+      } else {
       if (res.data.message) {
         props.setStatus();
         alert(res.data.message).then(() => {
@@ -45,6 +48,7 @@ function ZastepstwoEfektyOpiekunU(props) {
         setStudenci(res.data);
         setLoading(false);
       }
+    }
     });
   }, []);
 
@@ -56,6 +60,9 @@ function ZastepstwoEfektyOpiekunU(props) {
         status: status,
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message) {
           props.setStatus();
           alert(res.data.message).then(() => {
@@ -78,6 +85,7 @@ function ZastepstwoEfektyOpiekunU(props) {
             })
           );
         }
+      }
       });
   };
 

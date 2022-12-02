@@ -47,6 +47,9 @@ function ZastepstwoOpiekunUHistory(props) {
   useEffect(() => {
     const id = props.infoUser.user.id
     axios.get(`${url}getDaysOpiekunUStatusZastepstwo/${id}`).then((res) => {
+      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+        window.location.reload(false)
+      } else {
       if (res.data.message) {
         props.setStatus();
         alert(res.data.message).then(() => {
@@ -56,6 +59,7 @@ function ZastepstwoOpiekunUHistory(props) {
         setDzienniczek(res.data);
         setLoading(false);
       }
+    }
     });
   }, []);
   const deleteComment = (id, day) => {
@@ -64,6 +68,9 @@ function ZastepstwoOpiekunUHistory(props) {
         id: id,
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message) {
           props.setStatus();
           alert(res.data.message).then(() => {
@@ -83,6 +90,7 @@ function ZastepstwoOpiekunUHistory(props) {
             })
           );
         }
+      }
       });
   };
   const downloadFile = (name) => {
@@ -92,6 +100,9 @@ function ZastepstwoOpiekunUHistory(props) {
       responseType: "blob",
     })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message) {
           props.setStatus();
           alert(res.data.message).then(() => {
@@ -100,6 +111,7 @@ function ZastepstwoOpiekunUHistory(props) {
         } else {
           FileDownload(res.data, name);
         }
+      }
       })
       .catch(function (error) {
         alert(error);
@@ -114,6 +126,9 @@ function ZastepstwoOpiekunUHistory(props) {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message) {
           props.setStatus();
           alert(res.data.message).then(() => {
@@ -127,6 +142,7 @@ function ZastepstwoOpiekunUHistory(props) {
             })
           );
         }
+      }
       });
   };
 
@@ -140,6 +156,9 @@ function ZastepstwoOpiekunUHistory(props) {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
+        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
+          window.location.reload(false)
+        } else {
         if (res.data.message) {
           props.setStatus();
           alert(res.data.message).then(() => {
@@ -169,6 +188,7 @@ function ZastepstwoOpiekunUHistory(props) {
             })
           );
         }
+      }
       });
   };
 
