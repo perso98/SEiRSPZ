@@ -65,10 +65,7 @@ function OpiekunZ(props) {
       })
       .then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
@@ -86,10 +83,7 @@ function OpiekunZ(props) {
       responseType: "blob",
     }).then((res) => {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         FileDownload(res.data, name);
       }
@@ -106,10 +100,7 @@ function OpiekunZ(props) {
       })
       .then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           setDzienniczek(
             dzienniczek.filter((val) => {

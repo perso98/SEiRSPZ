@@ -82,7 +82,6 @@ export default function Admin(props) {
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
   const [toggleSearch, setToggleSearch] = useState(0);
-  const [yearSearch, setYearSearch] = useState("");
   const [surnameSearch, setSurnameSearch] = useState("");
   const [firmaSearch, setFirmaSearch] = useState("");
   const [roleSearch, setRoleSearch] = useState("Wszyscy");
@@ -93,10 +92,7 @@ export default function Admin(props) {
   useEffect(() => {
     axios.get(`${url}getStudents`).then((res) => {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         setStudents(res.data);
         setLoading(false);
@@ -128,10 +124,7 @@ export default function Admin(props) {
     if (acceptDelete)
       axios.delete(`${url}deleteUser/${id}`).then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           toast.success(res.data.message2);
           setStudents(
@@ -178,10 +171,7 @@ export default function Admin(props) {
       })
       .then((res) => {
         if (res.data.message1) {
-          props.setStatus();
-          alert(res.data.message1).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           if (res.data.id) {
             setStudents([
@@ -463,10 +453,7 @@ export default function Admin(props) {
         })
         .then((res) => {
           if (res.data.message) {
-            props.setStatus();
-            alert(res.data.message).then(() => {
-              navigate("/login");
-            });
+            window.location.reload(false);
           } else {
             toast.success("Rola zmieniona");
             setStudents(
@@ -485,10 +472,7 @@ export default function Admin(props) {
     if (acceptDelete)
       axios.delete(`${url}deleteYear/${yearSearch}`).then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           if (res.data.message2 === "Usunięto")
             setStudents(
@@ -551,10 +535,7 @@ export default function Admin(props) {
       })
       .then((res) => {
         if (res.data.message2) {
-          props.setStatus();
-          alert(res.data.message2).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           if (changeLogin.length > 0) {
             setStudents(
@@ -791,7 +772,7 @@ export default function Admin(props) {
               onClick={() => {
                 functionToggleSearch();
               }}
-              style={{ margin: "1.5rem" }}
+              style={{ marginBottom: "1.5rem", marginTop: "1.5rem" }}
             >
               {" "}
               Zmień opcje szukania
@@ -822,9 +803,9 @@ export default function Admin(props) {
             {" "}
             <FormControl
               style={{
-                marginLeft: "1.5rem",
                 width: "200px",
                 height: "60px",
+                marginRight: "1.5rem",
               }}
             >
               <InputLabel

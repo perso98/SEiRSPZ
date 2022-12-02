@@ -18,17 +18,15 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ThemeContext } from "../context/ThemeContext";
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline';
-import ListSubheader from '@mui/material/ListSubheader';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import ListSubheader from "@mui/material/ListSubheader";
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
   },
 });
-
-
 
 function Konto() {
   const useStyles = makeStyles((theme) => ({
@@ -59,27 +57,26 @@ function Konto() {
     },
     formControl: {
       color: darkMode == "white" ? "black" : "white !important",
-        '.MuiOutlinedInput-notchedOutline': {
-          borderColor:  darkMode == "white" ? "none" : "white",
-          color: darkMode == "white" ? "black" : "white",
-        },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-          borderColor:  darkMode == "white" ? "black" : "white",
-          color: darkMode == "white" ? "black" : "white",
-        },
-        '&:hover .MuiOutlinedInput-notchedOutline': {
-          borderColor: darkMode == "white" ? "black" : "white",
-          color: darkMode == "white" ? "black" : "white",
-        },
-        '.MuiSvgIcon-root ': {
-          fill:  darkMode == "white" ? "black" : "white",
-        }
+      ".MuiOutlinedInput-notchedOutline": {
+        borderColor: darkMode == "white" ? "none" : "white",
+        color: darkMode == "white" ? "black" : "white",
+      },
+      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: darkMode == "white" ? "black" : "white",
+        color: darkMode == "white" ? "black" : "white",
+      },
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: darkMode == "white" ? "black" : "white",
+        color: darkMode == "white" ? "black" : "white",
+      },
+      ".MuiSvgIcon-root ": {
+        fill: darkMode == "white" ? "black" : "white",
+      },
     },
     notchedOutline: {
       borderWidth: "1px",
       borderColor: "white !important",
     },
-    
   }));
 
   const [listaKierunkow, setListaKierunkow] = useState([]);
@@ -117,7 +114,8 @@ function Konto() {
       changePassword: changePassword,
       changePassword2: changePassword2,
     }).then((res) => {
-      if (res.data.message) {
+      if (res.data.session) window.location.reload(false);
+      else {
         setChangePasswordStatus(res.data.message);
         if (res.data.message === "Pomyślnie zmieniono hasło do konta")
           setalertSeverity(false);
@@ -144,7 +142,7 @@ function Konto() {
 
   const handleChangeKierunek = (event) => {
     setKierunek(event.target.value);
-    setSpecjalnosc()
+    setSpecjalnosc();
   };
 
   const changeDaneToAccount = () => {
@@ -167,7 +165,6 @@ function Konto() {
       }
     });
   };
-  
 
   const classes = useStyles();
   return (
@@ -364,7 +361,10 @@ function Konto() {
             /> */}
             <Box style={{ paddingTop: "3%", paddingBottom: " 1%" }}>
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label" className={classes.formControl}>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  className={classes.formControl}
+                >
                   Kierunek
                 </InputLabel>
                 <Select
@@ -376,23 +376,23 @@ function Konto() {
                   onChange={handleChangeKierunek}
                   sx={{
                     color: darkMode == "white" ? "black" : "white",
-                    '.MuiOutlinedInput-notchedOutline': {
-                      borderColor:  darkMode == "white" ? "none" : "white",
+                    ".MuiOutlinedInput-notchedOutline": {
+                      borderColor: darkMode == "white" ? "none" : "white",
                     },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
                       borderColor: darkMode == "white" ? "black" : "white",
                     },
-                    '.MuiSvgIcon-root ': {
-                      fill:  darkMode == "white" ? "black" : "white",
-                    }
+                    ".MuiSvgIcon-root ": {
+                      fill: darkMode == "white" ? "black" : "white",
+                    },
                   }}
-                  PaperProps={{             
-                    style: {               
-                      backgroundColor: darkMode == "white" ? "white" : "#242424",               
-                      color: darkMode == "white" ? "black" : "white",             
-                    },           
+                  PaperProps={{
+                    style: {
+                      backgroundColor:
+                        darkMode == "white" ? "white" : "#242424",
+                      color: darkMode == "white" ? "black" : "white",
+                    },
                   }}
-
                 >
                   <MenuItem>-</MenuItem>
                   {listaKierunkow.map((val) => (
@@ -421,10 +421,15 @@ function Konto() {
                 </Select>
               </FormControl> */}
             </Box>
-                        {console.log(user)}
-            <Box style={{ paddingTop: "3%", paddingBottom:" 1%" }}>
+            {console.log(user)}
+            <Box style={{ paddingTop: "3%", paddingBottom: " 1%" }}>
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel className={classes.formControl} id="demo-simple-select-label">Specjalność</InputLabel>
+                <InputLabel
+                  className={classes.formControl}
+                  id="demo-simple-select-label"
+                >
+                  Specjalność
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -434,31 +439,32 @@ function Konto() {
                   className={classes.formControl}
                   sx={{
                     color: darkMode == "white" ? "black" : "white",
-                    '.MuiOutlinedInput-notchedOutline': {
-                      borderColor:  darkMode == "white" ? "none" : "white",
+                    ".MuiOutlinedInput-notchedOutline": {
+                      borderColor: darkMode == "white" ? "none" : "white",
                     },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
                       borderColor: darkMode == "white" ? "black" : "white",
                     },
-                    '.MuiSvgIcon-root ': {
-                      fill:  darkMode == "white" ? "black" : "white",
-                    }
+                    ".MuiSvgIcon-root ": {
+                      fill: darkMode == "white" ? "black" : "white",
+                    },
                   }}
-                  PaperProps={{             
-                    style: {               
-                      backgroundColor: darkMode == "white" ? "white" : "#242424",               
-                      color: darkMode == "white" ? "black" : "white",             
-                    },           
+                  PaperProps={{
+                    style: {
+                      backgroundColor:
+                        darkMode == "white" ? "white" : "#242424",
+                      color: darkMode == "white" ? "black" : "white",
+                    },
                   }}
                 >
                   <MenuItem>-</MenuItem>
-                  {listaKierunkow?.map((valKierunek)=> (
-                      valKierunek?.nazwa === kierunek ? (  
-                          valKierunek?.listaSpecjalnoscis?.map((val)=> ( 
-                            <MenuItem value={val?.id}>{val?.nazwa}</MenuItem>
-                          ))
-                      ): null
-                  ))}
+                  {listaKierunkow?.map((valKierunek) =>
+                    valKierunek?.nazwa === kierunek
+                      ? valKierunek?.listaSpecjalnoscis?.map((val) => (
+                          <MenuItem value={val?.id}>{val?.nazwa}</MenuItem>
+                        ))
+                      : null
+                  )}
                 </Select>
               </FormControl>
             </Box>

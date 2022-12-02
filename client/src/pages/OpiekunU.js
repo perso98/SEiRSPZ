@@ -12,7 +12,6 @@ import { ToastContainer, toast } from "react-toastify";
 import FileDownload from "js-file-download";
 import "react-toastify/dist/ReactToastify.css";
 import { url } from "../services/Url";
-import { useNavigate } from "react-router-dom";
 import Helper from "../components/Helper";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import { makeStyles } from "@material-ui/core";
@@ -23,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     borderColor: "white !important",
   },
 }));
-function OpiekunU(props) {
+function OpiekunU() {
   const classes = useStyles();
   const [dzienniczek, setDzienniczek] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +33,6 @@ function OpiekunU(props) {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaU";
-  const navigate = useNavigate();
   const [darkMode] = useContext(ThemeContext);
   const [toggleSearch, setToggleSearch] = useState(false);
   const [searchSurname, setSearchSurname] = useState("");
@@ -60,10 +58,7 @@ function OpiekunU(props) {
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunU`).then((res) => {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         setDzienniczek(res.data);
         setLoading(false);
@@ -77,10 +72,7 @@ function OpiekunU(props) {
       responseType: "blob",
     }).then((res) => {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         FileDownload(res.data, name);
       }
@@ -95,10 +87,7 @@ function OpiekunU(props) {
       })
       .then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
