@@ -179,8 +179,8 @@ function OpiekunStatus(props) {
   };
   const yearArray = [];
   const recordsAfterFiltering = dzienniczek.filter((val) => {
-    if (!yearArray.includes(val.createdAt.split("-")[0]))
-      yearArray.push(val.createdAt.split("-")[0]);
+    if (!yearArray.includes(val.updatedAt.split("-")[0]))
+      yearArray.push(val.updatedAt.split("-")[0]);
     if (accepted) {
       if (
         val?.statusOpiekunaZ === "Zaakceptowano" &&
@@ -188,7 +188,7 @@ function OpiekunStatus(props) {
         searchSurname === ""
       ) {
         return yearFilter !== "Wszystkie"
-          ? val.createdAt.split("-")[0] === yearFilter
+          ? val.updatedAt.split("-")[0] === yearFilter
           : val;
       } else if (
         searchLogin !== "" &&
@@ -198,7 +198,7 @@ function OpiekunStatus(props) {
           ? val?.user?.login
               .toLowerCase()
               .includes(searchLogin.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter
+              val.updatedAt.split("-")[0] === yearFilter
           : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (
         searchSurname !== "" &&
@@ -212,14 +212,14 @@ function OpiekunStatus(props) {
     if (all) {
       if (searchLogin === "" && searchSurname === "") {
         return yearFilter !== "Wszystkie"
-          ? val.createdAt.split("-")[0] === yearFilter
+          ? val.updatedAt.split("-")[0] === yearFilter
           : val;
       } else if (searchLogin !== "") {
         return yearFilter !== "Wszystkie"
           ? val?.user?.login
               .toLowerCase()
               .includes(searchLogin.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter
+              val.updatedAt.split("-")[0] === yearFilter
           : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (searchSurname !== "") {
         return yearFilter !== "Wszystkie"
@@ -229,7 +229,7 @@ function OpiekunStatus(props) {
           : val.user.dane.nazwisko
               .toLowerCase()
               .includes(searchSurname.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter;
+              val.updatedAt.split("-")[0] === yearFilter;
       }
     }
     if (declined) {
@@ -239,7 +239,7 @@ function OpiekunStatus(props) {
         searchSurname === ""
       ) {
         return yearFilter !== "Wszystkie"
-          ? val.createdAt.split("-")[0] === yearFilter
+          ? val.updatedAt.split("-")[0] === yearFilter
           : val;
       } else if (searchLogin !== "" && val?.statusOpiekunaZ === "Odrzucono") {
         return val?.user?.login
@@ -253,7 +253,7 @@ function OpiekunStatus(props) {
           : val.user.dane.nazwisko
               .toLowerCase()
               .includes(searchSurname.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter;
+              val.updatedAt.split("-")[0] === yearFilter;
       }
     }
   });

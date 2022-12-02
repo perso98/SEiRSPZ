@@ -180,8 +180,8 @@ function OpiekunUHistory(props) {
   };
   const yearArray = [];
   const recordsAfterFiltering = dzienniczek.filter((val) => {
-    if (!yearArray.includes(val.createdAt.split("-")[0]))
-      yearArray.push(val.createdAt.split("-")[0]);
+    if (!yearArray.includes(val.updatedAt.split("-")[0]))
+      yearArray.push(val.updatedAt.split("-")[0]);
     if (accepted) {
       if (
         val?.statusOpiekunaU === "Zaakceptowano" &&
@@ -189,7 +189,7 @@ function OpiekunUHistory(props) {
         searchSurname === ""
       ) {
         return yearFilter !== "Wszystkie"
-          ? val.createdAt.split("-")[0] === yearFilter
+          ? val.updatedAt.split("-")[0] === yearFilter
           : val;
       } else if (
         searchLogin !== "" &&
@@ -199,7 +199,7 @@ function OpiekunUHistory(props) {
           ? val?.user?.login
               .toLowerCase()
               .includes(searchLogin.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter
+              val.updatedAt.split("-")[0] === yearFilter
           : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (
         searchSurname !== "" &&
@@ -212,20 +212,20 @@ function OpiekunUHistory(props) {
           : val.user.dane.nazwisko
               .toLowerCase()
               .includes(searchSurname.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter;
+              val.updatedAt.split("-")[0] === yearFilter;
       }
     }
     if (all) {
       if (searchLogin === "" && searchSurname === "") {
         return yearFilter !== "Wszystkie"
-          ? val.createdAt.split("-")[0] === yearFilter
+          ? val.updatedAt.split("-")[0] === yearFilter
           : val;
       } else if (searchLogin !== "") {
         return yearFilter !== "Wszystkie"
           ? val?.user?.login
               .toLowerCase()
               .includes(searchLogin.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter
+              val.updatedAt.split("-")[0] === yearFilter
           : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (searchSurname !== "") {
         return yearFilter !== "Wszystkie"
@@ -235,7 +235,7 @@ function OpiekunUHistory(props) {
           : val.user.dane.nazwisko
               .toLowerCase()
               .includes(searchSurname.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter;
+              val.updatedAt.split("-")[0] === yearFilter;
       }
     }
     if (declined) {
@@ -245,14 +245,14 @@ function OpiekunUHistory(props) {
         searchSurname === ""
       ) {
         return yearFilter !== "Wszystkie"
-          ? val.createdAt.split("-")[0] === yearFilter
+          ? val.updatedAt.split("-")[0] === yearFilter
           : val;
       } else if (searchLogin !== "" && val?.statusOpiekunaU === "Odrzucono") {
         return yearFilter !== "Wszystkie"
           ? val?.user?.login
               .toLowerCase()
               .includes(searchLogin.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter
+              val.updatedAt.split("-")[0] === yearFilter
           : val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase());
       } else if (searchSurname !== "" && val?.statusOpiekunaU === "Odrzucono") {
         return yearFilter !== "Wszystkie"
@@ -262,7 +262,7 @@ function OpiekunUHistory(props) {
           : val.user.dane.nazwisko
               .toLowerCase()
               .includes(searchSurname.toLowerCase()) &&
-              val.createdAt.split("-")[0] === yearFilter;
+              val.updatedAt.split("-")[0] === yearFilter;
       }
     }
   });
