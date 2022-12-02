@@ -60,10 +60,7 @@ function OpiekunU(props) {
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunU`).then((res) => {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         setDzienniczek(res.data);
         setLoading(false);
@@ -77,10 +74,7 @@ function OpiekunU(props) {
       responseType: "blob",
     }).then((res) => {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         FileDownload(res.data, name);
       }
@@ -95,10 +89,7 @@ function OpiekunU(props) {
       })
       .then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(

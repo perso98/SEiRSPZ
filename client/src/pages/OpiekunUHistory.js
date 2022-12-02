@@ -63,10 +63,7 @@ function OpiekunUHistory(props) {
   useEffect(() => {
     axios.get(`${url}getDaysOpiekunUStatus`).then((res) => {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         setDzienniczek(res.data);
         setLoading(false);
@@ -80,10 +77,7 @@ function OpiekunUHistory(props) {
       })
       .then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           setDzienniczek(
             dzienniczek.map((val) => {
@@ -108,10 +102,7 @@ function OpiekunUHistory(props) {
     })
       .then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           FileDownload(res.data, name);
         }
@@ -130,10 +121,7 @@ function OpiekunUHistory(props) {
       })
       .then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
@@ -162,10 +150,7 @@ function OpiekunUHistory(props) {
       })
       .then((res) => {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           toast.success(`Zmiana statusu na ${status}`);
 

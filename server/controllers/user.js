@@ -23,14 +23,19 @@ const transporter = nodemailer.createTransport({
 
 exports.changePasswordToAccount = async (req, res) => {
   const { changePassword, changePassword2 } = req.body;
-  if (changePassword == changePassword2) {
-    const hashedPassword = await bcrypt.hash(changePassword, 10);
-    await user.update(
-      { haslo: hashedPassword },
-      { where: { login: req.session.user.login } }
-    );
-    res.send({ message: "Pomyślnie zmieniono hasło do konta" });
-  } else res.send({ message: "Hasła się nie zgadzają" });
+  try {
+    if (!req.session.user) res.send({ session: "Sesja niedostępna" });
+    else if (changePassword == changePassword2) {
+      const hashedPassword = await bcrypt.hash(changePassword, 10);
+      await user.update(
+        { haslo: hashedPassword },
+        { where: { login: req.session.user.login } }
+      );
+      res.send({ message: "Pomyślnie zmieniono hasło do konta" });
+    } else res.send({ message: "Hasła się nie zgadzają" });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.changeDaneToAccount = async (req, res) => {
