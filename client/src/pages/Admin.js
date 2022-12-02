@@ -791,7 +791,7 @@ export default function Admin(props) {
               onClick={() => {
                 functionToggleSearch();
               }}
-              style={{ margin: "1.5rem" }}
+              style={{ marginBottom: "1.5rem", marginTop: "1.5rem" }}
             >
               {" "}
               Zmień opcje szukania
@@ -822,9 +822,9 @@ export default function Admin(props) {
             {" "}
             <FormControl
               style={{
-                marginLeft: "1.5rem",
                 width: "200px",
                 height: "60px",
+                marginRight: "1.5rem",
               }}
             >
               <InputLabel
