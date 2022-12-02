@@ -27,12 +27,10 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import FileDownload from "js-file-download";
 import ClearIcon from "@mui/icons-material/Clear";
 import { url } from "../services/Url";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import * as React from 'react';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-
+import { InputAdornment } from "@mui/material";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import "./editDay.css";
 
 const useStyles = makeStyles(theme => ({
   containerMain:{
@@ -74,6 +72,51 @@ const useStyles = makeStyles(theme => ({
     borderWidth: "1px",
     borderColor: "white !important",
   },
+  dateicon:{
+
+   
+      'input::-webkit-calendar-picker-indicator': {
+        filter: 'invert(1)',
+      } ,
+
+      'input .::-webkit-calendar-picker-indicator': {
+        filter: 'invert(1)',
+      } ,
+      'input ::-webkit-calendar-picker-indicator': {
+        filter: 'invert(1)',
+      } ,
+
+      'input .:-webkit-calendar-picker-indicator': {
+        filter: 'invert(1)',
+      } ,
+
+      'input :-webkit-calendar-picker-indicator': {
+        filter: 'invert(1)',
+      } ,
+      
+      indicator : {
+        filter: 'invert(1)',
+      },
+
+
+      '.input::-webkit-calendar-picker-indicator':{
+        filter: 'invert(1)',
+      },
+      '.-webkit-calendar-picker-indicator': {
+        filter: 'invert(1)',
+      },
+      '-webkit-calendar-picker-indicator': {
+        filter:  'invert(1)',
+      },
+      ':-webkit-calendar-picker-indicator': {
+        filter:  'invert(1)',
+      },
+      '::-webkit-calendar-picker-indicator': {
+        filter:  'invert(1)',
+      },
+  
+  }
+
 }));
 
 function EditDay(
@@ -239,12 +282,10 @@ function EditDay(
                 />
             </Box>
 
-           
-
             <Box>  
               <TextField
                 id="date"
-                style= {{width: 150}}
+                className={classes.dateicon}
                 size="small" 
                 margin="normal"
                 label="Data"
@@ -253,50 +294,37 @@ function EditDay(
                 onChange={(e) => {
                   setChangeData(e.target.value);
                 }}
-                InputLabelProps={{
-                  shrink: true,
+                sx={{
+                  '$ .MuiInputBase-input-MuiOutlinedInput-input':{
+                    filter: 'invert(1)',
+                  }
                 }}
-              />
-            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Data"
-                defaultValue={editDay.data}
-                onChange={(newValue) => {
-                  setChangeData(newValue);
-                }}
-                renderInput={(params) => <TextField size="small" margin="normal" {...params} />}
-              />
-            </LocalizationProvider> */}
-            {/* <TextField className={classes.TextField}
-                size="small"
-                label="Data"
-                defaultValue= {editDay.data}
-                onChange={(e) => {
-                  setChangeData(e.target.value);
-                }}
-                margin="normal"
                 inputProps={{
                   style: {
                     color: darkMode == "white" ? "black" : "white",
                   },
                 }}
                 InputLabelProps={{
+                  shrink: true,
                   style: {
                     color: darkMode == "white" ? "black" : "white",
                   },
                 }}
                 InputProps={{
+                  style: {
+                    color: darkMode == "white" ? "black" : "white",
+                  },
                   classes: {
                     notchedOutline:
                       darkMode == "white" ? null : classes.notchedOutline,
                   },
                 }}
-                /> */}
+              />
 
             </Box>
 
             <Box sx={{ width: 135}}>
-              <TextField className={classes.TextField}
+              <TextField 
                 size="small"
                 type="number"
                 label="Ilość godzin"

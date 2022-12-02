@@ -122,7 +122,7 @@ function Nav(props) {
 
   const Navbar = () => {
     return (
-      <AppBar position="fixed">
+      <AppBar position="sticky">
         <Toolbar className={classes.toolbar}>
           <div />
           <Typography variant="h5" className={classes.logoBig}>
@@ -176,7 +176,7 @@ function Nav(props) {
 
   const NavLogged = () => {
     return (
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar className={classes.toolbar}>
           <Sidebar auth={props.auth} />
           <Typography variant="h5" className={classes.logoBig}>

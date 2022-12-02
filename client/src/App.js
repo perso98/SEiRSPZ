@@ -103,17 +103,38 @@ function App() {
                   element={<OpiekunZHistory setStatus={setStatus} />}
                 />
               </Route>
-              <Route path="efektyuczeniasie" element={<EfektyUczeniaSie />} />
-              <Route path="dzienniczek" element={<Dzienniczek />} />
-              <Route path="efekty" element={<EfektyUzasadnienie />} />
+
               <Route
-                path="zarzadzaniezakladami"
-                element={<ZarzadzanieZakladami />}
-              />
+                element={
+                  <RoleRoute
+                    role={auth?.user?.isStudent}
+                    logged={auth?.logged}
+                  />
+                }
+              >
+                <Route path="dzienniczek" element={<Dzienniczek />} />
+                <Route path="efekty" element={<EfektyUzasadnienie />} />
+              </Route>
+
               <Route
-                path="selectedFirma"
-                element={<SelectedFirma />}
-              />
+                element={
+                  <RoleRoute
+                    role={auth?.user?.isDziekanat}
+                    logged={auth?.logged}
+                  />
+                }
+              >
+                <Route path="efektyuczeniasie" element={<EfektyUczeniaSie />} />
+                <Route
+                  path="zarzadzaniezakladami"
+                  element={<ZarzadzanieZakladami />}
+                />
+                <Route
+                  path="selectedFirma"
+                  element={<SelectedFirma />}
+                />
+              </Route>
+              
               <Route
                 element={<RoleRoute role={auth?.user} logged={auth?.logged} />}
               >
@@ -143,7 +164,7 @@ function App() {
               </Route>
               <Route
                 element={
-                  <RoleRoute role={auth?.user?.isAdmin} logged={auth?.logged} />
+                  <RoleRoute role={auth?.user?.isDyrektor} logged={auth?.logged} />
                 }
               >
                 <Route

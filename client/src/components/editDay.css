@@ -1,0 +1,8 @@
+/* input::-webkit-calendar-picker-indicator {
+  font-size: larger;
+  filter: invert(1);
+} */
+
+input::-webkit-calendar-picker-indicator:hover {
+  cursor: pointer;
+}
