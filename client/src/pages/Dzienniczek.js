@@ -441,22 +441,15 @@ function Dzienniczek() {
                 : val
             )
           )
-          .then(() => {
+            sendDay2(id)
+    
             setChangeDzien();
             setChangeData();
             setChangeIloscGodzin();
             setChangeOpis();
-          });
         }
         alert(res.data.message)
       }
-      })
-      .then((res) => {
-        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
-          window.location.reload(false)
-        } else {
-          sendDay2(id)
-        }
       })
   };
 
