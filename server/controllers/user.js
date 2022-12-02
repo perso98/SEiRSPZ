@@ -235,7 +235,7 @@ exports.confirmMail = async (req, res) => {
         info: true,
       });
     else {
-      const userDane = await dane.create({ where: { id: id } });
+      const userDane = await dane.create();
       await user.update(
         { confirmation: 1, daneId: userDane.id },
         { where: { id: id } }

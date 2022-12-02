@@ -109,13 +109,30 @@ function DzienniczekDni(props) {
                     }}
                   >
                     {props.statusOpiekuna == "statusOpiekunaU" ? (
-                      <h6 style={{ color: "white", marginRight: "1rem" }}>
-                        Status opiekuna uczelnianego:
-                      </h6>
+                      <div
+                        style={{
+                          color: "white",
+                          marginRight: "1rem",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        {" "}
+                        <h6>Status opiekuna uczelnianego:</h6>
+                        <h6>Oceniono przez: {val.LaststatusOpiekunaU}</h6>
+                      </div>
                     ) : (
-                      <h6 style={{ color: "white", marginRight: "1rem" }}>
-                        Status opiekuna zakładowego:
-                      </h6>
+                      <div
+                        style={{
+                          color: "white",
+                          marginRight: "1rem",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <h6>Status opiekuna zakładowego:</h6>
+                        <h6>Oceniono przez: {val.LaststatusOpiekunaZ}</h6>
+                      </div>
                     )}{" "}
                     {val?.[props?.statusOpiekuna] === "Zaakceptowano" ? (
                       <h6> Zaakceptowano</h6>

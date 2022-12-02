@@ -145,7 +145,8 @@ function OpiekunU(props) {
   const info = (
     <div>
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
-      studenta po jego e-mailu. <br />
+      użytkownika po jego e-mailu, jeśli chcesz wyszukać użytkownika po jego
+      nazwisku kliknij w przycik "Zmień opcje wyszukiwania". <br />
       Przycisk "Akceptuj" akceptuje dzień studenta.
       <br />
       Przycisk "Odrzuć" odrzuca dzień studenta.

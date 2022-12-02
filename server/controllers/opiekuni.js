@@ -10,13 +10,20 @@ const {
 
 exports.changeStatusEdit = async (req, res) => {
   const { id, opis, komentarz, status, statusOpiekuna } = req.body;
-
+  const lastStatus = "Last" + statusOpiekuna;
   try {
     if (!req.session.user)
       res.send({ message: "Sesja utracona, zaloguj się ponownie" });
     else {
       await dziennik
-        .update({ [statusOpiekuna]: status, opis: opis }, { where: { id: id } })
+        .update(
+          {
+            [statusOpiekuna]: status,
+            opis: opis,
+            [lastStatus]: req.session.user.login,
+          },
+          { where: { id: id } }
+        )
         .then(async () => {
           if (komentarz?.length) {
             const comment = await komentarze.create({
@@ -29,11 +36,13 @@ exports.changeStatusEdit = async (req, res) => {
               success: true,
               status: statusOpiekuna,
               commentId: comment.id,
+              lastOpiekun: req.session.user.login,
             });
           } else
             await res.send({
               success: true,
               status: statusOpiekuna,
+              lastOpiekun: req.session.user.login,
             });
         });
     }
@@ -70,13 +79,23 @@ exports.downloadFile = async (req, res) => {
 };
 exports.changeStatus = async (req, res) => {
   const { id, status, statusOpiekuna } = req.body;
+  const lastStatus = "Last" + statusOpiekuna;
   try {
     if (!req.session.user)
       res.send({ message: "Sesja utracona, zaloguj się ponownie" });
     else {
       await dziennik
-        .update({ [statusOpiekuna]: status }, { where: { id: id } })
-        .then(res.send({ success: true, status: statusOpiekuna }));
+        .update(
+          { [statusOpiekuna]: status, [lastStatus]: req.session.user.login },
+          { where: { id: id } }
+        )
+        .then(
+          res.send({
+            success: true,
+            status: statusOpiekuna,
+            lastOpiekun: req.session.user.login,
+          })
+        );
     }
   } catch (err) {
     console.log(err);

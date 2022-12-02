@@ -119,7 +119,11 @@ function OpiekunStatus(props) {
           setDzienniczek(
             dzienniczek.map((val) => {
               return val.id === id
-                ? { ...val, [res.data.status]: status }
+                ? {
+                    ...val,
+                    [res.data.status]: status,
+                    LaststatusOpiekunaZ: res.data.lastOpiekun,
+                  }
                 : val;
             })
           );
@@ -167,6 +171,7 @@ function OpiekunStatus(props) {
                 ? {
                     ...val,
                     [res.data.status]: status,
+                    LaststatusOpiekunaZ: res.data.lastOpiekun,
                     opis: opis ? opis : val.opis,
                     komentarzes: komentarz
                       ? [
@@ -271,12 +276,16 @@ function OpiekunStatus(props) {
   const info = (
     <div>
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
-      studenta po jego e-mailu. <br />
-      Przycisk "Akceptuj" akceptuje dzień studenta.
+      studenta po jego e-mailu, jeśli chcesz wyszukać użytkownika po jego
+      nazwisku kliknij w przycik "Zmień opcje wyszukiwania". <br />
+      Przycisk "Akceptuj" akceptuje dzień studenta. Jeśli chcesz przefiltrować
+      dni z dzienniczka po ich roku utworzenia, skorzystaj z pola wybieranego o
+      nazwie "Rok".
       <br />
       Przycisk "Odrzuć" odrzuca dzień studenta.
       <br />
-      Widzisz także w tym panelu status pozostałego opiekuna.
+      Widzisz także w tym panelu kto ostatni zaakceptował lub odrzucił wpis
+      dnia.
       <br />
       Możesz także przejść do dokładniejszej edycji dnia klikając przycisk
       "Edycja".

@@ -92,11 +92,21 @@ function EditAdminDialog({
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <span style={{ marginBottom: "1rem" }}>
                     {" "}
-                    Imię: {editStudent.dane.imie}
+                    {editStudent.dane.imie === null ||
+                    editStudent.dane.imie == "" ? (
+                      <div>Imie: Brak</div>
+                    ) : (
+                      <div> Imię: {editStudent.dane.imie} </div>
+                    )}
                   </span>
                   <span style={{ marginBottom: "1rem" }}>
                     {" "}
-                    Nazwisko: {editStudent.dane.nazwisko}
+                    {editStudent.dane.nazwisko === null ||
+                    editStudent.dane.nazwisko == "" ? (
+                      <div>Nazwisko: Brak</div>
+                    ) : (
+                      <div>Nazwisko: {editStudent.dane.nazwisko}</div>
+                    )}
                   </span>
                 </div>
               ) : null}
