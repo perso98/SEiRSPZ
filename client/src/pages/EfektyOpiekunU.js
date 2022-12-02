@@ -129,7 +129,15 @@ function EfektyOpiekunU(props) {
   return (
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        {loading && <h5>Ładowanie...</h5>}
+        {loading && (
+          <h5
+            style={{
+              color: darkMode == "white" ? "black" : "white",
+            }}
+          >
+            Ładowanie...
+          </h5>
+        )}
 
         <div
           style={{

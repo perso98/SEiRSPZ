@@ -46,7 +46,12 @@ exports.getDaysOpiekunUStatus = async (req, res) => {
       res.send({ message: "Sesja utracona, zaloguj się ponownie" });
     else {
       const getDays = await dziennik.findAll({
-        where: { statusOpiekunaU: { [Op.ne]: "Oczekiwanie" } },
+        where: {
+          [Op.and]: [
+            { statusOpiekunaU: { [Op.ne]: "Oczekiwanie" } },
+            { statusOpiekunaU: { [Op.ne]: "Nie wysłano" } },
+          ],
+        },
 
         include: [
           {
