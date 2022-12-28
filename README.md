@@ -11,6 +11,7 @@ The scope of Maciej Sierżęga's (perso98) work included:
 - Administrator,
 - Plant Supervisor,
 - University Supervisor.
+
 The login and registration system allows the user to create their own account and log in to the application.
 User sessions and access security are meant to protect the application from unauthorized users.
 The ability to edit one's own account allows the user to change their account password.
