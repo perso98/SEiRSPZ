@@ -56,13 +56,9 @@ const { Op } = require("sequelize");
         }))
       }
       )
-      console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQ")
-      console.log(table)
     }catch (err) {
       res.send({ message: err.message });
     }
-    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQ")
-    console.log(table)
     res.send(table);
   };
 
@@ -109,12 +105,20 @@ const { Op } = require("sequelize");
         where: {
           id_opiekunU: id,
         },
-        include: {
-          model: efektyStudent,
-          include: {
-            model: efektyLista,
+        include: [
+          {
+            model: dane,
+            required: false,
           },
-        },
+          {
+            model: efektyStudent,
+            required: false,
+            include: {
+              model: efektyLista,
+              required: false,
+            },
+          },
+        ],
       });
   
       res.send(getEffects);
@@ -131,14 +135,19 @@ const { Op } = require("sequelize");
         res.send({ message: "Sesja utracona, zaloguj się ponownie" });
       else {
         const getDays = await dziennik.findAll({
-          where: { statusOpiekunaU: { [Op.ne]: "Oczekiwanie" } },
-  
+          where: {
+            [Op.and]: [
+              { statusOpiekunaU: { [Op.ne]: "Oczekiwanie" } },
+              { statusOpiekunaU: { [Op.ne]: "Nie wysłano" } },
+            ],
+          },
           include: [
             {
               model: user,
               where: {
                 id_opiekunU: id,
               },
+            include: { model: dane, required: false },
             },
             {
               model: komentarze,
@@ -159,10 +168,7 @@ const { Op } = require("sequelize");
   };
   
   exports.getDaysOpiekunU = async (req, res) => {
-    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
     const id = req.params.id;
-    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
-    console.log(id)
     try {
       if (!req.session.user)
         res.send({ message: "Sesja utracona, zaloguj się ponownie" });
@@ -175,6 +181,7 @@ const { Op } = require("sequelize");
               where: {
                 id_opiekunU: id,
               },
+              include: { model: dane, required: false },
             },
             {
               model: komentarze,
@@ -189,6 +196,7 @@ const { Op } = require("sequelize");
         });
   
         res.send(getDays);
+        
       }
     } catch (err) {
       console.log(err);

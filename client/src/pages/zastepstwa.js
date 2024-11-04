@@ -63,8 +63,6 @@ function Zastepstwa() {
           window.location.reload(false)
         } else {
         setListaOpiekunow(res.data);
-        console.log("getListaOpiekunow")
-        console.log(res.data)
         }
 
       });
@@ -129,74 +127,95 @@ function Zastepstwa() {
       <div>
     <Grid>
       
-      <Zastepstwo
+      {/* <Zastepstwo
       open = {open}
       infoUser = {infoUser}
       handleClose = {handleClose}
-      />
-      <Grid item xs className={classes.content}>
-        
-                    <Grid container>
-                    <Grid item xs style={{color: darkMode == "white" ? "black" : "white"}}>
-                            <div>
-                              <div style={{margin:"3rem", display:"flex", justifyContent: "center"}} >
-                                    <SearchBar
-                                    darkMode={darkMode}
-                                    setSearchLogin={setSearchLogin}
-                                  //  setItemOffset={setItemOffset}
-                                    />
-                              </div>
-                              <div style={{display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
-                                <div className={classes.przerwa} style={{marginLeft:"15px", marginBottom:"15px"}}><b>Lista Opiekunów</b></div>
-                                {recordsAfterFiltering.map((val) => (
-                                    <Grid style={{ width: "350px", marginLeft:"30px", marginBottom: "5px"}}>
-                                      <div>
-                                              <Grid container style={{ display: "flex", justifyContent: "space-between" }} >
-                                              {val.imie}  {val.nazwisko} 
-                                                  <Grid>
-                                                  {/* <Button
-                                                    variant="contained"
-                                                    color="success"
-                                                    onClick={() => {
-                                                      dodanieZastepstwa(val.user.id);
-                                                    }}
-                                                  >
-                                                    Zastępstwo
-                                                  </Button> */}
-                                                  <Button
-                                                    variant="contained"
-                                                    color="success"
-                                                    onClick={() => {
-                                                      handleOpen(val);
-                                                    }}
-                                                  >
-                                                    Zastępstwo
-                                                  </Button>
-                                                  </Grid>
-                                              </Grid>
-                                      </div>
-                                    </Grid>
-                                ))}
-                              </div>
+      /> */}
+
+        {infoUser == null ? (
+            <div>
+            <Grid item xs className={classes.content}>
+                  <Grid container>
+                      <Grid item xs style={{color: darkMode == "white" ? "black" : "white"}}>
+                          <div>
+                            <div style={{margin:"3rem", display:"flex", justifyContent: "center"}} >
+                                  <SearchBar
+                                  darkMode={darkMode}
+                                  setSearchLogin={setSearchLogin}
+                                //  setItemOffset={setItemOffset}
+                                  />
                             </div>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                            <div style={{display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+                              <div className={classes.przerwa} style={{marginLeft:"15px", marginBottom:"15px"}}><b>Lista Opiekunów</b></div>
+                              {recordsAfterFiltering.map((val) => (
+                                  <Grid style={{ width: "350px", marginLeft:"30px", marginBottom: "5px"}}>
+                                    <div>
+                                        <Grid container style={{ display: "flex", justifyContent: "space-between" }} >
+                                        {val.imie}  {val.nazwisko} 
+                                            <Grid>
+                                            
+                                            <Button
+                                              variant="contained"
+                                              color="success"
+                                              onClick={() => {
+                                                handleOpen(val);
+                                              }}
+                                            >
+                                              Zastępstwo
+                                            </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+                                  </Grid>
+                              ))}
+                            </div>
+                          </div>
+                      </Grid>
+                  </Grid>
+              </Grid>
+            </div>
+        ): null}
+
+              
 
                 <div>
                 {infoUser !== null ? (
             <div>
-                Zastępstwo: {infoUser.imie} {infoUser.nazwisko}
-                Id: {infoUser.user.id}
-
-                <OpiekunU 
-            infoUser = { infoUser }
+                <div style={{ margin: "3rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                  Zastępstwo za: {infoUser.imie} {infoUser.nazwisko}
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                      window.location.reload();
+                    }}
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    Zakończ
+                  </Button>
+                </div>
+                
+                <div style={{display:"flex", justifyContent: "center"}}>
+                Dni nieocenione
+                </div>
+                
+            <OpiekunU 
+              infoUser = { infoUser }
             />
+            <div style={{margin_top:"3rem", display:"flex", justifyContent: "center"}}>
+            Historia
+                </div>
+            
             <OpiekunUHistory
-            infoUser = { infoUser }
+              infoUser = { infoUser }
             />
+            <div style={{margin_top:"3rem", display:"flex", justifyContent: "center"}}>
+            Efekty uczenia się
+                </div>
+            
             <OpiekunUEfekty
-            infoUser = { infoUser }
+              infoUser = { infoUser }
             />
             </div>
         ): null}

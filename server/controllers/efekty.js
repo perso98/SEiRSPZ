@@ -143,7 +143,7 @@ console.log(err);
         id: id,
       },
     });
-    console.log("QQQQQQQQQQQQQQQ")
+
     const listEfektyKierunki = await listaKierunkow.findAll({
       include: {
         model: listaSpecjalnosci,

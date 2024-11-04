@@ -52,7 +52,6 @@ function Zastepstwo(
         {infoUser !== null ? (
             <div>
                 Zastępstwo: {infoUser.imie} {infoUser.nazwisko}
-                Id: {infoUser.user.id}
             </div>
         ): null}
         <IconButton aria-label="close" onClick={handleClose}>

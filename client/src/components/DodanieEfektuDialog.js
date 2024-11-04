@@ -68,7 +68,7 @@ function DodanieEfektuDialog(
                 <div style={{ display: "flex", flexDirection: "column"}}>
                     <TextField
                         style={{ margin: "10px"}}
-                        label="Specjalności"
+                        label="Nazwa Efektu"
                         id="specjalności"
                         multiline
                         onChange={(e) => {
@@ -77,7 +77,7 @@ function DodanieEfektuDialog(
                     />
                     <TextField
                         style={{ margin: "10px"}}
-                        label="Skrót"
+                        label="Opis"
                         id="Ssrot"
                         multiline
                         onChange={(e) => {

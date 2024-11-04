@@ -271,25 +271,25 @@ function EfektyUczeniaSie() {
           }
           })
     }
-    const [open, setOpen] = useState(false);
 
-    const handleClose = () => {
-      setOpen(false);
+    const [openDialogId, setOpenDialogId] = useState(null);
+
+    const handleCloseSpecToKier = () => {
+      setOpenDialogId(null);
     };
 
-    const handleOpen = () => {
-      setOpen(true);
+    const handleOpenSpecToKier = (id) => {
+      setOpenDialogId(id);
     };
 
-
-    const [openSpecjalnosc, setOpenSpecjalnosc] = useState(false);
+    const [openSpecjalnosc, setOpenSpecjalnosc] = useState(null);
 
     const handleCloseSpecjalnosc = () => {
-      setOpenSpecjalnosc(false);
+      setOpenSpecjalnosc(null);
     };
 
-    const handleOpenSpecjalnosc = () => {
-      setOpenSpecjalnosc(true);
+    const handleOpenSpecjalnosc = (id) => {
+      setOpenSpecjalnosc(id);
     };
 
     
@@ -418,8 +418,8 @@ function EfektyUczeniaSie() {
                             </Typography> 
 
                             <DodanieSpecjalnosci
-                              open = { open }
-                              handleClose = { handleClose }
+                              open = { openDialogId === val.id }
+                              handleClose = { handleCloseSpecToKier }
                               setNazwaSpecjalnosci = { setNazwaSpecjalnosci }
                               setSkrotSpecjalnosci = { setSkrotSpecjalnosci }
                               dodanieSpecjalnosci = { dodanieSpecjalnosci }
@@ -429,7 +429,7 @@ function EfektyUczeniaSie() {
 
                             <IconButton 
                               style={{ color: "Green"}}
-                              onClick={handleOpen} 
+                              onClick={() => handleOpenSpecToKier(val.id)} 
                               >
                                 <AddIcon> 
                                 </AddIcon>
@@ -442,7 +442,7 @@ function EfektyUczeniaSie() {
                                   {val.listaSpecjalnoscis?.map((valSpecjalnosc) => (
                                     <div>
                                       <DodanieEfektuDialog
-                                          open = { openSpecjalnosc }
+                                          open = { openSpecjalnosc === valSpecjalnosc.id}
                                           handleClose = { handleCloseSpecjalnosc }
                                           setNazwaSpecjalnosci = { setNazwaEfektu }
                                           setSkrotSpecjalnosci = { setOpisEfektu }
@@ -498,7 +498,7 @@ function EfektyUczeniaSie() {
                                           
                                           <IconButton 
                                             style={{ color: "Green"}}
-                                            onClick={handleOpenSpecjalnosc} 
+                                            onClick={() => handleOpenSpecjalnosc(valSpecjalnosc.id)}
                                             >
                                               <AddIcon> 
                                               </AddIcon>

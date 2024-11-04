@@ -104,7 +104,7 @@ function ListaOpiekunow() {
             window.location.reload(false)
           } else {
             setDane(res.data)
-            console.log(res.data)
+            // console.log(res.data)
             setDaneFiltracji(res.data)
           }
         })
@@ -539,13 +539,13 @@ function ListaOpiekunow() {
           if (searchLogin === "") {
             return null;
           } else if (
-            val?.user?.login.toLowerCase().includes(searchLogin.toLowerCase())
+            val?.user?.login?.toLowerCase().includes(searchLogin.toLowerCase())
             ||
-            val?.nazwisko.toLowerCase().includes(searchLogin.toLowerCase())
+            val?.nazwisko?.toLowerCase().includes(searchLogin.toLowerCase())
             ||
-            (val?.imie.toLowerCase() + " " + val?.nazwisko.toLowerCase()).includes(searchLogin.toLowerCase())
+            (val?.imie?.toLowerCase() + " " + val?.nazwisko?.toLowerCase()).includes(searchLogin.toLowerCase())
             ||
-            (val?.nazwisko.toLowerCase() + " " + val?.imie.toLowerCase()).includes(searchLogin.toLowerCase())
+            (val?.nazwisko?.toLowerCase() + " " + val?.imie?.toLowerCase()).includes(searchLogin.toLowerCase())
           ) {
             return val;
           }
@@ -660,7 +660,7 @@ function ListaOpiekunow() {
                   <Link
                   className={classes.linkHover}
                   // to="/selectedFirma/"
-                  onClick={()=> handlefirmaOpen(valFirma)}
+                  onClick={()=> handlefirmaOpen(valFirma.user?.firma)}
                   >
                       <Grid>
                       <div style={{display: "flex", alignItems:"center", justifyContent: "flex-start"}}>
@@ -808,8 +808,8 @@ function ListaOpiekunow() {
                 }}
                 onChange={(e) => {
                   setFirmaSearch(e.target.value);
-                  console.log(" dane " + dane);
-                  console.log(" user " + user);
+                  // console.log(" dane " + dane);
+                  // console.log(" user " + user);
                 }}
               />
             )}

@@ -117,6 +117,12 @@ function AddStudent(
 
       
     const classes = useStyles();
+    const {
+        imie, 
+        nazwisko,
+        telefon,
+        email,
+      } = object;
 
     const [searchLogin, setSearchLogin] = useState("");
 
@@ -130,8 +136,9 @@ function AddStudent(
         } else if (
           val.user?.login.toLowerCase().includes(searchLogin.toLowerCase())
           ||
-          val.nazwisko.toLowerCase().includes(searchLogin.toLowerCase())
-          
+          val.nazwisko?.toLowerCase().includes(searchLogin.toLowerCase())
+          ||
+          val.imie?.toLowerCase().includes(searchLogin.toLowerCase())
         ) {
           return val;
         }

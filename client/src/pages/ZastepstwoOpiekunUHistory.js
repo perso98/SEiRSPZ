@@ -294,7 +294,7 @@ function ZastepstwoOpiekunUHistory(props) {
             title="Pomoc opiekun uczelniany historia"
             darkMode={darkMode}
           />
-          <ButtonLink linkTo="/opiekunu" text="Nowe" />
+          
         </div>
         <div
           style={{

@@ -4,6 +4,7 @@ import Container from "@material-ui/core/Container";
 import { useState, useContext } from "react";
 import DialogOpiekunZ from "../components/DialogOpiekunZ";
 import * as axios from "axios";
+import { Button } from "@mui/material";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 import ButtonLink from "../components/Button";
@@ -11,7 +12,6 @@ import { ToastContainer, toast } from "react-toastify";
 import FileDownload from "js-file-download";
 import "react-toastify/dist/ReactToastify.css";
 import { url } from "../services/Url";
-import { useNavigate } from "react-router-dom";
 import Helper from "../components/Helper";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import { makeStyles } from "@material-ui/core";
@@ -33,8 +33,9 @@ function ZastepstwoOpiekunU(props) {
   const [komentarz, setKomentarz] = useState("");
   const [opis, setOpis] = useState();
   const statusOpiekuna = "statusOpiekunaU";
-  const navigate = useNavigate();
   const [darkMode] = useContext(ThemeContext);
+  const [toggleSearch, setToggleSearch] = useState(false);
+  const [searchSurname, setSearchSurname] = useState("");
   const handleClose = () => {
     setOpis();
     setKomentarz();
@@ -44,25 +45,25 @@ function ZastepstwoOpiekunU(props) {
     setCheckDay(val);
     setOpen(true);
   };
+  const changeToggle = () => {
+    if (toggleSearch) {
+      setToggleSearch(false);
+      setSearchSurname("");
+    } else {
+      setToggleSearch(true);
 
+      setSearchLogin("");
+    }
+  };
   useEffect(() => {
     const id = props.infoUser.user.id
-    console.log(id)
-    axios.get(`${url}getDaysOpiekunUZastepstwo/${id}`)
-    .then((res) => {
-      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
-        window.location.reload(false)
-      } else {
+    axios.get(`${url}getDaysOpiekunUZastepstwo/${id}`).then((res) => {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         setDzienniczek(res.data);
         setLoading(false);
       }
-    }
     });
   }, []);
   const downloadFile = (name) => {
@@ -71,18 +72,11 @@ function ZastepstwoOpiekunU(props) {
       method: "GET",
       responseType: "blob",
     }).then((res) => {
-      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
-        window.location.reload(false)
-      } else {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         FileDownload(res.data, name);
       }
-    }
     });
   };
   const changeStatus = (id, status) => {
@@ -93,14 +87,8 @@ function ZastepstwoOpiekunU(props) {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
-          window.location.reload(false)
-        } else {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           toast.success(`Zmiana statusu na ${status}`);
           setDzienniczek(
@@ -109,7 +97,6 @@ function ZastepstwoOpiekunU(props) {
             })
           );
         }
-      }
       });
   };
   const changeStatusEdit = (id, status) => {
@@ -122,9 +109,6 @@ function ZastepstwoOpiekunU(props) {
         statusOpiekuna: statusOpiekuna,
       })
       .then((res) => {
-        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
-          window.location.reload(false)
-        } else {
         if (res.data.message) {
           window.location.reload(false);
         } else {
@@ -134,23 +118,25 @@ function ZastepstwoOpiekunU(props) {
             })
           );
         }
-      }
       });
   };
 
   const recordsAfterFiltering = dzienniczek.filter((val) => {
-    if (searchLogin == "") {
+    if (searchLogin == "" && searchSurname == "") {
       return val;
-    } else if (
-      val.user.login.toLowerCase().includes(searchLogin.toLowerCase())
-    ) {
-      return val;
+    } else if (searchLogin !== "")
+      return val.user.login.toLowerCase().includes(searchLogin.toLowerCase());
+    else if (searchSurname !== "") {
+      return val.user.dane.nazwisko
+        .toLowerCase()
+        .includes(searchSurname.toLowerCase());
     }
   });
   const info = (
     <div>
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
-      studenta po jego e-mailu. <br />
+      użytkownika po jego e-mailu, jeśli chcesz wyszukać użytkownika po jego
+      nazwisku kliknij w przycik "Zmień opcje wyszukiwania". <br />
       Przycisk "Akceptuj" akceptuje dzień studenta.
       <br />
       Przycisk "Odrzuć" odrzuca dzień studenta.
@@ -205,13 +191,25 @@ function ZastepstwoOpiekunU(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
-              setRemountComponent={setRemountComponent}
+              searchLogin={searchLogin}
               darkMode={darkMode}
+              setRemountComponent={setRemountComponent}
+              toggleSearch={toggleSearch}
+              setSearchSurname={setSearchSurname}
+              searchSurname={searchSurname}
             />
           )}
-          <Helper info={info} title="Pomoc opiekun uczelniany" />
-          <ButtonLink linkTo="/opiekunu/historia" text="Historia" />
+          <Helper info={info} title="Pomoc opiekun uczelniany" darkMode={darkMode}/>
+          
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeToggle();
+          }}
+        >
+          Zmień opcje wyszukiwania
+        </Button>
         {recordsAfterFiltering.length === 0 && !loading && (
           <div
             style={{

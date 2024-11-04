@@ -458,7 +458,6 @@ exports.sendDay = async (req, res) => {
   try {
     const { id } = req.body;
 
-    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQ")
     const check = await dziennik.findOne({
       where:{id: id}
     })

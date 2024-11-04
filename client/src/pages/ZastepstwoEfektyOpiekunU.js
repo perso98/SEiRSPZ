@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import * as axios from "axios";
 import Container from "@material-ui/core/Container";
 import SearchBar from "../components/SearchBar";
-import PaginationForEffects from "../components/PaginationForEffects";
+import PaginationForEffects from "../components/ZastepstwoPaginationForEffects";
 import EfektyDialog from "../components/EfektyDialog";
 import { ToastContainer, toast } from "react-toastify";
 import { url } from "../services/Url";
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import Helper from "../components/Helper";
 import { ThemeContext } from "../context/ThemeContext";
+import { Button } from "@mui/material";
 function ZastepstwoEfektyOpiekunU(props) {
   const [opis, setOpis] = useState("");
   const [studenci, setStudenci] = useState([]);
@@ -17,11 +18,12 @@ function ZastepstwoEfektyOpiekunU(props) {
   const [searchLogin, setSearchLogin] = useState("");
   const [open, setOpen] = useState(false);
   const [checkStudent, setCheckStudent] = useState(null);
-  const [itemOffset, setItemOffset] = useState(0);
   const [efekt, setEfekt] = useState(0);
   const [efektId, setEfektId] = useState(0);
   const navigate = useNavigate();
-
+  const [toggleSearch, setToggleSearch] = useState(false);
+  const [searchSurname, setSearchSurname] = useState("");
+  const [remountComponent, setRemountComponent] = useState(0);
   const handleClose = () => {
     setOpis();
     setOpen(false);
@@ -34,21 +36,14 @@ function ZastepstwoEfektyOpiekunU(props) {
   const [darkMode] = useContext(ThemeContext);
   useEffect(() => {
     const id = props.infoUser.user.id
-    console.log("QQQQQQQQQQQQ Efekty Opiekun U " + id)
+
     axios.get(`${url}getEffectsOpiekunUZastepstwo/${id}`).then((res) => {
-      if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
-        window.location.reload(false)
-      } else {
       if (res.data.message) {
-        props.setStatus();
-        alert(res.data.message).then(() => {
-          navigate("/login");
-        });
+        window.location.reload(false);
       } else {
         setStudenci(res.data);
         setLoading(false);
       }
-    }
     });
   }, []);
 
@@ -60,14 +55,8 @@ function ZastepstwoEfektyOpiekunU(props) {
         status: status,
       })
       .then((res) => {
-        if (res.data.message === "Sesja utracona, zaloguj się ponownie") {
-          window.location.reload(false)
-        } else {
         if (res.data.message) {
-          props.setStatus();
-          alert(res.data.message).then(() => {
-            navigate("/login");
-          });
+          window.location.reload(false);
         } else {
           toast.success(`Zmiana statusu na ${status}`);
           setStudenci(
@@ -85,15 +74,18 @@ function ZastepstwoEfektyOpiekunU(props) {
             })
           );
         }
-      }
       });
   };
 
   const recordsAfterFiltering = studenci.filter((val) => {
-    if (searchLogin == "") {
+    if (searchLogin == "" && searchSurname == "") {
       return val;
-    } else if (val.login.toLowerCase().includes(searchLogin.toLowerCase())) {
-      return val;
+    } else if (searchLogin !== "")
+      return val?.login.toLowerCase().includes(searchLogin.toLowerCase());
+    else if (searchSurname !== "") {
+      return val?.dane.nazwisko
+        .toLowerCase()
+        .includes(searchSurname.toLowerCase());
     }
   });
   const info = (
@@ -101,7 +93,8 @@ function ZastepstwoEfektyOpiekunU(props) {
       W tym panelu oceniasz efekty uczenia się przypisanych do ciebie studentów.
       <br />
       Po lewej od przycisku <HelpOutlineOutlined />, możesz wyszukać dni
-      studenta po jego e-mailu. <br />
+      studenta po jego e-mailu, jeśli chcesz wyszukać użytkownika po jego
+      nazwisku kliknij w przycik "Zmień opcje wyszukiwania". <br />
       Jeśli student nie ma żadnych efektów studenta, to znaczy, że ich nie
       wybrał na swoim koncie.
       <br />
@@ -126,10 +119,27 @@ function ZastepstwoEfektyOpiekunU(props) {
       <br />
     </div>
   );
+  const changeToggle = () => {
+    if (toggleSearch) {
+      setToggleSearch(false);
+      setSearchLogin("");
+    } else {
+      setToggleSearch(true);
+      setSearchSurname("");
+    }
+  };
   return (
     <>
       <Container style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        {loading && <h5>Ładowanie...</h5>}
+        {loading && (
+          <h5
+            style={{
+              color: darkMode == "white" ? "black" : "white",
+            }}
+          >
+            Ładowanie...
+          </h5>
+        )}
 
         <div
           style={{
@@ -141,8 +151,10 @@ function ZastepstwoEfektyOpiekunU(props) {
           {!loading && (
             <SearchBar
               setSearchLogin={setSearchLogin}
-              setItemOffset={setItemOffset}
               darkMode={darkMode}
+              setRemountComponent={setRemountComponent}
+              toggleSearch={toggleSearch}
+              setSearchSurname={setSearchSurname}
             />
           )}
           <Helper
@@ -151,6 +163,14 @@ function ZastepstwoEfektyOpiekunU(props) {
             darkMode={darkMode}
           />
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeToggle();
+          }}
+        >
+          Zmień opcje wyszukiwania
+        </Button>
         {recordsAfterFiltering.length === 0 && !loading && (
           <div
             style={{
@@ -169,18 +189,20 @@ function ZastepstwoEfektyOpiekunU(props) {
             <div />
           </div>
         )}
-        <PaginationForEffects
-          data={recordsAfterFiltering}
-          open={open}
-          handleOpen={handleOpen}
-          itemOffset={itemOffset}
-          setItemOffset={setItemOffset}
-          setEfekt={setEfekt}
-          opis={opis}
-          efekt={efekt}
-          checkStudent={checkStudent}
-          setOpis={setOpis}
-        />
+        {recordsAfterFiltering.length > 0 ? (
+          <div key={remountComponent}>
+            <PaginationForEffects
+              data={recordsAfterFiltering}
+              open={open}
+              handleOpen={handleOpen}
+              setEfekt={setEfekt}
+              opis={opis}
+              efekt={efekt}
+              checkStudent={checkStudent}
+              setOpis={setOpis}
+            />{" "}
+          </div>
+        ) : null}
       </Container>
       <EfektyDialog
         open={open}
