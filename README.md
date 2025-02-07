@@ -1,4 +1,4 @@
-# **System Ewidencji i Rozliczeń Studenckich Praktyk Zawodowych**  
+# **System Ewidencji i Rozliczenia Studenckich Praktyk Zawodowych**  
 
 Niniejsza praca dyplomowa miała na celu stworzenie aplikacji do nadzorowania przebiegu praktyk studenckich oraz wspierania tworzenia dokumentacji praktyk. Aplikacja jest przeznaczona dla:  
 ✔ **Praktykantów** – opisujących codzienne aktywności w elektronicznym dzienniku praktyk,  
