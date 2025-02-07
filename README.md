@@ -1,33 +1,57 @@
-# SEiRSPZ
+# **System Ewidencji i Rozliczeń Studenckich Praktyk Zawodowych**  
 
-This is the diploma project.
-The diploma thesis was intended to create an application to supervise the course of student apprenticeships and support the creation of apprenticeship documentation. The application is intended for trainees who describe the activity of each day of practice in the electronic journal of apprenticeships, company supervisors accepting the entries of apprentices in the journal, university supervisors verifying the achievement of learning outcomes, as well as for employees of the dean's office and the management of the institute organizing apprenticeship by assigning workplaces and supervisors to apprentices . The application has a number of other useful functions supporting the organization and documentation of practices.
+Niniejsza praca dyplomowa miała na celu stworzenie aplikacji do nadzorowania przebiegu praktyk studenckich oraz wspierania tworzenia dokumentacji praktyk. Aplikacja jest przeznaczona dla:  
+✔ **Praktykantów** – opisujących codzienne aktywności w elektronicznym dzienniku praktyk,  
+✔ **Opiekunów zakładowych** – akceptujących wpisy praktykantów w dzienniku,  
+✔ **Opiekunów uczelnianych** – weryfikujących osiągnięcie efektów uczenia się,  
+✔ **Pracowników dziekanatu oraz zarządu instytutu** – organizujących praktyki poprzez przydzielanie miejsc pracy i opiekunów dla praktykantów.  
 
-The scope of Maciej Sierżęga's (perso98) work included:
-- creating a login and registration system,
-- creating user sessions and securing access,
-- creating the ability to edit one's own account (password),
-- creating functionality for the following profiles:
-- Administrator,
-- Plant Supervisor,
-- University Supervisor.
+Aplikacja oferuje szereg dodatkowych funkcji wspierających organizację i dokumentację praktyk.  
 
-The login and registration system allows the user to create their own account and log in to the application.
-User sessions and access security are meant to protect the application from unauthorized users.
-The ability to edit one's own account allows the user to change their account password.
-The administrator profile has the ability to assign roles to the user, change their login details, create a user and delete a user.
-The plant supervisor and university supervisor profiles are meant to evaluate the days from the diary assigned to their students. Supervisors have the ability to accept or reject a given day, change the description of the day and add a comment.
+---
 
-Running project
-- cd client
-- npm start
-- cd ..
-- cd server
-- node server
+## **Zakres prac Macieja Sierżęgi (perso98) obejmował:**  
 
-This is app only in Polish
+✔ **Stworzenie systemu logowania i rejestracji**  
+✔ **Tworzenie sesji użytkownika i zabezpieczenie dostępu**  
+✔ **Możliwość edycji konta użytkownika (zmiana hasła)**  
+✔ **Funkcjonalności dla różnych profili użytkowników:**  
+   - **Administrator**  
+   - **Opiekun zakładowy**  
+   - **Opiekun uczelniany**  
 
-##Pierwszą stroną przed zalogowaniem do aplikacji jest strona główna. Znajdują się na niej informację do czego jest przeznaczona, które mają naświetlić zalety korzystania z tej aplikacji.
+---
+
+## **📌 Opis funkcjonalności**  
+
+🔹 **System logowania i rejestracji** umożliwia użytkownikowi utworzenie własnego konta i logowanie do aplikacji.  
+🔹 **Sesje użytkownika i zabezpieczenie dostępu** chronią aplikację przed nieautoryzowanym dostępem.  
+🔹 **Edycja konta** pozwala użytkownikowi zmienić swoje hasło.  
+
+🔹 **Profil administratora** umożliwia:  
+✔ Przypisywanie ról użytkownikom  
+✔ Zmianę danych logowania użytkowników  
+✔ Tworzenie oraz usuwanie kont użytkowników  
+
+🔹 **Profil opiekuna zakładowego i uczelnianego** umożliwia:  
+✔ Ocenę dni z dziennika praktyk przypisanych studentów  
+✔ Akceptację lub odrzucenie wpisów  
+✔ Edytowanie opisu dnia  
+✔ Dodawanie komentarzy  
+
+---
+
+## **📌 Uruchamianie projektu**  
+
+```bash
+cd client
+npm start
+cd ..
+cd server
+node server
+```
+
+## Pierwszą stroną przed zalogowaniem do aplikacji jest strona główna. Znajdują się na niej informację do czego jest przeznaczona, które mają naświetlić zalety korzystania z tej aplikacji.
 
 ![image](https://user-images.githubusercontent.com/72854881/217893276-8e2e8620-a2cd-4c29-9e74-f29c4178acb6.png)
 
